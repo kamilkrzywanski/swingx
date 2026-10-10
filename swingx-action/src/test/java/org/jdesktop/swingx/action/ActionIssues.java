@@ -4,12 +4,8 @@
  */
 package org.jdesktop.swingx.action;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -21,6 +17,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
 import org.jdesktop.test.PropertyChangeReport;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.jdesktop.test.EDTExtension;
@@ -50,15 +47,11 @@ public class ActionIssues {
             }
             
         };
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("selected".equals(evt.getPropertyName())) {
-                    assertEquals(evt.getNewValue(), ((AbstractActionExt) evt.getSource()).isSelected());
-                }
-                
+        PropertyChangeListener l = evt -> {
+            if ("selected".equals(evt.getPropertyName())) {
+                Assertions.assertEquals(evt.getNewValue(), ((AbstractActionExt) evt.getSource()).isSelected());
             }
-            
+
         };
         action.addPropertyChangeListener(l);
         action.putValue("selected", true);
@@ -127,8 +120,8 @@ public class ActionIssues {
         //create test object
         Object testObject = new Object();
         // create queue and weak reference
-        ReferenceQueue<Object> queue = new ReferenceQueue<Object>();
-        WeakReference<Object> ref = new WeakReference<Object>(testObject, queue);
+        ReferenceQueue<Object> queue = new ReferenceQueue<>();
+        WeakReference<Object> ref = new WeakReference<>(testObject, queue);
         // set hard reference to null
         testObject = null;
 //        force garbage collection

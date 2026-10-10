@@ -42,7 +42,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -116,7 +115,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  *  is not saved. Similarly, if a <strong>PasswordStore</strong> is
  *  supplied and the password is null, then the <strong>PasswordStore</strong>
  *  will be queried for the password using the <code>get</code> method.
- *
+ * <p>
  *  Example:
  *  <code><pre>
  *         final JXLoginPane panel = new JXLoginPane(new LoginService() {
@@ -165,7 +164,7 @@ public class JXLoginPane extends JXPanel {
      * the username, password, or both to their respective stores.
      * This type specifies what type of save should be performed.
      */
-    public static enum SaveMode {NONE, USER_NAME, PASSWORD, BOTH}
+    public enum SaveMode {NONE, USER_NAME, PASSWORD, BOTH}
     /**
      * Returns the status of the login process
      */
@@ -446,15 +445,12 @@ public class JXLoginPane extends JXPanel {
 
         // #732 set all internal components opacity to false in order to allow top level (frame's content pane) background painter to have any effect.
         setOpaque(false);
-        CapsLockSupport.getInstance().addPropertyChangeListener("capsLockEnabled", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (capsOn != null) {
-                    if (Boolean.TRUE.equals(evt.getNewValue())) {
-                        capsOn.setText(UIManagerExt.getString(CLASS_NAME + ".capsOnWarning", getLocale()));
-                    } else {
-                        capsOn.setText(" ");
-                    }
+        CapsLockSupport.getInstance().addPropertyChangeListener("capsLockEnabled", evt -> {
+            if (capsOn != null) {
+                if (Boolean.TRUE.equals(evt.getNewValue())) {
+                    capsOn.setText(UIManagerExt.getString(CLASS_NAME + ".capsOnWarning", getLocale()));
+                } else {
+                    capsOn.setText(" ");
                 }
             }
         });
@@ -860,10 +856,10 @@ public class JXLoginPane extends JXPanel {
     public void setServers(List<String> servers) {
         //only at startup
         if (this.servers == null) {
-            this.servers = servers == null ? new ArrayList<String>() : servers;
+            this.servers = servers == null ? new ArrayList<>() : servers;
         } else if (this.servers != servers) {
             List<String> old = getServers();
-            this.servers = servers == null ? new ArrayList<String>() : servers;
+            this.servers = servers == null ? new ArrayList<>() : servers;
             recreateLoginPanel();
             firePropertyChange("servers", old, getServers());
         }
@@ -1234,7 +1230,7 @@ public class JXLoginPane extends JXPanel {
             //save the user names and passwords
             String userName = namePanel.getUserName();
             if ((getSaveMode() == SaveMode.USER_NAME || getSaveMode() == SaveMode.BOTH)
-                    && userName != null && !userName.trim().equals("")) {
+                    && userName != null && !userName.trim().isEmpty()) {
                 userNameStore.addUserName(userName);
                 userNameStore.saveUserNames();
             }
@@ -1370,8 +1366,7 @@ public class JXLoginPane extends JXPanel {
 	
 	@Override
 	public void removeUserPassword(String username) {
-	    return;
-	}
+    }
 
 	@Override
         public boolean equals(Object obj) {
@@ -1385,14 +1380,14 @@ public class JXLoginPane extends JXPanel {
     }
 
     //--------------------------------- Default NamePanel Implementations
-    private static interface NameComponent {
-        public String getUserName();
-        public boolean isEnabled();
-        public boolean isEditable();
-        public void setEditable(boolean enabled);
-        public void setEnabled(boolean enabled);
-        public void setUserName(String userName);
-        public JComponent getComponent();
+    private interface NameComponent {
+        String getUserName();
+        boolean isEnabled();
+        boolean isEditable();
+        void setEditable(boolean enabled);
+        void setEnabled(boolean enabled);
+        void setUserName(String userName);
+        JComponent getComponent();
     }
     
     private void updatePassword(final String username) {
@@ -1475,12 +1470,7 @@ public class JXLoginPane extends JXPanel {
         	    }
         	});
         	
-        	super.addItemListener(new ItemListener() {
-        	    @Override
-                public void itemStateChanged(ItemEvent e) {
-        		updatePassword((String)getSelectedItem());
-        	    }
-        	});
+        	super.addItemListener(e -> updatePassword((String)getSelectedItem()));
             }
         }
         
@@ -1656,7 +1646,7 @@ public class JXLoginPane extends JXPanel {
      * Utility method for initializing a Window for displaying a LoginDialog.
      * This is particularly useful because the differences between JFrame and
      * JDialog are so minor.
-     *
+     * <p>
      * Note: This method is package private for use by JXLoginDialog (proper,
      * not JXLoginPane.JXLoginDialog). Change to private if JXLoginDialog is
      * removed.
@@ -1667,42 +1657,36 @@ public class JXLoginPane extends JXPanel {
         JButton okButton = new JButton(panel.getActionMap().get(LOGIN_ACTION_COMMAND));
         final JButton cancelButton = new JButton(
                 UIManagerExt.getString(CLASS_NAME + ".cancelString", panel.getLocale()));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //change panel status to canceled!
-                panel.status = JXLoginPane.Status.CANCELLED;
-                w.setVisible(false);
-                w.dispose();
-            }
+        cancelButton.addActionListener(e -> {
+            //change panel status to canceled!
+            panel.status = Status.CANCELLED;
+            w.setVisible(false);
+            w.dispose();
         });
-        panel.addPropertyChangeListener("status", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                JXLoginPane.Status status = (JXLoginPane.Status)evt.getNewValue();
-                switch (status) {
-                    case NOT_STARTED:
-                        break;
-                    case IN_PROGRESS:
-                        cancelButton.setEnabled(false);
-                        break;
-                    case CANCELLED:
-                        cancelButton.setEnabled(true);
-                        w.pack();
-                        break;
-                    case FAILED:
-                        cancelButton.setEnabled(true);
-                        panel.passwordField.requestFocusInWindow();
-                        w.pack();
-                        break;
-                    case SUCCEEDED:
-                        w.setVisible(false);
-                        w.dispose();
-                }
-                for (PropertyChangeListener l : w.getPropertyChangeListeners("status")) {
-                    PropertyChangeEvent pce = new PropertyChangeEvent(w, "status", evt.getOldValue(), evt.getNewValue());
-                    l.propertyChange(pce);
-                }
+        panel.addPropertyChangeListener("status", evt -> {
+            Status status = (Status)evt.getNewValue();
+            switch (status) {
+                case NOT_STARTED:
+                    break;
+                case IN_PROGRESS:
+                    cancelButton.setEnabled(false);
+                    break;
+                case CANCELLED:
+                    cancelButton.setEnabled(true);
+                    w.pack();
+                    break;
+                case FAILED:
+                    cancelButton.setEnabled(true);
+                    panel.passwordField.requestFocusInWindow();
+                    w.pack();
+                    break;
+                case SUCCEEDED:
+                    w.setVisible(false);
+                    w.dispose();
+            }
+            for (PropertyChangeListener l : w.getPropertyChangeListeners("status")) {
+                PropertyChangeEvent pce = new PropertyChangeEvent(w, "status", evt.getOldValue(), evt.getNewValue());
+                l.propertyChange(pce);
             }
         });
         // FIX for #663 - commented out two lines below. Not sure why they were here in a first place.
@@ -1730,12 +1714,9 @@ public class JXLoginPane extends JXPanel {
             f.setResizable(false);
             f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-            ActionListener closeAction = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    f.setVisible(false);
-                    f.dispose();
-                }
+            ActionListener closeAction = e -> {
+                f.setVisible(false);
+                f.dispose();
             };
             f.getRootPane().registerKeyboardAction(closeAction, ks, JComponent.WHEN_IN_FOCUSED_WINDOW);
         } else if (w instanceof JDialog) {
@@ -1743,12 +1724,7 @@ public class JXLoginPane extends JXPanel {
             d.getRootPane().setDefaultButton(okButton);
             d.setResizable(false);
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-            ActionListener closeAction = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    d.setVisible(false);
-                }
-            };
+            ActionListener closeAction = e -> d.setVisible(false);
             d.getRootPane().registerKeyboardAction(closeAction, ks, JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
         w.pack();

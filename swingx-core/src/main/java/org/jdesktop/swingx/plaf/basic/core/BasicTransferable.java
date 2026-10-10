@@ -113,8 +113,8 @@ public class BasicTransferable implements Transferable, UIResource {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         DataFlavor[] flavors = getTransferDataFlavors();
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
+        for (DataFlavor dataFlavor : flavors) {
+            if (dataFlavor.equals(flavor)) {
                 return true;
             }
         }
@@ -215,8 +215,8 @@ public class BasicTransferable implements Transferable, UIResource {
      */
     protected boolean isHTMLFlavor(DataFlavor flavor) {
         DataFlavor[] flavors = htmlFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
+        for (DataFlavor dataFlavor : flavors) {
+            if (dataFlavor.equals(flavor)) {
                 return true;
             }
         }
@@ -248,8 +248,8 @@ public class BasicTransferable implements Transferable, UIResource {
      */
     protected boolean isPlainFlavor(DataFlavor flavor) {
         DataFlavor[] flavors = plainFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
+        for (DataFlavor dataFlavor : flavors) {
+            if (dataFlavor.equals(flavor)) {
                 return true;
             }
         }
@@ -281,8 +281,8 @@ public class BasicTransferable implements Transferable, UIResource {
      */
     protected boolean isStringFlavor(DataFlavor flavor) {
         DataFlavor[] flavors = stringFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
+        for (DataFlavor dataFlavor : flavors) {
+            if (dataFlavor.equals(flavor)) {
                 return true;
             }
         }

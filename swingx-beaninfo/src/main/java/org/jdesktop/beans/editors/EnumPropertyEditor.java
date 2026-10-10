@@ -30,7 +30,7 @@ public class EnumPropertyEditor<E extends Enum<E>> extends PropertyEditorSupport
     
     @Override
     public String[] getTags() {
-        List<String> strs = new ArrayList<String>();
+        List<String> strs = new ArrayList<>();
         for(E e : set) {
             strs.add(e.toString());
         }
@@ -53,7 +53,7 @@ public class EnumPropertyEditor<E extends Enum<E>> extends PropertyEditorSupport
     public String getJavaInitializationString() {
         //org.jdesktop.stuff.Stuff.InsideEnum.VALUE;
         // the '$' must be converted to '.' to deal with public inner classes
-        return new String(en.getName()+"."+getAsText()).replace("$",".");
+        return (en.getName() + "." + getAsText()).replace("$",".");
     }
     
 }

@@ -29,7 +29,7 @@ import java.util.Date;
  * This utility class is replaced by CalendarUtils because day related manipulation
  * are meaningfull relative to a Calendar only. Always doing so against the default
  * calendar instance isn't enough.
- * 
+ * <p>
  * PENDING JW: move the missing ops. Volunteers, please! Once done, this will be deprecated.
  * 
  * @author Scott Violet

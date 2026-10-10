@@ -34,12 +34,12 @@ import java.util.List;
  * EventListenerList to provide type-safe API (preferably conforming
  * to the JavaBeans spec) and methods which dispatch event notification
  * methods to appropriate Event Listeners on the list.
- * 
+ * <p>
  * The main benefit that this class provides is that it releases
  * garbage collected listeners (internally uses weak references). <p>
  * 
  * PENDING: serialization support
- * 
+ * <p>
  *
  * Usage example:
  *    Say one is defining a class that sends out FooEvents, and one wants
@@ -128,7 +128,7 @@ public class WeakEventListenerList implements Serializable {
      */
     @SuppressWarnings("unchecked")
     private synchronized <T extends EventListener> List<T> cleanReferences() {
-        List<T> listeners = new ArrayList<T>();
+        List<T> listeners = new ArrayList<>();
         for (int i = getReferences().size() - 1; i >= 0; i--) {
             
             Object listener = getReferences().get(i).get();
@@ -144,14 +144,14 @@ public class WeakEventListenerList implements Serializable {
     
     private List<WeakReference<? extends EventListener>> getReferences() {
         if (weakReferences == null) {
-            weakReferences = new ArrayList<WeakReference<? extends EventListener>>();
+            weakReferences = new ArrayList<>();
         }
         return weakReferences;
     }
     
     private List<Class<? extends EventListener>> getClasses() {
         if (classes == null) {
-            classes = new ArrayList<Class<? extends EventListener>>();
+            classes = new ArrayList<>();
             
         }
         return classes;
@@ -169,7 +169,7 @@ public class WeakEventListenerList implements Serializable {
     @SuppressWarnings("unchecked")
     public <T extends EventListener> T[] getListeners(Class<T> t) {
         List<T> liveListeners = cleanReferences();
-        List<T> listeners = new ArrayList<T>();
+        List<T> listeners = new ArrayList<>();
         for (int i = 0; i < liveListeners.size(); i++) {
             if (getClasses().get(i) == t) {
                 listeners.add(liveListeners.get(i));
@@ -198,7 +198,7 @@ public class WeakEventListenerList implements Serializable {
                                          " is not of type " + t);
         }
         cleanReferences();
-        getReferences().add(new WeakReference<T>(l));
+        getReferences().add(new WeakReference<>(l));
         getClasses().add(t);
     }
 

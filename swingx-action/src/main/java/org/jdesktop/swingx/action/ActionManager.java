@@ -140,7 +140,7 @@ public class ActionManager extends ActionMap {
             return null;
         }
 
-        return new HashSet<Object>(Arrays.asList(keys));
+        return new HashSet<>(Arrays.asList(keys));
     }
 
     public Action addAction(Action action) {
@@ -232,7 +232,7 @@ public class ActionManager extends ActionMap {
      */
     private AbstractActionExt getStateChangeAction(Object id) {
         Action a = getAction(id);
-        if (a != null && a instanceof AbstractActionExt) {
+        if (a instanceof AbstractActionExt) {
             AbstractActionExt aa = (AbstractActionExt)a;
             if (aa.isStateAction()) {
                 return aa;
@@ -315,9 +315,9 @@ public class ActionManager extends ActionMap {
         if (action instanceof AbstractAction) {
             Object[] keys = ((AbstractAction)action).getKeys();
 
-            for (int i = 0; i < keys.length; i++) {
-                stream.println("\tkey: " + keys[i] + "\tvalue: " +
-                               action.getValue((String)keys[i]));
+            for (Object key : keys) {
+                stream.println("\tkey: " + key + "\tvalue: " +
+                        action.getValue((String) key));
             }
         }
     }
@@ -350,7 +350,7 @@ public class ActionManager extends ActionMap {
      */
     public boolean isStateAction(Object id) {
         Action action = getAction(id);
-        if (action != null && action instanceof AbstractActionExt) {
+        if (action instanceof AbstractActionExt) {
             return ((AbstractActionExt)action).isStateAction();
         }
         return false;

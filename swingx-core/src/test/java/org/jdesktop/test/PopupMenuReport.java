@@ -26,10 +26,10 @@ public class PopupMenuReport implements PopupMenuListener {
     /**
      * Holds a list of all canceled events.
      */
-    protected List<PopupMenuEvent> canceldEvents = Collections.synchronizedList(new LinkedList<PopupMenuEvent>());
-    protected List<PopupMenuEvent> visibleEvents = Collections.synchronizedList(new LinkedList<PopupMenuEvent>());
-    protected List<PopupMenuEvent> invisibleEvents = Collections.synchronizedList(new LinkedList<PopupMenuEvent>());
-    protected List<PopupMenuEvent> allEvents = Collections.synchronizedList(new LinkedList<PopupMenuEvent>());
+    protected List<PopupMenuEvent> canceldEvents = Collections.synchronizedList(new LinkedList<>());
+    protected List<PopupMenuEvent> visibleEvents = Collections.synchronizedList(new LinkedList<>());
+    protected List<PopupMenuEvent> invisibleEvents = Collections.synchronizedList(new LinkedList<>());
+    protected List<PopupMenuEvent> allEvents = Collections.synchronizedList(new LinkedList<>());
 
     /**
      * Instantiates a ListDataReport.

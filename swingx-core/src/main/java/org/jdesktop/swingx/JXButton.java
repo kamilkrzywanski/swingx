@@ -608,7 +608,7 @@ public class JXButton extends JButton implements BackgroundPaintable {
      * or false if it should only paint inside the border. This property is true by default.
      * This property affects the width, height,
      * and initial transform passed to the background painter.
-     *
+     * <p>
      * This is a bound property.
      */
     @Override

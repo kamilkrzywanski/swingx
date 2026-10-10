@@ -189,11 +189,11 @@ public class JXMonthViewIssues extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: monthView cannot cope with minimalDaysInFirstWeek.
-     * 
+     * <p>
      * Here: look at impact of forcing the minimalDays to a value different
      * from the calendar. Days must be displayed in starting from the 
      * first row under the days-of-week.
-     * 
+     * <p>
      * Not yet completely fixed: for very late firstDayOfWeek, the Jan is incompletely
      * painted for mininalDays > 1. Rare enough to ignore for now?
      */
@@ -216,14 +216,10 @@ public class JXMonthViewIssues extends InteractiveTestCase {
         addComponentOrientationToggle(frame);
         final JComboBox dayOfWeekComboBox = new JComboBox(new String[]{"Sunday", "Monday", "Tuesday",
                 "Wednesday", "Thursday", "Friday", "Saturday"});
-        dayOfWeekComboBox.addActionListener(new ActionListener() {
+        dayOfWeekComboBox.addActionListener(e -> {
+            int selected = dayOfWeekComboBox.getSelectedIndex();
+            monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
 
-            public void actionPerformed(ActionEvent e) {
-                int selected = dayOfWeekComboBox.getSelectedIndex();
-                monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
-                
-            }
-            
         });
         dayOfWeekComboBox.setSelectedIndex(monthView.getFirstDayOfWeek() - Calendar.SUNDAY);
         addStatusComponent(frame, dayOfWeekComboBox);
@@ -233,7 +229,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     /**
      * Issue #567-swingx: JXDatepicker - clicking on unselectable date clears
      * picker's selection.
-     * 
+     * <p>
      * Here: visualize JXMonthView's behaviour. It fires a commit ... probably the 
      * wrong thing to do?. 
      * PENDING: better control the bounds ... 
@@ -246,14 +242,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
         monthView.setLowerBound(calendar.getTime());
         calendar.set(Calendar.DAY_OF_MONTH, 20);
         monthView.setUpperBound(calendar.getTime());
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("got action " + e);
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("got action " + e);
         monthView.addActionListener(l);
         showInFrame(monthView, "click unselectable fires ActionEvent");
     }
@@ -261,11 +250,11 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     
     /**
      * Issue #657-swingx: JXMonthView - unintuitive week-wise navigation with bounds
-     * 
+     * <p>
      * In a month, keyboard navigation beyond the upper/lower bound is prevented.
      * There's a leak in the region of the leading/trailing dates 
      * when navigating week-wise. 
-     * 
+     * <p>
      * PENDING: move into monthView after rename
      */
     public void interactiveBoundsNavigateBeyond() {
@@ -276,14 +265,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
         monthView.setLowerBound(calendar.getTime());
         calendar.set(Calendar.DAY_OF_MONTH, 27);
         monthView.setUpperBound(calendar.getTime());
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("got action " + e);
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("got action " + e);
         monthView.addActionListener(l);
         showInFrame(monthView, "navigate beyond bounds");
     }
@@ -292,7 +274,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
 
     /**
      * Issue #657-swingx: JXMonthView - unintuitive week-wise navigation with bounds
-     * 
+     * <p>
      * Can't navigate at all if today is beyound the bounds
      * PENDING: move into monthView after rename
      */
@@ -304,14 +286,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
         // to block navigation into all directions
         calendar.add(Calendar.DAY_OF_MONTH, -8);
         monthView.setUpperBound(calendar.getTime());
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("got action " + e);
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("got action " + e);
         monthView.addActionListener(l);
         showInFrame(monthView, "navigate: locked for today beyond bounds");
     }
@@ -322,7 +297,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Here: test that the first displayed date is offset by offset diff of 
      * timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
@@ -347,7 +322,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
                 "\n" + monthView.getLocale());
         DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, monthView.getLocale());
         format.setTimeZone(myCal.getTimeZone());
-        LOG.info("" + format.format(myCal.getTime()));
+        LOG.info(format.format(myCal.getTime()));
 
         
         // config with a known timezone and date
@@ -404,7 +379,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
                     "\n" + this.locale);
             DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, this.locale);
             format.setTimeZone(calendar.getTimeZone());
-            LOG.info("" + format.format(calendar.getTime()));
+            LOG.info(format.format(calendar.getTime()));
             fireValueChanged(EventType.CALENDAR_CHANGED);
         }
         
@@ -413,7 +388,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Here: test that the first displayed date is offset by offset diff of 
      * timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
@@ -509,7 +484,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     }
     /**
      * Issue #733-swingx: TimeZone in model and monthView not synched.
-     *  
+     * <p>
      *  Test that the selected is normalized in the monthView's timezone. 
      */
     @Test
@@ -519,14 +494,14 @@ public class JXMonthViewIssues extends InteractiveTestCase {
         TimeZone tz = TimeZone.getTimeZone("GMT+4");
         monthView.setTimeZone(tz);
         Date date = new Date();
-        monthView.setFlaggedDates(new Date[] {date});
+        monthView.setFlaggedDates(date);
         assertTrue(monthView.isFlaggedDate(date));
         fail("no way to test same normalization for flagged and selected dates");
     }
 
     /**
      * Issue #733-swingx: TimeZone in model and monthView not synched.
-     * 
+     * <p>
      * Test selected - tells nothing, because it's normalized in the 
      * model's (default) calendar.
      */
@@ -628,7 +603,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Here: test today notification.
      */
     @Test
@@ -656,7 +631,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
    /**
     * BasicMonthViewUI: use adjusting api in keyboard actions.
     * Here: test add selection action.
-    * 
+    * <p>
     * TODO: this fails (unrelated to the adjusting) because the
     * the selectionn changing event type is DATES_SET instead of 
     * the expected DATES_ADDED.  What's wrong - expectation or type?
@@ -681,7 +656,7 @@ public class JXMonthViewIssues extends InteractiveTestCase {
    
    /**
     * Returns a timezone with a rawoffset with a different offset.
-    * 
+    * <p>
     * 
     * PENDING: this is acutally for european time, not really thought of 
     *   negative/rolling +/- problem?
@@ -695,18 +670,17 @@ public class JXMonthViewIssues extends InteractiveTestCase {
        int offset = timeZone.getRawOffset();
        int newOffset = offset < 0 ? offset + diffRawOffset : offset - diffRawOffset;
        String[] availableIDs = TimeZone.getAvailableIDs(newOffset);
-       TimeZone newTimeZone = TimeZone.getTimeZone(availableIDs[0]);
-       return newTimeZone;
+       return TimeZone.getTimeZone(availableIDs[0]);
    }
 
    @SuppressWarnings("unused")
    private String[] getTimeZoneIDs() {
-       List<String> zoneIds = new ArrayList<String>();
+       List<String> zoneIds = new ArrayList<>();
        for (int i = -12; i <= 12; i++) {
            String sign = i < 0 ? "-" : "+";
            zoneIds.add("GMT" + sign + i);
        }
-       return zoneIds.toArray(new String[zoneIds.size()]);
+       return zoneIds.toArray(new String[0]);
    }
    
   

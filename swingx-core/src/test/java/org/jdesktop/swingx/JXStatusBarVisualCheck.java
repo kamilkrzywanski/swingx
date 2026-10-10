@@ -72,10 +72,10 @@ public class JXStatusBarVisualCheck extends InteractiveTestCase {
     }
     /**
      * Use-case: mimic win2k explorer status bar.
-     * 
+     * <p>
      * has a - leading message area which resizes on frame resize - two trailing
      * fixed size text areas with different fixed sizes.
-     * 
+     * <p>
      * goal: - add the message text - add the trailing labels - auto-space (in
      * win2k that would be "gaps" between the labels, in other LFs it would be),
      * that is no need to manually insert anything nor fiddle with "insets". The
@@ -99,17 +99,17 @@ public class JXStatusBarVisualCheck extends InteractiveTestCase {
 
     /**
      * Use-case: mimic win2k eclipse status bar.
-     * 
+     * <p>
      * has a 
      * - trailing fixed size area for progress info
      * - before that: three fixed-size text areas (which are near to 
      * same size, but aren't :-) Hmm.... maybe they aren't even fixed-size,
      * the separators in the wide vs narrow screenshot aren't exactly aligned. 
-     * 
+     * <p>
      * This might be a compound statusbar (one being the context infos, the
      * other for progress info) - so could be considered a edge case,
      * not necessarily included. 
-     * 
+     * <p>
      * goals (as far as the text fields go) are similar to the explorer
      * plus:
      * - support equals size cells
@@ -156,7 +156,7 @@ public class JXStatusBarVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue ??-swingx: JXStatusBar must be bidi-compliant.
-     * 
+     * <p>
      * On toggle CO, status bar should revers order of components.
      */
     public void interactiveRToL() {

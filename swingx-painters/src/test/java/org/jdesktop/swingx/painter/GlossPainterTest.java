@@ -71,7 +71,7 @@ public class GlossPainterTest extends AbstractPainterTest {
 //        super.testDefaults();
         
         GlossPainter gp = (GlossPainter) p;
-        assertThat(gp.getPaint(), CoreMatchers.<Paint>is(new Color(1f, 1f, 1f, .2f)));
+        assertThat(gp.getPaint(), CoreMatchers.is(new Color(1f, 1f, 1f, .2f)));
         assertThat(gp.getPosition(), is(GlossPainter.GlossPosition.TOP));
     }
 }

@@ -31,7 +31,6 @@ import java.awt.image.BufferedImage;
 import java.beans.BeanInfo;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
-import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.Introspector;
 import java.beans.PersistenceDelegate;
@@ -41,12 +40,12 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -113,11 +112,9 @@ public class PainterUtil {
         XMLDecoder dec = new XMLDecoder(in.openStream());
 //        p("creating a persistence owner with the base url: " + baseURL);
         dec.setOwner(new PersistenceOwner(baseURL));
-        dec.setExceptionListener(new ExceptionListener() {
-            public void exceptionThrown(Exception ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
+        dec.setExceptionListener(ex -> {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         });
         Object obj = dec.readObject();
         return (Painter)obj;
@@ -141,7 +138,7 @@ public class PainterUtil {
         //setTransient(AbstractPainter.class,"renderingHints");
         //setPropertyDelegate();
         
-        XMLEncoder e = new XMLEncoder(new FileOutputStream(file));
+        XMLEncoder e = new XMLEncoder(Files.newOutputStream(file.toPath()));
         e.setOwner(new PersistenceOwner(baseURL));
         //p("owner = " + e.getOwner());
         //e.setOwner(compoundPainter);
@@ -192,8 +189,7 @@ public class PainterUtil {
             BeanInfo info = Introspector.getBeanInfo(clazz);
             PropertyDescriptor[] propertyDescriptors =
                     info.getPropertyDescriptors();
-            for (int i = 0; i < propertyDescriptors.length; ++i) {
-                PropertyDescriptor pd = propertyDescriptors[i];
+            for (PropertyDescriptor pd : propertyDescriptors) {
                 if (pd.getName().equals(property)) {
                     pd.setValue("transient", Boolean.TRUE);
                     //u.p(pd.attributeNames());
@@ -358,10 +354,9 @@ public class PainterUtil {
             p("in fromXMLURL()");
             p("base url = " + baseURL);
             p("url to convert: " + url);*/
-            String s = new URL(baseURL,url).toString();
-//            p("returning: " + s);
+            //            p("returning: " + s);
 //            p("========");
-            return s;
+            return new URL(baseURL,url).toString();
         }
     }
 }

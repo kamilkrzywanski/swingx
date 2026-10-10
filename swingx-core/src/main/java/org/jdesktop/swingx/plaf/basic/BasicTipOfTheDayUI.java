@@ -157,22 +157,16 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
       .getString("TipOfTheDay.closeText", locale));
     buttons.add(closeButton);
     
-    final ActionListener saveChoice = new ActionListener() {
-      @Override
-    public void actionPerformed(ActionEvent e) {
-        if (choice != null) {
-          choice.setShowingOnStartup(showOnStartupBox.isSelected());
-        }
-        dialog.setVisible(false);
+    final ActionListener saveChoice = e -> {
+      if (choice != null) {
+        choice.setShowingOnStartup(showOnStartupBox.isSelected());
       }
+      dialog.setVisible(false);
     };
 
-    closeButton.addActionListener(new ActionListener() {
-      @Override
-    public void actionPerformed(ActionEvent e) {        
-        dialog.setVisible(false);
-        saveChoice.actionPerformed(null);
-      }
+    closeButton.addActionListener(e -> {
+      dialog.setVisible(false);
+      saveChoice.actionPerformed(null);
     });
     dialog.getRootPane().setDefaultButton(closeButton);
     

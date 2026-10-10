@@ -65,7 +65,7 @@ public class ListComboBoxModel<E> extends AbstractListModel implements ComboBoxM
     public ListComboBoxModel(List<E> list) {
         this.data = list;
         
-        if(list.size() > 0) {
+        if(!list.isEmpty()) {
             selected = list.get(0);
         }
     }

@@ -26,7 +26,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
@@ -84,7 +83,7 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
                 }
                 
                 if (component.getParent() instanceof JComponent) {
-                    ((JComponent) component.getParent()).revalidate();
+                    component.getParent().revalidate();
                 } else {
                     component.getParent().invalidate();
                 }
@@ -95,9 +94,9 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #1185-swingx: inconsistent change notification of "animatedState"
-     * 
+     * <p> <p>
      * Depends on value of animated: fired only if true, nothing happens on false
-     * 
+     * <p> <p>
      * 
      * Trying to resize a top-level window on collapsed state changes of a taskpane.
      * Need to listen to "animationState" which is fired when animation is complete.
@@ -107,14 +106,10 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
         pane.setAnimated(false);
         pane.setTitle("Just a TaskPane with animated property false");
         final JXDialog dialog = new JXDialog(pane);
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("collapsed".equals(evt.getPropertyName())) {
-                    dialog.pack();
-                }
+        PropertyChangeListener l = evt -> {
+            if ("collapsed".equals(evt.getPropertyName())) {
+                dialog.pack();
             }
-            
         };
         pane.addPropertyChangeListener(l);
         pane.add(new JLabel("to have some content"));
@@ -126,21 +121,17 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
     /**
      * Trying to resize a top-level window on collapsed state changes of a taskpane.
      * Need to listen to "animationState" which is fired when animation is complete.
-     * 
+     * <p> <p>
      * Note: works only if animated is true (see Issue #1185-swingx)
      */
     public void interactiveDialogWithCollapsibleTrue() {
         JXTaskPane pane = new JXTaskPane();
         pane.setTitle("Just a TaskPane with animated property true");
         final JXDialog dialog = new JXDialog(pane);
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("collapsed".equals(evt.getPropertyName())) {
-                    dialog.pack();
-                }
+        PropertyChangeListener l = evt -> {
+            if ("collapsed".equals(evt.getPropertyName())) {
+                dialog.pack();
             }
-            
         };
         pane.addPropertyChangeListener(l);
         pane.add(new JLabel("to have some content"));
@@ -297,17 +288,13 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
     	
     	showInFrame(panel, "Scroll Rect To Visible Test");
     	
-    	SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				tree.expandAll();
-			}
-		});
+    	SwingUtilities.invokeLater(tree::expandAll);
     }
     
     /**
      * Issue #1181-swingx: scrollRectToVisible not effective if component in JXTaskPane.
      * Yet another one for the same issue - moved from TaskPaneIssues.
-     * 
+     * <p>
      * example adapted from tjwolf,
      * http://forums.java.net/jive/thread.jspa?threadID=66759&tstart=0
      */

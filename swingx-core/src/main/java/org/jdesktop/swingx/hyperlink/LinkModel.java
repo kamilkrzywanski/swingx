@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  * An bean which represents an URL link.
- * 
+ * <p>
  * Text, URL and visited are bound properties. Compares by Text.
  * 
  * @author Mark Davidson
@@ -135,7 +135,7 @@ public class LinkModel implements Comparable {
 
     /**
      * Set the url and resets the visited flag.
-     * 
+     * <p>
      * Think: keep list of visited urls here?
      */
     public void setURL(URL url) {
@@ -270,7 +270,7 @@ public class LinkModel implements Comparable {
         if (this == obj) {
             return true;
         }
-        if (obj != null && obj instanceof LinkModel) {
+        if (obj instanceof LinkModel) {
             LinkModel other = (LinkModel) obj;
             if (!getText().equals(other.getText())) {
                 return false;
@@ -300,18 +300,16 @@ public class LinkModel implements Comparable {
     @Override
     public String toString() {
 
-        StringBuffer buffer = new StringBuffer("[");
         // RG: Fix for J2SE 5.0; Can't cascade append() calls because
         // return type in StringBuffer and AbstractStringBuilder are different
-        buffer.append("url=");
-        buffer.append(url);
-        buffer.append(", target=");
-        buffer.append(target);
-        buffer.append(", text=");
-        buffer.append(text);
-        buffer.append("]");
 
-        return buffer.toString();
+        return "[" + "url=" +
+                url +
+                ", target=" +
+                target +
+                ", text=" +
+                text +
+                "]";
     }
 
 }

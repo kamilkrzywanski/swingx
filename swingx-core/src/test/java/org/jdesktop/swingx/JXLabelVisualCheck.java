@@ -78,7 +78,7 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #??-swingx: default foreground painter not guaranteed after change.
-     *
+     * <p>
      * JXLabel restore default foreground painter.
      * Sequence: 
      *   compose the default with a transparent overlay
@@ -90,10 +90,10 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
         final JXLabel foreground = new JXLabel(
                 "setup: compound - default and overlay ");
         ShapePainter shapePainter = new ShapePainter();
-        final AlphaPainter<?> alpha = new AlphaPainter<Object>();
+        final AlphaPainter<?> alpha = new AlphaPainter<>();
         alpha.setAlpha(0.2f);
         alpha.setPainters(shapePainter);
-        CompoundPainter<?> compound = new CompoundPainter<Object>(foreground
+        CompoundPainter<?> compound = new CompoundPainter<>(foreground
                 .getForegroundPainter(), alpha);
         foreground.setForegroundPainter(compound);
         box.add(foreground);
@@ -101,7 +101,7 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
             boolean reset;
             public void actionPerformed(ActionEvent e) {
                 if (reset) {
-                    CompoundPainter<?> painter = new CompoundPainter<Object>(alpha, foreground.getForegroundPainter());
+                    CompoundPainter<?> painter = new CompoundPainter<>(alpha, foreground.getForegroundPainter());
                     foreground.setForegroundPainter(painter);
                 } else {
                   // try to reset to default
@@ -128,7 +128,7 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
         label.setLineWrap(true);
         label.setBounds(31, 48, 91, 18);
         // set font underline
-        Map<TextAttribute, Integer> map = new HashMap<TextAttribute, Integer>();
+        Map<TextAttribute, Integer> map = new HashMap<>();
         map.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         label.setFont(label.getFont().deriveFont(map));
         

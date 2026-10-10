@@ -69,14 +69,11 @@ public class EDTExtension implements InvocationInterceptor {
         }
         Object[] value = new Object[1];
         Throwable[] thrown = new Throwable[1];
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    value[0] = invocation.proceed();
-                } catch (Throwable t) {
-                    thrown[0] = t;
-                }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            try {
+                value[0] = invocation.proceed();
+            } catch (Throwable t) {
+                thrown[0] = t;
             }
         });
         if (thrown[0] != null) {

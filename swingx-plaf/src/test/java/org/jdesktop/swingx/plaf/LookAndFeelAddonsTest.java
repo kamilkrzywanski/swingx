@@ -8,9 +8,7 @@ package org.jdesktop.swingx.plaf;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.util.logging.Logger;
@@ -61,30 +59,21 @@ public class LookAndFeelAddonsTest {
      */
     @Test
     public void testInstallBackgroundPainterWithoutPainterCapable() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        LookAndFeelAddons.installBackgroundPainter(new JPanel(), null);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> LookAndFeelAddons.installBackgroundPainter(new JPanel(), null));}
     
     /**
      * Ensure that an exception is thrown when a {@code null} key is passed in.
      */
     @Test
     public void testInstallBackgroundPainterWithNullComponent() {
-        assertThrows(NullPointerException.class, () -> {
-        LookAndFeelAddons.installBackgroundPainter(null, "test.painter");
-    
-        });}
+        assertThrows(NullPointerException.class, () -> LookAndFeelAddons.installBackgroundPainter(null, "test.painter"));}
     
     /**
      * Ensure that an exception is thrown when a {@code null} key is passed in.
      */
     @Test
     public void testInstallBackgroundPainterWithNullPainterKey() {
-        assertThrows(NullPointerException.class, () -> {
-        LookAndFeelAddons.installBackgroundPainter(new BackgroundPainterTestingComponent(), null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> LookAndFeelAddons.installBackgroundPainter(new BackgroundPainterTestingComponent(), null));}
 
     /**
      * Ensure that installBackgroundPainter does not overwrite a user-specified
@@ -120,7 +109,7 @@ public class LookAndFeelAddonsTest {
 
    /**
      * Issue #784-swingx: Frequent NPE in getUI of (new) SwingX components.
-     * 
+     * <p>
      * Here: test reload if same instance of LAF is set (example from
      * bug report)
      * @throws UnsupportedLookAndFeelException 
@@ -166,9 +155,9 @@ public class LookAndFeelAddonsTest {
         super.initComponentDefaults(table);
         table.put("CustomProperty", "CustomValue");
       }
-	  };
-    
-    LookAndFeelAddons.setTrackingLookAndFeelChanges(true);
+	  }
+
+        LookAndFeelAddons.setTrackingLookAndFeelChanges(true);
     
     // without addons, the prop is not overriden
     LookAndFeel lf = new CustomLF();

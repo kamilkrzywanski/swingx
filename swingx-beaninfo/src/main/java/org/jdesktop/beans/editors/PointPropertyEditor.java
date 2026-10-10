@@ -47,13 +47,12 @@ public class PointPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        String originalParam = text;
         try {
             Point val = (Point)PropertyEditorUtil.createValueFromString(
                     text, 2, Point.class, int.class);
             setValue(val);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [x,y] or [x , y] or [x y]", e);
         }
     }

@@ -260,15 +260,11 @@ public class TreeRendererTest extends InteractiveTestCase {
     public void interactiveXTreeLabelFormattingHighlighter() {
         TreeModel model = createComponentHierarchyModel();
         JTree tree = new JTree(model);
-        StringValue converter = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Component) {
-                    return "Name: " + ((Component) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue converter = value -> {
+            if (value instanceof Component) {
+                return "Name: " + ((Component) value).getName();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(converter));
         JXTree xtree = new JXTree(model);
@@ -339,32 +335,26 @@ public class TreeRendererTest extends InteractiveTestCase {
 
     /**
      * Format custom model.
-     *
+     * <p>
      * PENDING: editor uses default toString and looses icons -
      *   because the renderer is not a label.
      */
     public void interactiveDefaultWrapper() {
         JTree xtree = new JTree(createComponentHierarchyModel());
-        StringValue componentFormat = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Component) {
-                    return ((Component) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
-            }};
+        StringValue componentFormat = value -> {
+            if (value instanceof Component) {
+                return ((Component) value).getName();
+            }
+            return StringValues.TO_STRING.getString(value);
+        };
         xtree.setCellRenderer(new DefaultTreeRenderer(componentFormat));
         xtree.setEditable(true);
         JTree tree = new JTree(new FileSystemModel());
-        StringValue format = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return ((File) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue format = value -> {
+            if (value instanceof File) {
+                return ((File) value).getName();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(format));
         final JXFrame frame = wrapWithScrollingInFrame(xtree, tree, "wrapper and different models");
@@ -395,29 +385,20 @@ public class TreeRendererTest extends InteractiveTestCase {
      * @return a button controller specialized on ActionEntryNode.
      */
     private CheckBoxProvider createButtonProvider() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Action) {
-                    return (String) ((Action) value).getValue(Action.NAME);
-                }
-                return "";
+        StringValue sv = value -> {
+            if (value instanceof Action) {
+                return (String) ((Action) value).getValue(Action.NAME);
             }
-            
+            return "";
         };
-        BooleanValue bv = new BooleanValue() {
-
-            public boolean getBoolean(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).isSelected();
-                }
-                return false;
+        BooleanValue bv = value -> {
+            if (value instanceof AbstractActionExt) {
+                return ((AbstractActionExt) value).isSelected();
             }
-            
+            return false;
         };
 
-        CheckBoxProvider wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
-        return wrapper;
+        return new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
     }
 
 

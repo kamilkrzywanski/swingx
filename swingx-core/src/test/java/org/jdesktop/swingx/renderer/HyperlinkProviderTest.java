@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test around hyperlink rendering.
- * 
+ * <p>
  * PENDING JW: how does this relate to JXHyperlinkTest? Merge? 
  * Move to renderer package?
  * 
@@ -50,7 +50,7 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
      */
     @Test
     public void testMixedValueTypes() {
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(new EditorPaneLinkVisitor());
+        LinkModelAction<?> action = new LinkModelAction<>(new EditorPaneLinkVisitor());
         TableCellRenderer linkRenderer = new DefaultTableRenderer(
                 new HyperlinkProvider(action, LinkModel.class));
         linkRenderer.getTableCellRendererComponent(null, "stringonly", false, false, -1, -1);
@@ -63,7 +63,7 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
      */
     @Test
     public void testSubclassedValueTypes() {
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(new EditorPaneLinkVisitor());
+        LinkModelAction<?> action = new LinkModelAction<>(new EditorPaneLinkVisitor());
         TableCellRenderer renderer = new DefaultTableRenderer(
                 new HyperlinkProvider(action, LinkModel.class));
         LinkModel link = new LinkModel() {

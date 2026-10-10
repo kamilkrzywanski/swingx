@@ -1,20 +1,10 @@
 package org.jdesktop.swingx;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -62,12 +52,10 @@ public class JXSearchFieldTest {
     public void testSearchPopupPropertyChange() throws Exception {
         final JPopupMenu popupMenu = new JPopupMenu();
         searchField.addPropertyChangeListener("findPopupMenu",
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        assertNull(evt.getOldValue());
-                        assertSame(evt.getNewValue(), popupMenu);
-                        eventReceived = true;
-                    }
+                evt -> {
+                    assertNull(evt.getOldValue());
+                    assertSame(evt.getNewValue(), popupMenu);
+                    eventReceived = true;
                 });
 
         NativeSearchFieldSupport.setFindPopupMenu(searchField, popupMenu);
@@ -77,11 +65,7 @@ public class JXSearchFieldTest {
     @Test
     public void testCancelAction() throws Exception {
         assertSame(ClearAction.class, searchField.getCancelAction().getClass());
-        ActionListener a = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                eventReceived = true;
-            }
-        };
+        ActionListener a = e -> eventReceived = true;
         searchField.setCancelAction(a);
         assertSame(a, searchField.getCancelAction());
         eventReceived = false;
@@ -95,11 +79,7 @@ public class JXSearchFieldTest {
     @Test
     public void testFindAction() throws Exception {
         assertSame(FindAction.class, searchField.getFindAction().getClass());
-        ActionListener a = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                eventReceived = true;
-            }
-        };
+        ActionListener a = e -> eventReceived = true;
         searchField.setFindAction(a);
         assertSame(a, searchField.getFindAction());
         eventReceived = false;
@@ -112,18 +92,14 @@ public class JXSearchFieldTest {
 
     @Test
     public void testCancelActionPropertyChange() throws Exception {
-        final ActionListener action = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
+        final ActionListener action = e -> {
         };
         searchField.addPropertyChangeListener("cancelAction",
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        assertSame(evt.getOldValue().getClass(),
-                                ClearAction.class);
-                        assertSame(evt.getNewValue(), action);
-                        eventReceived = true;
-                    }
+                evt -> {
+                    assertSame(evt.getOldValue().getClass(),
+                            ClearAction.class);
+                    assertSame(evt.getNewValue(), action);
+                    eventReceived = true;
                 });
 
         NativeSearchFieldSupport.setCancelAction(searchField, action);
@@ -133,18 +109,14 @@ public class JXSearchFieldTest {
 
     @Test
     public void testFindActionPropertyChange() throws Exception {
-        final ActionListener action = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
+        final ActionListener action = e -> {
         };
         searchField.addPropertyChangeListener("findAction",
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        assertSame(evt.getOldValue().getClass(),
-                                FindAction.class);
-                        assertSame(evt.getNewValue(), action);
-                        eventReceived = true;
-                    }
+                evt -> {
+                    assertSame(evt.getOldValue().getClass(),
+                            FindAction.class);
+                    assertSame(evt.getNewValue(), action);
+                    eventReceived = true;
                 });
 
         NativeSearchFieldSupport.setFindAction(searchField, action);
@@ -170,11 +142,9 @@ public class JXSearchFieldTest {
 
     @Test
     public void testFireAction() throws Exception {
-        searchField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.err.println(e);
-                eventReceived = true;
-            }
+        searchField.addActionListener(e -> {
+            System.err.println(e);
+            eventReceived = true;
         });
         eventReceived = false;
         searchField.setInstantSearchDelay(0);
@@ -190,11 +160,9 @@ public class JXSearchFieldTest {
 
     @Test
     public void testInstantSearchDelay() throws Exception {
-        searchField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.err.println(e);
-                eventReceived = true;
-            }
+        searchField.addActionListener(e -> {
+            System.err.println(e);
+            eventReceived = true;
         });
         eventReceived = false;
         searchField.setSearchMode(SearchMode.INSTANT);
@@ -240,11 +208,9 @@ public class JXSearchFieldTest {
 
     @Test
     public void testSearchMode() throws Exception {
-        searchField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.err.println(e);
-                eventReceived = true;
-            }
+        searchField.addActionListener(e -> {
+            System.err.println(e);
+            eventReceived = true;
         });
         assertTrue(searchField.isInstantSearchMode());
         assertSame(UIManager.getIcon("SearchField.icon"), searchField
@@ -409,11 +375,7 @@ public class JXSearchFieldTest {
 
         assertFalse(searchField.isUseSeperatePopupButton());
         searchField.addPropertyChangeListener("useSeperatePopupButton",
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        eventReceived = true;
-                    }
-                });
+                evt -> eventReceived = true);
         searchField.setUseSeperatePopupButton(true);
         assertTrue(eventReceived);
         assertTrue(searchField.getFindButton().isVisible());
@@ -426,11 +388,7 @@ public class JXSearchFieldTest {
 
     @Test
     public void testSearchOnClick() throws Exception {
-        searchField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                eventReceived = true;
-            }
-        });
+        searchField.addActionListener(e -> eventReceived = true);
         assertFalse(searchField.isRegularSearchMode());
         searchField.getFindAction().actionPerformed(null);
         assertFalse(eventReceived);
@@ -541,11 +499,7 @@ public class JXSearchFieldTest {
         assertFalse(searchField.isManagingRecentSearches());
 
         searchField.addPropertyChangeListener("recentSearchesSaveKey",
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        eventReceived = true;
-                    }
-                });
+                evt -> eventReceived = true);
 
         searchField.setRecentSearchesSaveKey("test");
         assertTrue(eventReceived);

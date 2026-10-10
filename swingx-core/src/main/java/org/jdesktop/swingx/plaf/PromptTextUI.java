@@ -301,7 +301,7 @@ public abstract class PromptTextUI extends TextUI {
      * @return true when <code>txt</code> contains not text, otherwise false
      */
     public boolean shouldPaintPrompt(JTextComponent txt) {
-        return txt.getText() == null || txt.getText().length() == 0;
+        return txt.getText() == null || txt.getText().isEmpty();
     }
 
     /**
@@ -446,7 +446,7 @@ public abstract class PromptTextUI extends TextUI {
         try {
             Method m = delegate.getClass().getMethod("getBaseline",
                     JComponent.class, int.class, int.class);
-            Object o = m.invoke(delegate, new Object[] { c, width, height });
+            Object o = m.invoke(delegate, c, width, height);
             return (Integer) o;
         } catch (Exception ex) {
             // ignore

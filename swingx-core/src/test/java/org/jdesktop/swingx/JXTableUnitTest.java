@@ -171,10 +171,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
       
       /**
        * Asserts that stopping an edit with empty value (aka: invalid)
-       * 
+       * <p>
        * - stopCellEditing returns false
        * - does not fire editing stopped
-       * 
+       * <p>
        * Starts an edit on the given cell and stop the editor to analyse.
        * 
        *  
@@ -287,7 +287,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         TableColumnExt columnExt = table.getColumnExt(0);
         columnExt.setVisible(false);
         List<TableColumn> allColumns = table.getColumns(true);
-        List<Object> identifiers = new ArrayList<Object>();
+        List<Object> identifiers = new ArrayList<>();
         for (TableColumn tableColumn : allColumns) {
             identifiers.add(tableColumn.getIdentifier());
         }
@@ -361,7 +361,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testHasSortController() {
         assertTrue(table.hasSortController());
-        table.setRowSorter(new TableRowSorter<TableModel>());
+        table.setRowSorter(new TableRowSorter<>());
         assertFalse(table.hasSortController());
     }
 
@@ -406,7 +406,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setSortsOnUpdates(!table.getSortsOnUpdates());
         table.setSortable(!table.isSortable());
         if (setSorter) {
-            table.setRowSorter(new TableSortController<TableModel>(table.getModel()));
+            table.setRowSorter(new TableSortController<>(table.getModel()));
             assertFalse( 
                     table.getStringValueRegistry().equals(getSortController(table).getStringValueProvider()),"StringValueProvider propagated to controller");
         }
@@ -427,7 +427,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setSortsOnUpdates(!table.getSortsOnUpdates());
         table.setSortable(!table.isSortable());
         if (setSorter) {
-            table.setRowSorter(new TableSortController<TableModel>(table.getModel()));
+            table.setRowSorter(new TableSortController<>(table.getModel()));
         }
         assertEquals( 
                 table.getSortsOnUpdates(), getSortController(table).getSortsOnUpdates(),"sortsOnUpdates propagated to controller");
@@ -478,7 +478,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #1145-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test PatternFilter uses getStringXX
      */
     @Test
@@ -635,15 +635,14 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return
      */
     private TableModel createModelDefaultColumnClasses(int rows) {
-        DefaultTableModel model = new DefaultTableModel(DEFAULT_COLUMN_NAMES, rows) {
+        return new DefaultTableModel(DEFAULT_COLUMN_NAMES, rows) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return DEFAULT_COLUMN_TYPES[columnIndex];
             }
-            
+
         };
-        return model;
     }
     
     private static String[] DEFAULT_COLUMN_NAMES = { 
@@ -658,7 +657,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * For comparison ...
-     * 
+     * <p>
      * Issue #1132-swingx: JXTable - define and implement behaviour on remove column
      */
     @Test
@@ -675,7 +674,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * 
      * Issue #1132-swingx: JXTable - define and implement behaviour on remove column
-     * 
+     * <p>
      * was: Issue #53-swingx: interactive sorter not removed if column removed.
      *
      */
@@ -733,7 +732,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXTable table = new JXTable(new AncientSwingTeam());
         TableColumnExt columnX = table.getColumnExt(0);
         columnX.setComparator(Collator.getInstance());
-        table.setRowSorter(new TableSortController<TableModel>(table.getModel()));
+        table.setRowSorter(new TableSortController<>(table.getModel()));
         assertSame(columnX.getComparator(), getSortController(table).getComparator(columnX.getModelIndex()));
     }
 
@@ -741,7 +740,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that all columns in sortController are updated after structureChanged event.
      * with a real structureChanged (more columns)
      */
@@ -760,7 +759,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that all columns in sortController are updated after structureChanged event.
      * with a real structureChanged (more columns)
      */
@@ -779,7 +778,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that all columns in sortController are updated after setColumnModel.
      */
     @Test
@@ -801,7 +800,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that all columns in sortController are updated after addColumn.
      */
     @Test
@@ -819,7 +818,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that all columns in sortController are updated after setModel.
      */
     @Test
@@ -874,7 +873,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue 1131-swingx: JXTable must guarantee to pass column sortable property
      * always.
-     * 
+     * <p>
      * Here: test that table's sortable property is propagated on setModel.
      */
     @Test
@@ -886,7 +885,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue 1131-swingx: table must unsort column on sortable change.
-     * 
+     * <p>
      * Invalid as of switch to core sorting. On the contrary, the table must
      * not go clever under the feat of the controller.
      * 
@@ -1020,7 +1019,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     }
     /**
      * Unsetting sortOrder of one column must not remove sorts in other columns.
-     * 
+     * <p>
      * Previously we had single column sort only, so remove that single was same
      * as reset all.
      */
@@ -1037,7 +1036,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     }
     /**
      * Unsetting sortOrder of one column must not remove sorts in other columns.
-     * 
+     * <p>
      * Previously we had single column sort only, so remove that single was same
      * as reset all.
      */
@@ -1247,7 +1246,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public static class JXRTable extends JXTable {
         @Override
         protected RowSorter<? extends TableModel> createDefaultRowSorter() {
-            XTableRowSorter<TableModel> sorter = new XTableRowSorter<TableModel>();
+            XTableRowSorter<TableModel> sorter = new XTableRowSorter<>();
             sorter.setModel(getModel());
             return sorter;
         }
@@ -1279,7 +1278,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #??- ComponentAdapter's default implementation does not
      *    return the value at the adapter's view state.
-     * 
+     * <p>
      * Clarified the documentation: the assumption for the base implementation
      * is that model coordinates == view coordinates, that is it's up to 
      * subclasses to implement the model correctly if they support different
@@ -1376,7 +1375,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Test assumptions of accessing table model/view values through
      * the table's componentAdapter.
-     * 
+     * <p>
      * PENDING JW: revisit - diff from above method?
      */
     @Test
@@ -1415,7 +1414,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #847-swingx: JXTable respect custom corner if columnControl not visible
-     * 
+     * <p>
      *  LAF provided corners are handled in core since jdk6u10. 
      */
     @Test
@@ -1437,7 +1436,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #550-swingx: xtable must not reset columns' pref/size on 
      * structureChanged if autocreate is false.
-     * 
+     * <p>
      *  here: width (was no problem, default columnFactory only sets pref)
      */
     @Test
@@ -1456,7 +1455,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #550-swingx: xtable must not reset columns' pref/width on 
      * structureChanged if autocreate is false.
-     * 
+     * <p>
      * here: prefWidth 
      */
     @Test
@@ -1475,7 +1474,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #847-swingx: JXTable respect custom corner if columnControl not visible
-     * 
+     * <p>
      * Test correct un-/config on toggling the controlVisible property
      */
     @Test
@@ -1507,21 +1506,18 @@ public class JXTableUnitTest extends InteractiveTestCase {
         final JFrame frame = new JFrame();
         frame.add(scrollPane);
         frame.pack();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                JPanel panel = new JPanel();
-                scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, panel);
-                assertEquals( panel, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
-                frame.remove(scrollPane);
-                frame.add(scrollPane);
-                if (table.isColumnControlVisible()) {
-                    assertEquals(table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
-                } else {
-                    assertEquals( 
-                            panel,
-                        scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"xTable respects custom corner if columnControl invisible");
-                }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            JPanel panel = new JPanel();
+            scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, panel);
+            assertEquals( panel, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
+            frame.remove(scrollPane);
+            frame.add(scrollPane);
+            if (table.isColumnControlVisible()) {
+                assertEquals(table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+            } else {
+                assertEquals(
+                        panel,
+                    scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"xTable respects custom corner if columnControl invisible");
             }
         });
     }
@@ -1544,14 +1540,11 @@ public class JXTableUnitTest extends InteractiveTestCase {
         final JFrame frame = new JFrame();
         frame.add(scrollPane);
         frame.pack();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, new JPanel());
-                assertNotNull( scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
-                frame.remove(scrollPane);
-                frame.add(scrollPane);
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, new JPanel());
+            assertNotNull( scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
+            frame.remove(scrollPane);
+            frame.add(scrollPane);
         });
     }
     /**
@@ -1574,15 +1567,12 @@ public class JXTableUnitTest extends InteractiveTestCase {
         final JFrame frame = new JFrame();
         frame.add(scrollPane);
         frame.pack();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                frame.remove(scrollPane);
-                frame.add(scrollPane);
-                assertSame(table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
-                table.setColumnControlVisible(false);
-                assertEquals(JScrollPane.VERTICAL_SCROLLBAR_NEVER, scrollPane.getVerticalScrollBarPolicy());
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            frame.remove(scrollPane);
+            frame.add(scrollPane);
+            assertSame(table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+            table.setColumnControlVisible(false);
+            assertEquals(JScrollPane.VERTICAL_SCROLLBAR_NEVER, scrollPane.getVerticalScrollBarPolicy());
         });
     }
 
@@ -1618,23 +1608,18 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on JXTable.
      */
     @Test
     public void testGetString() {
         JXTable table = new JXTable(new AncientSwingTeam());
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         table.setDefaultRenderer(Color.class, new DefaultTableRenderer(sv));
         String text = table.getStringAt(0, 2);
@@ -1661,7 +1646,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * NPE if Generic editor barks about constructor. Hacked around ...
-     * 
+     * <p>
      *  PENDING JW: too verbose ... strip down to essentials
      */
     @Test
@@ -1696,7 +1681,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: do nothing if !isTerminateEditOnFocusLost.
      *
      */
@@ -1718,7 +1703,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
    
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: do nothing if !isTerminateEditOnFocusLost.
      *
      */
@@ -1740,7 +1725,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: respect false on backward.
      *
      */
@@ -1770,7 +1755,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: respect editor false on forward.
      *
      */
@@ -1800,7 +1785,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: edit stopped and editor fires on backward.
      *
      */
@@ -1823,7 +1808,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * test that transferFocus methods try to stop edit.
-     * 
+     * <p>
      * Here: edit stopped and editor fired. 
      *
      */
@@ -2200,7 +2185,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #547-swingx: hidden columns' pref width not initialized.
-     *
+     * <p>
      * PENDING: the default initialize is working as expected only
      *  if the config is done before setting the model, that is 
      *  in the ColumnFactory. Need public api to programatically
@@ -2260,7 +2245,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #547-swingx: columns' pref width - added margin twice
      * if has prototype.
-     * 
+     * <p>
      * PENDING: the default initialize is working as expected only
      *  if the config is done before setting the model, that is 
      *  in the ColumnFactory. Need public api to programatically
@@ -2555,7 +2540,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return the custom ColumnFactory.
      */
     protected ColumnFactory createCustomColumnFactory() {
-        ColumnFactory factory = new ColumnFactory() {
+        return new ColumnFactory() {
 
             @Override
             public void configureTableColumn(TableModel model,
@@ -2565,7 +2550,6 @@ public class JXTableUnitTest extends InteractiveTestCase {
             }
 
         };
-        return factory;
         
     }
     
@@ -2624,7 +2608,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /**
      * test default rowHeight calculation with bigger font.
      * Issue #1149-swingx: this test failed on Mac.
-     * 
+     * <p>
      * "expected 17, was 18" - running into the magic number (for
      * whatever reason), which wasn't accounted for. Changed to backout
      * if font not really changed to big.
@@ -2651,7 +2635,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #359-swingx: table doesn't respect ui-setting of rowheight.
-     * 
+     * <p>
      * lower bound is enforced to "magic number", 18
      *
      */
@@ -2667,7 +2651,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #359-swingx: table doesn't respect ui-setting of rowheight.
-     * 
+     * <p>
      * upper bound is taken correctly.
      */
     @Test
@@ -2681,7 +2665,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #342-swingx: default margins in JXTreeTable.
-     * 
+     * <p>
      * This is not only a treeTable issue: the coupling of 
      * margins to showing gridlines (and still get a "nice" 
      * looking selection) is not overly obvious in JTable as
@@ -2766,7 +2750,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testConstructorsWithNullArguments() {
         try {
-            new JXTable((Object[][]) null, (Object[]) null);
+            new JXTable(null, (Object[]) null);
             fail("null arrays must throw NPE");
         } catch (NullPointerException e) {
             // nothing to do - expected
@@ -2774,7 +2758,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
             fail("unexpected exception type (expected NPE)" + e);
         }
         try {
-            new JXTable((Object[][]) null, new Object[] {  });
+            new JXTable(null, new Object[] {  });
             fail("null arrays must throw NPE");
         } catch (NullPointerException e) {
             // nothing to do - expected
@@ -2782,7 +2766,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
             fail("unexpected exception type (expected NPE)" + e);
         }
         try {
-            new JXTable(new Object[][] {{ }, { }}, (Object[]) null);
+            new JXTable(new Object[][] {{ }, { }}, null);
             fail("null arrays throw NPE");
             
         } catch (NullPointerException e) {
@@ -2858,7 +2842,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #262-swingx: expose terminateEditOnFocusLost as property.
-     * 
+     * <p>
      * setting client property is reflected in getter and results in event firing.
      *
      */
@@ -2876,7 +2860,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #262-swingx: expose terminateEditOnFocusLost as property.
-     * 
+     * <p>
      * default value is true.
      * 
      */
@@ -2887,7 +2871,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #262-swingx: expose terminateEditOnFocusLost as property.
-     * 
+     * <p>
      * setter is same as setting client property and results in event firing.
      */
     @Test
@@ -2919,7 +2903,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #256-swingx: added fillsViewportHeight property.
-     * 
+     * <p>
      * check "fillsViewportHeight" property change fires event.
      *
      */
@@ -3046,7 +3030,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
  
     /**
      * Issue #214-swingX: improved auto-resize.
-     * 
+     * <p>
      * testing doc'd behaviour: horizscrollenabled toggles between
      * enhanced resizeOff and the resizeOn mode which had been active 
      * when toggling on. 
@@ -3063,7 +3047,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #214-swingX: improved auto-resize.
-     * 
+     * <p>
      * testing doc'd behaviour: horizscrollenabled toggles between
      * enhanced resizeOff and the resizeOn mode which had been active 
      * when toggling on. Must not restore raw resizeOff mode.
@@ -3236,9 +3220,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
     
     private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXTable table, String propertyName) {
         PropertyChangeListener[] listeners = table.getPropertyChangeListeners(propertyName);
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof TableRolloverController<?>) {
-                return (TableRolloverController<?>) listeners[i];
+        for (PropertyChangeListener listener : listeners) {
+            if (listener instanceof TableRolloverController<?>) {
+                return listener;
             }
         }
         return null;
@@ -3396,7 +3380,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testMixedComparableTypes() {
         
         Object[][] rowData = new Object[][] {
-                new Object[] { Boolean.TRUE, new Integer(2) },
+                new Object[] { Boolean.TRUE, 2},
                 new Object[] { Boolean.TRUE, "BC" } };
         String[] columnNames = new String[] { "Critical", "Task" };
         DefaultTableModel model =  new DefaultTableModel(rowData, columnNames);
@@ -3413,7 +3397,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testMixedComparableTypesWithNonComparable() {
         
         Object[][] rowData = new Object[][] {
-                new Object[] { Boolean.TRUE, new Integer(2) },
+                new Object[] { Boolean.TRUE, 2},
                 new Object[] { Boolean.TRUE, new Object() } };
         String[] columnNames = new String[] { "Critical", "Task" };
         DefaultTableModel model =  new DefaultTableModel(rowData, columnNames);
@@ -3480,21 +3464,18 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // take a nap to make sure we are created before testing for focus on linux
         // w/o this the test will intermittently fail on systems using kernel 2.6 and sun java 6
         Thread.sleep(500);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                ComponentAdapter adapter = table.getComponentAdapter();
-                adapter.row = leadRow;
-                adapter.column = leadColumn;
-                // difficult to test - hasFocus() implies that the table isFocusOwner()
-                try {
-                    assertTrue( 
-                            adapter.hasFocus(),"adapter must have focus for leadRow/Column: " + adapter.row + "/" + adapter.column);
-                } finally {
-                    frame.dispose();
-                }
-
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            ComponentAdapter adapter = table.getComponentAdapter();
+            adapter.row = leadRow;
+            adapter.column = leadColumn;
+            // difficult to test - hasFocus() implies that the table isFocusOwner()
+            try {
+                assertTrue(
+                        adapter.hasFocus(),"adapter must have focus for leadRow/Column: " + adapter.row + "/" + adapter.column);
+            } finally {
+                frame.dispose();
             }
+
         });
     }
     
@@ -3539,7 +3520,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
             }
         };
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, 0);
+            model.setValueAt(startRow++, i, 0);
         }
         return model;
     }
@@ -3568,7 +3549,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         };
         int filledColumn = fillLast ? columnCount - 1 : 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, filledColumn);
+            model.setValueAt(startRow++, i, filledColumn);
         }
         return model;
     }
@@ -3652,25 +3633,19 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
     
 
     public static class DynamicTableModel extends AbstractTableModel {
-        private Object columnSamples[];
-        private Object columnSamples2[];
+        private Object[] columnSamples;
+        private Object[] columnSamples2;
         public URL linkURL;
 
         public static final int IDX_COL_LINK = 6;
@@ -3684,36 +3659,36 @@ public class JXTableUnitTest extends InteractiveTestCase {
             }
 
             columnSamples = new Object[12];
-            columnSamples[0] = new Integer(0);
+            columnSamples[0] = 0;
             columnSamples[1] = "Simple String Value";
-            columnSamples[2] = new Integer(1000);
+            columnSamples[2] = 1000;
             columnSamples[3] = Boolean.TRUE;
             columnSamples[4] = new Date(100);
-            columnSamples[5] = new Float(1.5);
+            columnSamples[5] = 1.5F;
             columnSamples[IDX_COL_LINK] = new LinkModel("Sun Micro", "_blank", linkURL);
-            columnSamples[7] = new Integer(3023);
+            columnSamples[7] = 3023;
             columnSamples[8] = "John Doh";
             columnSamples[9] = "23434 Testcase St";
-            columnSamples[10] = new Integer(33333);
+            columnSamples[10] = 33333;
             columnSamples[11] = Boolean.FALSE;
 
             columnSamples2 = new Object[12];
-            columnSamples2[0] = new Integer(0);
+            columnSamples2[0] = 0;
             columnSamples2[1] = "Another String Value";
-            columnSamples2[2] = new Integer(999);
+            columnSamples2[2] = 999;
             columnSamples2[3] = Boolean.FALSE;
             columnSamples2[4] = new Date(333);
-            columnSamples2[5] = new Float(22.22);
+            columnSamples2[5] = 22.22F;
             columnSamples2[IDX_COL_LINK] = new LinkModel("Sun Web", "new_frame", linkURL);
-            columnSamples[7] = new Integer(5503);
+            columnSamples[7] = 5503;
             columnSamples[8] = "Jane Smith";
             columnSamples[9] = "2343 Table Blvd.";
-            columnSamples[10] = new Integer(2);
+            columnSamples[10] = 2;
             columnSamples[11] = Boolean.TRUE;
 
         }
 
-        public DynamicTableModel(Object columnSamples[]) {
+        public DynamicTableModel(Object[] columnSamples) {
             this.columnSamples = columnSamples;
         }
 
@@ -3742,7 +3717,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 value = columnSamples2[column];
             }
             return column == 0 ? new Integer(row >> 3) :
-                column == 3 ? new Boolean(row % 2 == 0) : value;
+                column == 3 ? Boolean.valueOf(row % 2 == 0) : value;
         }
 
         @Override
@@ -3782,7 +3757,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testColumnHighlighting() {
         JXTable table = new JXTable(tableModel);
-        List<Highlighter> events = new ArrayList<Highlighter>();
+        List<Highlighter> events = new ArrayList<>();
         
         Highlighter tableHighlighter = new TestingHighlighter(events);
         Highlighter columnHighlighter = new TestingHighlighter(events);

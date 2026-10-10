@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
@@ -121,7 +120,7 @@ public class TargetManager {
      */
     public void addTarget(Targetable target, boolean prepend) {
         if (targetList == null) {
-            targetList = new ArrayList<Targetable>();
+            targetList = new ArrayList<>();
         }
         if (prepend) {
             targetList.add(0, target);
@@ -161,7 +160,7 @@ public class TargetManager {
             targets = new Targetable[0];
         } else {
             targets = new Targetable[targetList.size()];
-            targets = (Targetable[])targetList.toArray(new Targetable[targetList.size()]);
+            targets = targetList.toArray(new Targetable[0]);
         }
         return targets;
     }
@@ -171,7 +170,7 @@ public class TargetManager {
      * in the target list. If the current target is null then
      * the the current targetable component will be the first one
      * in the target list which can execute the command.
-     *
+     * <p>
      * This is a bound property and will fire a property change event
      * if the value changes.
      *
@@ -226,11 +225,9 @@ public class TargetManager {
 
         // The target list has the next chance to handle the command.
         if (targetList != null) {
-            Iterator<Targetable> iter = targetList.iterator();
-            while (iter.hasNext()) {
-                Targetable target = iter.next();
+            for (Targetable target : targetList) {
                 if (target.hasCommand(command) &&
-                    target.doCommand(command, value)) {
+                        target.doCommand(command, value)) {
                     return true;
                 }
             }
@@ -275,8 +272,8 @@ public class TargetManager {
         target = null;
 
         PropertyChangeListener[] listeners = propertySupport.getPropertyChangeListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            propertySupport.removePropertyChangeListener(listeners[i]);
+        for (PropertyChangeListener listener : listeners) {
+            propertySupport.removePropertyChangeListener(listener);
         }
         INSTANCE = null;
     }

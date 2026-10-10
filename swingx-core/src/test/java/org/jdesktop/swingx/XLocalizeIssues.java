@@ -37,12 +37,12 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to expose known issues around <code>Locale</code> setting.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.

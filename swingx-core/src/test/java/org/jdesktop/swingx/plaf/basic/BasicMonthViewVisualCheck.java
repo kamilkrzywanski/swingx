@@ -24,7 +24,6 @@ package org.jdesktop.swingx.plaf.basic;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -106,7 +105,7 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
             SimpleDateFormat dateFormat = new SimpleDateFormat("d", locale);
             LOG.info("got here? " + locale.getCountry() + "-" + locale.getLanguage());
             adjustFormatSymbols(locale, (DecimalFormat) dateFormat.getNumberFormat());
-            FormatStringValue sv = new FormatStringValue(dateFormat) {
+            return new FormatStringValue(dateFormat) {
 
                 @Override
                 public String getString(Object value) {
@@ -118,7 +117,6 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
                 }
 
             };
-            return sv;
         }
 
         /**
@@ -141,7 +139,7 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
             }
             DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(locale);
             adjustFormatSymbols(locale, format);
-            StringValue wsv = new FormatStringValue(format) {
+            return new FormatStringValue(format) {
 
                 @Override
                 public String getString(Object value) {
@@ -152,7 +150,6 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
                 }
 
             };
-            return wsv;
         }
 
         
@@ -160,7 +157,7 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #750-swingx: use rendering to side-step antialiase probs.
-     * 
+     * <p>
      * Debugging ...
      */
     public void interactiveRenderingOn() {
@@ -187,7 +184,6 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * @param frameTitle
-     * @param disableRendering
      */
     private void showDebugMonthView(String frameTitle) {
         final JXMonthView monthView = new JXMonthView();
@@ -230,37 +226,27 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
             
         };
         addAction(frame, toggleShowingWeekNumbers);
-        picker.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals(JXDatePicker.CANCEL_KEY)) return;
-                if (picker.getDate() == null) return;
-                monthView.setFlaggedDates(picker.getDate());
-            }
-            
+        picker.addActionListener(e -> {
+            if (e.getActionCommand().equals(JXDatePicker.CANCEL_KEY)) return;
+            if (picker.getDate() == null) return;
+            monthView.setFlaggedDates(picker.getDate());
         });
         final JXDatePicker unselectable = new JXDatePicker();
-        unselectable.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals(JXDatePicker.CANCEL_KEY)) return;
-                if (unselectable.getDate() == null) return;
-                monthView.setUnselectableDates(unselectable.getDate());
-            }
-            
+        unselectable.addActionListener(e -> {
+            if (e.getActionCommand().equals(JXDatePicker.CANCEL_KEY)) return;
+            if (unselectable.getDate() == null) return;
+            monthView.setUnselectableDates(unselectable.getDate());
         });
         final JComboBox zoneSelector = new JComboBox(Locale.getAvailableLocales());
         // Synchronize the monthView's and selector's zones.
         zoneSelector.setSelectedItem(monthView.getLocale());
 
         // Set the monthView's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                Locale zone = (Locale) zoneSelector.getSelectedItem();
-                SwingXUtilities.setComponentTreeLocale(frame, zone);
+        zoneSelector.addActionListener(event -> {
+            Locale zone = (Locale) zoneSelector.getSelectedItem();
+            SwingXUtilities.setComponentTreeLocale(frame, zone);
 //                monthView.setLocale(zone);
 //                monthView.revalidate();
-            }
         });
 
 
@@ -278,7 +264,7 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: monthView cannot cope with minimalDaysInFirstWeek.
-     * 
+     * <p>
      * Debugging ...
      */
     public void interactiveDayAt() {
@@ -332,11 +318,11 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: monthView cannot cope with minimalDaysInFirstWeek.
-     * 
+     * <p>
      * Here: look at impact of forcing the minimalDays to a value different
      * from the calendar. Days must be displayed in starting from the 
      * first row under the days-of-week.
-     * 
+     * <p>
      * Not yet completely fixed: for very late firstDayOfWeek, the Jan is incompletely
      * painted for mininalDays > 1. Rare enough to ignore for now?
      */
@@ -360,14 +346,10 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
         addComponentOrientationToggle(frame);
         final JComboBox dayOfWeekComboBox = new JComboBox(new String[]{"Sunday", "Monday", "Tuesday",
                 "Wednesday", "Thursday", "Friday", "Saturday"});
-        dayOfWeekComboBox.addActionListener(new ActionListener() {
+        dayOfWeekComboBox.addActionListener(e -> {
+            int selected = dayOfWeekComboBox.getSelectedIndex();
+            monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
 
-            public void actionPerformed(ActionEvent e) {
-                int selected = dayOfWeekComboBox.getSelectedIndex();
-                monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
-                
-            }
-            
         });
         dayOfWeekComboBox.setSelectedIndex(monthView.getFirstDayOfWeek() - Calendar.SUNDAY);
         addStatusComponent(frame, dayOfWeekComboBox);

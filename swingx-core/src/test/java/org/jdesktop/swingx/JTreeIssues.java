@@ -55,11 +55,11 @@ public class JTreeIssues extends InteractiveTestCase {
     
     /**
      * Core Issue: Nimbus Tree Handle Icon not bidi compliant.
-     * 
+     * <p>
      * several problems in RToL
      * - the closed-icon should point to the left, that is the opposite direction or LToR
      * - handle position is incorrect, overlapping under the node content
-     * 
+     * <p>
      * Unrelated to Nimbus: editor completely wrecked (node icon jumps to the left)
      */
     public void interactiveNimbusHandleIconRToL() {
@@ -74,11 +74,11 @@ public class JTreeIssues extends InteractiveTestCase {
 
     /**
      * Core Issue: editor not moved if node added above.
-     * 
+     * <p>
      * Start editing a node, press button to insert a row above
      * expected: editor sticks to node, that is moves one row down
      * actual: editor sticks to row, now pointing to incorrect node
-     * 
+     * <p>
      * Leads to data corruption as the editing value now it written to 
      * the newly inserted node.
      */

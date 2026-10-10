@@ -82,7 +82,7 @@ public class TableAsHighlighterClientTest extends AbstractTestHighlighterClient 
     }
 
     private HighlighterClient createHighlighterClient(final JXTable table) {
-        HighlighterClient client = new HighlighterClient() {
+        return new HighlighterClient() {
 
             public void addHighlighter(Highlighter highlighter) {
                 table.addHighlighter(highlighter);
@@ -111,9 +111,8 @@ public class TableAsHighlighterClientTest extends AbstractTestHighlighterClient 
             public void updateUI() {
                 table.updateUI();
             }
-            
+
         };
-        return client;
     }
 
 }

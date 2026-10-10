@@ -216,7 +216,7 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
-    public static final String AUTO_ADD_SEPARATOR = new StringBuffer("auto-add-separator").toString();
+    public static final String AUTO_ADD_SEPARATOR = "auto-add-separator";
     /**
      * Used to help reduce the amount of trash being generated
      */
@@ -465,7 +465,7 @@ public class BasicStatusBarUI extends StatusBarUI {
         //This is in the UI delegate because the layout
         //manager takes into account spacing for the separators between components
         return new LayoutManager2() {
-            private Map<Component,Constraint> constraints = new HashMap<Component,Constraint>();
+            private Map<Component,Constraint> constraints = new HashMap<>();
             
             @Override
             public void addLayoutComponent(String name, Component comp) {addLayoutComponent(comp, null);}
@@ -498,9 +498,9 @@ public class BasicStatusBarUI extends StatusBarUI {
             public Dimension preferredLayoutSize(Container parent) {
                 Dimension prefSize = new Dimension();
                 int count = 0;
-                for (Component comp : constraints.keySet()) {
-                    Constraint c = constraints.get(comp);
-                    Dimension d = comp.getPreferredSize();
+                for (Map.Entry<Component, Constraint> entry : constraints.entrySet()) {
+                    Constraint c = entry.getValue();
+                    Dimension d = entry.getKey().getPreferredSize();
                     int prefWidth = 0;
                     if (c != null) {
                         Insets i = c.getInsets();

@@ -30,21 +30,21 @@ import java.util.List;
  */
 public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     
-    public float getMinimumValue();
-    public void setMinimumValue(float minimumValue);
-    public float getMaximumValue();
-    public void setMaximumValue(float maximumValue);
+    float getMinimumValue();
+    void setMinimumValue(float minimumValue);
+    float getMaximumValue();
+    void setMaximumValue(float maximumValue);
     
-    public int addThumb(float value, E obj);
-    public void insertThumb(float value, E obj, int index);
-    public void removeThumb(int index);
-    public int getThumbCount();
-    public Thumb<E> getThumbAt(int index);
-    public int getThumbIndex(Thumb<E> thumb);
-    public List<Thumb<E>> getSortedThumbs();
-    public void thumbPositionChanged(Thumb<E> thumb);
-    public void thumbValueChanged(Thumb<E> thumb);
+    int addThumb(float value, E obj);
+    void insertThumb(float value, E obj, int index);
+    void removeThumb(int index);
+    int getThumbCount();
+    Thumb<E> getThumbAt(int index);
+    int getThumbIndex(Thumb<E> thumb);
+    List<Thumb<E>> getSortedThumbs();
+    void thumbPositionChanged(Thumb<E> thumb);
+    void thumbValueChanged(Thumb<E> thumb);
     
-    public void addThumbDataListener(ThumbDataListener listener);
-    public void removeThumbDataListener(ThumbDataListener listener);
+    void addThumbDataListener(ThumbDataListener listener);
+    void removeThumbDataListener(ThumbDataListener listener);
 }

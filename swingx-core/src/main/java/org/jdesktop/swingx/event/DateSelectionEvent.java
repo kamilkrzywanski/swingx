@@ -30,7 +30,7 @@ import org.jdesktop.swingx.calendar.DateSelectionModel;
  * @author Joshua Outwater
  */
 public class DateSelectionEvent extends EventObject {
-    public static enum EventType {
+    public enum EventType {
         DATES_ADDED,
         DATES_REMOVED,
         DATES_SET,
@@ -93,7 +93,7 @@ public class DateSelectionEvent extends EventObject {
 
     @Override
     public String toString() {
-        return "[" + String.valueOf(getSource()) + " type: " + getEventType() + " isAdjusting: " + isAdjusting();
+        return "[" + getSource() + " type: " + getEventType() + " isAdjusting: " + isAdjusting();
     }
     
     

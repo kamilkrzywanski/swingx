@@ -23,7 +23,6 @@ package org.jdesktop.swingx.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
@@ -86,7 +85,7 @@ public class CompositeAction extends AbstractActionExt {
     public void addAction(String id) {
         List<String> list = (List<String>) getValue(LIST_IDS);
         if (list == null) {
-            list = new ArrayList<String>();
+            list = new ArrayList<>();
             putValue(LIST_IDS, list);
         }
         list.add(id);
@@ -109,13 +108,11 @@ public class CompositeAction extends AbstractActionExt {
     @Override
     public void actionPerformed(ActionEvent evt) {
         ActionManager manager = ActionManager.getInstance();
-            
-        Iterator<String> iter = getActionIDs().iterator();
-        while (iter.hasNext()) {
-            String id = iter.next();
+
+        for (String id : getActionIDs()) {
             Action action = manager.getAction(id);
             if (action != null) {
-            action.actionPerformed(evt);
+                action.actionPerformed(evt);
             }
         }
     }
@@ -126,13 +123,11 @@ public class CompositeAction extends AbstractActionExt {
     @Override
     public void itemStateChanged(ItemEvent evt) {
         ActionManager manager = ActionManager.getInstance();
-            
-        Iterator<String> iter = getActionIDs().iterator();
-        while (iter.hasNext()) {
-            String id = iter.next();
+
+        for (String id : getActionIDs()) {
             Action action = manager.getAction(id);
-            if (action != null && action instanceof AbstractActionExt) {
-            ((AbstractActionExt)action).itemStateChanged(evt);
+            if (action instanceof AbstractActionExt) {
+                ((AbstractActionExt) action).itemStateChanged(evt);
             }
         }
     }

@@ -43,7 +43,7 @@ public class JXMultiSplitPaneUnitTest {
 
     @SuppressWarnings("unchecked")
     private Map<String, Component> getChildMap(MultiSplitLayout layout) {
-        Field fields[] = MultiSplitLayout.class.getDeclaredFields();
+        Field[] fields = MultiSplitLayout.class.getDeclaredFields();
         try {
             for (Field f : fields) {
                 if ("childMap".equals(f.getName())) {

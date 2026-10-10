@@ -20,10 +20,6 @@
  */
 package org.jdesktop.beans;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,7 +40,7 @@ public class AbstractSerializableBeanTest {
     private static class ShoeSizeCap implements VetoableChangeListener, Serializable {
         @Override
         public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
-            if("size".equals(event.getPropertyName()) && ((Integer)event.getNewValue()).intValue() > 13) {
+            if("size".equals(event.getPropertyName()) && (Integer) event.getNewValue() > 13) {
                 throw new PropertyVetoException("Feet too big!", event);
             }
         }

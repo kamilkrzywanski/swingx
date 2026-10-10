@@ -125,7 +125,7 @@ public class SelectionIssues extends InteractiveTestCase {
     /**
      * #703-swingx: select date doesn't ensure visibility of selected.
      * #712-swingx: support optional auto-scroll on selection.
-     * 
+     * <p>
      * compare with core list: doesn't scroll as well.
      * 
      */
@@ -133,7 +133,7 @@ public class SelectionIssues extends InteractiveTestCase {
         // add hoc model
         SortedSet<Date> dates = getDates();
         
-        final JXList us = new JXList(new ListComboBoxModel<Date>(new ArrayList<Date>(dates)));
+        final JXList us = new JXList(new ListComboBoxModel<>(new ArrayList<>(dates)));
         us.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JXFrame frame = wrapWithScrollingInFrame(us, "list - autoscroll on selection");
         Action next = new AbstractActionExt("select last + 1") {
@@ -156,7 +156,7 @@ public class SelectionIssues extends InteractiveTestCase {
     /**
      * #703-swingx: set date to first of next doesn't "scroll".
      * #712-swingx: support optional auto-scroll on selection.
-     * 
+     * <p>
      * compare with core tree: doesn't scroll as well.
      * 
      */
@@ -190,7 +190,7 @@ public class SelectionIssues extends InteractiveTestCase {
     /**
      * #703-swingx: set date to first of next doesn't "scroll".
      * #712-swingx: support optional auto-scroll on selection.
-     * 
+     * <p>
      * compare with core tree: doesn't scroll as well.
      * 
      */
@@ -233,8 +233,7 @@ public class SelectionIssues extends InteractiveTestCase {
         Date start = today.getTime();
         today.add(Calendar.DAY_OF_MONTH, +40);
         source.setSelectionInterval(start, today.getTime());
-        SortedSet<Date> dates = source.getSelection();
-        return dates;
+        return source.getSelection();
     }
     
     /**

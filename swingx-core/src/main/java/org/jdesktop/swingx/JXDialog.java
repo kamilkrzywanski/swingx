@@ -219,7 +219,7 @@ public class JXDialog extends JDialog {
     /**
      * Infers and sets this dialog's title from the the content. 
      * Does nothing if content is null. 
-     * 
+     * <p>
      * Here: uses the content's name as title. 
      */
     protected void setTitleFromContent() {
@@ -286,7 +286,7 @@ public class JXDialog extends JDialog {
     
     /**
      * Updates this dialog's locale-dependent state.
-     * 
+     * <p>
      * Here: updates title and actions.
      * <p>
      * 

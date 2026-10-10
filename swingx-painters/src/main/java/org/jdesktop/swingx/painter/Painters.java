@@ -20,18 +20,13 @@
  */
 package org.jdesktop.swingx.painter;
 
-import java.awt.Graphics2D;
-
 /**
  * A collection of static painters.  These painters do not store state and are safe to reuse.
  * @author kschaefer
  */
 public final class Painters {
-    public static final Painter<Object> EMPTY_PAINTER = new Painter<Object>() {
-        @Override
-        public void paint(Graphics2D g, Object object, int width, int height) {
-            //does nothing
-        }
+    public static final Painter<Object> EMPTY_PAINTER = (g, object, width, height) -> {
+        //does nothing
     };
     
     private Painters() {

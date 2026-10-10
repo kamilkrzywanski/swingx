@@ -35,7 +35,7 @@ import org.jdesktop.swingx.JXEditorPane;
 
 /**
  * A ActionListener using a JXEditorPane to "visit" a LinkModel.
- * 
+ * <p>
  * adds an internal HyperlinkListener to visit links contained
  * in the document. 
  * 
@@ -67,13 +67,7 @@ public class EditorPaneLinkVisitor implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof LinkModel) {
             final LinkModel link = (LinkModel) e.getSource();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    visit(link);
-
-                }
-            });
+            SwingUtilities.invokeLater(() -> visit(link));
         }
    
     }
@@ -106,15 +100,11 @@ public class EditorPaneLinkVisitor implements ActionListener {
     }
 
     protected HyperlinkListener createHyperlinkListener() {
-        return new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (HyperlinkEvent.EventType.ACTIVATED == e.getEventType()) {
-                    visitInternal(e.getURL());
-                }
-                
+        return e -> {
+            if (HyperlinkEvent.EventType.ACTIVATED == e.getEventType()) {
+                visitInternal(e.getURL());
             }
-            
+
         };
     }
 

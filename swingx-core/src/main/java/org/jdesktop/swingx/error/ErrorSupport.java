@@ -42,7 +42,7 @@ public class ErrorSupport {
      */
     public ErrorSupport(Object source) {
         this.source = source;
-        listeners = new ArrayList<ErrorListener>();
+        listeners = new ArrayList<>();
     }
     
     /**
@@ -77,12 +77,9 @@ public class ErrorSupport {
      */
     public void fireErrorEvent(final Throwable throwable) {
         final ErrorEvent evt = new ErrorEvent(throwable, source);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for(ErrorListener el : listeners) {
-                    el.errorOccured(evt);
-                }
+        SwingUtilities.invokeLater(() -> {
+            for(ErrorListener el : listeners) {
+                el.errorOccured(evt);
             }
         });
     }

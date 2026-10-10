@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test to exposed known issues of <code>Highlighter</code> client
  * api in collection components.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.

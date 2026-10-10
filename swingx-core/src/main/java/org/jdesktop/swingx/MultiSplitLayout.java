@@ -85,7 +85,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   public static final int NO_MIN_SIZE_LAYOUT = 1;
   public static final int USER_MIN_SIZE_LAYOUT = 2;
 
-  private final Map<String, Component> childMap = new HashMap<String, Component>();
+  private final Map<String, Component> childMap = new HashMap<>();
   private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
   private Node model;
   private int dividerSize;
@@ -100,7 +100,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   /**
    * Create a MultiSplitLayout with a default model with a single
    * Leaf node named "default".
-   *
+   * <p>
    * #see setModel
    */
   public MultiSplitLayout()
@@ -245,7 +245,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   public Component getComponentForNode( Node n )
   {    
       String name = ((Leaf)n).getName();
-      return (name != null) ? (Component)childMap.get(name) : null;
+      return (name != null) ? childMap.get(name) : null;
   }
   
   /**
@@ -341,7 +341,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   
   /**
    * Create a MultiSplitLayout with the specified model.
-   *
+   * <p>
    * #see setModel
    */
   public MultiSplitLayout(Node model) {
@@ -367,7 +367,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   }
   
   private void firePCS(String propertyName, Object oldValue, Object newValue) {
-    if (!(oldValue != null && newValue != null && oldValue.equals(newValue))) {
+    if (!(oldValue != null && oldValue.equals(newValue))) {
       pcs.firePropertyChange(propertyName, oldValue, newValue);
     }
   }
@@ -424,7 +424,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
     }
     int oldDividerSize = this.dividerSize;
     this.dividerSize = dividerSize;
-    firePCS("dividerSize", new Integer( oldDividerSize ), new Integer( dividerSize ));
+    firePCS("dividerSize", oldDividerSize, dividerSize);
   }
   
   /**
@@ -447,7 +447,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   {
     boolean oldFloatingDividers = this.floatingDividers;
     this.floatingDividers = floatingDividers;
-    firePCS("floatingDividers", new Boolean( oldFloatingDividers ), new Boolean( floatingDividers ));
+    firePCS("floatingDividers", oldFloatingDividers, floatingDividers);
   }
   
   /**
@@ -467,7 +467,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   {
     boolean oldRemoveDividers = this.removeDividers;
     this.removeDividers = removeDividers;
-    firePCS("removeDividers", new Boolean( oldRemoveDividers ), new Boolean( removeDividers ));
+    firePCS("removeDividers", oldRemoveDividers, removeDividers);
   }
   
   /**
@@ -531,7 +531,7 @@ public void removeLayoutComponent(Component child) {
           while ( s.getChildren().size() < 2 ) {
             Split p = s.getParent();
             if ( p == null ) {
-              if ( s.getChildren().size() > 0 )
+              if (!s.getChildren().isEmpty())
               model = s.getChildren().get( 0 );
               else 
                 model = null;
@@ -623,7 +623,7 @@ public void removeLayoutComponent(Component child) {
       return preferredComponentSize(root);
     }
     else if (root instanceof Divider) {
-      if ( !((Divider)root).isVisible())
+      if ( !root.isVisible())
         return new Dimension(0,0);
       int divSize = getDividerSize();
       return new Dimension(divSize, divSize);
@@ -672,7 +672,7 @@ public void removeLayoutComponent(Component child) {
       return ((child != null) && child.isVisible() ) ? child.getMinimumSize() : new Dimension(0, 0);
     }
     else if (root instanceof Divider) {
-      if ( !((Divider)root).isVisible()  )
+      if ( !root.isVisible()  )
         return new Dimension(0,0);
       int divSize = getDividerSize();
       return new Dimension(divSize, divSize);
@@ -718,7 +718,7 @@ public void removeLayoutComponent(Component child) {
       return ((child != null) && child.isVisible() ) ? child.getMaximumSize() : new Dimension(0, 0);
     }
     else if (root instanceof Divider) {
-      if ( !((Divider)root).isVisible()  )
+      if ( !root.isVisible()  )
         return new Dimension(0,0);
       int divSize = getDividerSize();
       return new Dimension(divSize, divSize);
@@ -787,7 +787,7 @@ public Dimension minimumLayoutSize(Container parent) {
     assert ( split.isVisible());
     Rectangle splitBounds = new Rectangle(bounds.x, bounds.y, 0, 0);
     List<Node> splitChildren = split.getChildren();
-    Node lastChild = null;
+    Node lastChild;
     int lastVisibleChildIdx = splitChildren.size();
     do  {
       lastVisibleChildIdx--;
@@ -796,8 +796,7 @@ public Dimension minimumLayoutSize(Container parent) {
     
     if ( !lastChild.isVisible())
       return;
-    if ( lastVisibleChildIdx >= 0 ) {
-      Rectangle lastChildBounds = lastChild.getBounds();
+    Rectangle lastChildBounds = lastChild.getBounds();
       if (split.isRowLayout()) {
         int lastChildMaxX = lastChildBounds.x + lastChildBounds.width;
         splitBounds.add(lastChildMaxX, bounds.y + bounds.height);
@@ -806,8 +805,7 @@ public Dimension minimumLayoutSize(Container parent) {
         int lastChildMaxY = lastChildBounds.y + lastChildBounds.height;
         splitBounds.add(bounds.x + bounds.width, lastChildMaxY);
       }
-    }
-    split.setBounds(splitBounds);
+      split.setBounds(splitBounds);
   }
   
   
@@ -985,7 +983,7 @@ public Dimension minimumLayoutSize(Container parent) {
   /**
    * Check if the specified node has any following visible siblings
    * @param splitChild the node to check
-   * @param true if there are visible children following
+   * @param splitChild is true if there are visible children following
    */
   private boolean hasMoreVisibleSiblings( Node splitChild ) {
     Node next = splitChild.nextSibling();
@@ -1150,7 +1148,7 @@ public Dimension minimumLayoutSize(Container parent) {
     else if (root instanceof Split) {
       Split split = (Split)root;
       Iterator<Node> splitChildren = split.getChildren().iterator();
-      Rectangle childBounds = null;
+      Rectangle childBounds;
       int divSize = getDividerSize();
       boolean initSplit = false;
       
@@ -1174,7 +1172,7 @@ public Dimension minimumLayoutSize(Container parent) {
           Divider dividerChild =
             (splitChildren.hasNext()) ? (Divider)(splitChildren.next()) : null;
           
-          double childWidth = 0.0;
+          double childWidth;
           if (getFloatingDividers()) {
             childWidth = preferredNodeSize(splitChild).getWidth();
           }
@@ -1224,7 +1222,7 @@ public Dimension minimumLayoutSize(Container parent) {
           Divider dividerChild =
             (splitChildren.hasNext()) ? (Divider)(splitChildren.next()) : null;
           
-          double childHeight = 0.0;
+          double childHeight;
           if (getFloatingDividers()) {
             childHeight = preferredNodeSize(splitChild).getHeight();
           }
@@ -1444,7 +1442,7 @@ public void layoutContainer(Container parent)
   
   private List<Divider> dividersThatOverlap(Node root, Rectangle r) {
     if (nodeOverlapsRectangle(root, r) && (root instanceof Split)) {
-        List<Divider> dividers = new ArrayList<Divider>();
+        List<Divider> dividers = new ArrayList<>();
         for(Node child : ((Split)root).getChildren()) {
         if (child instanceof Divider) {
           if (nodeOverlapsRectangle(child, r)) {
@@ -1725,7 +1723,7 @@ public void layoutContainer(Container parent)
      * @see #setChildren
      */
     public List<Node> getChildren() {
-      return new ArrayList<Node>(children);
+      return new ArrayList<>(children);
     }
     
     
@@ -1804,7 +1802,7 @@ public void layoutContainer(Container parent)
 
               // A visible child is found but it's a divider and therefore 
               // we have to visible and adjacent dividers - so we hide one
-              if (( rightChild != null ) && ( rightChild instanceof Divider ))
+              if ((rightChild instanceof Divider))
                 dividerChild.setVisible( false );
             }
           }
@@ -1821,23 +1819,21 @@ public void layoutContainer(Container parent)
      */
     public void restoreDividers( Split split ) { 
       boolean nextDividerVisible = false;
-      ListIterator<Node> splitChildren = split.getChildren().listIterator();
-      while( splitChildren.hasNext()) {
-        Node splitChild = splitChildren.next();
-        if ( splitChild instanceof Divider ) {
-          Node prev = splitChild.previousSibling();
-          if ( prev.isVisible()) { 
-            Node next = splitChild.nextSibling();
-            while ( next != null ) {
-              if ( next.isVisible()) {
-                splitChild.setVisible( true );
-                break;
-              }
-              next = next.nextSibling();
+        for (Node splitChild : split.getChildren()) {
+            if (splitChild instanceof Divider) {
+                Node prev = splitChild.previousSibling();
+                if (prev.isVisible()) {
+                    Node next = splitChild.nextSibling();
+                    while (next != null) {
+                        if (next.isVisible()) {
+                            splitChild.setVisible(true);
+                            break;
+                        }
+                        next = next.nextSibling();
+                    }
+                }
             }
-          }
         }
-      }
       if ( split.getParent() != null )
         restoreDividers( split.getParent());
     }
@@ -1861,7 +1857,7 @@ public void layoutContainer(Container parent)
         child.setParent(null);
       }
 
-      this.children = new ArrayList<Node>(children);
+      this.children = new ArrayList<>(children);
         for(Node child : this.children) {
         child.setParent(this);
       }
@@ -1926,15 +1922,13 @@ public void layoutContainer(Container parent)
     @Override
     public String toString() {
       int nChildren = getChildren().size();
-      StringBuffer sb = new StringBuffer("MultiSplitLayout.Split");
-      sb.append(" \"");
-      sb.append(getName());
-      sb.append("\"");
-      sb.append(isRowLayout() ? " ROW [" : " COLUMN [");
-      sb.append(nChildren + ((nChildren == 1) ? " child" : " children"));
-      sb.append("] ");
-      sb.append(getBounds());
-      return sb.toString();
+        return "MultiSplitLayout.Split" + " \"" +
+                getName() +
+                "\"" +
+                (isRowLayout() ? " ROW [" : " COLUMN [") +
+                nChildren + ((nChildren == 1) ? " child" : " children") +
+                "] " +
+                getBounds();
     }
   }
   
@@ -1988,15 +1982,13 @@ public void layoutContainer(Container parent)
     
     @Override
     public String toString() {
-      StringBuffer sb = new StringBuffer("MultiSplitLayout.Leaf");
-      sb.append(" \"");
-      sb.append(getName());
-      sb.append("\"");
-      sb.append(" weight=");
-      sb.append(getWeight());
-      sb.append(" ");
-      sb.append(getBounds());
-      return sb.toString();
+        return "MultiSplitLayout.Leaf" + " \"" +
+                getName() +
+                "\"" +
+                " weight=" +
+                getWeight() +
+                " " +
+                getBounds();
     }
   }
   
@@ -2015,7 +2007,7 @@ public void layoutContainer(Container parent)
      */
     public final boolean isVertical() {
       Split parent = getParent();
-      return (parent != null) ? parent.isRowLayout() : false;
+      return parent != null && parent.isRowLayout();
     }
     
     /**
@@ -2072,8 +2064,8 @@ public void layoutContainer(Container parent)
   }
   
   private static void addSplitChild(Split parent, Node child) {
-    List<Node> children = new ArrayList<Node>(parent.getChildren());
-    if (children.size() == 0) {
+    List<Node> children = new ArrayList<>(parent.getChildren());
+    if (children.isEmpty()) {
       children.add(child);
     }
     else {

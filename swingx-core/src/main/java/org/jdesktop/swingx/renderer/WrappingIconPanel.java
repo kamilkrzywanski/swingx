@@ -267,7 +267,7 @@ public class WrappingIconPanel extends JXPanel implements PainterAware, IconAwar
     /**
      * 
      * Returns the bounds of the delegate component or null if the delegate is null.
-     * 
+     * <p>
      * PENDING JW: where do we use it? Maybe it was for testing only?
      * 
      * @return the bounds of the delegate, or null if the delegate is null.

@@ -106,10 +106,7 @@ public class TableColumnExtTest {
      */
     @Test
     public void testPutClientPropertyExc() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        columnExt.putClientProperty(null, "somevalue");
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> columnExt.putClientProperty(null, "somevalue"));}
     /**
      * Sanity test Serializable.
      * 
@@ -130,7 +127,7 @@ public class TableColumnExtTest {
 
     /**
      * Issue #154-swingx.
-     * 
+     * <p>
      * added property headerTooltip. Test initial value, propertyChange
      * notification, cloned correctly.
      * 
@@ -175,7 +172,7 @@ public class TableColumnExtTest {
     /**
      * Issue #273-swingx: make Comparator a bound property of TableColumnExt.
      * (instead of client property)
-     *
+     * <p>
      * test if setting comparator fires propertyChange. 
      */
     @Test
@@ -192,7 +189,7 @@ public class TableColumnExtTest {
     /**
      * Issue #273-swingx: make Comparator a bound property of TableColumnExt.
      * (instead of client property)
-     *
+     * <p>
      * test if comparator is cloned. 
      */
     @Test
@@ -211,7 +208,7 @@ public class TableColumnExtTest {
     public void testClientPropertyNotification() {
         PropertyChangeReport report = new PropertyChangeReport();
         columnExt.addPropertyChangeListener(report);
-        Object value = new Integer(3);
+        Object value = 3;
         columnExt.putClientProperty("somevalue", value);
         assertTrue(report.hasEvents());
         assertEquals(1, report.getEventCount("somevalue"));

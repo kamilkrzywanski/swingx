@@ -29,7 +29,6 @@ import java.util.Hashtable;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -301,12 +300,9 @@ public class TableColumnExt extends TableColumn implements UIDependent {
      *         highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
-        return new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (ignoreHighlighterStateChange) return;
-                firePropertyChange("highlighterStateChanged", false, true);
-            }
+        return e -> {
+            if (ignoreHighlighterStateChange) return;
+            firePropertyChange("highlighterStateChanged", false, true);
         };
     }
 
@@ -342,8 +338,8 @@ public class TableColumnExt extends TableColumn implements UIDependent {
         boolean oldEditable = this.editable;
         this.editable = editable;
         firePropertyChange("editable",
-                           Boolean.valueOf(oldEditable),
-                           Boolean.valueOf(editable));
+                oldEditable,
+                editable);
     }
 
     /**
@@ -609,7 +605,7 @@ public class TableColumnExt extends TableColumn implements UIDependent {
 
     private Hashtable<Object, Object> getClientProperties() {
         if (clientProperties == null) {
-            clientProperties = new Hashtable<Object, Object>();
+            clientProperties = new Hashtable<>();
         }
         return clientProperties;
     }
@@ -676,14 +672,14 @@ public class TableColumnExt extends TableColumn implements UIDependent {
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         if ((oldValue != null && !oldValue.equals(newValue)) ||
               oldValue == null && newValue != null) {
-             PropertyChangeListener pcl[] = getPropertyChangeListeners();
+             PropertyChangeListener[] pcl = getPropertyChangeListeners();
              if (pcl != null && pcl.length != 0) {
                  PropertyChangeEvent pce = new PropertyChangeEvent(this,
                      propertyName,
                      oldValue, newValue);
 
-                 for (int i = 0; i < pcl.length; i++) {
-                     pcl[i].propertyChange(pce);
+                 for (PropertyChangeListener propertyChangeListener : pcl) {
+                     propertyChangeListener.propertyChange(pce);
                  }
              }
          }

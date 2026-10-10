@@ -32,7 +32,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -56,7 +55,7 @@ import org.jdesktop.swingx.util.Utilities;
 /**
  * Factory to create, configure and show application consistent
  * search and find widgets.
- * 
+ * <p>
  * Typically a shared JXFindBar is used for incremental search, while
  * a shared JXFindPanel is used for batch search. This implementation 
  * 
@@ -73,7 +72,7 @@ import org.jdesktop.swingx.util.Utilities;
  * which are empty except for the findbar. Weird problem if triggered from 
  * menu - find widget disappears after having been shown for an instance. 
  * Where's the focus?
- * 
+ * <p>
  * 
  * PENDING: add methods to return JXSearchPanels (for use by PatternMatchers).
  * 
@@ -84,7 +83,7 @@ public class SearchFactory implements UIDependent {
         private final WeakReference<SearchFactory> ref;
         
         public LaFListener(SearchFactory sf) {
-            this.ref = new WeakReference<SearchFactory>(sf);
+            this.ref = new WeakReference<>(sf);
         }
 
         /**
@@ -221,10 +220,10 @@ public class SearchFactory implements UIDependent {
     
     /**
      * Show a incremental-find widget targeted at the searchable.
-     * 
+     * <p>
      * This implementation uses a JXFindBar and inserts it into the
      * target's toplevel container toolbar. 
-     * 
+     * <p>
      * PENDING: Nothing shown if there is no toolbar found. 
      * 
      * @param target - the component associated with the searchable
@@ -304,7 +303,7 @@ public class SearchFactory implements UIDependent {
         if (oldParent != null) {
             oldParent.remove(component);
             if (oldParent instanceof JComponent) {
-                ((JComponent) oldParent).revalidate();
+                oldParent.revalidate();
             } else {
                 // not sure... never have non-j comps
                 oldParent.invalidate();
@@ -343,7 +342,7 @@ public class SearchFactory implements UIDependent {
      * 
      * Here: registers a custom action to remove the 
      * findbar from its ancestor container.
-     * 
+     * <p>
      * PRE: findBar != null.
      *
      */
@@ -366,7 +365,7 @@ public class SearchFactory implements UIDependent {
 
     /**
      * Show a batch-find widget targeted at the given Searchable.
-     * 
+     * <p>
      * This implementation uses a shared JXFindPanel contained 
      * JXDialog.
      * 
@@ -518,7 +517,7 @@ public class SearchFactory implements UIDependent {
         
         private Set<Container> getTargets() {
             if (targets == null) {
-                targets = new HashSet<Container>();
+                targets = new HashSet<>();
             }
             return targets;
         }
@@ -536,8 +535,7 @@ public class SearchFactory implements UIDependent {
 
             Component c = focusManager.getPermanentFocusOwner();
             if (c == null) return;
-            for (Iterator<Container> iter = getTargets().iterator(); iter.hasNext();) {
-                Container element = iter.next();
+            for (Container element : getTargets()) {
                 if ((element == c) || (SwingUtilities.isDescendingFrom(c, element))) {
                     return;
                 }

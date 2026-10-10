@@ -13,8 +13,6 @@ import java.awt.MultipleGradientPaint;
 import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
@@ -46,26 +44,22 @@ public class PaintPicker extends javax.swing.JPanel {
         // set up the gradient picker
         gradientPicker = new JXGradientChooser();
         tabbedPane.addTab("Gradient",gradientPicker);
-        gradientPicker.addPropertyChangeListener("gradient",new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                lastPickerUsed = gradientPicker;
-                setPaint(gradientPicker.getGradient());
-            }
+        gradientPicker.addPropertyChangeListener("gradient", propertyChangeEvent -> {
+            lastPickerUsed = gradientPicker;
+            setPaint(gradientPicker.getGradient());
         });
         
         // update when the tabs change
-        tabbedPane.getModel().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent changeEvent) {
-                lastPickerUsed = tabbedPane.getSelectedComponent();
-                Paint old = selectedPaint;
-                if(lastPickerUsed == colorPickerParent) {
-                    selectedPaint = colorPicker.getSelectionModel().getSelectedColor();
-                }
-                if(lastPickerUsed == gradientPicker) {
-                    selectedPaint = gradientPicker.getGradient();
-                }
-                firePropertyChange("paint",old,selectedPaint);
+        tabbedPane.getModel().addChangeListener(changeEvent -> {
+            lastPickerUsed = tabbedPane.getSelectedComponent();
+            Paint old = selectedPaint;
+            if(lastPickerUsed == colorPickerParent) {
+                selectedPaint = colorPicker.getSelectionModel().getSelectedColor();
             }
+            if(lastPickerUsed == gradientPicker) {
+                selectedPaint = gradientPicker.getGradient();
+            }
+            firePropertyChange("paint",old,selectedPaint);
         });
         
     }
@@ -172,13 +166,12 @@ public class PaintPicker extends javax.swing.JPanel {
         // fill in the gradient
         Point2D start = new Point2D.Float(0, 0);
         Point2D end = new Point2D.Float((float) length, 0);
-        MultipleGradientPaint paint = new LinearGradientPaint(
+        return new LinearGradientPaint(
                 (float) start.getX(),
                 (float) start.getY(),
                 (float) end.getX(),
                 (float) end.getY(),
                 fractions, colors);
-        return paint;
     }
 
 

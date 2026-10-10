@@ -16,9 +16,9 @@ public class FocusEventReport implements FocusListener {
     /**
      * Holds a list of all canceled events.
      */
-    protected List<FocusEvent> canceledEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
-    protected List<FocusEvent> stoppedEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
-    protected List<FocusEvent> allEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
+    protected List<FocusEvent> canceledEvents = Collections.synchronizedList(new LinkedList<>());
+    protected List<FocusEvent> stoppedEvents = Collections.synchronizedList(new LinkedList<>());
+    protected List<FocusEvent> allEvents = Collections.synchronizedList(new LinkedList<>());
     
     
 //------------------------ implement FocusListener

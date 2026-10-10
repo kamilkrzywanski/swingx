@@ -13,14 +13,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A PropertyChangeListener that stores the received PropertyChangeEvents.
- * 
+ * <p> <p>
  * modified ("beanified") from JGoodies PropertyChangeReport.
  * 
  */
@@ -30,8 +29,8 @@ public class PropertyChangeReport implements PropertyChangeListener {
     /**
      * Holds a list of all received PropertyChangeEvents.
      */
-    protected List<PropertyChangeEvent> events = Collections.synchronizedList(new LinkedList<PropertyChangeEvent>());
-    protected Map<String, PropertyChangeEvent> eventMap = Collections.synchronizedMap(new HashMap<String, PropertyChangeEvent>());
+    protected List<PropertyChangeEvent> events = Collections.synchronizedList(new LinkedList<>());
+    protected Map<String, PropertyChangeEvent> eventMap = Collections.synchronizedMap(new HashMap<>());
 
     /**
      * Instantiates a PropertyChangeReport.
@@ -79,8 +78,7 @@ public class PropertyChangeReport implements PropertyChangeListener {
     public int getEventCount(String property) {
         if (property == null) return getMultiCastEventCount();
         int count = 0;
-        for (Iterator<PropertyChangeEvent> iter = events.iterator(); iter.hasNext();) {
-            PropertyChangeEvent event = iter.next();
+        for (PropertyChangeEvent event : events) {
             if (property.equals(event.getPropertyName())) {
                 count++;
             }
@@ -94,8 +92,7 @@ public class PropertyChangeReport implements PropertyChangeListener {
     
     public int getMultiCastEventCount() {
         int count = 0;
-        for (Iterator<PropertyChangeEvent> i = events.iterator(); i.hasNext();) {
-            PropertyChangeEvent event =  i.next();
+        for (PropertyChangeEvent event : events) {
             if (event.getPropertyName() == null)
                 count++;
         }
@@ -157,7 +154,7 @@ public class PropertyChangeReport implements PropertyChangeListener {
      * @return the last old value as a boolean
      */
     public boolean getLastOldBooleanValue() {
-        return ((Boolean) getLastOldValue()).booleanValue();
+        return (Boolean) getLastOldValue();
     }
 
     /**
@@ -165,14 +162,14 @@ public class PropertyChangeReport implements PropertyChangeListener {
      * @return the last new value as a boolean
      */
     public boolean getLastNewBooleanValue() {
-        return ((Boolean) getLastNewValue()).booleanValue();
+        return (Boolean) getLastNewValue();
     }
 
     /**
      * @return a list of all of the event names captured by this reporter
      */
     public String getEventNames() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (PropertyChangeEvent event : events) {
             buffer.append(event.getPropertyName());
             buffer.append(" :: ");

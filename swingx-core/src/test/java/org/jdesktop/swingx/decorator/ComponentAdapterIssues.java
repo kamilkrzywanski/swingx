@@ -39,7 +39,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Test to exposed known issues of <code>ComponentAdapter</code>.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.
@@ -67,7 +67,7 @@ public class ComponentAdapterIssues extends InteractiveTestCase {
     
     /**
      * Issue ??-swingx: TreeTable doesn't return correct string value for hierarchical column.
-     * 
+     * <p>
      * This is probably a variant of not using the table's renderer (at least I expect it 
      * to be solved then at the latest). In the meantime, might want to do something special
      * for the hierarchical column?
@@ -89,7 +89,7 @@ public class ComponentAdapterIssues extends InteractiveTestCase {
 
     /**
      * Issue ??-swingx: TreeTable doesn't return correct string value for hierarchical column.
-     * 
+     * <p>
      * This is probably a variant of not using the table's renderer (at least I expect it 
      * to be solved then at the latest). In the meantime, might want to do something special
      * for the hierarchical column?
@@ -113,7 +113,7 @@ public class ComponentAdapterIssues extends InteractiveTestCase {
 
     /**
      * Issue ??-swingx: TreeTable doesn't return correct string value for hierarchical column.
-     * 
+     * <p>
      * This is probably a variant of not using the table's renderer (at least I expect it 
      * to be solved then at the latest). In the meantime, might want to do something special
      * for the hierarchical column?
@@ -142,18 +142,13 @@ public class ComponentAdapterIssues extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
 
     @Override

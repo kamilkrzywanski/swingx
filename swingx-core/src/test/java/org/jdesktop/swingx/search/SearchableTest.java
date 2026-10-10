@@ -45,10 +45,7 @@ public class SearchableTest {
     
     @Test
     public void testTreeSearchableFailsOnNullTree() {
-        assertThrows(NullPointerException.class, () -> {
-        new TreeSearchable(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new TreeSearchable(null));}
 
     /** 
      * Issue #1209-swingx: SearchPredicate must be updated to last found 

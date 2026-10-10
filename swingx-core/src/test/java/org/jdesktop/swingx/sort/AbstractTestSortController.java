@@ -76,22 +76,16 @@ public abstract class AbstractTestSortController<SC extends DefaultSortControlle
     
     @Test
     public void testNPEOnNullSortOrderCycle() {
-        assertThrows(NullPointerException.class, () -> {
-        controller.setSortOrderCycle((SortOrder[])null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> controller.setSortOrderCycle((SortOrder[])null));}
     
     @Test
     public void testNPEOnNullSortOrderCycleElements() {
-        assertThrows(NullPointerException.class, () -> {
-        controller.setSortOrderCycle((SortOrder) null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> controller.setSortOrderCycle((SortOrder) null));}
     
     @Test
     public void testUseSortOrderCycle() {
         // empty cylce - does nothing
-        controller.setSortOrderCycle(new SortOrder[0]);
+        controller.setSortOrderCycle();
         controller.toggleSortOrder(0);
         assertEquals(SortOrder.UNSORTED, controller.getSortOrder(0));
     }
@@ -109,10 +103,7 @@ public abstract class AbstractTestSortController<SC extends DefaultSortControlle
      */
     @Test
     public void testColumnIndexCheckedOnToggle() {
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-        controller.toggleSortOrder(getColumnCount());
-    
-        });}
+        assertThrows(IndexOutOfBoundsException.class, () -> controller.toggleSortOrder(getColumnCount()));}
     /**
      * @param string
      * @param first
@@ -208,9 +199,9 @@ public abstract class AbstractTestSortController<SC extends DefaultSortControlle
     public void testToggleSortOrder() {
         // PENDING JW: use custom cycle to really test
         SortOrder[] cycle = controller.getSortOrderCycle();
-        for (int i = 0; i < cycle.length; i++) {
+        for (SortOrder sortOrder : cycle) {
             controller.toggleSortOrder(0);
-            assertEquals(cycle[i], controller.getSortOrder(0));
+            assertEquals(sortOrder, controller.getSortOrder(0));
         }
     }
     
@@ -301,18 +292,13 @@ public abstract class AbstractTestSortController<SC extends DefaultSortControlle
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
     @BeforeEach
     @Override

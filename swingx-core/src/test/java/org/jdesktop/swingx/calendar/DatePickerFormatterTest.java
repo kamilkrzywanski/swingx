@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for <code>DatePickerFormatter</code>.
- * 
+ * <p>
  * Extracted from JXDatePickerTest.
  * 
  * @author Jeanette Winzenburg
@@ -55,7 +55,7 @@ public class DatePickerFormatterTest {
     /**
      * Issue #945-swingx: don't force default format for Locales without
      * properties.
-     * 
+     * <p>
      * Instead, use the system's default date format instance.
      */
     @Test
@@ -77,7 +77,7 @@ public class DatePickerFormatterTest {
     /**
      * Issue #945-swingx: don't force default format for Locales without
      * properties.
-     * 
+     * <p>
      * LinkFormat pattern in base defaults to DateFormat's default with 
      * style DEFAULT.
      */
@@ -162,7 +162,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: test formatter constructor with empty formats array
      * 
      */
@@ -176,7 +176,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: test formatter constructor with formats array contain
      * null
      * 
@@ -195,7 +195,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: test default constructor
      * Adjusted to fix of Issue ??-swingx: use system default format
      * if resources for Locale have no JXDatePicker entry
@@ -222,7 +222,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: test constructor with null parameter has same defaults
      *   as parameterless
      * 
@@ -243,7 +243,7 @@ public class DatePickerFormatterTest {
     
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: picker formatter must protect itself against 
      *   null formats.
      * 
@@ -265,7 +265,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: picker formatter must protect itself against 
      *   empty formats.
      * 
@@ -284,7 +284,7 @@ public class DatePickerFormatterTest {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * here: picker formatter must protect itself against empty formats.
      * 
      */

@@ -47,7 +47,7 @@ public class SerializableTest extends InteractiveTestCase {
     /**
      * Issue #423-swingx: all descendants of JComponent must be 
      * serializable.
-     * 
+     * <p>
      * Regression after painter merge: JXPanel$1
      * is not serializable.
      * 

@@ -53,7 +53,7 @@ import org.jdesktop.swingx.plaf.MultiThumbSliderUI;
  * track behind the thumbs you must provide a ThumbRenderer and a TrackRenderer 
  * implementation. To listen for changes to the thumbs you must provide an 
  * implementation of ThumbDataListener.
- * 
+ * <p>
  * TODOs:
  * add min/maxvalue convenience methods to jxmultithumbslider
  * add plafs for windows, mac, and basic (if necessary)
@@ -76,7 +76,7 @@ public class JXMultiThumbSlider<E> extends JComponent {
     
     private MultiThumbModel<E> model;
     
-    private List<ThumbListener> listeners = new ArrayList<ThumbListener>();
+    private List<ThumbListener> listeners = new ArrayList<>();
     
     private ThumbComp selected;
     
@@ -86,12 +86,12 @@ public class JXMultiThumbSlider<E> extends JComponent {
     
     /** Creates a new instance of JMultiThumbSlider */
     public JXMultiThumbSlider() {
-        thumbs = new ArrayList<ThumbComp>();
+        thumbs = new ArrayList<>();
         setLayout(null);
         
         tdl = new ThumbHandler();
         
-        setModel(new DefaultMultiThumbModel<E>());
+        setModel(new DefaultMultiThumbModel<>());
         MultiThumbMouseListener mia = new MultiThumbMouseListener();
         addMouseListener(mia);
         addMouseMotionListener(mia);

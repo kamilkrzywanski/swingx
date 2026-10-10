@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
@@ -94,7 +93,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     /**
      * Issue #1372-swingx: DatePickerCellEditor on 2 different tables with clickCountToStart = 1 
      * throws IllegalComponentStateException
-     * 
+     * <p>
      * Metal only?
      * Same behaviour for JTable (and terminateEditOnFocusLost) and JXTable
      * hot fix: backing out if parent null - leaves arrowButton in pressed?
@@ -132,7 +131,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
         }
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(new Locale("ar", "KW"));
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("ar", "KW"));//df.getDecimalFormatSymbols();
-        LOG.info("" + df + " zero " + dfs.getZeroDigit());
+        LOG.info(df + " zero " + dfs.getZeroDigit());
         LOG.info("" + dfs);
         df.setDecimalFormatSymbols(dfs);
         @SuppressWarnings("unused")
@@ -154,7 +153,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 
     /**
      * Issue #??-swingx: first week of year in year-week format invalid?
-     * 
+     * <p>
      * Same problem for formattedTextField.
      */
     public void interactiveYearWeekFormat() {
@@ -169,12 +168,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
         JFormattedTextField field = new JFormattedTextField(format);
         field.setValue(picker.getDate());
         box.add(field);
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                LOG.info(evt.getPropertyName() + evt.getSource().getClass().getSimpleName() + evt.getNewValue());
-                
-            }};
+        PropertyChangeListener l = evt -> LOG.info(evt.getPropertyName() + evt.getSource().getClass().getSimpleName() + evt.getNewValue());
         field.addPropertyChangeListener(l);
         picker.addPropertyChangeListener(l);
         showInFrame(box, "yearweek format");
@@ -201,7 +195,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     
     /**
      * Issue #913-swingx: Datepicker looks bad in some LFs (f.i. Nimbus)
-     * 
+     * <p>
      * not only Nimbus ...
      * - Metal: starts with different height than textfield, shrinks when coming
      *   back from another LF
@@ -231,7 +225,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 
     /**
      * Compare behaviour of notifyAction: DatePicker vs. core components.
-     * 
+     * <p>
      * The requirement (from forum) is to trigger the default button on enter.
      * DatePicker: always eats - BasicDatePickerUI commit action always enabled
      * JComboBox: always pass-through
@@ -263,14 +257,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
         JFormattedTextField field = new JFormattedTextField();
         field.setValue(calendar.getTime());
         JTextField simple = new JTextField(calendar.getTime().toString());
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("action from fields: " + e.getSource().getClass());
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("action from fields: " + e.getSource().getClass());
         combo.addActionListener(l);
         field.addActionListener(l);
         simple.addActionListener(l);
@@ -297,7 +284,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     
     /**
      * Issue #709-swingx: DatePicker should have empty constructor which doesn't select.
-     * 
+     * <p>
      * Plus deprecate constructors with long - replace by Date parameters.
      * Deprecate other methods taking long.
      */
@@ -313,7 +300,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     /**
      * Issue #606-swingx: keybindings in monthView popup not working 
      * in InternalFrame.
-     * 
+     * <p>
      * Looks like a problem with componentInputMaps in internalFrame:
      * the registered keys are eaten somewhere (f.i. bind f1 for left is okay)
      *  
@@ -361,10 +348,10 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 
     /**
      * Issue #725-swingx: review linkPanel/linkDate requirements.
-     * 
+     * <p>
      * link panel commit gesture (keystroke F5, double-click) must 
      * commit the date. 
-     * 
+     * <p>
      * Update the linkDate must 
      * - show in the LinkPanel. 
      * - open the popup in the month of the link date?
@@ -372,16 +359,9 @@ public class JXDatePickerIssues extends InteractiveTestCase {
      */
     public void interactiveCommitLinkPanelAction() {
         final JXDatePicker picker = new JXDatePicker();
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("received: " + e + 
-                        "\n adjusting must be false: " 
-                        + picker.getMonthView().getSelectionModel().isAdjusting());
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("received: " + e +
+                "\n adjusting must be false: "
+                + picker.getMonthView().getSelectionModel().isAdjusting());
         picker.addActionListener(l);
         JXFrame frame = showInFrame(picker, "double-click on linkpanel must commit");
         Action nextDate = new AbstractAction("change linkdate") {
@@ -398,7 +378,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     
     /**
      * Issue #572-swingx: monthView must show linkDate on empty selection.
-     *
+     * <p>
      * add month to linkDate, popup must show month containing link date.
      * Note: client code using the link date for something different than today
      * must take care to update the message format (PENDING: is that possible?)
@@ -439,16 +419,9 @@ public class JXDatePickerIssues extends InteractiveTestCase {
         final JXDatePicker picker = new JXDatePicker();
         JComboBox box = new JComboBox(new String[] {"one", "twos"});
         box.setEditable(true);
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("received: " + e + 
-                        "\n and not adjusting: " 
-                        + picker.getMonthView().getSelectionModel().isAdjusting());
-                
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("received: " + e +
+                "\n and not adjusting: "
+                + picker.getMonthView().getSelectionModel().isAdjusting());
         picker.addActionListener(l);
         box.addActionListener(l);
         JComponent panel = new JPanel();
@@ -477,7 +450,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 
     /**
      * visual testing of selection constraints: upper/lower bounds.
-     * 
+     * <p>
      * Issue #567-swingx:
      * clicking into a unselectable in the popup clears the
      * selection - should revert to the last valid selection.
@@ -497,11 +470,11 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 
     /**
      * Sanity during fix #705-swingx: JXMonthView must not scroll in layoutContainer.
-     * 
+     * <p>
      * Here we have a selected date way into the future, to be sure it had to scroll.
      * Open question: should the monthView be scrolled to the selected always on open or
      *   remember the last month shown
-     *   
+     * <p>
      * To reproduce  
      * - open popup with toolbar button 
      * - click next month
@@ -624,7 +597,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
 //    DateFormat longFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
     /**
      * Issue #572-swingx: monthView must show linkDate on empty selection.
-     *
+     * <p>
      * Definition of picker.linkDate vs. monthView.todayInMillis missing.
      * PENDING: back out - say linkDate == today, not mutable by client code
      * but fixed to system?

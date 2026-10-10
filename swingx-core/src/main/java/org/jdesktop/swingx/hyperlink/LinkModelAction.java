@@ -22,7 +22,6 @@ package org.jdesktop.swingx.hyperlink;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
@@ -33,7 +32,7 @@ import javax.swing.Action;
  * <p>
  * 
  * This action delegates actionPerformed to vistingDelegate.
- * 
+ * <p>
  * PENDING: move to swingx package?
  * 
  * @author Jeanette Winzenburg
@@ -82,7 +81,7 @@ public class LinkModelAction<T extends LinkModel> extends AbstractHyperlinkActio
      * This action delegates to the visitingDelegate if both
      * delegate and target are != null, does nothing otherwise.
      * The actionEvent carries the target as source.
-     * 
+     * <p>
      * PENDING: pass through a null target? - most probably!
      * 
      * 
@@ -126,26 +125,19 @@ public class LinkModelAction<T extends LinkModel> extends AbstractHyperlinkActio
         if (getTarget() != null) {
             putValue(Action.NAME, getTarget().getText());
             putValue(Action.SHORT_DESCRIPTION, getTarget().getURL().toString());
-            putValue(VISITED_KEY, new Boolean(getTarget().getVisited()));
+            putValue(VISITED_KEY, getTarget().getVisited());
         } else {
             Object[] keys = getKeys();
             if (keys == null) return;
-            for (int i = 0; i < keys.length; i++) {
-               putValue(keys[i].toString(), null); 
+            for (Object key : keys) {
+                putValue(key.toString(), null);
             }
         }
     }
 
     private PropertyChangeListener getTargetListener() {
         if (linkListener == null) {
-         linkListener = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateFromTarget();
-            }
-            
-        };
+         linkListener = evt -> updateFromTarget();
         }
         return linkListener;
     }

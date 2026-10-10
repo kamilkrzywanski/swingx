@@ -12,8 +12,6 @@ package org.jdesktop.beans.editors;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.beans.PropertyEditorSupport;
 
@@ -27,13 +25,11 @@ public class ShapePropertyEditor extends PropertyEditorSupport {
     /** Creates a new instance of ShapePropertyEditor */
     public ShapePropertyEditor() {
         chooser = new ShapeChooser();
-        chooser.shapeCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(chooser.shapeCombo.getSelectedItem().equals("Square")) {
-                    setValue(new Rectangle(0,0,100,100));
-                } else {
-                    setValue(new Ellipse2D.Double(0,0,100,100));
-                }
+        chooser.shapeCombo.addActionListener(actionEvent -> {
+            if(chooser.shapeCombo.getSelectedItem().equals("Square")) {
+                setValue(new Rectangle(0,0,100,100));
+            } else {
+                setValue(new Ellipse2D.Double(0,0,100,100));
             }
         });
     }

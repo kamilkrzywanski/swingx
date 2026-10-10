@@ -50,7 +50,7 @@ public class BusyPainter extends AbstractPainter<Object> {
      * 
      * @see BusyPainter#setDirection(Direction)
      */
-    public static enum Direction {
+    public enum Direction {
         /**
          * cycle proceeds forward
          */
@@ -141,7 +141,7 @@ public class BusyPainter extends AbstractPainter<Object> {
         Point2D.Float sp = new Point2D.Float();
         int ret;
         float totalDist = 0;
-        List<float[]> segStack = new ArrayList<float[]>();
+        List<float[]> segStack = new ArrayList<>();
         do {
             try {
                 ret = pi.currentSegment(coords);
@@ -183,7 +183,7 @@ public class BusyPainter extends AbstractPainter<Object> {
             pi.next();
         } while (!pi.isDone());
         float nxtP = totalDist / getPoints();
-        List<Point2D.Float> pList = new ArrayList<Point2D.Float>();
+        List<Point2D.Float> pList = new ArrayList<>();
         pList.add(new Float(sp.x, sp.y));
         int sgIdx = 0;
         float[] sgmt = segStack.get(sgIdx);
@@ -324,8 +324,7 @@ public class BusyPainter extends AbstractPainter<Object> {
     private float calcLine(float[] coords, Float cp) {
         float a = cp.x - coords[0];
         float b = cp.y - coords[1];
-        float c = (float) Math.sqrt(a * a + b * b);
-        return c;
+        return (float) Math.sqrt(a * a + b * b);
     }
 
     /**
@@ -352,8 +351,7 @@ public class BusyPainter extends AbstractPainter<Object> {
             prevY = xy.y;
         }
         // prev len is a fraction num of the real path length
-        float z = ((Math.abs(x) + Math.abs(y)) / 2) * prevLength;
-        return z;
+        return ((Math.abs(x) + Math.abs(y)) / 2) * prevLength;
     }
 
     /**
@@ -402,7 +400,7 @@ public class BusyPainter extends AbstractPainter<Object> {
 
     /**
      * Calculates the XY point for a given t value.
-     * 
+     * <p>
      * The general spline equation is: x = b0*x0 + b1*x1 + b2*x2 + b3*x3 y =
      * b0*y0 + b1*y1 + b2*y2 + b3*y3 where: b0 = (1-t)^3 b1 = 3 * t * (1-t)^2 b2 =
      * 3 * t^2 * (1-t) b3 = t^3 We know that (x0,y0) == (0,0) and (x1,y1) ==

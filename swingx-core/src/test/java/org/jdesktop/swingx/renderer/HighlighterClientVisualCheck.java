@@ -30,7 +30,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +100,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
     protected Color foreground = Color.BLUE;
     
     
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 //        UIManager.put("Nimbus.keepAlternateRowColor", Boolean.TRUE);
 //      setSystemLF(true);
       HighlighterClientVisualCheck test = new HighlighterClientVisualCheck();
@@ -228,7 +227,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
 
     /**
      * Simulates table by one-list per column.
-     * 
+     * <p>
      * NOTE: the only purpose is to demonstrate the similarity
      * of highlighter usage across collection components!
      * (shown as example in Javapolis 2007)
@@ -251,7 +250,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         Highlighter shading = new ShadingColorHighlighter(
                 new HighlightPredicate.ColumnHighlightPredicate(0));
         // create and configure one JXList per column.
-        List<JXList> lists = new ArrayList<JXList>();
+        List<JXList> lists = new ArrayList<>();
         // first name
         JXList list0 = new JXList(createListModel(source, 0));
         list0.setHighlighters(simpleStriping);
@@ -317,7 +316,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
      * @return
      */
     private ListModel createListModel(final JXTable tableModel, final int i) {
-        ListModel listModel = new AbstractListModel(){
+        return new AbstractListModel(){
 
             @Override
             public Object getElementAt(int index) {
@@ -328,7 +327,6 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
             public int getSize() {
                 return tableModel.getRowCount();
             }};
-        return listModel ;
     }
 
 
@@ -350,47 +348,35 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
     /**
      * Example from forum requirement: highlight all rows of a given group
      * if mouse if over one of them.
-     * 
+     * <p>
      * PENDING: need to track row view-model coordinates mapping after
      * filtering/sorting.
      *
      */
     public void interactiveRolloverRowGroup() {
         TableModel model = new AncientSwingTeam();
-       final List<Integer> rowSet = new ArrayList<Integer>();
+       final List<Integer> rowSet = new ArrayList<>();
        for (int i = 0; i < model.getRowCount(); i++) {
          if ((Integer)model.getValueAt(i, 3) > 10) {
              rowSet.add(i);
          }
        }
-       final HighlightPredicate predicate = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-            return rowSet.contains(adapter.row);
-        }
-           
-       };
+       final HighlightPredicate predicate = (renderer, adapter) -> rowSet.contains(adapter.row);
        final ColorHighlighter highlighter = new ColorHighlighter(HighlightPredicate.NEVER, Color.YELLOW, 
                null);
        JXTable table = new JXTable(model);
        table.addHighlighter(highlighter);
-       PropertyChangeListener l = new PropertyChangeListener() {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            Point location = (Point) evt.getNewValue();
-            int row = -1;
-            if (location != null) {
-                row = location.y;
-            }
-            if (rowSet.contains(row)) {
-                highlighter.setHighlightPredicate(predicate);
-            } else {
-                highlighter.setHighlightPredicate(HighlightPredicate.NEVER);
-            }
-        }
-           
+       PropertyChangeListener l = evt -> {
+           Point location = (Point) evt.getNewValue();
+           int row = -1;
+           if (location != null) {
+               row = location.y;
+           }
+           if (rowSet.contains(row)) {
+               highlighter.setHighlightPredicate(predicate);
+           } else {
+               highlighter.setHighlightPredicate(HighlightPredicate.NEVER);
+           }
        };
        table.addPropertyChangeListener(RolloverProducer.ROLLOVER_KEY, l);
        showWithScrollingInFrame(table, "rollover highlight of row groups");
@@ -410,9 +396,9 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         Color[] colors = new Color[] { Color.YELLOW, Color.CYAN, Color.MAGENTA,
                 Color.GREEN };
         int rowsPerColor = (table.getRowCount() - 5) / colors.length;
-        Map<Color, HighlightPredicate> map = new HashMap<Color, HighlightPredicate>();
+        Map<Color, HighlightPredicate> map = new HashMap<>();
         for (int i = 0; i < colors.length; i++) {
-            List<Integer> values = new ArrayList<Integer>();
+            List<Integer> values = new ArrayList<>();
             for (int j = 0; j < rowsPerColor; j++) {
                 values.add((Integer) table.getValueAt(i * rowsPerColor + j, numberColumn));
             }
@@ -462,7 +448,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         // coloring
         final int numberColumn = 3;
         table.toggleSortOrder(numberColumn);
-        final Map<Integer, Color> lookup = new HashMap<Integer, Color>();
+        final Map<Integer, Color> lookup = new HashMap<>();
         Color[] colors = new Color[] { Color.YELLOW, Color.CYAN, Color.MAGENTA,
                 Color.GREEN };
         int rowsPerColor = (table.getRowCount() - 5) / colors.length;
@@ -623,7 +609,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
     
     /**
      * Requirement from forum: value based color and tooltip.
-     * 
+     * <p>
      * Here the tooltip is regarded as visual decoration and 
      * set in a specialized Highlighter. 
      *
@@ -659,13 +645,9 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         table.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("F5"), "hideTip");
         LOG.info("hideTip? " + table.getActionMap().get("hideTip"));
         
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                LOG.info("evt.getP" + evt.getPropertyName());
-                ToolTipManager.sharedInstance().mousePressed(null);
-            }
+        PropertyChangeListener l = evt -> {
+            LOG.info("evt.getP" + evt.getPropertyName());
+            ToolTipManager.sharedInstance().mousePressed(null);
         };
         table.addPropertyChangeListener(RolloverProducer.ROLLOVER_KEY, l);
 //        table.addMouseMotionListener(new MouseMotionAdapter() {
@@ -683,14 +665,9 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
 //               prevCol = col;
 //            }
 //         });
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                if (!(adapter.getValue() instanceof Number)) return false;
-                return ((Number) adapter.getValue()).intValue() < 10;
-            }
-            
+        HighlightPredicate predicate = (renderer, adapter) -> {
+            if (!(adapter.getValue() instanceof Number)) return false;
+            return ((Number) adapter.getValue()).intValue() < 10;
         };
         ColorHighlighter hl = new ColorHighlighter(
                 predicate, null, Color.RED, null, Color.RED);
@@ -728,14 +705,9 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
      */
     public void interactiveValueBasedToolTipAndColorOnProvider() {
         JXTable table = new JXTable(new AncientSwingTeam());
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                if (!(adapter.getValue() instanceof Number)) return false;
-                return ((Number) adapter.getValue()).intValue() < 10;
-            }
-            
+        HighlightPredicate predicate = (renderer, adapter) -> {
+            if (!(adapter.getValue() instanceof Number)) return false;
+            return ((Number) adapter.getValue()).intValue() < 10;
         };
         ColorHighlighter hl = new ColorHighlighter(
                 predicate, null, Color.RED, null, Color.RED);
@@ -779,15 +751,10 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
         table.setForeground(Color.GREEN);
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                if (!(renderer instanceof JLabel)) return false;
-                String text = ((JLabel) renderer).getText();
-                 return text.contains("y");
-            }
-            
+        HighlightPredicate predicate = (renderer, adapter) -> {
+            if (!(renderer instanceof JLabel)) return false;
+            String text = ((JLabel) renderer).getText();
+             return text.contains("y");
         };
         ColorHighlighter hl = new ColorHighlighter(predicate, null, Color.RED);
         table.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
@@ -905,8 +872,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
 
         @Override
         protected JTextField createRendererComponent() {
-            JTextField field = new JTextField(20);
-            return field;
+            return new JTextField(20);
         }
 
         @Override

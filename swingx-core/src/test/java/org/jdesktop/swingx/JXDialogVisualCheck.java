@@ -60,7 +60,7 @@ public class JXDialogVisualCheck extends InteractiveTestCase {
     /**
      * 
      * example of how to bind custom actions to a JXDialog.
-     * 
+     * <p>
      * Requirement from forum:
      * - custom execute
      * - custom close (text should be "Cancel")

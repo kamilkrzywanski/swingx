@@ -71,7 +71,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
 
     /**
      * Instantiates a editor with the default dateFormat.
-     * 
+     * <p>
      * PENDING: always override default from DatePicker?
      *
      */
@@ -106,7 +106,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
     
     /**
      * Returns the pickers date. 
-     * 
+     * <p>
      * Note: the date is only meaningful after a stopEditing and 
      *   before the next call to getTableCellEditorComponent.
      */
@@ -205,7 +205,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
     
     /**
      * Returns the given value as Date.
-     * 
+     * <p>
      * PENDING: abstract into something pluggable (like StringValue 
      *   in ComponentProvider?)
      *   
@@ -250,7 +250,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
 
     protected boolean isEmpty(Object value) {
         return value == null || value instanceof String
-                && ((String) value).length() == 0;
+                && ((String) value).isEmpty();
     }
 
 //--------------- picker specifics    
@@ -307,17 +307,17 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
      * @return the ActionListener to listen for Picker's action events.
      */
     protected ActionListener createPickerActionListener() {
-        ActionListener l = new ActionListener() {
+        return new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 // avoid duplicate trigger from
                 // commit in stopCellEditing
                 if (ignoreAction)
                     return;
-                // still need to invoke .. hmm 
+                // still need to invoke .. hmm
                 // no ... with the table cooperating the
                 // invoke is contra-productive!
-                terminateEdit(e);                         
+                terminateEdit(e);
             }
 
             /**
@@ -332,7 +332,6 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
                 }
             }
         };
-        return l;
     }
 
 

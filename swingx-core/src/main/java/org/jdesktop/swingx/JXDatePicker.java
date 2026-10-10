@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.text.DateFormat;
@@ -372,16 +371,11 @@ public class JXDatePicker extends JComponent {
      */
     private PropertyChangeListener getMonthViewListener() {
         if (monthViewListener == null) {
-            monthViewListener = new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("timeZone".equals(evt.getPropertyName())) {
-                        updateTimeZone((TimeZone) evt.getOldValue(), (TimeZone) evt.getNewValue());
-                    }
-                    
+            monthViewListener = evt -> {
+                if ("timeZone".equals(evt.getPropertyName())) {
+                    updateTimeZone((TimeZone) evt.getOldValue(), (TimeZone) evt.getNewValue());
                 }
-                
+
             };
         }
         return monthViewListener;
@@ -604,7 +598,7 @@ public class JXDatePicker extends JComponent {
     
     /**
      * Sets the date shown in the TodayPanel. 
-     * 
+     * <p>
      * PENDING JW ... quick api hack for testing. Don't recreate the panel if
      * it had been used 
      * 
@@ -726,7 +720,7 @@ public class JXDatePicker extends JComponent {
 
     /**
      * Commits the editor's changes and notifies ActionListeners.
-     * 
+     * <p>
      * Forces the current value to be taken from the AbstractFormatter and
      * set as the current value. This has no effect if there is no current
      * AbstractFormatter installed.
@@ -756,7 +750,7 @@ public class JXDatePicker extends JComponent {
 
     /**
      * Sets the editable property. If false, ...?
-     * 
+     * <p>
      * The default value is true.
      * 
      * @param value
@@ -967,16 +961,15 @@ public class JXDatePicker extends JComponent {
          * @return
          */
         private MouseListener createDoubleClickListener() {
-            MouseAdapter adapter = new MouseAdapter() {
+            return new MouseAdapter() {
 
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getClickCount() != 2) return;
                     todayAction.select = true;
                 }
-                
+
             };
-            return adapter;
         }
 
         @Override

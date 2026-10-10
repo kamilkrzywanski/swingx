@@ -37,7 +37,7 @@ import org.jdesktop.swingx.util.PaintUtils;
  * is that they implement the provideShape() method which returns
  * the outline shape of the area that this
  * painter will fill. Subclasses must implement the provideShape() method.
- *
+ * <p>
  * The AbstractAreaPainter provides support for the following common painting properties
  *
  * <ul>

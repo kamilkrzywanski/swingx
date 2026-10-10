@@ -69,9 +69,9 @@ public class TableSortControllerTest extends
     // --------------- start of #1291-swingx related tests
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter conversion throws too much if not sorted.
      */
     @Test
@@ -83,9 +83,9 @@ public class TableSortControllerTest extends
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter conversion throws too much if not sorted.
      */
     @Test
@@ -97,9 +97,9 @@ public class TableSortControllerTest extends
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter conversion throws too much if not sorted.
      */
     @Test
@@ -111,9 +111,9 @@ public class TableSortControllerTest extends
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter conversion throws too much if not sorted.
      */
     @Test
@@ -141,7 +141,7 @@ public class TableSortControllerTest extends
         };
         model.setValueAt(10, 0, 0);
         model.setValueAt(2, 1, 0);
-        TableSortController<TableModel> sorter = new TableSortController<TableModel>(
+        TableSortController<TableModel> sorter = new TableSortController<>(
                 model);
         sorter.setSortOrder(0, SortOrder.ASCENDING);
         assertEquals(0, sorter.convertRowIndexToModel(1));
@@ -173,7 +173,7 @@ public class TableSortControllerTest extends
 
     @Override
     protected int getColumnCount() {
-        return ((TableModel) controller.getModel()).getColumnCount();
+        return controller.getModel().getColumnCount();
     }
 
     // -------------------- utility methods and setup
@@ -184,7 +184,7 @@ public class TableSortControllerTest extends
      */
     private void initColumnClasses(StringValueRegistry registry,
             TableModel model) {
-        Map<Integer, Class<?>> classPerColumn = new HashMap<Integer, Class<?>>();
+        Map<Integer, Class<?>> classPerColumn = new HashMap<>();
         for (int i = 0; i < model.getColumnCount(); i++) {
             if (!Object.class.equals(model.getColumnClass(i))) {
                 classPerColumn.put(i, model.getColumnClass(i));
@@ -200,7 +200,7 @@ public class TableSortControllerTest extends
     @SuppressWarnings("unused")
     private void installPerClass(StringValueRegistry registry,
             Class<?>... clazz) {
-        Map<Integer, Class<?>> classPerColumn = new HashMap<Integer, Class<?>>();
+        Map<Integer, Class<?>> classPerColumn = new HashMap<>();
         for (int i = 0; i < clazz.length; i++) {
             classPerColumn.put(i, clazz[i]);
         }
@@ -210,7 +210,7 @@ public class TableSortControllerTest extends
     @Override
     protected TableSortController<TableModel> createDefaultSortController(
             TableModel model) {
-        return new TableSortController<TableModel>(model);
+        return new TableSortController<>(model);
     }
 
     @Override

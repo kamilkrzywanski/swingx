@@ -51,7 +51,7 @@ import javax.swing.border.EmptyBorder;
  * then the DefaultXXRenderers - PENDING JW: undecided - even after the generics removal, the
  * param list in the subclasses are the same) fill any reasonable 
  * defaults for those not applicable to the specific component context.
- * 
+ * <p>
  * With those raw properties given, a CellContext looks up and returns dependent visual
  * properties as appropriate for the concrete component. Typically, they are taken
  * from the component if supported, or requested from the UIManager.

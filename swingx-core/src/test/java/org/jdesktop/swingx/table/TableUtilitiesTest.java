@@ -101,10 +101,7 @@ public class TableUtilitiesTest extends InteractiveTestCase {
     
     @Test
     public void testPrefRowHeightMustBarkOnNull() {
-        assertThrows(NullPointerException.class, () -> {
-        TableUtilities.getPreferredRowHeight(null, -1);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> TableUtilities.getPreferredRowHeight(null, -1));}
     
     
     /**

@@ -23,7 +23,6 @@ package org.jdesktop.swingx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -114,7 +113,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
     
     /**
      * sets the PatternFilter control.
-     * 
+     * <p>
      * PENDING: change to do a addPatternMatcher to enable multiple control.
      * 
      */
@@ -161,7 +160,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
 //            PatternFilter filter = (PatternFilter) matcher;
 //            searchLabel.setText(filter.getColumnName());
 //        } else {
-            if (searchLabel.getText().length() == 0) { // ugly hack
+            if (searchLabel.getText().isEmpty()) { // ugly hack
                 searchLabel.setText("Field");
                 /** TODO: Remove this hack!!! */
 //            }
@@ -175,15 +174,15 @@ public class JXSearchPanel extends AbstractPatternPanel {
      */
     @Override
     public void match() {
-        for (Iterator<PatternMatcher> iter = getPatternMatchers().iterator(); iter.hasNext();) {
-            iter.next().setPattern(getPattern());
-            
+        for (PatternMatcher patternMatcher : getPatternMatchers()) {
+            patternMatcher.setPattern(getPattern());
+
         }
     }
 
     /**
      * set's the PatternModel's MatchRule to the selected in combo. 
-     * 
+     * <p>
      * NOTE: this
      * is public as an implementation side-effect! 
      * No need to ever call directly.
@@ -195,7 +194,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
 
     private List<PatternMatcher> getPatternMatchers() {
         if (patternMatchers == null) {
-            patternMatchers = new ArrayList<PatternMatcher>();
+            patternMatchers = new ArrayList<>();
         }
         return patternMatchers;
     }
@@ -233,7 +232,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
     
     private StringValue createStringValue(Locale locale) {
         // TODO Auto-generated method stub
-        Map<Object, String> keys = new HashMap<Object, String>();
+        Map<Object, String> keys = new HashMap<>();
         keys.put(PatternModel.MATCH_RULE_CONTAINS, 
                 PatternModel.MATCH_RULE_CONTAINS);
         keys.put(PatternModel.MATCH_RULE_ENDSWITH, 

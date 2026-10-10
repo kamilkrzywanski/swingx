@@ -36,23 +36,22 @@ public class JXErrorPaneVisualCheck extends InteractiveTestCase {
      */
     public void interactiveMinimalError() {
         Exception e = new NullPointerException("something ...");
-        
-        StringBuffer html = new StringBuffer("<html>");
-        html.append("<h2>" + "Error" + "</h2>");
-        html.append("<HR size='1' noshade>");
-        html.append("<div></div>");
-        html.append("<b>Message:</b>");
-        html.append("<pre>");
-        html.append("    " + e.toString());
-        html.append("</pre>");
-        html.append("<b>Level:</b>");
-        html.append("<pre>");
-        html.append("    " + ErrorLevel.SEVERE);
-        html.append("</pre>");
-        html.append("</html>");
 
-        ErrorInfo errorInfo = new ErrorInfo("Error", e.getMessage(), 
-                html.toString(), null, e, ErrorLevel.SEVERE, null);
+        String html = "<html>" + "<h2>" + "Error" + "</h2>" +
+                "<HR size='1' noshade>" +
+                "<div></div>" +
+                "<b>Message:</b>" +
+                "<pre>" +
+                "    " + e +
+                "</pre>" +
+                "<b>Level:</b>" +
+                "<pre>" +
+                "    " + ErrorLevel.SEVERE +
+                "</pre>" +
+                "</html>";
+
+        ErrorInfo errorInfo = new ErrorInfo("Error", e.getMessage(),
+                html, null, e, ErrorLevel.SEVERE, null);
         JXErrorPane.showDialog(null, 
                 errorInfo);
 
@@ -66,7 +65,7 @@ public class JXErrorPaneVisualCheck extends InteractiveTestCase {
     private static String escapeXml(String input) {
         String s = input == null ? "" : input.replace("&", "&amp;");
         s = s.replace("<", "&lt;");
-        return s = s.replace(">", "&gt;");
+        return s.replace(">", "&gt;");
     }
 
     /**
@@ -116,7 +115,7 @@ public class JXErrorPaneVisualCheck extends InteractiveTestCase {
             errorPane.setErrorInfo(null);
             fail("Failed to fail while setting null ErrorInfo");
         } catch (NullPointerException e) {
-            assertEquals( "ErrorInfo can\'t be null. Provide valid ErrorInfo object.", e.getMessage(),"Unexpected error message");
+            assertEquals("ErrorInfo can't be null. Provide valid ErrorInfo object.", e.getMessage(),"Unexpected error message");
             // ignore - expected.
         }
     }

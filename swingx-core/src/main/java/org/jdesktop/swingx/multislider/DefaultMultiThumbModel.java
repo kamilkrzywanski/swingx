@@ -23,8 +23,6 @@ package org.jdesktop.swingx.multislider;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +32,7 @@ import java.util.List;
  */
 public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
     
-    protected List<Thumb<E>>thumbs = new ArrayList<Thumb<E>>();
+    protected List<Thumb<E>>thumbs = new ArrayList<>();
     
     /** Creates a new instance of DefaultMultiThumbModel */
     public DefaultMultiThumbModel() {
@@ -44,7 +42,7 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
     // returns the index of the newly added thumb
     @Override
     public int addThumb(float value, E obj) {
-        Thumb<E> thumb = new Thumb<E>(this);
+        Thumb<E> thumb = new Thumb<>(this);
         thumb.setPosition(value);
         thumb.setObject(obj);
         thumbs.add(thumb);
@@ -58,7 +56,7 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
 
     @Override
     public void insertThumb(float value, E obj, int index) {
-        Thumb<E> thumb = new Thumb<E>(this);
+        Thumb<E> thumb = new Thumb<>(this);
         thumb.setPosition(value);
         thumb.setObject(obj);
         thumbs.add(index,thumb);
@@ -89,21 +87,11 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
 
     @Override
     public List<Thumb<E>> getSortedThumbs() {
-        List<Thumb<E>> list = new ArrayList<Thumb<E>>();
-        list.addAll(thumbs);
-        Collections.sort(list, new Comparator<Thumb<E>>() {
-            @Override
-            public int compare(Thumb<E> o1, Thumb<E> o2) {
-                float f1 = o1.getPosition();
-                float f2 = o2.getPosition();
-                if(f1<f2) {
-                    return -1;
-                }
-                if(f1>f2) {
-                    return 1;
-                }
-                return 0;
-            }
+        List<Thumb<E>> list = new ArrayList<>(thumbs);
+        list.sort((o1, o2) -> {
+            float f1 = o1.getPosition();
+            float f2 = o2.getPosition();
+            return Float.compare(f1, f2);
         });
         return list;
     }

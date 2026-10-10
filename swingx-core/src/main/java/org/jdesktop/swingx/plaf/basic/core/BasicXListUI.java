@@ -41,6 +41,7 @@ import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.Action;
 import javax.swing.CellRendererPane;
@@ -121,7 +122,7 @@ import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
  * <li> changed ListSelectionHandler to check if event handled by SortUI and 
  *   delegate to handler only if not
  * </ul> changed createListSelectionListener to return a ListSelectionHandler
- * 
+ * <p>
  * Differences for bug fixes (due to incorrectly extending super):
  * <ul>
  * <li> Issue #1495-swingx: getBaseline throughs NPE
@@ -142,8 +143,7 @@ import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
  */
 public class BasicXListUI  extends BasicListUI 
 {
-    private static final StringBuilder BASELINE_COMPONENT_KEY =
-        new StringBuilder("List.baselineComponent");
+    private static final String BASELINE_COMPONENT_KEY = "List.baselineComponent";
 
     protected JXList list = null;
     protected CellRendererPane rendererPane;
@@ -217,7 +217,7 @@ public class BasicXListUI  extends BasicListUI
      * models length changed, are handled similarly, see DataListener.
      */
 
-    protected final static int modelChanged = 1 << 0;
+    protected final static int modelChanged = 1;
     protected final static int selectionModelChanged = 1 << 1;
     protected final static int fontChanged = 1 << 2;
     protected final static int fixedCellWidthChanged = 1 << 3;
@@ -287,12 +287,12 @@ public class BasicXListUI  extends BasicListUI
             
             @Override
             public int getSize() {
-                return ((JXList) list).getElementCount();
+                return list.getElementCount();
             }
             
             @Override
             public Object getElementAt(int index) {
-                return ((JXList) list).getElementAt(index);
+                return list.getElementAt(index);
             }
             
             @Override
@@ -314,16 +314,16 @@ public class BasicXListUI  extends BasicListUI
      * @return
      */
     protected int getElementCount() {
-        return ((JXList) list).getElementCount();
+        return list.getElementCount();
     }
 
     protected Object getElementAt(int viewIndex) {
-        return ((JXList) list).getElementAt(viewIndex);
+        return list.getElementAt(viewIndex);
     }
 
     /**
      * Fix for Issue #1495: NPE on getBaseline.
-     * 
+     * <p>
      * As per contract, that methods needs to throw Exceptions on illegal
      * parameters. As we by-pass super, need to do the check and throw
      * ouerselves.
@@ -333,7 +333,7 @@ public class BasicXListUI  extends BasicListUI
      * @param height
      * 
      * @throws IllegalArgumentException if width or height < 0
-     * @throws NPE if c == null
+     * @throws NullPointerException if c == null
      */
     protected void checkBaselinePrecondition(JComponent c, int width, int height) {
         if (c == null) {
@@ -1051,7 +1051,7 @@ public class BasicXListUI  extends BasicListUI
         }
 
         Long l = (Long)UIManager.get("List.timeFactor");
-        timeFactor = (l!=null) ? l.longValue() : 1000L;
+        timeFactor = (l!=null) ? l : 1000L;
 
         updateIsFileList();
     }
@@ -1444,9 +1444,6 @@ public class BasicXListUI  extends BasicListUI
         if (layoutOrientation == JList.VERTICAL ||
                   (column == 0 && columnCount == 1)) {
             return getElementCount();
-        }
-        if (column >= columnCount) {
-            return -1;
         }
         if (layoutOrientation == JList.VERTICAL_WRAP) {
             if (column < (columnCount - 1)) {
@@ -1852,7 +1849,7 @@ public class BasicXListUI  extends BasicListUI
      * Please see {@link java.beans.XMLEncoder}.
      *
      * @see #createListSelectionListener
-     * @see #getCellBounds
+     * @see #getCellBounds(JList, int, int)
      * @see #installUI
      */
     public class ListSelectionHandler implements ListSelectionListener
@@ -2098,106 +2095,106 @@ public class BasicXListUI  extends BasicListUI
             BasicXListUI ui = (BasicXListUI)LookAndFeelUtils.getUIOfType(
                      list.getUI(), BasicXListUI.class);
 
-            if (name == SELECT_PREVIOUS_COLUMN) {
+            if (Objects.equals(name, SELECT_PREVIOUS_COLUMN)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextColumnIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_PREVIOUS_COLUMN_EXTEND) {
+            else if (Objects.equals(name, SELECT_PREVIOUS_COLUMN_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextColumnIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_PREVIOUS_COLUMN_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_PREVIOUS_COLUMN_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextColumnIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_NEXT_COLUMN) {
+            else if (Objects.equals(name, SELECT_NEXT_COLUMN)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextColumnIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_NEXT_COLUMN_EXTEND) {
+            else if (Objects.equals(name, SELECT_NEXT_COLUMN_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextColumnIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_NEXT_COLUMN_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_NEXT_COLUMN_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextColumnIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_PREVIOUS_ROW) {
+            else if (Objects.equals(name, SELECT_PREVIOUS_ROW)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_PREVIOUS_ROW_EXTEND) {
+            else if (Objects.equals(name, SELECT_PREVIOUS_ROW_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_PREVIOUS_ROW_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_PREVIOUS_ROW_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextIndex(list, ui, -1), -1);
             }
-            else if (name == SELECT_NEXT_ROW) {
+            else if (Objects.equals(name, SELECT_NEXT_ROW)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_NEXT_ROW_EXTEND) {
+            else if (Objects.equals(name, SELECT_NEXT_ROW_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_NEXT_ROW_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_NEXT_ROW_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextIndex(list, ui, 1), 1);
             }
-            else if (name == SELECT_FIRST_ROW) {
+            else if (Objects.equals(name, SELECT_FIRST_ROW)) {
                 changeSelection(list, CHANGE_SELECTION, 0, -1);
             }
-            else if (name == SELECT_FIRST_ROW_EXTEND) {
+            else if (Objects.equals(name, SELECT_FIRST_ROW_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION, 0, -1);
             }
-            else if (name == SELECT_FIRST_ROW_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_FIRST_ROW_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD, 0, -1);
             }
-            else if (name == SELECT_LAST_ROW) {
+            else if (Objects.equals(name, SELECT_LAST_ROW)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getElementCount(list) - 1, 1);
             }
-            else if (name == SELECT_LAST_ROW_EXTEND) {
+            else if (Objects.equals(name, SELECT_LAST_ROW_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getElementCount(list) - 1, 1);
             }
-            else if (name == SELECT_LAST_ROW_CHANGE_LEAD) {
+            else if (Objects.equals(name, SELECT_LAST_ROW_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getElementCount(list) - 1, 1);
             }
-            else if (name == SCROLL_UP) {
+            else if (Objects.equals(name, SCROLL_UP)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextPageIndex(list, -1), -1);
             }
-            else if (name == SCROLL_UP_EXTEND) {
+            else if (Objects.equals(name, SCROLL_UP_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextPageIndex(list, -1), -1);
             }
-            else if (name == SCROLL_UP_CHANGE_LEAD) {
+            else if (Objects.equals(name, SCROLL_UP_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextPageIndex(list, -1), -1);
             }
-            else if (name == SCROLL_DOWN) {
+            else if (Objects.equals(name, SCROLL_DOWN)) {
                 changeSelection(list, CHANGE_SELECTION,
                                 getNextPageIndex(list, 1), 1);
             }
-            else if (name == SCROLL_DOWN_EXTEND) {
+            else if (Objects.equals(name, SCROLL_DOWN_EXTEND)) {
                 changeSelection(list, EXTEND_SELECTION,
                                 getNextPageIndex(list, 1), 1);
             }
-            else if (name == SCROLL_DOWN_CHANGE_LEAD) {
+            else if (Objects.equals(name, SCROLL_DOWN_CHANGE_LEAD)) {
                 changeSelection(list, CHANGE_LEAD,
                                 getNextPageIndex(list, 1), 1);
             }
-            else if (name == SELECT_ALL) {
+            else if (Objects.equals(name, SELECT_ALL)) {
                 selectAll(list);
             }
             else if (name == CLEAR_SELECTION) {
                 clearSelection(list);
             }
-            else if (name == ADD_TO_SELECTION) {
+            else if (Objects.equals(name, ADD_TO_SELECTION)) {
                 int index = adjustIndex(
                     list.getSelectionModel().getLeadSelectionIndex(), list);
 
@@ -2209,7 +2206,7 @@ public class BasicXListUI  extends BasicListUI
                     list.setValueIsAdjusting(false);
                 }
             }
-            else if (name == TOGGLE_AND_ANCHOR) {
+            else if (Objects.equals(name, TOGGLE_AND_ANCHOR)) {
                 int index = adjustIndex(
                     list.getSelectionModel().getLeadSelectionIndex(), list);
 
@@ -2219,13 +2216,13 @@ public class BasicXListUI  extends BasicListUI
                     list.addSelectionInterval(index, index);
                 }
             }
-            else if (name == EXTEND_TO) {
+            else if (Objects.equals(name, EXTEND_TO)) {
                 changeSelection(
                     list, EXTEND_SELECTION,
                     adjustIndex(list.getSelectionModel().getLeadSelectionIndex(), list),
                     0);
             }
-            else if (name == MOVE_SELECTION_TO) {
+            else if (Objects.equals(name, MOVE_SELECTION_TO)) {
                 changeSelection(
                     list, CHANGE_SELECTION,
                     adjustIndex(list.getSelectionModel().getLeadSelectionIndex(), list),
@@ -2298,7 +2295,7 @@ public class BasicXListUI  extends BasicListUI
                 return -1;
             }
 
-            int index = -1;
+            int index;
             Rectangle visRect = list.getVisibleRect();
             ListSelectionModel lsm = list.getSelectionModel();
             int lead = adjustIndex(lsm.getLeadSelectionIndex(), list);
@@ -2452,7 +2449,7 @@ public class BasicXListUI  extends BasicListUI
                     // casting should be safe since the action is only enabled
                     // for DefaultListSelectionModel
                     if (lsm instanceof DefaultListSelectionModel)
-                    ((DefaultListSelectionModel)lsm).moveLeadSelectionIndex(index);
+                        ((DefaultListSelectionModel)lsm).moveLeadSelectionIndex(index);
                 }
             }
         }
@@ -2626,7 +2623,7 @@ public class BasicXListUI  extends BasicListUI
         
         /**
          * Invoked when a key has been typed.
-         * 
+         * <p>
          * Moves the keyboard focus to the first element whose prefix matches the
          * sequence of alphanumeric keys pressed by the user with delay less
          * than value of <code>timeFactor</code> property (or 1000 milliseconds
@@ -2686,7 +2683,7 @@ public class BasicXListUI  extends BasicListUI
         
         /**
          * Invoked when a key has been pressed.
-         *
+         * <p>
          * Checks to see if the key event is a navigation key to prevent
          * dispatching these keys for the first letter navigation.
          */
@@ -2715,10 +2712,7 @@ public class BasicXListUI  extends BasicListUI
             InputMap inputMap = list.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
             KeyStroke key = KeyStroke.getKeyStrokeForEvent(event);
 
-            if (inputMap != null && inputMap.get(key) != null) {
-                return true;
-            }
-            return false;
+            return inputMap != null && inputMap.get(key) != null;
         }  
 
         // 
@@ -2730,7 +2724,7 @@ public class BasicXListUI  extends BasicListUI
             /* If the JList.model property changes, remove our listener,
              * listDataListener from the old model and add it to the new one.
              */
-            if (propertyName == "model") {
+            if (Objects.equals(propertyName, "model")) {
                 ListModel oldModel = (ListModel)e.getOldValue();
                 ListModel newModel = (ListModel)e.getNewValue();
                 if (oldModel != null) {
@@ -2746,7 +2740,7 @@ public class BasicXListUI  extends BasicListUI
             /* If the JList.selectionModel property changes, remove our listener,
              * listSelectionListener from the old selectionModel and add it to the new one.
              */
-            else if (propertyName == "selectionModel") {
+            else if (Objects.equals(propertyName, "selectionModel")) {
                 ListSelectionModel oldModel = (ListSelectionModel)e.getOldValue();
                 ListSelectionModel newModel = (ListSelectionModel)e.getNewValue();
                 if (oldModel != null) {
@@ -2778,28 +2772,28 @@ public class BasicXListUI  extends BasicListUI
                 updateLayoutStateNeeded |= fixedCellWidthChanged;
                 redrawList();
             }
-            else if (propertyName == "cellRenderer") {
+            else if (Objects.equals(propertyName, "cellRenderer")) {
                 updateLayoutStateNeeded |= cellRendererChanged;
                 redrawList();
             }
-            else if (propertyName == "selectionForeground") {
+            else if (Objects.equals(propertyName, "selectionForeground")) {
                 list.repaint();
             }
-            else if (propertyName == "selectionBackground") {
+            else if (Objects.equals(propertyName, "selectionBackground")) {
                 list.repaint();
             }
-            else if ("layoutOrientation" == propertyName) {
+            else if ("layoutOrientation".equals(propertyName)) {
                 updateLayoutStateNeeded |= layoutOrientationChanged;
                 layoutOrientation = list.getLayoutOrientation();
                 redrawList();
             }
-            else if ("visibleRowCount" == propertyName) {
+            else if ("visibleRowCount".equals(propertyName)) {
                 if (layoutOrientation != JList.VERTICAL) {
                     updateLayoutStateNeeded |= layoutOrientationChanged;
                     redrawList();
                 }
             }
-            else if ("componentOrientation" == propertyName) {
+            else if ("componentOrientation".equals(propertyName)) {
                 isLeftToRight = list.getComponentOrientation().isLeftToRight();
                 updateLayoutStateNeeded |= componentOrientationChanged;
                 redrawList();
@@ -2807,10 +2801,10 @@ public class BasicXListUI  extends BasicListUI
                 InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
                 SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED,
                                                  inputMap);
-            } else if ("List.isFileList" == propertyName) {
+            } else if ("List.isFileList".equals(propertyName)) {
                 updateIsFileList();
                 redrawList();
-            } else if ("dropLocation" == propertyName) {
+            } else if ("dropLocation".equals(propertyName)) {
                 JList.DropLocation oldValue = (JList.DropLocation)e.getOldValue();
                 repaintDropLocation(oldValue);
                 repaintDropLocation(list.getDropLocation());
@@ -3123,16 +3117,15 @@ public class BasicXListUI  extends BasicListUI
                     return null;
                 }
                 
-                StringBuffer plainBuf = new StringBuffer();
-                StringBuffer htmlBuf = new StringBuffer();
+                StringBuilder plainBuf = new StringBuilder();
+                StringBuilder htmlBuf = new StringBuilder();
                 
                 htmlBuf.append("<html>\n<body>\n<ul>\n");
 
-                for (int i = 0; i < values.size(); i++) {
-                    Object obj = values.get(i);
+                for (Object obj : values) {
                     String val = ((obj == null) ? "" : obj.toString());
-                    plainBuf.append(val + "\n");
-                    htmlBuf.append("  <li>" + val + "\n");
+                    plainBuf.append(val).append("\n");
+                    htmlBuf.append("  <li>").append(val).append("\n");
                 }
                 
                 // remove the last newline

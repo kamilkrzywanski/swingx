@@ -51,9 +51,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     /**
      * 
      * Issue #1195-swingx
-     * 
+     * <p>
      * Selection of last row lost if a row above is removed.
-     * 
+     * <p>
      * Core issue: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6894632
      */
     @Test
@@ -72,7 +72,7 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Selection of last row lost if a row above is removed.
-     * 
+     * <p>
      * Core issue: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6894632
      */
     @Test
@@ -96,9 +96,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
 //-------------------- conversion methods: to model
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
     @Test
@@ -113,9 +113,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
         });}
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
     @Test
@@ -132,9 +132,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
     @Test
@@ -150,9 +150,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
     @Test
@@ -166,9 +166,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
     @Test
@@ -187,9 +187,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model insert.
      */
@@ -202,9 +202,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model delete.
      */
@@ -220,9 +220,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
 //------------------------ conversion methods: toModel    
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (removed) model row index
      *    if sorted - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
@@ -236,9 +236,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     }
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (removed) model row index
      *    if sorted - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
@@ -251,9 +251,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter throws on invalid (silently added) model row index
      *    if sorted - that's expected behaviour because it was not notified about
      *    a model change.
@@ -270,9 +270,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (silently added) model row index
      *    if not sorted - that's not expected behaviour because it's invalid with
      *    sorted state.
@@ -290,9 +290,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (removed) model row index
      *    if sorted - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
@@ -307,9 +307,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does throw on invalid (removed) model row index
      *    if not sorted - shouldn't because it wasn't notified about the model 
      *    change (responsibility of caller)
@@ -322,9 +322,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (removed) model row index
      *    if has filter - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
@@ -339,9 +339,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (removed) model row index
      *    if has filter - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
@@ -358,9 +358,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter throws on invalid (silently added) model row index
      *    if sorted - that's expected behaviour because it was not notified about
      *    a model change.
@@ -377,9 +377,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter does not throw on invalid (silently added) model row index
      *    if not sorted - that's not expected behaviour because it's invalid with
      *    sorted state.
@@ -396,9 +396,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model insert.
      */
@@ -410,9 +410,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model delete.
      */
@@ -426,9 +426,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model insert.
      */
@@ -440,9 +440,9 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
-     * 
+     * <p>
      * Table looses selection of last row if deleted before last.
-     * 
+     * <p>
      * Here: DefaultRowSorter modelRowCount must be unchanged after silent
      *   model delete.
      */
@@ -482,7 +482,7 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
         super.setUp();
         rows = 10;
         model = createAscendingTableModel(rows);
-        sorter = new TableSortController<TableModel>(model);
+        sorter = new TableSortController<>(model);
     }
 
     

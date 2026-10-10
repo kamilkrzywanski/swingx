@@ -34,14 +34,14 @@ import org.jdesktop.swingx.plaf.UIAction;
 
 /**
  * Controller for "live" behaviour of XXRenderers.
- * 
+ * <p>
  * Once installed on a component, it updates renderer's rollover 
  * state based on the component's rollover properties. Rollover
  * client properties are Points with cell coordinates 
  * in the view coordinate
  * system as appropriate for the concrete component 
  * (Point.x == column, Point.y == row).
- * 
+ * <p>
  * Repaints effected component regions. Updates
  * link cursor. Installs a click-action bound to space-released in the target's
  * actionMap/inputMap.
@@ -127,10 +127,10 @@ public abstract class RolloverController<T extends JComponent> implements
      * 
      * The result
      * may be null if there is none or if rollover is not enabled.
-     * 
+     * <p>
      * If the prepare flag is true, the renderer will be prepared 
      * with value and state as appropriate for the given location.
-     * 
+     * <p>
      * Note: PRE - the location must be valid in cell coordinate space.
      * 
      * @param location a valid location in cell coordinates, p.x == column, p.y == row.
@@ -174,12 +174,12 @@ public abstract class RolloverController<T extends JComponent> implements
     
     /**
      * The coordinates of the focused cell in view coordinates. 
-     * 
+     * <p>
      * This method is called if the click action is invoked by a keyStroke.
      * The returned cell coordinates should be related to
      * what is typically interpreted as "focused" in the context of the
      * component.
-     * 
+     * <p>
      * p.x == focused column, p.y == focused row. 
      * A null return value or any coordinate value of < 0  
      * is interpreted as "outside".

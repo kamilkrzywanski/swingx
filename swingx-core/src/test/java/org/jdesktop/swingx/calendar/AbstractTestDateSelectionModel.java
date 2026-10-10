@@ -171,7 +171,7 @@ public class AbstractTestDateSelectionModel {
     
     /**
      * Issue #713-Swingx: DateSelectionModel needs richer api.
-     * 
+     * <p>
      * Add api to access first/last.
      */
     @Test
@@ -183,7 +183,7 @@ public class AbstractTestDateSelectionModel {
     
     /**
      * Issue #713-Swingx: DateSelectionModel needs richer api.
-     * 
+     * <p>
      * Add api to access first/last.
      */
     @Test
@@ -195,7 +195,7 @@ public class AbstractTestDateSelectionModel {
 
     /**
      * Issue ??-Swingx: DateSelectionModel needs richer api.
-     * 
+     * <p>
      * Add api to access first/last.
      */
     @Test
@@ -205,7 +205,7 @@ public class AbstractTestDateSelectionModel {
     
     /**
      * Issue ??-Swingx: DateSelectionModel needs richer api.
-     * 
+     * <p>
      * Add api to access first/last.
      */
     @Test
@@ -216,7 +216,7 @@ public class AbstractTestDateSelectionModel {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Unselectable dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear them. 
@@ -227,7 +227,7 @@ public class AbstractTestDateSelectionModel {
         if (model.getTimeZone().equals(tz)) {
             tz = TimeZone.getTimeZone("GMT+5");
         }
-        TreeSet<Date> treeSet = new TreeSet<Date>();
+        TreeSet<Date> treeSet = new TreeSet<>();
         treeSet.add(yesterday);
         model.setUnselectableDates(treeSet);
         model.setTimeZone(tz);
@@ -242,7 +242,7 @@ public class AbstractTestDateSelectionModel {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Selected dates are "start of day" in the timezone they had been 
      * selected. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the selection. 
@@ -267,7 +267,7 @@ public class AbstractTestDateSelectionModel {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Bound dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the bound. 
@@ -286,7 +286,7 @@ public class AbstractTestDateSelectionModel {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p>
      * Bound dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the bound. 
@@ -305,7 +305,7 @@ public class AbstractTestDateSelectionModel {
 
     /**
      * Issue #694-swingx: setLocale must respect timezone.
-     * 
+     * <p>
      * test that locale update respects timezone.
      */
     @Test
@@ -699,13 +699,13 @@ public class AbstractTestDateSelectionModel {
 
     /**
      * Common contract: the exact date marked as unselectable
-     * 
+     * <p>
      * first set the unselectables then set the selection to it must not change
      * the selection state (still empty).
      */
     @Test
     public void testUnselectableDates() {
-        SortedSet<Date> unselectableDates = new TreeSet<Date>();
+        SortedSet<Date> unselectableDates = new TreeSet<>();
         unselectableDates.add(today);
         model.setUnselectableDates(unselectableDates);
         model.setSelectionInterval(today, today);

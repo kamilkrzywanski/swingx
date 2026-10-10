@@ -134,7 +134,7 @@ public class SearchPredicate implements HighlightPredicate {
      */
     public SearchPredicate(String regex, int row, int column) {
         // test against empty string
-        this((regex != null) && (regex.length() > 0) ? 
+        this((regex != null) && (!regex.isEmpty()) ?
                 Pattern.compile(regex) : null, row, column);
     }
 
@@ -188,7 +188,7 @@ public class SearchPredicate implements HighlightPredicate {
          int  columnToTest = adapter.convertColumnIndexToModel(adapter.column);
          String value = adapter.getString(columnToTest);
          
-         if ((value == null) || (value.length() == 0)) {
+         if ((value == null) || (value.isEmpty())) {
              return false;
          }
          return pattern.matcher(value).find();
@@ -213,10 +213,7 @@ public class SearchPredicate implements HighlightPredicate {
 
     private boolean isEnabled() {
         Pattern pattern = getPattern();
-        if (pattern == null || MATCH_ALL.equals(pattern.pattern())) {
-            return false;
-        }
-        return true;
+        return pattern != null && !MATCH_ALL.equals(pattern.pattern());
     }
 
 

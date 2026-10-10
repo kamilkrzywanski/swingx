@@ -51,10 +51,10 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Core bug: <a
      * href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6700748">#6700748</a>
-     * 
+     * <p>
      * Hacks around, use one or other: 
      * - the usual performance optimization (override validate etc to do nothing) 
      * - rendering component return false on isVisible
@@ -77,7 +77,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Check WrappingIconPanel in tree: blinking. Can't override the validate
      * because it's needed to layout the component correctly.
      */
@@ -96,7 +96,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Check Hyperlink in Table: okay, because it has the validate et al methods
      * overridden to do nothing.
      */
@@ -115,7 +115,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Test WrappingIconPanel in Table.
      */
     public void interactiveDropOnWrappingIconPanelTableBlinks() {
@@ -133,7 +133,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Check plain JLabel as renderer in Table.
      */
     public void interactiveDropOnPlainLabelTableBlinks() {
@@ -159,7 +159,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #370-swingx: drop-on not shown correctly.
-     * 
+     * <p>
      * Check core default renderer as renderer in Table.
      */
     public void interactiveDropOnVisualsTable() {
@@ -182,7 +182,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #370-swingx: drop-on not shown correctly.
-     * 
+     * <p>
      * Check core default renderer as renderer in Table.
      */
     public void interactiveDropOnVisualsList() {
@@ -204,7 +204,7 @@ public class DNDRendererVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #370-swingx: drop-on not shown correctly.
-     * 
+     * <p>
      * Check core default renderer as renderer in Table.
      */
     public void interactiveDropOnVisualsTree() {

@@ -25,7 +25,6 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jdesktop.swingx.plaf.UIDependent;
@@ -73,7 +72,7 @@ public class CompoundHighlighter extends AbstractHighlighter
      */
     public CompoundHighlighter(HighlightPredicate predicate, Highlighter... inList) {
         super(predicate);
-        highlighters = new ArrayList<Highlighter>();
+        highlighters = new ArrayList<>();
         setHighlighters(inList);
     }
 
@@ -118,7 +117,7 @@ public class CompoundHighlighter extends AbstractHighlighter
 
     /**
      * Adds a highlighter to the pipeline.
-     *
+     * <p> <p>
      * PENDING: Duplicate inserts?
      * 
      * @param highlighter highlighter to add
@@ -164,7 +163,7 @@ public class CompoundHighlighter extends AbstractHighlighter
      */
     public Highlighter[] getHighlighters() {
         if (highlighters.isEmpty()) return EMPTY_HIGHLIGHTERS;
-        return highlighters.toArray(new Highlighter[highlighters.size()]);
+        return highlighters.toArray(new Highlighter[0]);
     }
 
 //--------------------- implement UIDependent
@@ -204,14 +203,7 @@ public class CompoundHighlighter extends AbstractHighlighter
      * 
      */
     protected ChangeListener createHighlighterChangeListener() {
-        return highlighterChangeListener = new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                fireStateChanged();
-            }
-            
-        };
+        return highlighterChangeListener = e -> fireStateChanged();
     }
 
    /**

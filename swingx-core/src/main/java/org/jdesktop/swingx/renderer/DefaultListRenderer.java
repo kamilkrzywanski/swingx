@@ -120,7 +120,7 @@ public class DefaultListRenderer extends AbstractRenderer
      * Instantiates a default list renderer with a default component
      * controller using the given converter and horizontal 
      * alignment. 
-     * 
+     * <p>
      * PENDING JW: how to guarantee core consistent icon handling? Leave to
      * client code?
      * 

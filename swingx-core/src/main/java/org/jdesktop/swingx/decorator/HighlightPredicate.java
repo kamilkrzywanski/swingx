@@ -78,7 +78,7 @@ public interface HighlightPredicate {
     /**
      * Unconditional true.
      */
-    public static final HighlightPredicate ALWAYS = new HighlightPredicate() {
+    HighlightPredicate ALWAYS = new HighlightPredicate() {
 
         /**
          * {@inheritDoc} <p>
@@ -95,7 +95,7 @@ public interface HighlightPredicate {
     /**
      * Unconditional false.
      */
-    public static final HighlightPredicate NEVER = new HighlightPredicate() {
+    HighlightPredicate NEVER = new HighlightPredicate() {
 
         /**
          * {@inheritDoc} <p>
@@ -112,7 +112,7 @@ public interface HighlightPredicate {
     /**
      * Rollover  Row.
      */
-    public static final HighlightPredicate ROLLOVER_ROW = new HighlightPredicate() {
+    HighlightPredicate ROLLOVER_ROW = new HighlightPredicate() {
         
         /**
          * @inheritDoc
@@ -135,7 +135,7 @@ public interface HighlightPredicate {
     /**
      * Rollover  Column.
      */
-    public static final HighlightPredicate ROLLOVER_COLUMN = new HighlightPredicate() {
+    HighlightPredicate ROLLOVER_COLUMN = new HighlightPredicate() {
         
         /**
          * @inheritDoc
@@ -157,7 +157,7 @@ public interface HighlightPredicate {
     /**
      * Rollover  Cell.
      */
-    public static final HighlightPredicate ROLLOVER_CELL = new HighlightPredicate() {
+    HighlightPredicate ROLLOVER_CELL = new HighlightPredicate() {
         
         /**
          * @inheritDoc
@@ -180,7 +180,7 @@ public interface HighlightPredicate {
     /**
      * Is editable.
      */
-    public static final HighlightPredicate EDITABLE = new HighlightPredicate() {
+    HighlightPredicate EDITABLE = new HighlightPredicate() {
         /**
          * {@inheritDoc} <p>
          * 
@@ -195,7 +195,7 @@ public interface HighlightPredicate {
     /**
      * Convenience for read-only (same as !editable).
      */
-    public static final HighlightPredicate READ_ONLY = new HighlightPredicate() {
+    HighlightPredicate READ_ONLY = new HighlightPredicate() {
         /**
          * {@inheritDoc} <p>
          * 
@@ -210,7 +210,7 @@ public interface HighlightPredicate {
     /**
      * Leaf predicate.
      */
-    public static final HighlightPredicate IS_LEAF = new HighlightPredicate() {
+    HighlightPredicate IS_LEAF = new HighlightPredicate() {
         /**
          * {@inheritDoc} <p>
          * 
@@ -225,7 +225,7 @@ public interface HighlightPredicate {
     /**
      * Folder predicate - convenience: same as !IS_LEAF.
      */
-    public static final HighlightPredicate IS_FOLDER = new HighlightPredicate() {
+    HighlightPredicate IS_FOLDER = new HighlightPredicate() {
         /**
          * {@inheritDoc} <p>
          * 
@@ -240,62 +240,51 @@ public interface HighlightPredicate {
     /**
      * Selected predicate.
      */
-    public static final HighlightPredicate IS_SELECTED = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer,
-                ComponentAdapter adapter) {
-            return adapter.isSelected();
-        }
-        
-    };
+    HighlightPredicate IS_SELECTED = (renderer, adapter) -> adapter.isSelected();
     
     /**
      * Determines if the displayed text is truncated.
      *
      * @author Karl Schaefer
      */
-    public static final HighlightPredicate IS_TEXT_TRUNCATED = new HighlightPredicate() {
-        @Override
-        public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-            JComponent c = renderer instanceof JComponent ? (JComponent) renderer : null;
-            String text = adapter.getString();
-            Icon icon = null;
-            //defaults from JLabel
-            int verticalAlignment = SwingConstants.CENTER;
-            int horizontalAlignment = SwingConstants.LEADING;
-            int verticalTextPosition = SwingConstants.CENTER;
-            int horizontalTextPosition = SwingConstants.TRAILING;
-            int gap = 0;
-            
-            if (renderer instanceof JLabel) {
-                icon = ((JLabel) renderer).getIcon();
-                gap = ((JLabel) renderer).getIconTextGap();
-            } else if (renderer instanceof AbstractButton) {
-                icon = ((AbstractButton) renderer).getIcon();
-                gap = ((AbstractButton) renderer).getIconTextGap();
-            }
-            
-            Rectangle cellBounds = adapter.getCellBounds();
-            if (c != null && c.getBorder() != null) {
-                Insets insets = c.getBorder().getBorderInsets(c);
-                cellBounds.width -= insets.left + insets.right;
-                cellBounds.height -= insets.top + insets.bottom;
-            }
-            
-            String result = SwingUtilities.layoutCompoundLabel(c, renderer
-                    .getFontMetrics(renderer.getFont()), text, icon, verticalAlignment,
-                    horizontalAlignment, verticalTextPosition, horizontalTextPosition, cellBounds,
-                    new Rectangle(), new Rectangle(), gap);
-            
-            return !text.equals(result);
+    HighlightPredicate IS_TEXT_TRUNCATED = (renderer, adapter) -> {
+        JComponent c = renderer instanceof JComponent ? (JComponent) renderer : null;
+        String text = adapter.getString();
+        Icon icon = null;
+        //defaults from JLabel
+        int verticalAlignment = SwingConstants.CENTER;
+        int horizontalAlignment = SwingConstants.LEADING;
+        int verticalTextPosition = SwingConstants.CENTER;
+        int horizontalTextPosition = SwingConstants.TRAILING;
+        int gap = 0;
+
+        if (renderer instanceof JLabel) {
+            icon = ((JLabel) renderer).getIcon();
+            gap = ((JLabel) renderer).getIconTextGap();
+        } else if (renderer instanceof AbstractButton) {
+            icon = ((AbstractButton) renderer).getIcon();
+            gap = ((AbstractButton) renderer).getIconTextGap();
         }
+
+        Rectangle cellBounds = adapter.getCellBounds();
+        if (c != null && c.getBorder() != null) {
+            Insets insets = c.getBorder().getBorderInsets(c);
+            cellBounds.width -= insets.left + insets.right;
+            cellBounds.height -= insets.top + insets.bottom;
+        }
+
+        String result = SwingUtilities.layoutCompoundLabel(c, renderer
+                .getFontMetrics(renderer.getFont()), text, icon, verticalAlignment,
+                horizontalAlignment, verticalTextPosition, horizontalTextPosition, cellBounds,
+                new Rectangle(), new Rectangle(), gap);
+
+        return !text.equals(result);
     };
     
     /**
      * Focus predicate.
      */
-    public static final HighlightPredicate HAS_FOCUS = new HighlightPredicate() {
+    HighlightPredicate HAS_FOCUS = new HighlightPredicate() {
         /**
          * {@inheritDoc} <p>
          * 
@@ -308,75 +297,45 @@ public interface HighlightPredicate {
     };
     /**
      * Even rows.
-     * 
+     * <p>
      * PENDING: this is zero based (that is "really" even 0, 2, 4 ..), differing 
      * from the old AlternateRowHighlighter.
      * 
      */
-    public static final HighlightPredicate EVEN = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-            return adapter.row % 2 == 0;
-        }
-        
-    };
+    HighlightPredicate EVEN = (renderer, adapter) -> adapter.row % 2 == 0;
     
     /**
      * Odd rows.
-     * 
+     * <p>
      * PENDING: this is zero based (that is 1, 3, 4 ..), differs from 
      * the old implementation which was one based?
      * 
      */
-    public static final HighlightPredicate ODD = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-            return !EVEN.isHighlighted(renderer, adapter);
-        }
-        
-    };
+    HighlightPredicate ODD = (renderer, adapter) -> !EVEN.isHighlighted(renderer, adapter);
     
     /**
      * Negative BigDecimals.
      */
-     public static final HighlightPredicate BIG_DECIMAL_NEGATIVE = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer,
-                ComponentAdapter adapter) {
-            return (adapter.getValue() instanceof BigDecimal) 
-               && ((BigDecimal) adapter.getValue()).compareTo(BigDecimal.ZERO) < 0;
-        }
-        
-    };
+    HighlightPredicate BIG_DECIMAL_NEGATIVE = (renderer, adapter) -> (adapter.getValue() instanceof BigDecimal)
+       && ((BigDecimal) adapter.getValue()).compareTo(BigDecimal.ZERO) < 0;
 
     /**
      * Negative Number.
      */
-     public static final HighlightPredicate INTEGER_NEGATIVE = new HighlightPredicate() {
-
-        @Override
-        public boolean isHighlighted(Component renderer,
-                ComponentAdapter adapter) {
-            return (adapter.getValue() instanceof Number) 
-               && ((Number) adapter.getValue()).intValue() < 0;
-        }
-        
-    };
+    HighlightPredicate INTEGER_NEGATIVE = (renderer, adapter) -> (adapter.getValue() instanceof Number)
+       && ((Number) adapter.getValue()).intValue() < 0;
 
     // PENDING: these general type empty arrays don't really belong here?
-    public static final HighlightPredicate[] EMPTY_PREDICATE_ARRAY = new HighlightPredicate[0];
-    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-    public static final Integer[] EMPTY_INTEGER_ARRAY = new Integer[0];
+    HighlightPredicate[] EMPTY_PREDICATE_ARRAY = new HighlightPredicate[0];
+    Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    Integer[] EMPTY_INTEGER_ARRAY = new Integer[0];
     
 //----------------- logical implementations amongst HighlightPredicates
     
     /**
      * Negation of a HighlightPredicate.
      */
-    public static class NotHighlightPredicate implements HighlightPredicate {
+    class NotHighlightPredicate implements HighlightPredicate {
         
         private HighlightPredicate predicate;
         
@@ -412,7 +371,7 @@ public interface HighlightPredicate {
     /**
      * Ands a list of predicates.
      */
-    public static class AndHighlightPredicate implements HighlightPredicate {
+    class AndHighlightPredicate implements HighlightPredicate {
         
         private List<HighlightPredicate> predicate;
         
@@ -431,7 +390,7 @@ public interface HighlightPredicate {
          * @throws NullPointerException if the collection is null
          */
         public AndHighlightPredicate(Collection<HighlightPredicate> list) {
-            this.predicate = new ArrayList<HighlightPredicate>(Contract.asNotNull(list, "predicate list must not be null"));
+            this.predicate = new ArrayList<>(Contract.asNotNull(list, "predicate list must not be null"));
         }
 
         /**
@@ -452,7 +411,7 @@ public interface HighlightPredicate {
          */
         public HighlightPredicate[] getHighlightPredicates() {
             if (predicate.isEmpty()) return EMPTY_PREDICATE_ARRAY;
-            return predicate.toArray(new HighlightPredicate[predicate.size()]);
+            return predicate.toArray(HighlightPredicate.EMPTY_PREDICATE_ARRAY);
         }
         
         
@@ -461,7 +420,7 @@ public interface HighlightPredicate {
     /**
      * Or's a list of predicates.
      */
-    public static class OrHighlightPredicate implements HighlightPredicate {
+    class OrHighlightPredicate implements HighlightPredicate {
         
         private List<HighlightPredicate> predicate;
         
@@ -480,7 +439,7 @@ public interface HighlightPredicate {
          * @throws NullPointerException if the collection is null
          */
         public OrHighlightPredicate(Collection<HighlightPredicate> list) {
-            this.predicate = new ArrayList<HighlightPredicate>(Contract.asNotNull(list, "predicate list must not be null"));
+            this.predicate = new ArrayList<>(Contract.asNotNull(list, "predicate list must not be null"));
         }
 
         /**
@@ -500,14 +459,14 @@ public interface HighlightPredicate {
          */
         public HighlightPredicate[] getHighlightPredicates() {
             if (predicate.isEmpty()) return EMPTY_PREDICATE_ARRAY;
-            return predicate.toArray(new HighlightPredicate[predicate.size()]);
+            return predicate.toArray(HighlightPredicate.EMPTY_PREDICATE_ARRAY);
         }
         
     }
     
 //------------------------ coordinates
     
-    public static class RowGroupHighlightPredicate implements HighlightPredicate {
+    class RowGroupHighlightPredicate implements HighlightPredicate {
 
         private int linesPerGroup;
 
@@ -549,7 +508,7 @@ public interface HighlightPredicate {
      * A HighlightPredicate based on column index.
      * 
      */
-    public static class ColumnHighlightPredicate implements HighlightPredicate {
+    class ColumnHighlightPredicate implements HighlightPredicate {
         List<Integer> columnList;
         
         /**
@@ -559,9 +518,9 @@ public interface HighlightPredicate {
          * @param columns the columns to highlight in model coordinates.
          */
         public ColumnHighlightPredicate(int... columns) {
-            columnList = new ArrayList<Integer>();
-            for (int i = 0; i < columns.length; i++) {
-                columnList.add(columns[i]);
+            columnList = new ArrayList<>();
+            for (int column : columns) {
+                columnList.add(column);
             }
         }
         
@@ -585,7 +544,7 @@ public interface HighlightPredicate {
          */
         public Integer[] getColumns() {
             if (columnList.isEmpty()) return EMPTY_INTEGER_ARRAY;
-            return columnList.toArray(new Integer[columnList.size()]);
+            return columnList.toArray(new Integer[0]);
         }
         
     }
@@ -595,7 +554,7 @@ public interface HighlightPredicate {
      * A HighlightPredicate based on column identifier.
      * 
      */
-    public static class IdentifierHighlightPredicate implements HighlightPredicate {
+    class IdentifierHighlightPredicate implements HighlightPredicate {
         List<Object> columnList;
         
         /**
@@ -605,10 +564,8 @@ public interface HighlightPredicate {
          * @param columns the identitiers of the columns to highlight.
          */
         public IdentifierHighlightPredicate(Object... columns) {
-            columnList = new ArrayList<Object>();
-            for (int i = 0; i < columns.length; i++) {
-                columnList.add(columns[i]);
-            }
+            columnList = new ArrayList<>();
+            columnList.addAll(Arrays.asList(columns));
         }
         
         /**
@@ -642,7 +599,7 @@ public interface HighlightPredicate {
      * 
      * @author Karl Schaefer
      */
-    public static class DepthHighlightPredicate implements HighlightPredicate {
+    class DepthHighlightPredicate implements HighlightPredicate {
         private List<Integer> depthList;
         
         /**
@@ -652,9 +609,9 @@ public interface HighlightPredicate {
          * @param depths the depths to highlight
          */
         public DepthHighlightPredicate(int... depths) {
-            depthList = new ArrayList<Integer>();
-            for (int i = 0; i < depths.length; i++) {
-                depthList.add(depths[i]);
+            depthList = new ArrayList<>();
+            for (int depth : depths) {
+                depthList.add(depth);
             }
         }
         
@@ -677,7 +634,7 @@ public interface HighlightPredicate {
          */
         public Integer[] getDepths() {
             if (depthList.isEmpty()) return EMPTY_INTEGER_ARRAY;
-            return depthList.toArray(new Integer[depthList.size()]);
+            return depthList.toArray(new Integer[0]);
         }
         
     }
@@ -688,7 +645,7 @@ public interface HighlightPredicate {
      * Predicate testing the componentAdapter value against a fixed
      * Object. 
      */
-    public static class EqualsHighlightPredicate implements HighlightPredicate {
+    class EqualsHighlightPredicate implements HighlightPredicate {
 
         private Object compareValue;
         
@@ -734,7 +691,7 @@ public interface HighlightPredicate {
      * Predicate testing the componentAdapter value type against a given
      * Class. 
      */
-    public static class TypeHighlightPredicate implements HighlightPredicate {
+    class TypeHighlightPredicate implements HighlightPredicate {
 
         private Class<?> clazz;
         
@@ -786,7 +743,7 @@ public interface HighlightPredicate {
      * Predicate testing the componentAdapter column type against a given
      * Class. 
      */
-    public static class ColumnTypeHighlightPredicate implements HighlightPredicate {
+    class ColumnTypeHighlightPredicate implements HighlightPredicate {
 
         private Class<?> clazz;
         

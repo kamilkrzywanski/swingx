@@ -166,7 +166,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     
     /**
      * Issue #1379-swingx: support access to underlying TreeTableModel in TreeTableModelAdapter.
-     * 
+     * <p>
      * PENDING JW:
      * The bind isn't really fool-proof tight: its possible for subclasses to bind an
      * arbitrary tree to a TreeTableModelAdapter.
@@ -185,12 +185,12 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Custom renderer colors of Swingx DefaultTreeRenderer not respected.
      * (same in J/X/Tree). 
-     * 
+     * <p>
      * A bit surprising - probably due to the half-hearted support (backward
      * compatibility) of per-provider colors: they are set by the glueing
      * renderer to the provider's default visuals. Which is useless if the
      * provider is a wrapping provider - the wrappee's default visuals are unchanged.
-     * 
+     * <p>
      * PENDING JW: think about complete removal. Client code should move over
      * completely to highlighter/renderer separation anyway.
      * 
@@ -240,7 +240,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     }
 
     private DefaultTreeCellRenderer createBackgroundTreeRenderer() {
-        DefaultTreeCellRenderer legacy = new DefaultTreeCellRenderer() {
+        return new DefaultTreeCellRenderer() {
 
             @Override
             public Component getTreeCellRendererComponent(JTree tree,
@@ -255,10 +255,9 @@ public class JXTreeTableIssues extends InteractiveTestCase {
                 }
                 return comp;
             }
-            
-            
+
+
         };
-        return legacy;
     }
 
 
@@ -267,7 +266,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * Issue #493-swingx: incorrect table events fired.
      * Issue #592-swingx: (no structureChanged table events) is a special
      *   case of the former.
-     * 
+     * <p>
      * Here: add support to prevent a structureChanged even when setting
      * the root. May be required if the columns are stable and the
      * model lazily loaded. Quick hack would be to add a clientProperty?
@@ -284,14 +283,11 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         ((DefaultTreeTableModel) model).setRoot(new DefaultMutableTreeTableNode("other"));  
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertTrue( 
-                        report.isDataChanged(report.getLastEvent()),"event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()));
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertTrue(
+                    report.isDataChanged(report.getLastEvent()),"event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()));
+        });
         
     }
 
@@ -351,7 +347,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
 
     /**
      * Issue #576-swingx: sluggish scrolling (?)
-     * 
+     * <p>
      * Here: use FileSystemModel
      */
     public void interactiveScrollAlternateHighlight() {
@@ -410,9 +406,9 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing update.
-     * 
+     * <p>
      * Test update events after updating table.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      * 
      * @throws InvocationTargetException 
@@ -433,16 +429,13 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         // doesn't fire or isn't detectable? 
         // Problem was: model was not-editable.
         table.setValueAt("games", row, 0);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertEquals( 1, report.getUpdateEventCount(),"the event type must be update " + TableModelReport.printEvent(report.getLastEvent())
-                        );
-                TableModelEvent event = report.getLastUpdateEvent();
-                assertEquals( row, event.getFirstRow(),"the updated row ");
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertEquals( 1, report.getUpdateEventCount(),"the event type must be update " + TableModelReport.printEvent(report.getLastEvent())
+                    );
+            TableModelEvent event = report.getLastUpdateEvent();
+            assertEquals( row, event.getFirstRow(),"the updated row ");
+        });
     }
 
     // -------------- interactive tests
@@ -451,7 +444,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing update on a recursive delete on a parent node.
-     * 
+     * <p>
      * By recursive delete on a parent node it is understood that first we 
      * remove its children and then the parent node. After each child removed
      * we are making an update over the parent. During this update the problem 
@@ -459,7 +452,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * over the row -1 (the header) and as it can be seen the preffered widths
      * of column header are not respected anymore and are restored to the default
      * preferences (all equal).
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      */
     public void interactiveTreeTableModelAdapterDeleteUpdate() {
@@ -538,9 +531,9 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
 	 * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
 	 * firing update. Use the second child of root - first is accidentally okay.
-	 * 
+	 * <p>
 	 * from tiberiu@dev.java.net
-	 * 
+	 * <p>
 	 * TODO DefaultMutableTreeTableNodes do not allow value changes, so this
 	 * test will never work
 	 */
@@ -580,7 +573,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing delete.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      */
     public void interactiveTreeTableModelAdapterDelete() {
@@ -607,7 +600,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing delete.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      */
     public void interactiveTreeTableModelAdapterMutateSelected() {
@@ -650,7 +643,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing delete.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      */
     public void interactiveTreeTableModelAdapterMutateSelectedDiscontinous() {
@@ -708,10 +701,9 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     private TreeTableModel createCustomTreeTableModelFromDefault() {
         JXTree tree = new JXTree();
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-        TreeTableModel customTreeTableModel = TreeTableUtils
-                .convertDefaultTreeModel(treeModel);
 
-        return customTreeTableModel;
+        return TreeTableUtils
+                .convertDefaultTreeModel(treeModel);
     }
 
     /**
@@ -810,14 +802,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     public void interactiveTreeTableCustomRenderer() {
         JXTreeTable tree = new JXTreeTable(new FileSystemModel());
         
-        StringValue sv = new StringValue( ){
-
-            @Override
-            public String getString(Object value) {
-                return "..." + StringValues.TO_STRING.getString(value);
-            }
-            
-        };
+        StringValue sv = value -> "..." + StringValues.TO_STRING.getString(value);
         ComponentProvider<?> provider = new CheckBoxProvider(sv);
 //            /**
 //             * custom tooltip: show row. Note: the context is that 
@@ -870,7 +855,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         root.insert(node, 0);
         root.insert(createLongNode("another really, maybe really really long text -  "
                 + "with nothing but junk. wrappit .... where needed"), 0);
-        Vector<String> ids = new Vector<String>();
+        Vector<String> ids = new Vector<>();
         ids.add("long text");
         ids.add("dummy");
         return new DefaultTreeTableModel(root, ids);
@@ -905,10 +890,10 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Experiments to try and understand clipping issues: occasionally, the text
      * in the tree column is clipped even if there is enough space available.
-     * 
+     * <p>
      * To visualize the rendering component's size we use a WrappingIconProvider
      * which sets a red border.
-     * 
+     * <p>
      * Calling packxx might pose a problem: for non-large models the node size
      * is cached. In this case, packing before replacing the renderer will lead
      * to incorrect sizes which are hard to invalidate (no way except faking a
@@ -926,16 +911,11 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         // BEWARE: do not pack before setting the renderer
         treeTable.packColumn(0, -1);
 
-        StringValue format = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof Action) {
-                    return ((Action) value).getValue(Action.NAME) + "xx";
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue format = value -> {
+            if (value instanceof Action) {
+                return ((Action) value).getValue(Action.NAME) + "xx";
             }
-
+            return StringValues.TO_STRING.getString(value);
         };
         ComponentProvider<?> tableProvider = new LabelProvider(format);
         WrappingProvider wrappingProvider = new WrappingProvider(tableProvider) {
@@ -990,7 +970,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Experiments to try and understand clipping issues: occasionally, the text
      * in the tree column is clipped even if there is enough space available.
-     * 
+     * <p>
      * Here we don't change any renderers.
      */
     public void interactiveTreeTableClipIssueDefaultRenderer() {
@@ -1156,7 +1136,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     /**
      * Issue #341-swingx: missing synch of lead.  
      * test lead after setting selection via table.
-     *
+     * <p>
      *  PENDING: this passes locally, fails on server
      */
     @Test

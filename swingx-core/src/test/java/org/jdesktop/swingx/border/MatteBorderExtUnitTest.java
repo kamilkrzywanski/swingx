@@ -55,7 +55,7 @@ public class MatteBorderExtUnitTest {
      * @return test cases to be run in sequence
      */
     private static TestCase[] createTestCases() {
-        final TestCase[] testCases = new TestCase[] {
+        return new TestCase[] {
 
             new TestCase() {	// 1
                 @Override
@@ -80,7 +80,6 @@ public class MatteBorderExtUnitTest {
             },
 
         };
-        return testCases;
     }
 
     private static abstract class TestCase {

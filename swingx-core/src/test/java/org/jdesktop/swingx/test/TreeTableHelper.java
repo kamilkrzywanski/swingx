@@ -125,7 +125,7 @@ public class TreeTableHelper {
                 retval = subtree.nextElement();
             } else if (children.hasMoreElements()) {
                 subtree = new PostorderEnumeration(
-                                (TreeNode)children.nextElement());
+                        children.nextElement());
                 retval = subtree.nextElement();
             } else {
                 retval = root;

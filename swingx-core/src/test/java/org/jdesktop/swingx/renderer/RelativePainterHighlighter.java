@@ -101,9 +101,9 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     
 //------------------- Relativizer
     
-    public static interface Relativizer {
-        public static final float ZERO = 0.0f;
-        public static final float ONE = 1.0f;
+    public interface Relativizer {
+        float ZERO = 0.0f;
+        float ONE = 1.0f;
         /**
          * Returns a float in the range of 0.0f to 1.0f inclusive which
          * indicates the relative value of the given adapter's value.
@@ -111,7 +111,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          * @param adapter
          * @return
          */
-        public float getRelativeValue(ComponentAdapter adapter);
+        float getRelativeValue(ComponentAdapter adapter);
 
     }
 

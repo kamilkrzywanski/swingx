@@ -127,7 +127,7 @@ public abstract class AbstractHighlighter implements Highlighter {
     /**
      * Set the HighlightPredicate used to decide whether a cell should
      * be highlighted. If null, sets the predicate to HighlightPredicate.ALWAYS.
-     * 
+     * <p>
      * The default value is HighlightPredicate.ALWAYS. 
      * 
      * @param predicate the HighlightPredicate to use. 

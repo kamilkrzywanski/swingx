@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test driver for the ActionManager
- *
+ * <p>
  * TODO: Should test TargetableActions
  */
 public class ActionManagerTest {
@@ -209,7 +209,7 @@ public class ActionManagerTest {
     /**
      * Test the server action. The server action should send an http post.
      * with the params and not throw an exception.
-     * 
+     * <p>
      * TODO: It's difficult to test the server action in a firewall/non-controlled
      * network environment. Enable this test when working specifically with ServerActions.
     @Test
@@ -235,17 +235,17 @@ public class ActionManagerTest {
         boolean[] values = new boolean[] { true, false, true, true, false, false };
 
         Iterator<?> iter;
-        for (int i = 0; i < values.length; i++) {
+        for (boolean value : values) {
 
             // Test for actions enabled by disabling actions.
             iter = manager.getActionIDs().iterator();
             while (iter.hasNext()) {
-                manager.setEnabled(iter.next(), values[i]);
+                manager.setEnabled(iter.next(), value);
             }
 
             iter = manager.getActionIDs().iterator();
             while (iter.hasNext()) {
-                assertTrue(manager.isEnabled(iter.next()) == values[i]);
+                assertTrue(manager.isEnabled(iter.next()) == value);
             }
         }
     }
@@ -256,12 +256,12 @@ public class ActionManagerTest {
         boolean[] values = new boolean[] { true, false, true, true, false, false };
 
         Iterator<?> iter;
-        for (int i = 0; i < values.length; i++) {
+        for (boolean value : values) {
 
             // Test for actions enabled by disabling actions.
             iter = manager.getActionIDs().iterator();
             while (iter.hasNext()) {
-                manager.setSelected(iter.next(), values[i]);
+                manager.setSelected(iter.next(), value);
             }
 
             iter = manager.getActionIDs().iterator();
@@ -269,7 +269,7 @@ public class ActionManagerTest {
                 Object a = iter.next();
                 if (manager.isStateAction(a)) {
                     assertTrue(
-                               manager.isSelected(a) == values[i],"Action: " + a + " selected state not " + values[i]);
+                            manager.isSelected(a) == value, "Action: " + a + " selected state not " + value);
                 } else {
                     // Non StateActions will always return false.
                     assertFalse(manager.isSelected(a));

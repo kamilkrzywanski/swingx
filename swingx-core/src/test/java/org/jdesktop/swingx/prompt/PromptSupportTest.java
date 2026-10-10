@@ -1,8 +1,5 @@
 package org.jdesktop.swingx.prompt;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import java.awt.Color;
 import java.awt.Font;
 

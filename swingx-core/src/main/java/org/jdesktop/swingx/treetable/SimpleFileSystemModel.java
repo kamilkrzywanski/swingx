@@ -52,7 +52,7 @@ public class SimpleFileSystemModel implements TreeTableModel {
     protected EventListenerList listenerList;
 
     // the returned file length for directories
-    private static final Long ZERO = Long.valueOf(0);
+    private static final Long ZERO = 0L;
 
     private File root;
 

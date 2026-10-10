@@ -1,19 +1,19 @@
 /**
  * $Id$
- * 
+ * <p>
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for the DefaultDateSelectionModel.
- * 
+ * <p>
  * Moved from swingx to calendar package as of version 1.15
  */
 public class SingleDaySelectionModelTest extends AbstractTestDateSelectionModel {
@@ -357,7 +357,7 @@ public class SingleDaySelectionModelTest extends AbstractTestDateSelectionModel 
      */
     @Test
     public void testUnselectableDatesCompleteDay() {
-        SortedSet<Date> unselectableDates = new TreeSet<Date>();
+        SortedSet<Date> unselectableDates = new TreeSet<>();
         unselectableDates.add(today);
         model.setUnselectableDates(unselectableDates);
         // all dates in today must be rejected
@@ -368,7 +368,7 @@ public class SingleDaySelectionModelTest extends AbstractTestDateSelectionModel 
         assertTrue( 
                 model.isUnselectableDate(endOfDay(today)),"end of today must be unselectable");
         // remove the unselectable 
-        model.setUnselectableDates(new TreeSet<Date>());
+        model.setUnselectableDates(new TreeSet<>());
         assertFalse(model.isUnselectableDate(today));
         assertFalse(model.isUnselectableDate(startOfDay(today)));
         assertFalse(model.isUnselectableDate(endOfDay(today)));
@@ -417,7 +417,7 @@ public class SingleDaySelectionModelTest extends AbstractTestDateSelectionModel 
 
         model.setSelectionInterval(today, today);
 
-        unselectableDates = new TreeSet<Date>();
+        unselectableDates = new TreeSet<>();
         unselectableDates.add(startOfDay(today));
         unselectableDates.add(startOfDay(yesterday));
         unselectableDates.add(startOfDay(tomorrow));

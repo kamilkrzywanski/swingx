@@ -40,7 +40,7 @@ public class PropertyEditorUtil {
         text = text.replaceAll("\\s+"," ");
         text = text.trim();
 //        u.p("text = " + text);
-        if (text == null || text.equals("") || text.equals("null")) {
+        if (text == null || text.isEmpty() || text.equals("null")) {
             return null;
         }
         // split by spaces

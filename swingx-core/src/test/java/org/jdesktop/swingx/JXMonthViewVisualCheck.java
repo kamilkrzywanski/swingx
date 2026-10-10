@@ -53,7 +53,6 @@ import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
-import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.junit.jupiter.api.Test;
@@ -202,7 +201,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #931-swingx: JXMonthView not repainted on property change.
-     * 
+     * <p>
      * look for
      * - selectionBackground
      * - selectionForeground (not taken?)
@@ -293,9 +292,9 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #786-swingx: IllegalStateException when paintDays of April 2008.
-     * 
+     * <p>
      * Problem was in that particular timezone - traversing to April 
-     * 
+     * <p>
      * Assumption of staying at startOfWeek in paintDays is wrong if the month
      * is the month of turning on the DST. Remove the check for now.
      * 
@@ -315,7 +314,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #749-swingx: enhanced flagged dates support (add/remove)
-     * 
+     * <p>
      * Visually check if the monthView is updated on toggling several properties.
      */
     public void interactiveToggleProperties() {
@@ -400,11 +399,11 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, daysOfWeek);
         frame.pack();
-    };
-    
+    }
+
     /**
      * Issue #736-swingx: monthView cannot cope with minimalDaysInFirstWeek.
-     * 
+     * <p>
      * Here: look at impact of forcing the minimalDays to a value different
      * from the calendar. Days must be displayed in starting from the 
      * first row under the days-of-week.
@@ -429,14 +428,10 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         JXStatusBar bar = getStatusBar(frame);
         final JComboBox dayOfWeekComboBox = new JComboBox(new String[]{"Sunday", "Monday", "Tuesday",
                 "Wednesday", "Thursday", "Friday", "Saturday"});
-        dayOfWeekComboBox.addActionListener(new ActionListener() {
+        dayOfWeekComboBox.addActionListener(e -> {
+            int selected = dayOfWeekComboBox.getSelectedIndex();
+            monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
 
-            public void actionPerformed(ActionEvent e) {
-                int selected = dayOfWeekComboBox.getSelectedIndex();
-                monthView.setFirstDayOfWeek(selected + Calendar.SUNDAY);
-                
-            }
-            
         });
         dayOfWeekComboBox.setSelectedIndex(monthView.getFirstDayOfWeek() - Calendar.SUNDAY);
         bar.add(dayOfWeekComboBox);
@@ -446,7 +441,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: monthView cannot cope with minimalDaysInFirstWeek.
-     * 
+     * <p>
      * Here: look at impact of forcing the minimalDays to a value different
      * from the calendar. Days must be displayed in starting from the 
      * first row under the days-of-week. Selection must be reflected in the 
@@ -476,7 +471,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #711-swingx: fake properties.
-     * 
+     * <p>
      * visually testing today increment (it's not public api but can't
      * think of a way to simulate the timer).
      */
@@ -492,12 +487,12 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, action);
         frame.pack();
-    };
+    }
 
 
     /**
      * Issue #706-swingx: picker doesn't update monthView.
-     * 
+     * <p>
      * Here: visualize weird side-effects of monthView.updateUI - year 
      * incremented.
      */
@@ -514,11 +509,11 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, action);
         frame.pack();
-    };
+    }
 
     /**
      * Issue #706-swingx: picker doesn't update monthView.
-     * 
+     * <p>
      * Show toggle of UI (selectin color)
      */
     public void interactiveUpdateUIMonthViewCustomUI() {
@@ -541,11 +536,11 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, action);
         frame.pack();
-    };
-    
+    }
+
     /**
      * #705-swingx: JXMonthview must not scroll on revalidate.
-     * 
+     * <p>
      * Misbehaviour here : multi-month spanning selection, travers two month into the future and
      * resize the frame - jumps back to first. Auto-scroll in the delegates
      * selection listener would have a similar effect.
@@ -577,10 +572,10 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * #703-swingx: set date to first of next doesn't update the view.
-     * 
+     * <p>
      * Behaviour is consistent with core components. Except that it is doing 
      * too much: revalidate most probably shouldn't change the scrolling state?
-     * 
+     * <p>
      * Simulated misbehaviour here: multi-month spanning selection, travers into the future and
      * add selection at the end - jumps back to first. Auto-scroll in the delegates
      * selection listener would have the effect.
@@ -617,7 +612,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * #681-swingx: first row overlaps days.
-     * 
+     * <p>
      * Looks like a problem with the constructor taking a locale? 
      * Default is okay (even if German), US is okay, explicit german is wrong.
      */
@@ -639,7 +634,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
    
     /**
      * #681-swingx: first row overlaps days.
-     * 
+     * <p>
      * Looks like a problem with the constructor taking a locale? 
      * Default is okay (even if German), US is okay, explicit german is wrong.
      */
@@ -683,23 +678,21 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         zoneSelector.setSelectedItem(monthView.getLocale());
 
         // Set the monthView's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                Locale zone = (Locale) zoneSelector.getSelectedItem();
-                monthView.setLocale(zone);
-                picker.setLocale(zone);
+        zoneSelector.addActionListener(event -> {
+            Locale zone = (Locale) zoneSelector.getSelectedItem();
+            monthView.setLocale(zone);
+            picker.setLocale(zone);
 //                if ("sh".equals(zone.getLanguage()) ){
 //                    String[] months = DateFormatSymbols.getInstance(zone).getMonths();
 //                    SimpleDateFormat simple = new SimpleDateFormat("MMMM", zone);
 //                    DateFormat format = DateFormat.getDateInstance(DateFormat.FULL, zone);
-//                    LOG.info("serbian latin: " + zone + 
+//                    LOG.info("serbian latin: " + zone +
 //                            "/" + format.format(new Date()) +
-//                            " / " + months[0] + 
+//                            " / " + months[0] +
 //                            " / " + simple.format(new Date()));
 //                }
-//                
-                
-            }
+//
+
         });
 
         panel.add(picker);
@@ -716,7 +709,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
      */
     public void interactiveUpdateWeekOnSetTimeZone() {
         JComponent panel = Box.createVerticalBox();
-        List<TimeZone> zones = new ArrayList<TimeZone>();
+        List<TimeZone> zones = new ArrayList<>();
         for (int i = -14; i < 13; i++) {
             String id = "GMT" + i;
             if (i >= 0) {
@@ -734,21 +727,19 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         zoneSelector.setSelectedItem(monthView.getTimeZone().getID());
         
         // Set the picker's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+        zoneSelector.addActionListener(event -> {
 //                String zone = (String) zoneSelector.getSelectedItem();
-                TimeZone tz = (TimeZone) zoneSelector.getSelectedItem();
-                monthView.setTimeZone(tz);
-                DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-                format.setTimeZone(tz);
-                DateFormat week = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-                week.setTimeZone(tz);
-                ((SimpleDateFormat) week).applyPattern("w");
-                Calendar calendar = Calendar.getInstance(tz);
-                calendar.add(Calendar.HOUR_OF_DAY, - 12);
-                LOG.info("now: " + format.format(calendar.getTime()) + 
-                        " / " + calendar.get(Calendar.WEEK_OF_YEAR) + week.format(calendar.getTime()));
-            }
+            TimeZone tz = (TimeZone) zoneSelector.getSelectedItem();
+            monthView.setTimeZone(tz);
+            DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+            format.setTimeZone(tz);
+            DateFormat week = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+            week.setTimeZone(tz);
+            ((SimpleDateFormat) week).applyPattern("w");
+            Calendar calendar = Calendar.getInstance(tz);
+            calendar.add(Calendar.HOUR_OF_DAY, - 12);
+            LOG.info("now: " + format.format(calendar.getTime()) +
+                    " / " + calendar.get(Calendar.WEEK_OF_YEAR) + week.format(calendar.getTime()));
         });
         
         panel.add(monthView);
@@ -772,14 +763,12 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         zoneSelector.setSelectedItem(monthView.getTimeZone().getID());
         
         // Set the picker's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String zone = (String) zoneSelector.getSelectedItem();
-                TimeZone tz = TimeZone.getTimeZone(zone);
-                monthView.setTimeZone(tz);
-                
-                assertEquals(tz, monthView.getCalendar().getTimeZone());
-            }
+        zoneSelector.addActionListener(event -> {
+            String zone = (String) zoneSelector.getSelectedItem();
+            TimeZone tz = TimeZone.getTimeZone(zone);
+            monthView.setTimeZone(tz);
+
+            assertEquals(tz, monthView.getCalendar().getTimeZone());
         });
         
         panel.add(monthView);
@@ -804,16 +793,14 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         zoneSelector.setSelectedItem(monthView.getTimeZone().getID());
 
         // Set the picker's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String zone = (String) zoneSelector.getSelectedItem();
-                TimeZone tz = TimeZone.getTimeZone(zone);
-                DateSelectionModel model = new SingleDaySelectionModel();
-                model.setTimeZone(tz);
-                monthView.setSelectionModel(model);
-              
-                assertEquals(tz, monthView.getCalendar().getTimeZone());
-            }
+        zoneSelector.addActionListener(event -> {
+            String zone = (String) zoneSelector.getSelectedItem();
+            TimeZone tz = TimeZone.getTimeZone(zone);
+            DateSelectionModel model = new SingleDaySelectionModel();
+            model.setTimeZone(tz);
+            monthView.setSelectionModel(model);
+
+            assertEquals(tz, monthView.getCalendar().getTimeZone());
         });
 
         panel.add(monthView);
@@ -838,21 +825,19 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         monthView.setLowerBound(XTestUtils.getStartOfToday(-10));
         monthView.setUpperBound(XTestUtils.getStartOfToday(10));
         monthView.setUnselectableDates(XTestUtils.getStartOfToday(2));
-        monthView.setFlaggedDates(new Date[] {XTestUtils.getStartOfToday(4)});
+        monthView.setFlaggedDates(XTestUtils.getStartOfToday(4));
         monthView.setTraversable(true);
         // Synchronize the picker and selector's zones.
         zoneSelector.setSelectedItem(picker.getTimeZone().getID());
 
         // Set the picker's time zone based on the selected time zone.
-        zoneSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String zone = (String) zoneSelector.getSelectedItem();
-                TimeZone tz = TimeZone.getTimeZone(zone);
-                picker.setTimeZone(tz);
-                monthView.setTimeZone(tz);
-              
-                assertEquals(tz, monthView.getCalendar().getTimeZone());
-            }
+        zoneSelector.addActionListener(event -> {
+            String zone = (String) zoneSelector.getSelectedItem();
+            TimeZone tz = TimeZone.getTimeZone(zone);
+            picker.setTimeZone(tz);
+            monthView.setTimeZone(tz);
+
+            assertEquals(tz, monthView.getCalendar().getTimeZone());
         });
 
         panel.add(zoneSelector);
@@ -904,7 +889,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #637-swingx: make JXMonthView Locale-aware.
-     * 
+     * <p>
      * Applied the patch as provided by pes17.
      * 
      */
@@ -922,7 +907,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
      * focus the button and use the arrow keys: selection moves.
      * Reason was that the WHEN_IN_FOCUSED_WINDOW key bindings
      * were always installed. 
-     * 
+     * <p>
      * Fixed by dynamically bind/unbind component input map bindings
      * based on the JXMonthView's componentInputMapEnabled property.
      *
@@ -938,7 +923,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     /**
      * Issue #563-swingx: arrow keys active even if not focused.
      * focus the button and use the arrow keys: selection moves.
-     *
+     * <p>
      * Fixed by dynamically bind/unbind component input map bindings
      * based on the JXMonthView's componentInputMapEnabled property.
      */
@@ -953,7 +938,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     
     /**
      * Informally testing adjusting property on mouse events.
-     * 
+     * <p>
      * Hmm .. not formally testable without mocks/ui unit tests?
      *
      */
@@ -980,13 +965,13 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     /**
      * Issue #555-swingx: multiple selection with keyboard not working
      * Happens for standalone, okay for monthview in popup.
-     * 
+     * <p>
      * Fixed as a side-effect of cleanup of input map bindings. 
-     * 
+     * <p>
      * Regression #555 
-     * 
+     * <p>
      * Issue #996-swingx: NPE while dragging 
-     * 
+     * <p>
      * to reproduce: first click into a empty (leading/trailing) day then
      * drag into month. Fixed (brutish? - not entirely sure as the user
      * interaction is suboptimal anyway ..)
@@ -1014,9 +999,9 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #??-swingx: esc/enter does not always fire actionEvent.
-     * 
+     * <p>
      * Fixed: committing/canceling user gestures always fire.
-     * 
+     * <p>
      * Open: mouse-gestures?
      *
      */
@@ -1026,25 +1011,13 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
         interval.setSelectionMode(SelectionMode.SINGLE_INTERVAL_SELECTION);
         JXMonthView multiple = new JXMonthView();
         multiple.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
-        ActionListener l = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("got action from: " + e.getSource().getClass().getName() + 
-                        "\n" + e);
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("got action from: " + e.getSource().getClass().getName() +
+                "\n" + e);
         monthView.addActionListener(l);
         interval.addActionListener(l);
         multiple.addActionListener(l);
-        DateSelectionListener d = new DateSelectionListener() {
-
-            public void valueChanged(DateSelectionEvent ev) {
-                LOG.info("got selection from: " + ev.getSource().getClass().getName() + 
-                        "\n" + ev);
-            }
-            
-        };
+        DateSelectionListener d = ev -> LOG.info("got selection from: " + ev.getSource().getClass().getName() +
+                "\n" + ev);
         monthView.getSelectionModel().addDateSelectionListener(d);
         interval.getSelectionModel().addDateSelectionListener(d);
         multiple.getSelectionModel().addDateSelectionListener(d);
@@ -1069,7 +1042,7 @@ public class JXMonthViewVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #426-swingx: NPE on traversing 
-     * 
+     * <p>
      * example from bug report
      *
      */

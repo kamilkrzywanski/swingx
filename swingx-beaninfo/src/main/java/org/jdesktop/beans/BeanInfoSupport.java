@@ -53,7 +53,7 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
      * Indicates whether I am introspecting state for the give class. This
      * helps prevent infinite loops
      */
-    private static Map<Class<?>, Boolean> introspectingState = new HashMap<Class<?>, Boolean>();
+    private static Map<Class<?>, Boolean> introspectingState = new HashMap<>();
     /**
      * The class of the bean that this BeanInfoSupport is for
      */
@@ -106,9 +106,9 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
     
     private BeanDescriptor beanDescriptor;
     
-    private Map<String, PropertyDescriptor> properties = new TreeMap<String, PropertyDescriptor>();
-    private Map<String, EventSetDescriptor> events = new TreeMap<String, EventSetDescriptor>();
-    private Map<String, MethodDescriptor> methods = new TreeMap<String, MethodDescriptor>();
+    private Map<String, PropertyDescriptor> properties = new TreeMap<>();
+    private Map<String, EventSetDescriptor> events = new TreeMap<>();
+    private Map<String, MethodDescriptor> methods = new TreeMap<>();
 
     /**
      * Creates a new instance of BeanInfoSupport.
@@ -162,7 +162,7 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
     
     private boolean isIntrospecting() {
         Boolean b = introspectingState.get(beanClass);
-        return b == null ? false : b.booleanValue();
+        return b == null ? false : b;
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
      *   JXTaskPaneContainer16-mono.png
      *   JXTaskPaneContainer32.png
      *   JXTaskPaneContainer32-mono.png
-     * 
+     * <p>
      * if any of the icons is missing, an attempt is made to
      * get an icon via introspection. If that fails, the icon
      * will be set to placeholder16.png or one of the derivatives

@@ -60,7 +60,7 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
     /**
      * Instantiates a SingleSelectionModel with the given locale. If the locale is
      * null, the Locale's default is used.
-     * 
+     * <p>
      * PENDING JW: fall back to JComponent.getDefaultLocale instead? We use this
      *   with components anyway?
      * 
@@ -69,8 +69,8 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
      */
     public SingleDaySelectionModel(Locale locale) {
         super(locale);
-        this.selectedDates = new TreeSet<Date>();
-        this.unselectableDates = new TreeSet<Date>();
+        this.selectedDates = new TreeSet<>();
+        this.unselectableDates = new TreeSet<>();
     }
 
     /**
@@ -141,9 +141,8 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
      * @return true if the selected date is contained in the interval
      */
     protected boolean isSelectionInInterval(Date startDate, Date endDate) {
-        if (selectedDates.first().before(startOfDay(startDate)) 
-                || (selectedDates.first().after(endOfDay(endDate)))) return false;
-        return true;
+        return !selectedDates.first().before(startOfDay(startDate))
+                && (!selectedDates.first().after(endOfDay(endDate)));
     }
 
     /**
@@ -230,8 +229,7 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
      */
     private boolean outOfBounds(Date date) {
         if (belowLowerBound(date)) return true;
-        if (aboveUpperBound(date)) return true;
-        return false;
+        return aboveUpperBound(date);
     }
 
     /**
@@ -273,7 +271,7 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
      */
     @Override
     public SortedSet<Date> getSelection() {
-        return new TreeSet<Date>(selectedDates);
+        return new TreeSet<>(selectedDates);
     }
 
     /**
@@ -313,7 +311,7 @@ public class SingleDaySelectionModel extends AbstractDateSelectionModel {
      */
     @Override
     public SortedSet<Date> getUnselectableDates() {
-        return new TreeSet<Date>(unselectableDates);
+        return new TreeSet<>(unselectableDates);
     }
 
     /**

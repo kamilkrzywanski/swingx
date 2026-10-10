@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -20,11 +18,9 @@ public class Paint2PropertyEditor extends PropertyEditorSupport {
 
     /** Creates a new instance of Paint2PropertyEditor */
     public Paint2PropertyEditor() {
-        picker.addPropertyChangeListener("paint",new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                paint = picker.getPaint();
-                firePropertyChange();
-            }
+        picker.addPropertyChangeListener("paint", propertyChangeEvent -> {
+            paint = picker.getPaint();
+            firePropertyChange();
         });
         
     }

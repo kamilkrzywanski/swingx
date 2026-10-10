@@ -56,7 +56,7 @@ public class TableColumnExtAsHighlighterClientTest extends AbstractTestHighlight
     }
 
     private HighlighterClient createHighlighterClient(final TableColumnExt table) {
-        HighlighterClient client = new HighlighterClient() {
+        return new HighlighterClient() {
 
             public void addHighlighter(Highlighter highlighter) {
                 table.addHighlighter(highlighter);
@@ -85,9 +85,8 @@ public class TableColumnExtAsHighlighterClientTest extends AbstractTestHighlight
             public void updateUI() {
                 table.updateUI();
             }
-            
+
         };
-        return client;
     }
 
 }

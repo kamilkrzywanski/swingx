@@ -1,8 +1,6 @@
 package org.jdesktop.swingx.plaf;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Insets;

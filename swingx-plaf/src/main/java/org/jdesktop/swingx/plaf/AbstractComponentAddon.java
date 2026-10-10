@@ -144,7 +144,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
 
     /**
      * Gets the defaults for the given addon.
-     * 
+     * <p>
      * Based on the addon, it calls
      * {@link #addMacDefaults(LookAndFeelAddons, DefaultsList)} if isMac() or
      * {@link #addMetalDefaults(LookAndFeelAddons, DefaultsList)} if isMetal()

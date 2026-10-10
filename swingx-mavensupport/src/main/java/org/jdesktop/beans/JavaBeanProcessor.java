@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -41,7 +42,7 @@ public class JavaBeanProcessor extends AbstractProcessor {
             return false;
         }
 
-        Set<String> beans = new TreeSet<String>();
+        Set<String> beans = new TreeSet<>();
 
         //JavaBean is a type only annotation, so cast to TypeElement is safe
         for (TypeElement type : (Set<TypeElement>) roundEnv.getElementsAnnotatedWith(JavaBean.class)) {
@@ -66,7 +67,7 @@ public class JavaBeanProcessor extends AbstractProcessor {
                 try {
                     processingEnv.getMessager().printMessage(Kind.NOTE, "Attempting to find previously defined Java beans");
                     
-                    r = new BufferedReader(new InputStreamReader(manifest.openInputStream(), "UTF-8"));
+                    r = new BufferedReader(new InputStreamReader(manifest.openInputStream(), StandardCharsets.UTF_8));
                     
                     String possibleBean = null;
                     
@@ -132,7 +133,7 @@ public class JavaBeanProcessor extends AbstractProcessor {
         PrintWriter pw = null;
         
         try {
-            pw = new PrintWriter(new OutputStreamWriter(manifest.openOutputStream(), "UTF-8"));
+            pw = new PrintWriter(new OutputStreamWriter(manifest.openOutputStream(), StandardCharsets.UTF_8));
             
             pw.println();
             

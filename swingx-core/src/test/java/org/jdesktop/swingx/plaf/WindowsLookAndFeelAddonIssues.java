@@ -48,10 +48,10 @@ public class WindowsLookAndFeelAddonIssues extends InteractiveTestCase {
     
     /**
      * Issue #1305-swingx: popup closing must not consume mousePressed.
-     * 
+     * <p>
      * It's a core issue (#6753637) which is easily fixed by setting 
      * the ui property. Test if it's done. 
-     * 
+     * <p>
      * Reverted: different native behaviour of combos vs standalone popups. A 
      * single ui property can serve one of those only, core opted for combos.
      * Should be consistent.
@@ -92,7 +92,7 @@ public class WindowsLookAndFeelAddonIssues extends InteractiveTestCase {
     
     /**
      * Issue #1305-swingx: popup closing must not consume mousePressed.
-     * 
+     * <p>
      * Most visible effect: combo editor in table - open editor, click
      * somewhere else, edit must be terminated (for windows and metal)
      */

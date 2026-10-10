@@ -35,7 +35,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,7 +99,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
     @SuppressWarnings("all")
     private static final Logger LOG = Logger
             .getLogger(PainterVisualCheck.class.getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 //      setSystemLF(true);
       PainterVisualCheck test = new PainterVisualCheck();
       try {
@@ -139,7 +138,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
         MattePainter matte = new MattePainter(getTransparentColor(Color.RED, 80));
-        RelativePainter<?> painter = new RelativePainter<Object>(matte);
+        RelativePainter<?> painter = new RelativePainter<>(matte);
         painter.setYFactor(0.2);
         painter.setVerticalAlignment(VerticalAlignment.BOTTOM);
         Highlighter hl = new PainterHighlighter(HighlightPredicate.ROLLOVER_ROW, painter);
@@ -156,16 +155,11 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * @return 
      */
     private HighlightPredicate createComponentTextBasedPredicate(final String substring) {
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                if (!(renderer instanceof JLabel)) return false;
-                String text = ((JLabel) renderer).getText();
-                 return text.contains(substring);
-            }
-            
+        return (renderer, adapter) -> {
+            if (!(renderer instanceof JLabel)) return false;
+            String text = ((JLabel) renderer).getText();
+             return text.contains(substring);
         };
-        return predicate;
     }
    
     /**
@@ -176,7 +170,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
         MattePainter p =  new MattePainter(getTransparentColor(Color.BLUE, 125));
-        RelativePainter<?> relativePainter = new RelativePainter<Object>(p);
+        RelativePainter<?> relativePainter = new RelativePainter<>(p);
         relativePainter.setXFactor(.5);
         Highlighter hl = new PainterHighlighter(createComponentTextBasedPredicate("y"), 
                 relativePainter);
@@ -205,25 +199,17 @@ public class PainterVisualCheck extends InteractiveTestCase {
         // quick-fill and hook to table columns' visibility state
         configureList(list, table, false);
         // a custom rendering button controller showing both checkbox and text
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).getName();
-                }
-                return "";
+        StringValue sv = value -> {
+            if (value instanceof AbstractActionExt) {
+                return ((AbstractActionExt) value).getName();
             }
-            
+            return "";
         };
-        BooleanValue bv = new BooleanValue() {
-
-            public boolean getBoolean(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).isSelected();
-                }
-                return false;
+        BooleanValue bv = value -> {
+            if (value instanceof AbstractActionExt) {
+                return ((AbstractActionExt) value).isSelected();
             }
-            
+            return false;
         };
         CheckBoxProvider wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
         list.setCellRenderer(new DefaultListRenderer(wrapper));
@@ -257,7 +243,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         painter.setPaintStretched(true);
         // not entirely successful - the relative stretching is on
         // top of a .5 stretched gradient in matte
-        RelativePainter<?> wrapper = new RelativePainter<Object>(painter);
+        RelativePainter<?> wrapper = new RelativePainter<>(painter);
         wrapper.setXFactor(end);
         return wrapper;
     }
@@ -335,13 +321,10 @@ public class PainterVisualCheck extends InteractiveTestCase {
         PainterHighlighter iconHighlighter = new PainterHighlighter();
         iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_ROW);
         iconHighlighter.setPainter(painter);
-        ActionListener l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                double fraction = painter.getXFactor();
-                fraction = fraction > 1 ? 0.0 : fraction + 0.1;
-                painter.setXFactor(fraction);
-            }
-            
+        ActionListener l = e -> {
+            double fraction = painter.getXFactor();
+            fraction = fraction > 1 ? 0.0 : fraction + 0.1;
+            painter.setXFactor(fraction);
         };
         table.addHighlighter(iconHighlighter);
         showWithScrollingInFrame(table, 
@@ -374,26 +357,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
         // JW: how do we ask for the height of the painter?
         table.setRowHeight(26);
         PainterHighlighter iconHighlighter = new PainterHighlighter();
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                
-                return 
-                   adapter.convertRowIndexToModel(adapter.row) == 1;
-            }
-            
-        };
+        HighlightPredicate predicate = (renderer, adapter) -> adapter.convertRowIndexToModel(adapter.row) == 1;
         iconHighlighter.setHighlightPredicate(predicate); //HighlightPredicate.ROLLOVER_ROW);
         iconHighlighter.setPainter(busyPainter);
-        ActionListener l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int frame = busyPainter.getFrame();
-                frame = (frame+1)%busyPainter.getPoints();
-                busyPainter.setFrame(frame);
-            }
-            
+        ActionListener l = e -> {
+            int frame = busyPainter.getFrame();
+            frame = (frame+1)%busyPainter.getPoints();
+            busyPainter.setFrame(frame);
         };
         table.getColumnExt(1).addHighlighter(iconHighlighter);
         showWithScrollingInFrame(table, 
@@ -404,7 +374,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #862-swingx: SwingX rendering components should be PainterAware.
-     * 
+     * <p>
      * Currently this works only with a local version which has WrappingIconPanel
      * implement the PainterAware by delegating to its content delegate. 
      */
@@ -420,13 +390,10 @@ public class PainterVisualCheck extends InteractiveTestCase {
         PainterHighlighter iconHighlighter = new PainterHighlighter();
         iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_ROW);
         iconHighlighter.setPainter(painter);
-        ActionListener l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                double fraction = painter.getXFactor();
-                fraction = fraction > 1 ? 0.0 : fraction + 0.1;
-                painter.setXFactor(fraction);
-            }
-            
+        ActionListener l = e -> {
+            double fraction = painter.getXFactor();
+            fraction = fraction > 1 ? 0.0 : fraction + 0.1;
+            painter.setXFactor(fraction);
         };
         tree.addHighlighter(iconHighlighter);
         showWithScrollingInFrame(tree, 
@@ -450,14 +417,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         table.setRowHeight(25);
         final BufferedImage moon = XTestUtils.loadDefaultImage("moon.jpg");
         final BufferedImage rocket = XTestUtils.loadDefaultImage("500by500.png");
-        HighlightPredicate rocketPredicate = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                return ((Integer) adapter.getValue(3)).intValue() < 50;
-            }
-            
-        };
+        HighlightPredicate rocketPredicate = (renderer, adapter) -> (Integer) adapter.getValue(3) < 50;
         HighlightPredicate moonPredicate = new NotHighlightPredicate(rocketPredicate);
         table.setHighlighters(
                 new SubImagePainterHighlighter(rocketPredicate, 
@@ -492,9 +452,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
         private Rectangle getCellBounds(ComponentAdapter adapter) {
             // PENDING JW: add method to adapter
             JXTable table = (JXTable) adapter.getComponent();
-            Rectangle cellRect = table.getCellRect(adapter.row, 
+            return table.getCellRect(adapter.row,
                     adapter.column, false);
-            return cellRect;
         }
 
         @Override
@@ -646,7 +605,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Fills the list with a collection of actions (as returned from the 
      * table's column control). Binds space and double-click to toggle
      * the action's selected state.
-     * 
+     * <p>
      * note: this is just an example to show-off the button renderer in a list!
      * ... it's very dirty!!
      * 
@@ -654,7 +613,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * @param table
      */
     private void configureList(final JXList list, final JXTable table, boolean useRollover) {
-        final List<Action> actions = new ArrayList<Action>();
+        final List<Action> actions = new ArrayList<>();
         @SuppressWarnings("all")
         ColumnControlButton columnControl = new ColumnControlButton(table) {
 
@@ -721,15 +680,11 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 
             }
             
-            PropertyChangeListener l = new PropertyChangeListener() {
-                
-                public void propertyChange(PropertyChangeEvent evt) {
-                    int index = indexOf(evt.getSource());
-                    if (index >= 0) {
-                        fireContentsChanged(reallyThis, index, index);
-                    }
+            PropertyChangeListener l = evt -> {
+                int index = indexOf(evt.getSource());
+                if (index >= 0) {
+                    fireContentsChanged(reallyThis, index, index);
                 }
-                
             };
         };
         for (Action action : actions) {

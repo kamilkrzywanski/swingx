@@ -87,7 +87,7 @@ public class JXHyperlinkTest {
     
     /**
      * test control of the clicked property.
-     * 
+     * <p>
      * Default behaviour
      * 
      *
@@ -170,7 +170,7 @@ public class JXHyperlinkTest {
     
     /**
      * JXHyperlink must handle null action gracefully.
-     * 
+     * <p>
      * Was NPE in configureFromAction
      *
      */
@@ -183,7 +183,7 @@ public class JXHyperlinkTest {
 
     /**
      * JXHyperlink must handle null action gracefully.
-     * 
+     * <p>
      * Was NPE in configureFromAction
      *
      */
@@ -197,7 +197,7 @@ public class JXHyperlinkTest {
     }
     /**
      * JXHyperlink must handle null action gracefully.
-     * 
+     * <p>
      * Was NPE in configureFromAction
      *
      */
@@ -229,7 +229,7 @@ public class JXHyperlinkTest {
     /**
      * test initial visited state in JXHyperlink is synched to
      * linkAction given in constructor.
-     * 
+     * <p>
      * There was the usual "init" problem with the constructor.
      * Solved by chaining.
      * 
@@ -259,15 +259,14 @@ public class JXHyperlinkTest {
     }
 
     protected AbstractHyperlinkAction<Object> createEmptyLinkAction() {
-        AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
+        return new AbstractHyperlinkAction<Object>(null) {
 
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-               
+
        };
-        return linkAction;
     }
 
     protected AbstractHyperlinkAction<?> createEmptyLinkAction(String name) {

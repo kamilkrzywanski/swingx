@@ -264,7 +264,7 @@ public class BasicDatePickerUI extends DatePickerUI {
     /**
      * Installs actions and key bindings on the datePicker's linkPanel. Does
      * nothing if the linkPanel is null.
-     * 
+     * <p>
      * PRE: keybindings installed on picker.
      */
     protected void installLinkPanelKeyboardActions() {
@@ -404,7 +404,7 @@ public class BasicDatePickerUI extends DatePickerUI {
      * Wires the picker's monthView related listening. Removes all
      * listeners from the given old view and adds the listeners to 
      * the current monthView. <p>
-     * 
+     *
      * @param oldMonthView
      */
     protected void updateMonthViewListeners(JXMonthView oldMonthView) {
@@ -683,9 +683,9 @@ public class BasicDatePickerUI extends DatePickerUI {
      * Updates date related properties picker/editor 
      * after a change in the monthView's
      * selection.
-     * 
+     * <p>
      * Here: does nothing if the change is intermediate.
-     * 
+     * <p>
      * PENDNG JW: shouldn't we listen to actionEvents then?
      * 
      * @param eventType the type of the selection change
@@ -840,7 +840,7 @@ public class BasicDatePickerUI extends DatePickerUI {
     /**
      * Updates picker's timezone dependent properties on change notification
      * from the associated monthView.
-     * 
+     * <p>
      * PENDING JW: DatePicker needs to send notification on timezone change? 
      * 
      * @param old the timezone before the change.
@@ -970,15 +970,14 @@ public class BasicDatePickerUI extends DatePickerUI {
      * @return
      */
     private Action createCommitAction() {
-        Action action = new AbstractAction() {
+        return new AbstractAction() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 commit();
             }
-            
+
         };
-        return action;
     }
 
     /**
@@ -988,32 +987,30 @@ public class BasicDatePickerUI extends DatePickerUI {
      * @return
      */
     private Action createCancelAction() {
-        Action action = new AbstractAction() {
+        return new AbstractAction() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 cancel();
             }
-            
+
         };
-        return action;
     }
 
     private Action createHomeAction(final boolean commit) {
-        Action action = new AbstractAction( ) {
+        return new AbstractAction( ) {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 home(commit);
-                
+
             }
-            
+
         };
-        return action ;
     }
     /**
      * The wrapper for the editor cancel action. 
-     * 
+     * <p>
      * PENDING: Need to extend TestAction?
      * 
      */
@@ -1082,9 +1079,7 @@ public class BasicDatePickerUI extends DatePickerUI {
             // not with following line - but need to run tests
             datePicker.getEditor().requestFocusInWindow();
 //            datePicker.requestFocusInWindow();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
+            SwingUtilities.invokeLater(() -> {
 //                    if (datePicker.getParent() == null) {
 //                        // Tracking #1372-swingx - parent is null if used as
 //                        // DatePickerCellEditor,
@@ -1094,8 +1089,7 @@ public class BasicDatePickerUI extends DatePickerUI {
 //                         LOG.info("couldn't show popup for: " + datePicker.getName());
 //                        return;
 //                    }
-                    popup.show(datePicker, 0, datePicker.getHeight());
-                }
+                popup.show(datePicker, 0, datePicker.getHeight());
             });
         }
     }
@@ -1136,7 +1130,7 @@ public class BasicDatePickerUI extends DatePickerUI {
 
     /**
      * Creates and returns a PopupMenuListener.
-     * 
+     * <p>
      * PENDING JW: the listener management assumes a stateless implementation
      * relative to the popup/picker. Custom implementations should take care
      * to not keep any references. 
@@ -1144,8 +1138,8 @@ public class BasicDatePickerUI extends DatePickerUI {
      * @return
      */
     protected PopupMenuListener createPopupMenuListener() {
-        PopupMenuListener l= new PopupMenuListener() {
-            
+        return new PopupMenuListener() {
+
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
                 PopupMenuListener[] ls = datePicker.getPopupMenuListeners();
@@ -1181,9 +1175,8 @@ public class BasicDatePickerUI extends DatePickerUI {
                     listener.popupMenuWillBecomeVisible(retargeted);
                 }
             }
-            
+
         };
-        return l;
     }
 
 
@@ -1351,7 +1344,7 @@ public class BasicDatePickerUI extends DatePickerUI {
         /**
          * Handles property changes from datepicker's editor.
          * 
-         * @param e the PropertyChangeEvent object describing the event source
+         * @param evt the PropertyChangeEvent object describing the event source
          *        and the property that has changed
          */
         private void editorPropertyChange(PropertyChangeEvent evt) {
@@ -1419,7 +1412,7 @@ public class BasicDatePickerUI extends DatePickerUI {
 
         /**
          * Handles propertyChanges from the picker's popupButton.
-         * 
+         * <p>
          * PENDING: does nothing, kept while refactoring .. which
          *   properties from the button do we want to handle?
          * 
@@ -1509,7 +1502,7 @@ public class BasicDatePickerUI extends DatePickerUI {
         
         /**
          * Issue #573-swingx - F2 in table doesn't focus the editor.
-         * 
+         * <p>
          * Do the same as combo: manually pass-on the focus to the editor.
          * 
          */
@@ -1527,21 +1520,21 @@ public class BasicDatePickerUI extends DatePickerUI {
          * The problem is that the combo uses the same trick as
          * this datepicker to prevent auto-closing of the popup
          * if focus is transfered back to the picker's editor.
-         * 
+         * <p>
          * The idea is to hide the popup manually when the
          * permanentFocusOwner changes to somewhere else.
-         * 
+         * <p>
          * JW: doesn't work - we only get the temporary lost,
          * but no permanent loss if the focus is transfered from 
          * the focusOwner to a new permanentFocusOwner.
-         * 
+         * <p>
          * OOOkaay ... looks like exclusively related to a combo:
          * we do get the expected focusLost if the focus is
          * transferred permanently from the temporary focusowner
          * to a new "normal" permanentFocusOwner (like a textfield),
          * we don't get it if transfered to a tricksing owner (like
          * a combo or picker). So can't do anything here. 
-         * 
+         * <p>
          * listen to keyboardFocusManager?
          */
         @Override
@@ -1567,7 +1560,7 @@ public class BasicDatePickerUI extends DatePickerUI {
         }
         
         /**
-         * @param b
+         * @param nullManager
          */
         private void unload(boolean nullManager) {
             if (manager != null) {

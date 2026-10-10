@@ -23,7 +23,6 @@ package org.jdesktop.swingx;
 import java.awt.HeadlessException;
 import java.awt.IllegalComponentStateException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.Callable;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -72,12 +71,7 @@ public class JXApplet extends JApplet {
         }
         
         try {
-            return SwingXUtilities.invokeAndWait(new Callable<JXRootPane>() {
-                @Override
-                public JXRootPane call() throws Exception {
-                    return createRootPaneSafely();
-                }
-            });
+            return SwingXUtilities.invokeAndWait(this::createRootPaneSafely);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (InvocationTargetException e) {

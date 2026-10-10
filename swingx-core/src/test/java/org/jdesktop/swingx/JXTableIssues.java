@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to exposed known issues of <code>JXTable</code>.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.
@@ -73,7 +73,7 @@ public class JXTableIssues extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(JXTableIssues.class
             .getName());
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JXTableIssues test = new JXTableIssues();
         setSystemLF(true);
         try {
@@ -92,7 +92,7 @@ public class JXTableIssues extends InteractiveTestCase {
     /**
      * Quick check for a forum report:
      * getValueAt called on init for each cell (even the invisible).
-     * 
+     * <p>
      * Looks okay: getValueAt called for visible cells only.
      * @throws Exception 
      * 
@@ -104,7 +104,7 @@ public class JXTableIssues extends InteractiveTestCase {
             LOG.fine("cannot run test - headless environment");
             return;
         }
-        final List<Integer> set = new ArrayList<Integer>();
+        final List<Integer> set = new ArrayList<>();
         final JXTable table = new JXTable() {
 
             @Override
@@ -116,12 +116,10 @@ public class JXTableIssues extends InteractiveTestCase {
         };
         showWithScrollingInFrame(table, "");
         table.setModel(new DefaultTableModel(100, 5));
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                // failing - one row off?
-                assertEquals(table.getColumnCount() * table.getVisibleRowCount(), set.size());
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            // failing - one row off?
+            assertEquals(table.getColumnCount() * table.getVisibleRowCount(), set.size());
+
         });
 
     }
@@ -152,7 +150,7 @@ public class JXTableIssues extends InteractiveTestCase {
     /**
      * Not defined: what should happen if the edited column is hidden? 
      * For sure, editing must be terminated - but canceled or stopped?
-     * 
+     * <p>
      * Here we test if the table is not editing after editable property
      * of the currently edited column is changed to false.
      */
@@ -172,11 +170,11 @@ public class JXTableIssues extends InteractiveTestCase {
     
     /**
      * Issue #359-swing: find suitable rowHeight.
-     * 
+     * <p>
      * Text selection in textfield has row of metrics.getHeight.
      * Suitable rowHeight should should take border into account:
      * for a textfield that's the metrics height plus 2.
-     * 
+     * <p>
      * PENDING: this passes locally, fails on server
      */
     @Test
@@ -220,7 +218,7 @@ public class JXTableIssues extends InteractiveTestCase {
     }
     /**
      * Issue #349-swingx: table not serializable
-     * 
+     * <p>
      * Part of the problem is in TableRolloverController.
      *
      */
@@ -232,7 +230,7 @@ public class JXTableIssues extends InteractiveTestCase {
 
     /**
      * Issue #349-swingx: table not serializable
-     * 
+     * <p>
      * Part of it seems to be in BoundAction. 
      *
      */
@@ -242,9 +240,9 @@ public class JXTableIssues extends InteractiveTestCase {
         table.setRolloverEnabled(false);
         ActionMap actionMap = table.getActionMap();
         Object[] keys = actionMap.keys();
-        for (int i = 0; i < keys.length; i++) {
-            if (actionMap.get(keys[i]) instanceof BoundAction) {
-                actionMap.remove(keys[i]);
+        for (Object key : keys) {
+            if (actionMap.get(key) instanceof BoundAction) {
+                actionMap.remove(key);
             }
         }
         SerializableSupport.serialize(table);
@@ -254,7 +252,7 @@ public class JXTableIssues extends InteractiveTestCase {
     /**
      * Issue??-swingx: turn off scrollbar doesn't work if the
      *   table was initially in autoResizeOff mode.
-     *   
+     * <p>
      * Problem with state management.  
      *
      */
@@ -271,7 +269,7 @@ public class JXTableIssues extends InteractiveTestCase {
      * we have a slight inconsistency in event values: setting the
      * client property to null means "false" but the event fired
      * has the newValue null.
-     *
+     * <p>
      * The way out is to _not_ set the client prop manually, always go
      * through the property setter.
      */
@@ -294,7 +292,7 @@ public class JXTableIssues extends InteractiveTestCase {
 
     /**
      * Issue: scrollpane not sized to fit visibleRowCount exactly
-     * 
+     * <p>
      * PENDING JW: report!
      */
     public void interactiveVisibleRowCount() {
@@ -352,14 +350,7 @@ public class JXTableIssues extends InteractiveTestCase {
     public void interactiveRepaintOnUpdateSingleCell() {
         JXTable table =  new JXTable(10, 5);
         // highlight complete row if first cell starts with a
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                return adapter.getString(0).startsWith("a");
-            }
-            
-        };
+        HighlightPredicate predicate = (renderer, adapter) -> !adapter.getString(0).isEmpty() && adapter.getString(0).charAt(0) == 'a';
         ColorHighlighter highlighter = new ColorHighlighter(predicate, Color.MAGENTA, null, Color.MAGENTA, null);
         table.addHighlighter(highlighter);
         JXTable other = new JXTable(table.getModel());
@@ -372,14 +363,14 @@ public class JXTableIssues extends InteractiveTestCase {
 
     /**
      * Issue #610-swingx: Cancel editing via Escape doesn't fire editingCanceled.
-     * 
+     * <p>
      * Reported against ComboBoxCellEditor in the autoComplete package, but actually
      * a JTable _never_ fires a editingCanceled for any editor. Reason is that the
      * cancel Action registered in BasisTableUI incorrectly calls table.removeEditor
      * instead of getCelleditor.cancelEditing.
-     * 
+     * <p>
      * Quick hack around that: JXTable registers its own cancel action.
-     * 
+     * <p>
      * Still open: esc when popup is open will only close the popup, not cancel the
      * edit (which requires a second esc). 
      *  
@@ -430,11 +421,7 @@ public class JXTableIssues extends InteractiveTestCase {
         });
         
         table.getColumnExt(0).addHighlighter(
-                new ColorHighlighter(new HighlightPredicate() {
-                    public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                        return adapter.getValue().toString().contains("e");
-                    }
-                }, Color.GREEN, null));
+                new ColorHighlighter((renderer, adapter) -> adapter.getValue().toString().contains("e"), Color.GREEN, null));
         
         JFrame frame = wrapWithScrollingInFrame(table, "Column Highlighter with Search Test");
         table.putClientProperty(JXTable.MATCH_HIGHLIGHTER, true);
@@ -481,7 +468,7 @@ public class JXTableIssues extends InteractiveTestCase {
     
      
     private void assertSelection(TableModel tableModel, ListSelectionModel selectionModel, Object[] expected) {
-        List<Object> selected = new ArrayList<Object>();
+        List<Object> selected = new ArrayList<>();
         for(int r = 0; r < tableModel.getRowCount(); r++) {
             if(selectionModel.isSelectedIndex(r)) selected.add(tableModel.getValueAt(r, 0));
         }
@@ -505,13 +492,13 @@ public class JXTableIssues extends InteractiveTestCase {
           table.getColumnModel().getColumn(0).setHeaderValue("JTable");
           xTable.getColumnModel().getColumn(0).setHeaderValue("JXTable");
         }
-    };
-    
+    }
+
     /**
      * A one column table model where all the data is in an Object[] array.
      */
     static class ReallySimpleTableModel extends AbstractTableModel {
-        private List<Object> contents = new ArrayList<Object>();
+        private List<Object> contents = new ArrayList<>();
         
         public void setContents(List<Object> contents) {
             this.contents.clear();
@@ -560,7 +547,7 @@ public class JXTableIssues extends InteractiveTestCase {
         };
         int filledColumn = fillLast ? columnCount - 1 : 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, filledColumn);
+            model.setValueAt(startRow++, i, filledColumn);
         }
         return model;
     }
@@ -570,7 +557,7 @@ public class JXTableIssues extends InteractiveTestCase {
     private DefaultTableModel createAscendingModel(int startRow, int count) {
         DefaultTableModel model = new DefaultTableModel(count, 5);
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, 0);
+            model.setValueAt(startRow++, i, 0);
         }
         return model;
     }

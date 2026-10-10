@@ -16,9 +16,9 @@ import org.jdesktop.swingx.plaf.TextUIWrapper;
 public class BuddySupport {
 	public enum Position {
 		LEFT, RIGHT
-	};
+	}
 
-	public static final String OUTER_MARGIN = "outerMargin";
+    public static final String OUTER_MARGIN = "outerMargin";
 
 	public static void addLeft(Component c, JTextField textField) {
 		add(c, Position.LEFT, textField);
@@ -91,7 +91,7 @@ public class BuddySupport {
 		if (buddies != null) {
 			return buddies;
 		}
-		return new ArrayList<Component>();
+		return new ArrayList<>();
 	}
 
 	public static boolean isBuddy(Component c, JTextField textField) {

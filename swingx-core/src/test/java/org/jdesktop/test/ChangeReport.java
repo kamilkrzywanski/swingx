@@ -26,8 +26,8 @@ public class ChangeReport implements ChangeListener {
     /**
      * Holds a list of all received PropertyChangeEvents.
      */
-    protected List<ChangeEvent> events = Collections.synchronizedList(new LinkedList<ChangeEvent>());
-    protected Map<Object, ChangeEvent> eventMap = Collections.synchronizedMap(new HashMap<Object, ChangeEvent>());
+    protected List<ChangeEvent> events = Collections.synchronizedList(new LinkedList<>());
+    protected Map<Object, ChangeEvent> eventMap = Collections.synchronizedMap(new HashMap<>());
     
 //------------------------ implement PropertyChangeListener
     
@@ -54,11 +54,11 @@ public class ChangeReport implements ChangeListener {
      public ChangeEvent getLastEvent() {
         return events.isEmpty()
             ? null
-            : (ChangeEvent) events.get(0);
+            : events.get(0);
     }
 
      public ChangeEvent getEvent(Object source) {
-         return (ChangeEvent) eventMap.get(source);
+         return eventMap.get(source);
      }
 
 }

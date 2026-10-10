@@ -44,18 +44,18 @@ public interface CalendarRenderingHandler {
      * @param state the DayState of the cell
      * @return a component configured for rendering the given cell
      */
-    public JComponent prepareRenderingComponent(JXMonthView monthView,
-            Calendar calendar, CalendarState state);
+    JComponent prepareRenderingComponent(JXMonthView monthView,
+                                         Calendar calendar, CalendarState state);
 
     /**
      * Updates internal state to the given Locale.
-     * 
+     * <p>
      * PENDING JW: ideally, the handler should be stateless and this method
      * removed. Currently needed because there is no way to get the Locale 
      * from a Calendar. 
      * 
      * @param locale the new Locale.
      */
-    public void setLocale(Locale locale);
+    void setLocale(Locale locale);
 
 }

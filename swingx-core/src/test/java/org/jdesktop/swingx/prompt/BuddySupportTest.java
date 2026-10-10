@@ -1,9 +1,5 @@
 package org.jdesktop.swingx.prompt;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.Component;
 
 import javax.swing.JButton;

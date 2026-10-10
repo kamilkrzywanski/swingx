@@ -71,8 +71,7 @@ public final class HighlighterFactory {
      * @return a Highlighter striping every second row background.
      */
     public static Highlighter createSimpleStriping() {
-        ColorHighlighter hl = new UIColorHighlighter(HighlightPredicate.ODD);
-        return hl;
+        return new UIColorHighlighter(HighlightPredicate.ODD);
     }
     
     /**
@@ -98,8 +97,7 @@ public final class HighlighterFactory {
      * @return a Highlighter striping every second row background. 
      */
     public static Highlighter createSimpleStriping(Color stripeBackground) {
-        ColorHighlighter hl = new ColorHighlighter(HighlightPredicate.ODD, stripeBackground, null);
-        return hl;
+        return new ColorHighlighter(HighlightPredicate.ODD, stripeBackground, null);
     }
     
     /**
@@ -115,9 +113,8 @@ public final class HighlighterFactory {
             int rowsPerGroup) {
         HighlightPredicate predicate = new RowGroupHighlightPredicate(
                 rowsPerGroup);
-        ColorHighlighter hl = new ColorHighlighter(predicate, stripeBackground,
+        return new ColorHighlighter(predicate, stripeBackground,
                 null);
-        return hl;
     }
 
     /**
@@ -183,7 +180,7 @@ public final class HighlighterFactory {
     
     /**
      * A ColorHighlighter with UI-dependent background.
-     * 
+     * <p>
      * PENDING JW: internally install a AND predicate to check for LFs
      *   which provide striping on the UI-Delegate level?
      * 
@@ -228,7 +225,7 @@ public final class HighlighterFactory {
     /**
      * Looks up and returns the LF specific color to use for striping
      * background highlighting. 
-     * 
+     * <p>
      * Lookup strategy: 
      * <ol>
      * <li> in UIManager for key = "UIColorHighlighter.stripingBackground", if null

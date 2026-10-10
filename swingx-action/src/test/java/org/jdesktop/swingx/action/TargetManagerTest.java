@@ -128,10 +128,7 @@ public class TargetManagerTest {
         }
 
         public boolean hasCommand(Object command) {
-            if (command.equals(FOO_ACTION)) {
-                return true;
-            }
-            return false;
+            return command.equals(FOO_ACTION);
         }
 
         public Object[] getCommands() {
@@ -147,10 +144,7 @@ public class TargetManagerTest {
         }
 
         public boolean hasCommand(Object command) {
-            if (command.equals(BAR_ACTION)) {
-                return true;
-            }
-            return false;
+            return command.equals(BAR_ACTION);
         }
 
         public Object[] getCommands() {

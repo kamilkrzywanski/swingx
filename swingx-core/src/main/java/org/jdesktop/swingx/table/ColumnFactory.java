@@ -417,7 +417,7 @@ public class ColumnFactory {
      * Returns the number of table view rows accessible during row-related
      * config. All row-related access is bounded by the value returned from this
      * method.
-     * 
+     * <p>
      * Here: delegates to table.getRowCount().
      * <p>
      * 

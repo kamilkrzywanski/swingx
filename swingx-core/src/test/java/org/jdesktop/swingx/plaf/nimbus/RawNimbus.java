@@ -136,23 +136,21 @@ public class RawNimbus {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    setLookAndFeel("Nimbus");
-                    Object alternate = UIManager.getLookAndFeelDefaults().remove("Table.alternateRowColor");
-                    LOG.info("removed? got color " + UIManager.getColor("Table.alternateRowColor") + alternate);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                JFrame frame = new JFrame("");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.add(new RawNimbus().createContent());
-                frame.setLocationRelativeTo(null);
-                frame.pack();
-                frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                setLookAndFeel("Nimbus");
+                Object alternate = UIManager.getLookAndFeelDefaults().remove("Table.alternateRowColor");
+                LOG.info("removed? got color " + UIManager.getColor("Table.alternateRowColor") + alternate);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
+            JFrame frame = new JFrame("");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(new RawNimbus().createContent());
+            frame.setLocationRelativeTo(null);
+            frame.pack();
+            frame.setVisible(true);
         });
     }
 
@@ -171,30 +169,30 @@ public class RawNimbus {
         protected final String[] names = { "First Name", "Last Name", "Favorite Color",
                 "No.", "Vegetarian" };
         protected final Object[][] data = {
-                { "Mark", "Andrews", Color.red, new Integer(2), new Boolean(true) },
-                { "Tom", "Ball", Color.blue, new Integer(99), new Boolean(false) },
-                { "Alan", "Chung", Color.green, new Integer(838), new Boolean(false) },
-                { "Jeff", "Dinkins", Color.cyan, new Integer(8), new Boolean(true) },
-                { "Amy", "Fowler", Color.yellow, new Integer(3), new Boolean(false) },
-                { "Brian", "Gerhold", Color.green, new Integer(0), new Boolean(false) },
-                { "James", "Gosling", Color.magenta, new Integer(21), new Boolean(false) },
-                { "David", "Karlton", Color.red, new Integer(1), new Boolean(false) },
-                { "Dave", "Kloba", Color.yellow, new Integer(14), new Boolean(false) },
-                { "Peter", "Korn", Color.orange, new Integer(12), new Boolean(false) },
-                { "Phil", "Milne", Color.magenta, new Integer(3), new Boolean(false) },
-                { "Dave", "Moore", Color.green, new Integer(88), new Boolean(false) },
-                { "Hans", "Muller", Color.red, new Integer(5), new Boolean(false) },
+                { "Mark", "Andrews", Color.red, 2, Boolean.TRUE},
+                { "Tom", "Ball", Color.blue, 99, Boolean.FALSE},
+                { "Alan", "Chung", Color.green, 838, Boolean.FALSE},
+                { "Jeff", "Dinkins", Color.cyan, 8, Boolean.TRUE},
+                { "Amy", "Fowler", Color.yellow, 3, Boolean.FALSE},
+                { "Brian", "Gerhold", Color.green, 0, Boolean.FALSE},
+                { "James", "Gosling", Color.magenta, 21, Boolean.FALSE},
+                { "David", "Karlton", Color.red, 1, Boolean.FALSE},
+                { "Dave", "Kloba", Color.yellow, 14, Boolean.FALSE},
+                { "Peter", "Korn", Color.orange, 12, Boolean.FALSE},
+                { "Phil", "Milne", Color.magenta, 3, Boolean.FALSE},
+                { "Dave", "Moore", Color.green, 88, Boolean.FALSE},
+                { "Hans", "Muller", Color.red, 5, Boolean.FALSE},
 
-                { "Rick", "Levenson", Color.blue, new Integer(2), new Boolean(false) },
-                { "Tim", "Prinzing", Color.blue, new Integer(22), new Boolean(false) },
-                { "Chester", "Rose", Color.black, new Integer(0), new Boolean(false) },
-                { "Ray", "Ryan", Color.gray, new Integer(77), new Boolean(false) },
-                { "Georges", "Saab", Color.red, new Integer(4), new Boolean(false) },
-                { "Willie", "Walker", Color.blue, new Integer(4),
-                        new Boolean(false) },
+                { "Rick", "Levenson", Color.blue, 2, Boolean.FALSE},
+                { "Tim", "Prinzing", Color.blue, 22, Boolean.FALSE},
+                { "Chester", "Rose", Color.black, 0, Boolean.FALSE},
+                { "Ray", "Ryan", Color.gray, 77, Boolean.FALSE},
+                { "Georges", "Saab", Color.red, 4, Boolean.FALSE},
+                { "Willie", "Walker", Color.blue, 4,
+                        Boolean.FALSE},
 
-                { "Kathy", "Walrath", Color.blue, new Integer(8), new Boolean(false) },
-                { "Arnaud", "Weber", Color.green, new Integer(44), new Boolean(false) } };
+                { "Kathy", "Walrath", Color.blue, 8, Boolean.FALSE},
+                { "Arnaud", "Weber", Color.green, 44, Boolean.FALSE} };
 
         public int getColumnCount() {
             return names.length;

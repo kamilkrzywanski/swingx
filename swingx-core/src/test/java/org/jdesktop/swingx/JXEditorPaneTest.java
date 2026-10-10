@@ -86,7 +86,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
     /**
      * Issue #289-swingx: JXEditorPane actions should be disabled if not
      * applicable.
-     * 
+     * <p>
     *  paste is enabled if the editor is editable and the clipboard isn't empty,
     *  disabled otherwise.
      * 
@@ -103,7 +103,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
     /**
      * Issue #289-swingx: JXEditorPane actions should be disabled if not
      * applicable.
-    * 
+    * <p>
     *  paste is enabled if the editor is editable the clipboard isn't empty.
     *  can't really test ... don't want to clear the clipboard as a test side-effect. 
      */

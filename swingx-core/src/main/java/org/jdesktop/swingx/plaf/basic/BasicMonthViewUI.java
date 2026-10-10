@@ -238,7 +238,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Installs the component as appropriate for the current lf.
-     * 
+     * <p>
      * PENDING JW: clarify sequence of installXX methods. 
      */
     @Override
@@ -554,9 +554,7 @@ public class BasicMonthViewUI extends MonthViewUI {
             String[] dateFormatSymbols = DateFormatSymbols.getInstance(locale)
                     .getShortWeekdays();
             daysOfTheWeek = new String[JXMonthView.DAYS_IN_WEEK];
-            for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
-                daysOfTheWeek[i - 1] = dateFormatSymbols[i];
-            }
+            System.arraycopy(dateFormatSymbols, Calendar.SUNDAY, daysOfTheWeek, 0, Calendar.SATURDAY);
         }
         if (revalidate) {
             monthView.invalidate();
@@ -712,7 +710,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * grid coordinates relative to the given month. May be null if the
      * logical coordinates represent a header in the day grid or is outside of the
      * given month.
-     * 
+     * <p>
      * Mapping logical day grid coordinates to Date.<p>
      * 
      * PENDING JW: relax the startOfMonth pre? Why did I require it?
@@ -782,7 +780,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * Returns the Date at the given location. May be null if the
      * coordinates don't map to a day in the month which contains the 
      * coordinates. Specifically: hitting leading/trailing dates returns null.
-     * 
+     * <p>
      * Mapping pixel to calendar day.
      *
      * @param x the x position of the location in pixel
@@ -851,8 +849,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * @return true if the date is visible, false otherwise.
      */
     private boolean isVisible(Date date) {
-        if (getFirstDisplayedDay().after(date) || getLastDisplayedDay().before(date)) return false;
-        return true;
+        return !getFirstDisplayedDay().after(date) && !getLastDisplayedDay().before(date);
     }
 
     
@@ -1021,7 +1018,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * Returns the logical grid position of the month containing the given date.
      * The Point's x value is the column in the grid of months, the y value
      * is the row in the grid of months.
-     * 
+     * <p>
      * Mapping Date to logical grid position, this is the reverse of getMonth(int, int).
      * 
      * @param date the Date to return the bounds for. Must not be null.
@@ -1153,7 +1150,7 @@ public class BasicMonthViewUI extends MonthViewUI {
     
     /**
      * Calculates the bounds of the grid of months. 
-     * 
+     * <p>
      * CalendarRow/ColumnCount and calendarWidth/Height must be
      * initialized before calling this. 
      */
@@ -1281,7 +1278,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the month represented by the given Calendar.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1296,7 +1293,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the header of a month.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1309,7 +1306,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the day column header.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1328,7 +1325,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the day column header.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1355,7 +1352,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the days of the given month.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1420,7 +1417,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the separator between row header (weeks of year) and days.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the first day of the month to
@@ -1435,7 +1432,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Paints the separator between column header (days of week) and days.
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * @param g the graphics to paint into
      * @param month the calendar specifying the the first day of the month to
@@ -1479,7 +1476,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * Returns the number of weeks to paint in the current month, as represented
      * by the given calendar. The calendar is expected to be set to the first
      * of the month. 
-     * 
+     * <p>
      * Note: the given calendar must not be changed.
      * 
      * @param month the calendar specifying the the first day of the month to
@@ -1538,7 +1535,7 @@ public class BasicMonthViewUI extends MonthViewUI {
     
     /**
      * Returns the monthViews calendar configured to the firstDisplayedDate.
-     * 
+     * <p>
      * NOTE: it's safe to change the calendar state without resetting because
      * it's JXMonthView's responsibility to protect itself.
      * 
@@ -1550,7 +1547,7 @@ public class BasicMonthViewUI extends MonthViewUI {
     
     /**
      * Returns the monthViews calendar configured to the given time.
-     * 
+     * <p>
      * NOTE: it's safe to change the calendar state without resetting because
      * it's JXMonthView's responsibility to protect itself.
      * 
@@ -1646,7 +1643,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     /**
      * Returns true if the date passed in is the same as today.
-     *
+     * <p>
      * PENDING JW: really want the exact test?
      * 
      * @param date long representing the date you want to compare to today.
@@ -1773,30 +1770,29 @@ public class BasicMonthViewUI extends MonthViewUI {
                 return;
             }
 
-            Date selected = cal;
             Date oldStart = startDate;
             Date oldEnd = endDate;
 
             if (monthView.getSelectionMode() == SelectionMode.SINGLE_SELECTION) {
-                if (selected.equals(oldStart)) {
+                if (cal.equals(oldStart)) {
                     return;
                 }
-                startDate = selected;
-                endDate = selected;
+                startDate = cal;
+                endDate = cal;
             } else  if (pivotDate != null){
-                if (selected.before(pivotDate)) {
-                    startDate = selected;
+                if (cal.before(pivotDate)) {
+                    startDate = cal;
                     endDate = pivotDate;
-                } else if (selected.after(pivotDate)) {
+                } else if (cal.after(pivotDate)) {
                     startDate = pivotDate;
-                    endDate = selected;
+                    endDate = cal;
                 }
             } else { // pivotDate had not yet been initialiased
                 // might happen on first click into leading/trailing dates
                 // JW: fix of #996-swingx: NPE when dragging 
-                startDate = selected;
-                endDate = selected;
-                pivotDate = selected;
+                startDate = cal;
+                endDate = cal;
+                pivotDate = cal;
             }
 
             if (startDate.equals(oldStart) && endDate.equals(oldEnd)) {
@@ -2089,7 +2085,7 @@ public class BasicMonthViewUI extends MonthViewUI {
         /**
          * If we are in a mode that allows for range selection this method
          * will extend the currently selected range.
-         *
+         * <p>
          * NOTE: This may not be the expected behavior for the keyboard controls
          * and we ay need to update this code to act in a way that people expect.
          *

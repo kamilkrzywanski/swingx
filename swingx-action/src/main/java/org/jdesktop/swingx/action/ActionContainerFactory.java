@@ -24,7 +24,6 @@ import java.awt.Insets;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -140,10 +139,7 @@ public class ActionContainerFactory {
      */
     public JToolBar createToolBar(List<?> list) {
         JToolBar toolbar = new JToolBar();
-        Iterator<?> iter = list.iterator();
-        while(iter.hasNext()) {
-            Object element = iter.next();
-
+        for (Object element : list) {
             if (element == null) {
                 toolbar.addSeparator();
             } else {
@@ -158,7 +154,7 @@ public class ActionContainerFactory {
                  */
                 button.setMargin(TOOLBAR_BUTTON_MARGIN);
                 button.setBorderPainted(false);
-                
+
                 toolbar.add(button);
             }
         }
@@ -184,15 +180,12 @@ public class ActionContainerFactory {
      */
     public JPopupMenu createPopup(List<?> list) {
         JPopupMenu popup = new JPopupMenu();
-        Iterator<?> iter = list.iterator();
-        while(iter.hasNext()) {
-            Object element = iter.next();
-
+        for (Object element : list) {
             if (element == null) {
                 popup.addSeparator();
             } else if (element instanceof List<?>) {
-                JMenu newMenu= createMenu((List<?>)element);
-                if (newMenu!= null) {
+                JMenu newMenu = createMenu((List<?>) element);
+                if (newMenu != null) {
                     popup.add(newMenu);
                 }
             } else {
@@ -318,20 +311,15 @@ public class ActionContainerFactory {
      */
     private ButtonGroup getGroup(String groupid, JComponent container) {
         if (groupMap == null) {
-            groupMap = new HashMap<Integer, ButtonGroup>();
+            groupMap = new HashMap<>();
         }
         int intCode = groupid.hashCode();
         if (container != null) {
             intCode ^= container.hashCode();
         }
-        Integer hashCode = new Integer(intCode);
+        Integer hashCode = intCode;
 
-        ButtonGroup group = groupMap.get(hashCode);
-        if (group == null) {
-            group = new ButtonGroup();
-            groupMap.put(hashCode, group);
-        }
-        return group;
+        return groupMap.computeIfAbsent(hashCode, k -> new ButtonGroup());
     }
 
     /**
@@ -395,7 +383,7 @@ public class ActionContainerFactory {
 
     /**
      * Creates, configures and returns an AbstractButton. 
-     * 
+     * <p>
      * The attributes of the action element 
      * registered with the ActionManger by the given id.
      * Will return a JButton or a JToggleButton.
@@ -497,7 +485,7 @@ public class ActionContainerFactory {
      * 
      * It's up to the client to only pass in button's where selected and/or the 
      * group property makes sense. 
-     * 
+     * <p>
      * PENDING: the group properties are yet untested.
      * PENDING: think about automated unconfig.
      * 

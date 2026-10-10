@@ -212,6 +212,6 @@ public class RowFilters {
         }
     }
     
-    private RowFilters() {};
-    
+    private RowFilters() {}
+
 }

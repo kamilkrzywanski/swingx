@@ -32,7 +32,6 @@ import java.awt.Insets;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
@@ -369,12 +368,7 @@ public class BasicHeaderUI extends HeaderUI {
 
 
     protected void installListeners(final JXHeader header) {
-        propListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                onPropertyChange(header, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            }
-        };
+        propListener = evt -> onPropertyChange(header, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
         boundsListener = new HierarchyBoundsAdapter() {
             @Override
             public void ancestorResized(HierarchyEvent e) {

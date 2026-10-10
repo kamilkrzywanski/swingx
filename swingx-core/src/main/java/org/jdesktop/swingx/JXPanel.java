@@ -33,7 +33,6 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
@@ -274,7 +273,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
     
     /**
      * experimental version: doesn't tweak opaque
-     * 
+     * <p>
      * called if isPatch
      * @param alpha
      */
@@ -512,13 +511,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      */
     protected PropertyChangeListener getPainterChangeListener() {
         if (painterChangeListener == null) {
-            painterChangeListener = new PropertyChangeListener() {
-                
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    repaint();
-                }
-            };
+            painterChangeListener = evt -> repaint();
         }
         return painterChangeListener;
     }
@@ -552,7 +545,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      * or false if it should only paint inside the border. This property is true by default.
      * This property affects the width, height,
      * and initial transform passed to the background painter.
-     * 
+     * <p>
      * This is a bound property.
      */
     @Override

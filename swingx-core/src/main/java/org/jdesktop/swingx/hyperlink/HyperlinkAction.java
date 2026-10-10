@@ -146,7 +146,7 @@ public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
      * Implemented to perform the appropriate Desktop action if supported on the current
      * target. Sets the visited property to true if the desktop action doesn't throw
      * an exception or to false if it did. 
-     * 
+     * <p>
      * Does nothing if the action isn't supported.  
      */
     @Override
@@ -226,7 +226,7 @@ public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
          * Returns a boolean indicating whether the action is supported on the
          * given URI. This implementation returns true if both the Desktop is 
          * generally supported and <code>isActionSupported()</code>.
-         * 
+         * <p>
          * PENDING JW: hmm ... which class exactly has to check for valid combination
          * of Action and URI?
          * 

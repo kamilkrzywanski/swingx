@@ -4,8 +4,6 @@ package org.jdesktop.swingx.action;
 //Click on one of the tool bar button (eg "ChoiceA")
 //It will throw the exception
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -29,7 +27,7 @@ public class BoundActionIssues {
     BoundActionIssues() {
         initActionManager();
 
-        bar = acf.createToolBar(Arrays.asList(new String[] { "ba", "bb" }));
+        bar = acf.createToolBar(Arrays.asList("ba", "bb"));
     }
 
     private void initActionManager() {
@@ -53,11 +51,7 @@ public class BoundActionIssues {
         JFrame f = createFrame();
         f.getContentPane().add(bar, "North");
         JButton brefresh = new JButton("Refresh");
-        brefresh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                refreshToolBar();
-            }
-        });
+        brefresh.addActionListener(e -> refreshToolBar());
         f.getContentPane().add(brefresh, "South");
         f.setVisible(true);
     }

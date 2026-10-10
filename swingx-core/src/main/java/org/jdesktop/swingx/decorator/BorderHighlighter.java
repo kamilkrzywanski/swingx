@@ -28,12 +28,12 @@ import javax.swing.border.Border;
 
 /**
  * A Highlighter that applies a border the the renderer component.
- * 
+ * <p>
  * The resulting border can be configured to 
  * - ignore the component's border, set this highlighter's border
  * - compound of this highlighter's border and component border, with
  *   this highlighter's border either inner or outer.
- *   
+ * <p>
  * The default setting is compound outer.
  *   
  */
@@ -50,7 +50,7 @@ public class BorderHighlighter extends AbstractHighlighter {
      * 
      */
     public BorderHighlighter() {
-        this((HighlightPredicate) null, null);
+        this(null, null);
     }
     
     /**
@@ -186,7 +186,7 @@ public class BorderHighlighter extends AbstractHighlighter {
     /**
      * Sets the inner property. If true/false and compounded is enabled
      * the highlight border will be the inner/outer border of the compound. 
-     * 
+     * <p>
      * The default value is false;
      * 
      * @param inner a boolean indicating whether the highlight border should be 

@@ -1,9 +1,5 @@
 package org.jdesktop.swingx.search;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import java.util.prefs.Preferences;
 
 import org.jdesktop.swingx.JXSearchField;

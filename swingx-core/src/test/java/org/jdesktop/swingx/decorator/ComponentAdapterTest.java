@@ -88,7 +88,7 @@ public class ComponentAdapterTest {
     
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -99,7 +99,7 @@ public class ComponentAdapterTest {
     }
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw IllegalArgumentException if invalid index.
      */
     @Test
@@ -118,7 +118,7 @@ public class ComponentAdapterTest {
  
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw NPE if nullIdentifier.
      */
     @Test
@@ -136,7 +136,7 @@ public class ComponentAdapterTest {
     }
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -148,7 +148,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -161,7 +161,7 @@ public class ComponentAdapterTest {
     
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -172,7 +172,7 @@ public class ComponentAdapterTest {
     }
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw IllegalArgumentException if invalid index.
      */
     @Test
@@ -191,7 +191,7 @@ public class ComponentAdapterTest {
  
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw NPE if nullIdentifier.
      */
     @Test
@@ -209,7 +209,7 @@ public class ComponentAdapterTest {
     }
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -221,7 +221,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Tree has no columns/identifiers - implement reasonable default.
      */
     @Test
@@ -233,14 +233,14 @@ public class ComponentAdapterTest {
     
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here: must return model index for hidden columns
      */
     @Test
     public void testColumnIdentifierReverseHidden() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = 50;
         table.getColumn(1).setIdentifier(id);
         table.getColumnExt(1).setVisible(false);
         assertEquals(1, adapter.getColumnIndex(id));
@@ -249,35 +249,35 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here: must return model index
      */
     @Test
     public void testColumnIdentifierReverse() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = 50;
         table.getColumn(1).setIdentifier(id);
         assertEquals(1, adapter.getColumnIndex(id));
     }
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here: must return model index if identifier not known.
      */
     @Test
     public void testColumnIdentifierReverseNotFound() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = 50;
         table.getColumn(1).setIdentifier(id);
         assertEquals(-1, adapter.getColumnIndex("unknown"));
     }
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw IllegalArgumentException if invalid index.
      */
     @Test
@@ -296,7 +296,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #791-swingx: complete coordinate transformation methods - missing id --> index
-     * 
+     * <p>
      * Here test contract: must throw NPE if Null identifier.
      */
     @Test
@@ -321,7 +321,7 @@ public class ComponentAdapterTest {
     public void testColumnIdentifierAt() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = 50;
         table.getColumn(0).setIdentifier(id);
         assertEquals(table.getColumn(0).getIdentifier(), adapter.getColumnIdentifierAt(0));
         // this fails because the adapter returns a string representation of the identifier
@@ -331,7 +331,7 @@ public class ComponentAdapterTest {
     
     /**
      * Issue #821-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test ComponentAdapter on hidden hierarchical column
      */
     @Test
@@ -347,7 +347,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #821-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test ComponentAdapter on hidden hierarchical column
      */
     @Test
@@ -364,7 +364,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on tree's ComponentAdapter.
      */
     @Test
@@ -379,7 +379,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on tree's ComponentAdapter.
      */
     @Test
@@ -394,7 +394,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on tree's ComponentAdapter.
      */
     @Test
@@ -409,7 +409,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on tree's ComponentAdapter.
      */
     @Test
@@ -443,7 +443,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on list's ComponentAdapter.
      */
     @Test
@@ -458,7 +458,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on list's ComponentAdapter.
      */
     @Test
@@ -472,7 +472,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on list's ComponentAdapter.
      */
     @Test
@@ -486,7 +486,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on list's ComponentAdapter.
      */
     @Test
@@ -500,7 +500,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on list's ComponentAdapter.
      */
     @Test
@@ -536,7 +536,7 @@ public class ComponentAdapterTest {
  
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -552,7 +552,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -568,7 +568,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -584,7 +584,7 @@ public class ComponentAdapterTest {
    
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -598,7 +598,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -612,7 +612,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -626,7 +626,7 @@ public class ComponentAdapterTest {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on table's ComponentAdapter.
      */
     @Test
@@ -678,7 +678,7 @@ public class ComponentAdapterTest {
     private DefaultTableModel createAscendingModel(int startRow, int count) {
         DefaultTableModel model = new DefaultTableModel(count, 5);
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, 0);
+            model.setValueAt(startRow++, i, 0);
         }
         return model;
     }
@@ -691,18 +691,13 @@ public class ComponentAdapterTest {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
 
     protected void setUp() throws Exception {

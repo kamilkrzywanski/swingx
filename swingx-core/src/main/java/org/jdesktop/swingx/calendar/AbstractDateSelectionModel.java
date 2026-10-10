@@ -41,7 +41,7 @@ import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
  * @author Jeanette Winzenburg
  */
 public abstract class AbstractDateSelectionModel implements DateSelectionModel {
-    public static final SortedSet<Date> EMPTY_DATES = Collections.unmodifiableSortedSet(new TreeSet<Date>());
+    public static final SortedSet<Date> EMPTY_DATES = Collections.unmodifiableSortedSet(new TreeSet<>());
     
     protected EventListenerMap listenerMap;
     protected boolean adjusting;
@@ -65,7 +65,7 @@ public abstract class AbstractDateSelectionModel implements DateSelectionModel {
     /**
      * Instantiates a DateSelectionModel with the given locale. If the locale is
      * null, the Locale's default is used.
-     * 
+     * <p>
      * PENDING JW: fall back to JComponent.getDefaultLocale instead? We use this
      *   with components anyway?
      * 

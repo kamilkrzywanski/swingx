@@ -206,8 +206,8 @@ public class DateSpan {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 37 * result + (int)(_start ^ (_start >>> 32));
-        result = 37 * result + (int)(_end ^ (_end >>> 32));
+        result = 37 * result + Long.hashCode(_start);
+        result = 37 * result + Long.hashCode(_end);
         return result;
     }
 

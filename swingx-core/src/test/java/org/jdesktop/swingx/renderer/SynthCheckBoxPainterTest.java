@@ -13,18 +13,16 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.table.AbstractTableModel;
 
@@ -85,24 +83,21 @@ public class SynthCheckBoxPainterTest extends JFrame
   
   public static void main(String[] args)
   {
-    EventQueue.invokeLater(new Runnable(){
-      public void run()
+    EventQueue.invokeLater(() -> {
+      try
       {
-        try
-        {
-          new SynthCheckBoxPainterTest();
-        }
-        catch (Exception e)
-        {
-          e.printStackTrace();
-        }
+        new SynthCheckBoxPainterTest();
       }
-    });   
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+    });
   }
 
   public SynthCheckBoxPainterTest() throws Exception
   {
-    InputStream is = new ByteArrayInputStream(synthXml.getBytes("UTF8"));
+    InputStream is = new ByteArrayInputStream(synthXml.getBytes(StandardCharsets.UTF_8));
     SynthLookAndFeel laf = new SynthLookAndFeel();
     laf.load(is, SynthCheckBoxPainterTest.class);
     UIManager.setLookAndFeel(laf); 
@@ -158,13 +153,13 @@ public class SynthCheckBoxPainterTest extends JFrame
     public MyTableModel(int rows)
     {
       this.rows = rows;
-      this.data = new ArrayList<Object[]>();
+      this.data = new ArrayList<>();
       for (int i = 0; i < rows; i++)
       {
         Object[] row = new Object[this.cols];
         this.data.add(row);
         row[0] = "cell " + i + ":" + 0;
-        row[1] = new Boolean(i % 2 == 0);
+        row[1] = i % 2 == 0;
         row[2] = createIcon();
       }
       // for debugging: solid background in row with striping color

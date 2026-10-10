@@ -209,7 +209,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
 //                    AlphaComposite.SRC_OVER, 0.5f));
 //        }
 
-        if (text != null && !text.equals("")) {
+        if (text != null && !text.isEmpty()) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
             if (v != null) {
                 paintHTMLText(g, b, textRect, text, v);
@@ -436,8 +436,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
             }
             ViewFactory f = kit.getViewFactory();
             View hview = f.create(doc.getDefaultRootElement());
-            View v = new Renderer(c, f, hview);
-            return v;
+            return new Renderer(c, f, hview);
         }
 
         static BasicEditorKit getFactory() {
@@ -561,7 +560,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
                 }
             }
             try {
-                displayPropertiesToCSS = clz.getMethod("displayPropertiesToCSS", new Class[] { Font.class, Color.class});
+                displayPropertiesToCSS = clz.getMethod("displayPropertiesToCSS", Font.class, Color.class);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to use SwingUtilities2. Check the permissions and class version.");
             }

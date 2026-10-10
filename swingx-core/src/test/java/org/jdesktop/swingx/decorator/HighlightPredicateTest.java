@@ -101,7 +101,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     
     /**
      * Issue #858-swingx: predefined focus predicate. 
-     * 
+     * <p>
      * Test the IS_SELECTED predicate
      */
     @Test
@@ -113,7 +113,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     
     /**
      * Issue #858-swingx: predefined focus predicate. 
-     * 
+     * <p>
      * Test the IS_SELECTED predicate
      */
     @Test
@@ -125,7 +125,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     
     /**
      * Issue #858-swingx: predefined focus predicate. 
-     * 
+     * <p>
      * Test the HAS_FOCUS predicate
      */
     @Test
@@ -137,7 +137,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
  
     /**
      * Issue #858-swingx: predefined focus predicate. 
-     * 
+     * <p>
      * Test the HAS_FOCUS predicate
      */
     @Test
@@ -164,7 +164,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
 
     /**
      * Issue #1314: predefined truncated text predicate. 
-     * 
+     * <p>
      * Test the IS_TEXT_TRUNCATED predicate
      */
     @Test
@@ -176,7 +176,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     
     /**
      * Issue #1314: predefined truncated text predicate. 
-     * 
+     * <p>
      * Test the IS_TEXT_TRUNCATED predicate
      */
     @Test
@@ -297,7 +297,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
      */
     @Test
     public void testOrProperty() {
-        List<HighlightPredicate> inputPredicates = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> inputPredicates = new ArrayList<>();
         inputPredicates.add(HighlightPredicate.NEVER);
         inputPredicates.add(new IdentifierHighlightPredicate("t"));
         OrHighlightPredicate predicate = new OrHighlightPredicate(inputPredicates);
@@ -327,7 +327,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
         ComponentAdapter adapter = createComponentAdapter(allColored, true);
         HighlightPredicate emptyArray = new OrHighlightPredicate();
         assertFalse(emptyArray.isHighlighted(allColored, adapter));
-        HighlightPredicate emptyList = new OrHighlightPredicate(new ArrayList<HighlightPredicate>());
+        HighlightPredicate emptyList = new OrHighlightPredicate(new ArrayList<>());
         assertFalse(emptyList.isHighlighted(allColored, adapter));
     }
     /**
@@ -356,23 +356,23 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     @Test
     public void testOrCollectionConstructor() {
         ComponentAdapter adapter = createComponentAdapter(allColored, true);
-        List<HighlightPredicate> containsOneTrue = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneTrue = new ArrayList<>();
         containsOneTrue.add(HighlightPredicate.ALWAYS);
         HighlightPredicate oneTrue = new OrHighlightPredicate(containsOneTrue);
         assertTrue(oneTrue.isHighlighted(allColored, adapter));
         
-        List<HighlightPredicate> containsOneFalse = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneFalse = new ArrayList<>();
         containsOneFalse.add(HighlightPredicate.NEVER);
         HighlightPredicate oneFalse = new OrHighlightPredicate(containsOneFalse);
         assertFalse(oneFalse.isHighlighted(allColored, adapter));
         
-        List<HighlightPredicate> containsOneFalseOneTrue = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneFalseOneTrue = new ArrayList<>();
         containsOneFalseOneTrue.add(HighlightPredicate.NEVER);
         containsOneFalseOneTrue.add(HighlightPredicate.ALWAYS);
         HighlightPredicate oneFalseOneTrue = new OrHighlightPredicate(containsOneFalseOneTrue);
         assertTrue(oneFalseOneTrue.isHighlighted(allColored, adapter));
 
-        List<HighlightPredicate> containsOneTrueOneFalse = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneTrueOneFalse = new ArrayList<>();
         containsOneTrueOneFalse.add(HighlightPredicate.ALWAYS);
         containsOneTrueOneFalse.add(HighlightPredicate.NEVER);
         HighlightPredicate oneTrueOneFalse = new OrHighlightPredicate(containsOneTrueOneFalse);
@@ -483,7 +483,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
      */
     @Test
     public void testAndProperty() {
-        List<HighlightPredicate> inputPredicates = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> inputPredicates = new ArrayList<>();
         inputPredicates.add(HighlightPredicate.NEVER);
         inputPredicates.add(new IdentifierHighlightPredicate("t"));
         AndHighlightPredicate predicate = new AndHighlightPredicate(inputPredicates);
@@ -513,7 +513,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
         ComponentAdapter adapter = createComponentAdapter(allColored, true);
         HighlightPredicate emptyArray = new AndHighlightPredicate();
         assertFalse(emptyArray.isHighlighted(allColored, adapter));
-        HighlightPredicate emptyList = new AndHighlightPredicate(new ArrayList<HighlightPredicate>());
+        HighlightPredicate emptyList = new AndHighlightPredicate(new ArrayList<>());
         assertFalse(emptyList.isHighlighted(allColored, adapter));
     }
 
@@ -543,23 +543,23 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     @Test
     public void testAndCollectionConstructor() {
         ComponentAdapter adapter = createComponentAdapter(allColored, true);
-        List<HighlightPredicate> containsOneTrue = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneTrue = new ArrayList<>();
         containsOneTrue.add(HighlightPredicate.ALWAYS);
         HighlightPredicate oneTrue = new AndHighlightPredicate(containsOneTrue);
         assertTrue(oneTrue.isHighlighted(allColored, adapter));
         
-        List<HighlightPredicate> containsOneFalse = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneFalse = new ArrayList<>();
         containsOneFalse.add(HighlightPredicate.NEVER);
         HighlightPredicate oneFalse = new AndHighlightPredicate(containsOneFalse);
         assertFalse(oneFalse.isHighlighted(allColored, adapter));
         
-        List<HighlightPredicate> containsOneFalseOneTrue = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneFalseOneTrue = new ArrayList<>();
         containsOneFalseOneTrue.add(HighlightPredicate.NEVER);
         containsOneFalseOneTrue.add(HighlightPredicate.ALWAYS);
         HighlightPredicate oneFalseOneTrue = new AndHighlightPredicate(containsOneFalseOneTrue);
         assertFalse(oneFalseOneTrue.isHighlighted(allColored, adapter));
         
-        List<HighlightPredicate> containsOneTrueOneFalse = new ArrayList<HighlightPredicate>();
+        List<HighlightPredicate> containsOneTrueOneFalse = new ArrayList<>();
         containsOneTrueOneFalse.add(HighlightPredicate.ALWAYS);
         containsOneTrueOneFalse.add(HighlightPredicate.NEVER);
         HighlightPredicate oneTrueOneFalse = new AndHighlightPredicate(containsOneTrueOneFalse);
@@ -805,10 +805,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
  
     @Test
     public void testTypeNull() {
-        assertThrows(NullPointerException.class, () -> {
-        new TypeHighlightPredicate(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new TypeHighlightPredicate(null));}
     
 
     @Test
@@ -843,10 +840,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
     
     @Test
     public void testColumnTypeNull() {
-        assertThrows(NullPointerException.class, () -> {
-        new ColumnTypeHighlightPredicate(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new ColumnTypeHighlightPredicate(null));}
     
     @Test
     public void testColumnTypeProperty() {
@@ -1149,7 +1143,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
      */
     protected ComponentAdapter createComponentAdapter(final JLabel label,
             final boolean selected, final boolean editable) {
-        ComponentAdapter adapter = new ComponentAdapter(label) {
+        return new ComponentAdapter(label) {
 
             @Override
             public Object getValueAt(int row, int column) {
@@ -1161,7 +1155,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 return getValueAt(row, column);
             }
 
-            
+
             @Override
             public Object getValue() {
                 return getValueAt(row, column);
@@ -1176,7 +1170,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
             public boolean hasFocus() {
                 return isSelected() && isEditable();
             }
-            
+
             @Override
             public boolean isEditable() {
                 return editable;
@@ -1187,7 +1181,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 return selected;
             }
 
-            
+
             @Override
             public boolean isLeaf() {
                 return isSelected();
@@ -1198,7 +1192,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 return null;
             }
 
-            /** 
+            /**
              * @inherited <p>
              */
             @Override
@@ -1206,9 +1200,8 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 return String.class;
             }
 
-            
+
         };
-        return adapter;
     }
     
     /**
@@ -1219,7 +1212,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
      * @return
      */
     protected ComponentAdapter createBigDecimalComponentAdapter(final JLabel label) {
-        ComponentAdapter adapter = new ComponentAdapter(label) {
+        return new ComponentAdapter(label) {
 
             @Override
             public Object getValueAt(int row, int column) {
@@ -1247,7 +1240,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 // TODO Auto-generated method stub
                 return false;
             }
-            
+
             @Override
             public boolean isEditable() {
                 return false;
@@ -1263,8 +1256,7 @@ public class HighlightPredicateTest extends InteractiveTestCase {
                 return null;
             }
 
-            
+
         };
-        return adapter;
     }
 }

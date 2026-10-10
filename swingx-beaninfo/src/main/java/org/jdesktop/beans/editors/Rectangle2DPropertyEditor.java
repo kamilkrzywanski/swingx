@@ -47,13 +47,12 @@ public class Rectangle2DPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        String originalParam = text;
         try {
             Rectangle2D val = (Rectangle2D)PropertyEditorUtil.createValueFromString(
                     text, 4, Rectangle2D.Double.class, double.class);
             setValue(val);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [x,y,w,h] or [x , y , w , h] or [x y w h]", e);
         }
     }

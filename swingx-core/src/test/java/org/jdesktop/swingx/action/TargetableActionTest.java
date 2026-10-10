@@ -25,8 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -95,7 +93,7 @@ public class TargetableActionTest {
         manager.addAction(createTargetableAction("right-justify", "Right", "R", true,
                                                  "position-group"));
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("cut-to-clipboard");
         list.add("copy-to-clipboard");
         list.add("paste-from-clipboard");
@@ -157,15 +155,13 @@ public class TargetableActionTest {
                 }
             });
 
-        pane.addChangeListener(new ChangeListener() {
-                public void stateChanged(ChangeEvent evt) {
-                    JTabbedPane pane = (JTabbedPane)evt.getSource();
-                    Component comp = pane.getSelectedComponent();
-                    if (comp instanceof Targetable) {
-                        TargetManager.getInstance().setTarget((Targetable)comp);
-                    }
-                }
-            });
+        pane.addChangeListener(evt -> {
+            JTabbedPane pane1 = (JTabbedPane)evt.getSource();
+            Component comp = pane1.getSelectedComponent();
+            if (comp instanceof Targetable) {
+                TargetManager.getInstance().setTarget((Targetable)comp);
+            }
+        });
 
 
         return pane;
@@ -177,7 +173,7 @@ public class TargetableActionTest {
         TableModel dataModel = new AbstractTableModel() {
                 public int getColumnCount() { return 4; }
                 public int getRowCount() { return 4;}
-                public Object getValueAt(int row, int col) { return new Integer(row*col); }
+                public Object getValueAt(int row, int col) { return row * col; }
                 @Override
                 public boolean isCellEditable(int row, int col) { return true; }
             };
@@ -242,8 +238,8 @@ public class TargetableActionTest {
         Object[] keys = map.allKeys();
 
         if (keys != null) {
-            for (int i = 0; i < keys.length; i++) {
-                System.out.println(keys[i]);
+            for (Object key : keys) {
+                System.out.println(key);
             }
         }
     }

@@ -47,7 +47,7 @@ class CalendarCellContext extends CellContext {
      * hard-coded "magic numbers" which must be the same in both 
      * the ui-delegate (which does the hit-detection) and here (which
      * returns the default title border)
-     * 
+     * <p>
      * Added as preliminary fix for #1028-swingx: title border incorrect if box-padding 0
      */
     private int arrowPaddingX = 3;
@@ -128,9 +128,7 @@ class CalendarCellContext extends CellContext {
                 return getComponent().getFlaggedDayForeground();
             } else {
                 Color perDay = getComponent().getPerDayOfWeekForeground(getCalendar().get(Calendar.DAY_OF_WEEK));
-                if (perDay != null) {
-                    return perDay;
-                }
+                return perDay;
                 
             }
         }

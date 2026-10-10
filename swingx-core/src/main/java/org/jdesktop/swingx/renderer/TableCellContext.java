@@ -29,7 +29,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
 
 /**
  * Table specific <code>CellContext</code>.
- * 
+ * <p>
  * This implementation optionally can handle LAF provide alternateRowColor. The default 
  * is not doing it. To enable, client code must set a UI-Property with key 
  * HANDLE_ALTERNATE_ROW_BACKGROUND to Boolean.TRUE.
@@ -67,14 +67,11 @@ public class TableCellContext extends CellContext {
             return false;
         }
         JTable.DropLocation dropLocation = getComponent().getDropLocation();
-        if (dropLocation != null
+        return dropLocation != null
                 && !dropLocation.isInsertRow()
                 && !dropLocation.isInsertColumn()
                 && dropLocation.getRow() == row
-                && dropLocation.getColumn() == column) {
-            return true;
-        }
-        return false;
+                && dropLocation.getColumn() == column;
     }
 
 

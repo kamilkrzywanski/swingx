@@ -58,12 +58,9 @@ public class ListCellContext extends CellContext {
             return false;
         }
         JList.DropLocation dropLocation = getComponent().getDropLocation();
-        if (dropLocation != null
+        return dropLocation != null
                 && !dropLocation.isInsert()
-                && dropLocation.getIndex() == row) {
-            return true;
-        }
-        return false;
+                && dropLocation.getIndex() == row;
     }
 
     

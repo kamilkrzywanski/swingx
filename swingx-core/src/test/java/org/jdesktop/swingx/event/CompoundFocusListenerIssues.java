@@ -26,7 +26,7 @@ public class CompoundFocusListenerIssues extends CompoundFocusListenerTest {
 
     /**
      * Test that listener copes with change of keyboardFocusManager.
-     * 
+     * <p>
      * Not yet implemented.
      * 
      * @throws InterruptedException
@@ -51,13 +51,11 @@ public class CompoundFocusListenerIssues extends CompoundFocusListenerTest {
         KeyboardFocusManager.setCurrentKeyboardFocusManager(customManager);
         LOG.info("after custom? ");
         picker.requestFocusInWindow();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                try {
-                    assertEquals(1, report.getEventCount("focused"));
-                } finally {
-                    KeyboardFocusManager.setCurrentKeyboardFocusManager(oldManager);
-                }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            try {
+                assertEquals(1, report.getEventCount("focused"));
+            } finally {
+                KeyboardFocusManager.setCurrentKeyboardFocusManager(oldManager);
             }
         });
     }

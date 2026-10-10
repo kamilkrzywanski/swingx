@@ -97,13 +97,13 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
     public String getColumnName(int column) {
         //Copied from AbstractTableModel.
         //Should use same defaults when possible.
-        String result = "";
+        StringBuilder result = new StringBuilder();
         
         for (; column >= 0; column = column / 26 - 1) {
-            result = (char) ((char) (column % 26) + 'A') + result;
+            result.insert(0, (char) ((char) (column % 26) + 'A'));
         }
         
-        return result;
+        return result.toString();
     }
 
     /**

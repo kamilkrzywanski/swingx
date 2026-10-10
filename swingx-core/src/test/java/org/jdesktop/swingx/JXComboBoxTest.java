@@ -24,7 +24,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
@@ -34,7 +33,6 @@ import javax.swing.ListCellRenderer;
 import org.jdesktop.swingx.JXComboBox.DelegatingRenderer;
 import org.jdesktop.swingx.JXListTest.CustomDefaultRenderer;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXListT;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
@@ -205,18 +203,13 @@ public class JXComboBoxTest {
     }
     
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
     
     /**
@@ -234,7 +227,7 @@ public class JXComboBoxTest {
 
     /**
      * Issue #1382-swingx: use StringValueRegistry and supply getStringAt.
-     * 
+     * <p>
      * Here: test getStringAt use provider (sanity, trying to pull the rag failed
      * during re-enable)
      */
@@ -249,7 +242,7 @@ public class JXComboBoxTest {
     }
     /**
      * Issue #1382-swingx: use StringValueRegistry and supply getStringAt.
-     * 
+     * <p>
      * Here: test getStringAt of ComponentAdapter use provider 
      * (sanity, trying to pull the rag failed during re-enable)
      */

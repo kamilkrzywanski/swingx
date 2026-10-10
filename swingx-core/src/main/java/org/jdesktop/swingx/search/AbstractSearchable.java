@@ -36,7 +36,7 @@ import org.jdesktop.swingx.decorator.SearchPredicate;
 /**
  * An abstract implementation of Searchable supporting
  * incremental search.
- * 
+ * <p>
  * Keeps internal state to represent the previous search result.
  * For all methods taking a String as parameter: compiles the String 
  * to a Pattern as-is and routes to the central method taking a Pattern.
@@ -310,7 +310,7 @@ public abstract class AbstractSearchable implements Searchable {
      * @return true if the provided <code>String</code> should be interpreted as empty
      */
     protected boolean isEmpty(String searchString) {
-        return (searchString == null) || searchString.length() == 0;
+        return (searchString == null) || searchString.isEmpty();
     }
 
 

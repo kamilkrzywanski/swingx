@@ -86,7 +86,7 @@ public class JXBusyLabelVisualCheck extends InteractiveTestCase {
         JXBusyLabel bl = new JXBusyLabel();
         f.add(bl);
         bl.setBusy(true);
-    	final List<JDialog> l = new ArrayList<JDialog>();
+    	final List<JDialog> l = new ArrayList<>();
     	JPanel control = new JPanel();
         JButton b = new JButton(new AbstractAction("Start") {
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +108,7 @@ public class JXBusyLabelVisualCheck extends InteractiveTestCase {
             public void actionPerformed(ActionEvent e) {
                 // just reset the model
             	for (int i = 0; i < 100; i++) {
-            		if (l.size() > 0) {
+            		if (!l.isEmpty()) {
             		    JDialog d = l.remove(0);
             		    d.dispose();
             		}

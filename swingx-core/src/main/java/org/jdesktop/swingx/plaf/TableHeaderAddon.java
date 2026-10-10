@@ -29,7 +29,7 @@ import javax.swing.plaf.metal.MetalBorders;
 
 /**
  * Addon for JXTableHeader.
- * 
+ * <p>
  * Implemented to hack around core issue ??: Metal header renderer appears squeezed.
  * 
  * @author Jeanette Winzenburg

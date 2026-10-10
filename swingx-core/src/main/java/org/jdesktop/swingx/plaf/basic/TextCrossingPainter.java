@@ -33,7 +33,7 @@ import org.jdesktop.swingx.painter.AbstractPainter;
 
 /**
  * Painter used to cross-out unselectable dates.
- * 
+ * <p>
  * PENDING JW: subclass (or maybe even use?) one of the painter subclasses. 
  * 
  * @author Jeanette Winzenburg

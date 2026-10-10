@@ -147,27 +147,27 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 //        Enumeration<?> enumer = new PostOrder(tree.getModel(), root); 
        
         int index = 0;
-        String text = "";
+        StringBuilder text = new StringBuilder();
         int depth = 0;
         TreeNode lastNode = null;
         while (enumer.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumer.nextElement();
-            text += node.getUserObject();
+            text.append(node.getUserObject());
             node.setUserObject(node.getUserObject() + ": " + index);
             index++;
         }
-        LOG.info(text);
+        LOG.info(text.toString());
 //        tree.expandAll();
         showWithScrollingInFrame(tree, "traversal");
     }
 
     /**
      * Issue 1442-swingx: Performance issue with expand all on large/deep tree/table
-     * 
+     * <p> <p>
      * Crude measurement on local file system
      * Archiv: about 10k files takes 59/60s to expand w/out hack
      * DevTools: about 25k files takes 19/37s to expand w/out hack
-     * 
+     * <p> <p>
      * - effect seems highly dependent on exact nature
      * - hack is potentially risky: interfers with state synch of ui
      * - if expansion takes long, it must be done on background thread with
@@ -201,14 +201,11 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tree.setVisible(false);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                        tree.expandAll();
-                        tree.setVisible(true);
-                        LOG.info("expanded: " + tree.getRowCount());
-                    }
+                SwingUtilities.invokeLater(() -> {
+
+                    tree.expandAll();
+                    tree.setVisible(true);
+                    LOG.info("expanded: " + tree.getRowCount());
                 });
             }
         };
@@ -219,14 +216,11 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
             public void actionPerformed(ActionEvent e) {
                 LOG.info("before: " + table.getRowCount());
                 table.setVisible(false);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                table.expandAll();
-                table.setVisible(true);
-                LOG.info("expanded: " + table.getRowCount());
-                    }
+                SwingUtilities.invokeLater(() -> {
+
+            table.expandAll();
+            table.setVisible(true);
+            LOG.info("expanded: " + table.getRowCount());
                 });
             }
         };
@@ -236,7 +230,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**
      * Issue #1379-swingx: support access to underlying treeTableModel of TreeTableModelAdapter.
-     * 
+     * <p> <p>
      * Needed f.i. in a custom ColumnFactory to configure the hierarchical column specifically.
      */
     public void interactiveCustomColumnFactory() {
@@ -265,14 +259,14 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     
     /**
      * Issue #1126: combo editor is closed immediately after starting
-     * 
+     * <p> <p>
      * Happens if row is not selected at the moment of starting, okay if selected.
      * Inserts on pressed, removes on released. Same for 1.5 and 1.6
-     * 
+     * <p> <p>
      * Problem was hacker's completeEditing: must only jump in if editing the hierarchical
      * column. Which still leaves the problem if combo editing in hierarchical ... but
      * that's a different issue ... 
-     * 
+     * <p> <p>
      * Back to start: fix introduced regression on expand/collapse
      */
     public void interactiveEditWithComboBox() {
@@ -376,7 +370,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
  
         @Override
         public int getIndexOfChild(Object parent, Object child) {
-            return parent == root ? Integer.valueOf((String) child) : -1;
+            return parent == root ? Integer.parseInt((String) child) : -1;
         }
     }
 
@@ -385,24 +379,24 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     
     /**
      * Issue #730-swingx: editor's stop not always called.
-     * 
+     * <p> <p>
      *  - start edit a cell in the hierarchical column, 
      *  - click into another cell of the hierarchical column
      *  - edit sometimes canceled instead of stopped 
-     *  
+     * <p> <p>
      *  seems to happen if click into text of cell, okay if outside.
      *  Trying to fix in TreeTableHacker: first try to stop editing
      *  cancel if unsuccessful. 
-     *  
+     * <p> <p>
      *  PENDING JW: why didn't we do that in the first place? Any
      *  possibility that the edit will end up in the wrong node
      *  in expand/collapse?
-     *  
+     * <p> <p>
      *  Okay, checked again: the cancel is needed because otherwise
      *  the edited value might end up in the wrong row, that is the
      *  one after the currently edited if the parent of the edited
      *  is collapsed while editing (old issue #120-jdnc).
-     *  
+     * <p> <p>
      *  To fight the regression, the hacker's completeEditing now is
      *  called before updating renderer's (tree) expansion state. Seems
      *  to fix both issues now. 
@@ -529,9 +523,9 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     
     /**
      * Issue #??-swingx: Tooltip by highlighter in hierarchical column
-     * 
+     * <p> <p>
      * Issue #1527-swingx: tooltip not shown after changing expansion state.
-     *
+     * <p> <p>
      * Not reliably updated (independent on whether to use a Highlighter or core renderer
      * with Highlighter set, also @see {@link #interactiveTestToolTipsCoreRenderer()}
      * 
@@ -541,7 +535,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
      * - reproducible (from bug report): collapse/expand the row, then move (in same or 
      * other row): tooltip not shown until the mouse has been moved completely outside
      * of the table
-     * 
+     * <p> <p>
      * Seems to happen, if the tooltip was hidden due to the collapse/expose. To reproduce
      * - move to show the tooltip in hierarchical column
      * - wait until it is hidden by the tooltipManager
@@ -576,11 +570,11 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
      * toggle to system (win) == striping color silver, 
      *   but second row bluish, background not reset?
      * toggle back to cross-platform == no striping, all bluish
-     * 
+     * <p> <p>
      * start with system (win) == okay, silver striping
      * toggle to cross-platform == okay, bluish striping
      * back to system == trouble as above
-     * 
+     * <p> <p>
      * JXTable looks okay.
      */
     public void interactiveUIHighlight() {
@@ -615,7 +609,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     /**
      * Issue #471-swingx: No selection on click into hierarchical column outside
      * node. 
-     *
+     * <p> <p>
      * Check patch and bidi-compliance.
      */
     public void interactiveHierarchicalSelectionAndRToL() {
@@ -671,12 +665,12 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**  
      * Issue #575-swingx: JXTreeTable - scrollsOnExpand has no effect.
-     * 
+     * <p> <p>
      * Compare tree/table: 
      * - tree expands if property is true and
      * expand triggered by mouse (not programmatically?). 
      * - treeTable never 
-     * 
+     * <p> <p>
      * 
      * related issue #296-swingx: expose scrollPathToVisible in JXTreeTable.
      */    
@@ -721,14 +715,14 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**
      * issue #296-swingx: expose scrollPathToVisible in JXTreeTable.
-     * 
+     * <p> <p>
      * Treetable should behave exactly like Tree - so
      * simply passing through to the hierarchical renderer is not quite
      * enough - need to force a scrollTo after expanding. 
      * Not really: all scrolling is piped through scrollRectToVisible, 
      * so that looks like the central place to fix (f.i. delegate to
      * the enclosing treeTable). Related issue #575-swingx.
-     * 
+     * <p> <p>
      * note: the action is not guarded against overshooting
      *  at the end of the model!
      */
@@ -767,11 +761,11 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     }
 
     /**
-     * http://forums.java.net/jive/thread.jspa?threadID=13966&tstart=0
+     * <a href="http://forums.java.net/jive/thread.jspa?threadID=13966&tstart=0">...</a>
      * adjust hierarchical column width on expansion. The expansion
      * listener looks like doing the job. Important: auto-resize off, 
      * otherwise the table will run out of width to distribute!
-     * 
+     *
      */
     public void interactiveUpdateWidthOnExpand() {
         
@@ -790,14 +784,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
               
               final JTree renderer = (JTree)event.getSource();
               
-              SwingUtilities.invokeLater(new Runnable(){
-                 
-                 @Override
-                public void run() {
-                    tree.getColumnModel().getColumn(0).setPreferredWidth(renderer.getPreferredSize().width);
-
-                 }
-              });            
+              SwingUtilities.invokeLater(() -> tree.getColumnModel().getColumn(0).setPreferredWidth(renderer.getPreferredSize().width));
            }
            
         });
@@ -835,10 +822,10 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     /**
      * Issue #248-swingx: update probs with insert into empty model when root
      * not visible.
-     * 
+     * <p> <p>
      * Looks like a core JTree problem: a collapsed root is not automatically expanded
      * on hiding. Should it? Yes, IMO (JW).
-     * 
+     * <p> <p>
      * this exposed a slight glitch in JXTreeTable: toggling the initially invisible
      * root to visible did not result in showing the root in the the table. Needed
      * to modify setRootVisible to force a revalidate.
@@ -884,7 +871,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     /**
      * Issue #254-swingx: collapseAll/expandAll behaviour depends on 
      * root visibility (same for treeTable/tree)
-     * 
+     * <p> <p>
      * initial: root not visible, all root children visible
      *  do: collapse all - has no effect, unexpected?
      *  do: toggle root - root and all children visible, expected
@@ -948,7 +935,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
      * to reproduce: run example, select root's child in both the tree and the 
      * treetable (left and right view), press the insert button, treetable looses 
      * selection, tree doesn't (the latter is the correct behaviour)
-     * 
+     * <p> <p>
      * couldn't reproduce the reported loss of expansion state. Hmmm..
      *
      */
@@ -985,7 +972,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**
      * Issue #246-swingx: update probs with insert node.
-     * 
+     * <p> <p>
      * The reported issue is an asymmetry in updating the parent: it's done only
      * if not expanded. With the arguments of #82-swingx, parent's appearance
      * might be effected by child changes if expanded as well.
@@ -1048,7 +1035,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
  
     /**
      * Issue #82-swingx: update probs with insert node.
-     * 
+     * <p> <p>
      * Adapted from example code in report.
      * Insert node under selected in treetable (or under root if none selected)
      * Here: old problem with root not expanded because it's reported as a leaf.
@@ -1092,7 +1079,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**
      * Issue #224-swingx: TreeTableEditor not bidi compliant.
-     *
+     * <p> <p>
      * the textfield for editing is at the wrong position in RToL.
      */
     public void interactiveRToLTreeTableEditor() {
@@ -1280,7 +1267,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
     /**
      * Issue #226: no per-cell tooltips in TreeColumn. 
      * Note: this explicitly uses core default renderers!
-     * 
+     * <p> <p>
      * Issue #1527-swingx: tooltip not shown after changing expansion state.
      * @see #interactiveHierarchicalToolTip for an example using Highlighter
 
@@ -1305,17 +1292,11 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
      */
     private TableCellRenderer createTableRenderer() {
         final TableCellRenderer delegate = new DefaultTableCellRenderer();
-        TableCellRenderer l = new TableCellRenderer() {
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component result = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                ((JComponent) result).setToolTipText(String.valueOf(value));
-                return result;
-            }
-            
+        return (table, value, isSelected, hasFocus, row, column) -> {
+            Component result = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            ((JComponent) result).setToolTipText(String.valueOf(value));
+            return result;
         };
-        return l;
     }
 
     /**
@@ -1324,19 +1305,12 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
      */
     private TreeCellRenderer createTreeRenderer() {
         final TreeCellRenderer delegate = new DefaultTreeCellRenderer();
-        TreeCellRenderer renderer = new TreeCellRenderer() {
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, 
-                    boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Component result = delegate.getTreeCellRendererComponent(tree, value, 
-                        selected, expanded, leaf, row, hasFocus);
-                ((JComponent) result).setToolTipText(String.valueOf(tree.getPathForRow(row)));
-                 return result;
-            }
-            
+        return (tree, value, selected, expanded, leaf, row, hasFocus) -> {
+            Component result = delegate.getTreeCellRendererComponent(tree, value,
+                    selected, expanded, leaf, row, hasFocus);
+            ((JComponent) result).setToolTipText(String.valueOf(tree.getPathForRow(row)));
+             return result;
         };
-        return renderer;
     }
 
     
@@ -1487,23 +1461,16 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
 
     /**
      * Requirement: color the leafs of the hierarchical columns differently.
-     * 
-     * http://forums.java.net/jive/thread.jspa?messageID=165876
-     * 
+     * <p> <p>
+     * <a href="http://forums.java.net/jive/thread.jspa?messageID=165876">...</a>
+     *
      *
      */
     public void interactiveTestHierarchicalColumnHighlightConditional() {
         JXTreeTable treeTable = new JXTreeTable(treeTableModel);
         HighlightPredicate hierarchical = new ColumnHighlightPredicate(0);
         treeTable.addHighlighter(new ShadingColorHighlighter(hierarchical));
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                return adapter.isLeaf();
-            }
-            
-        };
+        HighlightPredicate predicate = (renderer, adapter) -> adapter.isLeaf();
         ColorHighlighter highlighter = new ColorHighlighter(new AndHighlightPredicate(hierarchical, predicate),
                 new Color(247,246,239), null);
         treeTable.addHighlighter(highlighter);
@@ -1582,14 +1549,7 @@ public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
                         new ColorHighlighter(new PatternPredicate("D", 0), null,
                                 Color.red));
 
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                return adapter.hasFocus();
-            }
-            
-        };
+        HighlightPredicate predicate = (renderer, adapter) -> adapter.hasFocus();
         // add the conditional highlighter laterb
         treeTable.addHighlighter(new ColorHighlighter(new AndHighlightPredicate(predicate, new ColumnHighlightPredicate(0)), Color.BLUE, 
                 Color.WHITE));

@@ -30,7 +30,7 @@ import java.beans.PropertyChangeSupport;
  * to the server side permissions and user roles (see J2EE role based authorization).
  * This class is used by gui widgets and actions to determine visibility and enabled
  * status and thus a UI can adapt itself to users with a lower set of privileges.
- *
+ * <p>
  * This class is not meant as a secure barrier! It is only a thin layer to supplant the
  * server side permissions. This class can be compromized by the user and thus its purpose
  * is only to help UI flow and navigation and not to prevent attack against a client side
@@ -84,8 +84,8 @@ public class UserPermissions {
      */
     public boolean isUserInRole(String role) {
         if(roles != null) {
-            for(int iter = 0 ; iter < roles.length ; iter++) {
-                if(roles[iter].equals(role)) {
+            for (String s : roles) {
+                if (s.equals(role)) {
                     return true;
                 }
             }
@@ -97,8 +97,8 @@ public class UserPermissions {
      * Returns true if the user is in one of the given roles (case sensitive).
      */
     public boolean isUserInARole(String[] roles) {
-        for(int iter = 0 ; iter < roles.length ; iter++) {
-            if(isUserInRole(roles[iter])) {
+        for (String role : roles) {
+            if (isUserInRole(role)) {
                 return true;
             }
         }
@@ -109,8 +109,8 @@ public class UserPermissions {
      * Returns true if the user is in all of the given roles (case sensitive).
      */
     public boolean isUserInRoles(String[] roles) {
-        for(int iter = 0 ; iter < roles.length ; iter++) {
-            if(!isUserInRole(roles[iter])) {
+        for (String role : roles) {
+            if (!isUserInRole(role)) {
                 return false;
             }
         }

@@ -73,7 +73,7 @@ public final class PromptSupport {
 	 * text is present.
 	 * </p>
 	 */
-	public static enum FocusBehavior {
+	public enum FocusBehavior {
 		/**
 		 * Keep the prompt text visible.
 		 */
@@ -86,9 +86,9 @@ public final class PromptSupport {
 		 * Hide the prompt text.
 		 */
 		HIDE_PROMPT
-	};
-	
-	private PromptSupport() {
+	}
+
+    private PromptSupport() {
 	    //prevent instantiation
 	}
 
@@ -110,7 +110,7 @@ public final class PromptSupport {
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground,
 			final JTextComponent textComponent) {
-		if (promptText != null && promptText.length() > 0) {
+		if (promptText != null && !promptText.isEmpty()) {
 			setPrompt(promptText, textComponent);
 		}
 		if (promptForeground != null) {

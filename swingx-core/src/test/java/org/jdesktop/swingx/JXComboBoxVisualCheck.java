@@ -72,17 +72,12 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
      */
     public void interactiveSelectWithKey() {
         JXComboBox box = new JXComboBox(new Object[] {"alice", "berta", "carola"});
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                String temp = StringValues.TO_STRING.getString(value);
-                if (temp.length() > 1) {
-                    temp = temp.charAt(1) + temp;
-                }
-                return temp;
+        StringValue sv = value -> {
+            String temp = StringValues.TO_STRING.getString(value);
+            if (temp.length() > 1) {
+                temp = temp.charAt(1) + temp;
             }
-            
+            return temp;
         };
         
         box.setRenderer(new DefaultListRenderer(sv));

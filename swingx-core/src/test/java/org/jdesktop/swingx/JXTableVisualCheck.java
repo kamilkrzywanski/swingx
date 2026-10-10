@@ -41,7 +41,6 @@ import javax.swing.RowSorter.SortKey;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
-import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterEvent.Type;
 import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableColumnModelEvent;
@@ -86,7 +85,7 @@ import org.junit.jupiter.api.Test;
 public class JXTableVisualCheck extends JXTableUnitTest {
     private static final Logger LOG = Logger.getLogger(JXTableVisualCheck.class
             .getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
       JXTableVisualCheck test = new JXTableVisualCheck();
       try {
 //        test.runInteractiveTests();
@@ -119,12 +118,12 @@ public class JXTableVisualCheck extends JXTableUnitTest {
      * value invalid (= empty). Leads to NPE in columnMoved (jdk7) or when
      * external code calls the stop/cancel sequence.
      * Core issue but c&p'd to JXTable.
-     * 
+     * <p>
      * 
      * 1. doesn't allow editing if the column type doesn't have a 
      *    single parameter constructor of type String
      *    (fails silently in this case) - unrelated to this issue
-     *    
+     * <p>
      * 2. throws NPE on moving column while editing, the editingValue
      *    is empty and the class cannot handle empty strings. The NPE
      *    is triggered in column moved, because the GenericEditor
@@ -166,7 +165,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
 
     /**
      * Issue #1392- swingx: columnControl lost on toggle CO and LAF
-     * 
+     * <p>
      * Not easily reproducible - happens
      * if the scrollPane's layout is re-created on updateUI.
      */
@@ -219,10 +218,10 @@ public class JXTableVisualCheck extends JXTableUnitTest {
     }
     /**
      * Issue #35-swingx: visual indicators of secondary sort columns
-     * 
+     * <p>
      * Trick by David Hall: use unicode char 
      * http://forums.java.net/jive/thread.jspa?threadID=71090
-     * 
+     * <p>
      * As he already noted: it's not necessarily pretty looking ;-)
      */
     public void interactiveHeaderSecondarySortIndicator() {
@@ -267,39 +266,27 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         table.setColumnControlVisible(true);
         table.setColumnFactory(factory);
         table.setModel(model);
-        RowSorterListener l = new RowSorterListener() {
-            
-            @SuppressWarnings("unchecked")
-            @Override
-            public void sorterChanged(RowSorterEvent e) {
-                if (e.getType() == Type.SORT_ORDER_CHANGED) {
-                    List<TableColumn> list = table.getColumns(true);
-                    List<? extends SortKey> sortKeys = new ArrayList<SortKey>(e.getSource().getSortKeys());
-                    // remove primary
-                    List<? extends SortKey> secondary = sortKeys.subList(1, sortKeys.size());
-                    for (TableColumn tableColumn : list) {
-                        if (tableColumn instanceof TableColumnExt) {
-                            SortKey key = SortUtils.getFirstSortKeyForColumn(secondary, tableColumn.getModelIndex());
-                            Object property = null;
-                            if (key != null && SortUtils.isSorted(key.getSortOrder())) {
-                                property = key.getSortOrder();
-                            }
-                            ((TableColumnExt) tableColumn).putClientProperty(SortAwareTableColumnExt.SORT_ORDER_KEY, property);
+        RowSorterListener l = e -> {
+            if (e.getType() == Type.SORT_ORDER_CHANGED) {
+                List<TableColumn> list = table.getColumns(true);
+                List<? extends SortKey> sortKeys = new ArrayList<SortKey>(e.getSource().getSortKeys());
+                // remove primary
+                List<? extends SortKey> secondary = sortKeys.subList(1, sortKeys.size());
+                for (TableColumn tableColumn : list) {
+                    if (tableColumn instanceof TableColumnExt) {
+                        SortKey key = SortUtils.getFirstSortKeyForColumn(secondary, tableColumn.getModelIndex());
+                        Object property = null;
+                        if (key != null && SortUtils.isSorted(key.getSortOrder())) {
+                            property = key.getSortOrder();
                         }
+                        ((TableColumnExt) tableColumn).putClientProperty(SortAwareTableColumnExt.SORT_ORDER_KEY, property);
                     }
                 }
-                
             }
+
         };
         table.getRowSorter().addRowSorterListener(l);
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                return Integer.toHexString(((Integer) value).intValue());
-            }
-            
-        };
+        StringValue sv = value -> Integer.toHexString((Integer) value);
         table.getColumn(1).setCellRenderer(new DefaultTableRenderer(sv, JLabel.RIGHT));
         JXFrame frame = showWithScrollingInFrame(table, "Geometric shapes");
         addComponentOrientationToggle(frame);
@@ -336,16 +323,16 @@ public class JXTableVisualCheck extends JXTableUnitTest {
 
     /**
      * Issue #1254-swingx: JXTable not revalidated on update if filter.
-     * 
+     * <p>
      * Core JTable issue 
      * Problem is that the update might change the visible row count.
      */
     public void interactiveRevalidateOnUpdateWithFilter() {
-        String data[][] = { { "satuAA", "Satu", "SATU", "1" },
+        String[][] data = { { "satuAA", "Satu", "SATU", "1" },
                 { "duaAAB", "Dua", "DUA", "2" },
                 { "tigaBAA", "Tiga", "TIGA", "3" },
                 { "empatBBA", "Empat", "EMPAT", "4" } };
-        String cols[] = { "col1", "col2", "col3", "col4" };
+        String[] cols = { "col1", "col2", "col3", "col4" };
 
         final JXTable table = new JXTable(data, cols);
         RowFilter<TableModel, Integer> tm = RowFilter.regexFilter(
@@ -368,7 +355,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
     
     /**
      * Trying to make null biggest value.
-     * 
+     * <p>
      * Can't do - nulls don't reach the comparator.
      */
     public void interactiveSortWithNull() {
@@ -376,20 +363,15 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         for (int i = 0; i < table.getRowCount(); i+=2) {
             table.setValueAt(null, i, 0);
         }
-        Comparator<?> comparator = new Comparator<Object>() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                if (o1 == null) {
-                    if (o2 == null) return 0;
-                    return 1;
-                }
-                if (o2 == null) {
-                    return -1;
-                }
-                return ((Integer) o1).compareTo((Integer) o2);
+        Comparator<?> comparator = (Comparator<Object>) (o1, o2) -> {
+            if (o1 == null) {
+                if (o2 == null) return 0;
+                return 1;
             }
-            
+            if (o2 == null) {
+                return -1;
+            }
+            return ((Integer) o1).compareTo((Integer) o2);
         };
         table.getColumnExt(0).setComparator(comparator);
         showWithScrollingInFrame(table, "nulls");
@@ -441,7 +423,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         table.setVisibleRowCount(model.getRowCount());
         JXFrame frame = wrapWithScrollingInFrame(table, "multi-column-sort");
         final DefaultSortController<?> rowSorter = (DefaultSortController<?>) table.getRowSorter();
-        final List<SortKey> sortKeys = new ArrayList<SortKey>();
+        final List<SortKey> sortKeys = new ArrayList<>();
         for (int i = 0; i < rowSorter.getMaxSortKeys(); i++) {
             sortKeys.add(new SortKey(i, SortOrder.ASCENDING));
         }
@@ -558,7 +540,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
 
     /**
      * Issue #675-swingx: esc doesn't reach rootpane.
-     * 
+     * <p>
      * Verify that the escape is intercepted only if editing.
      * BUT: (core behaviour) starts editing in table processKeyBinding. So every
      * second is not passed on.
@@ -661,7 +643,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
  
     /**
      * Issue #417-swingx: disable default find.
-     *
+     * <p>
      * Possible alternative to introducing disable api as suggested in the
      * issue report: disable the action? Move the action up the hierarchy to
      * the parent actionmap? Maybe JX specific parent?
@@ -689,7 +671,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
     
     /**
      * visually check if we can bind the CCB's action to a keystroke.
-     * 
+     * <p>
      * Working, but there's a visual glitch if opened by keystroke: 
      * the popup is not trailing aligned to the CCB. And the 
      * CCB must be visible, otherwise there's an IllegalStateException
@@ -794,7 +776,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
     /**
      * Issue #282-swingx: compare disabled appearance of
      * collection views.
-     * 
+     * <p>
      * Issue #1374-swingx: rollover effects on disabled collection views
      *
      */
@@ -876,7 +858,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
      * Issue #281-swingx, Issue #334-swing: 
      * header should be auto-repainted on changes to
      * header title, value. Must update size if appropriate.
-     * 
+     * <p>
      * still open: core #4292511 - autowrap not really working
      *
      */
@@ -978,13 +960,10 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         addAction(frame, toggleAction);
         frame.setVisible(true);
         frame.pack();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // sanity - focus is on table
-                LOG.info("isFocused? " + table.hasFocus());
-                LOG.info("who has focus? " + KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner());
-            }
+        SwingUtilities.invokeLater(() -> {
+            // sanity - focus is on table
+            LOG.info("isFocused? " + table.hasFocus());
+            LOG.info("who has focus? " + KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner());
         });
     }
 
@@ -1286,23 +1265,23 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         installLinkRenderer(table);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        TableColumnExt columns[] = new TableColumnExt[tableModel.getColumnCount()];
+        TableColumnExt[] columns = new TableColumnExt[tableModel.getColumnCount()];
         for (int i = 0; i < columns.length; i++) {
             columns[i] = new TableColumnExt(i);
             table.addColumn(columns[i]);
         }
-        columns[0].setPrototypeValue(new Integer(0));
+        columns[0].setPrototypeValue(0);
         columns[1].setPrototypeValue("Simple String Value");
-        columns[2].setPrototypeValue(new Integer(1000));
+        columns[2].setPrototypeValue(1000);
         columns[3].setPrototypeValue(Boolean.TRUE);
         columns[4].setPrototypeValue(new Date(100));
-        columns[5].setPrototypeValue(new Float(1.5));
+        columns[5].setPrototypeValue(1.5F);
         columns[6].setPrototypeValue(new LinkModel("Sun Micro", "_blank",
                                               tableModel.linkURL));
-        columns[7].setPrototypeValue(new Integer(3023));
+        columns[7].setPrototypeValue(3023);
         columns[8].setPrototypeValue("John Doh");
         columns[9].setPrototypeValue("23434 Testcase St");
-        columns[10].setPrototypeValue(new Integer(33333));
+        columns[10].setPrototypeValue(33333);
         columns[11].setPrototypeValue(Boolean.FALSE);
 
         table.setVisibleRowCount(12);
@@ -1339,7 +1318,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         table.setModel(tableModel);
         installLinkRenderer(table);
 
-        TableColumnExt columns[] = new TableColumnExt[6];
+        TableColumnExt[] columns = new TableColumnExt[6];
         int viewIndex = 0;
         for (int i = columns.length - 1; i >= 0; i--) {
             columns[viewIndex] = new TableColumnExt(i);
@@ -1350,7 +1329,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         columns[4].setHeaderValue("String Value");
         columns[4].setPrototypeValue("Simple String Value");
         columns[3].setHeaderValue("Int Value");
-        columns[3].setPrototypeValue(new Integer(1000));
+        columns[3].setPrototypeValue(1000);
         columns[2].setHeaderValue("Bool");
         columns[2].setPrototypeValue(Boolean.FALSE);
         //columns[2].setSortable(false);
@@ -1358,7 +1337,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         columns[1].setPrototypeValue(new Date(0));
         //columns[1].setSortable(false);
         columns[0].setHeaderValue("Float");
-        columns[0].setPrototypeValue(new Float(5.5));
+        columns[0].setPrototypeValue(5.5F);
 
         table.setRowHeight(24);
         table.setRowMargin(2);
@@ -1417,16 +1396,11 @@ public class JXTableVisualCheck extends JXTableUnitTest {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (state) {
-                    table.getColumnExt("No.").setHighlighters(new Highlighter[0]);
+                    table.getColumnExt("No.").setHighlighters();
                     state = false;
                 } else {
                     table.getColumnExt("No.").addHighlighter(
-                        new AbstractHighlighter(new HighlightPredicate() {
-                            @Override
-                            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                                return adapter.getValue().toString().contains("8");
-                            }
-                        }) {
+                        new AbstractHighlighter((renderer, adapter) -> adapter.getValue().toString().contains("8")) {
                             @Override
                             protected Component doHighlight(Component renderer, ComponentAdapter adapter) {
                                 Font f = renderer.getFont().deriveFont(Font.ITALIC);

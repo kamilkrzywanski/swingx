@@ -93,7 +93,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     /**
      * Issue #1154-swingx: Regression after switching to Mustang.
      * was: Issue #31 (swingx): clicking header must not sort if table !enabled.
-     * 
+     * <p>
      * Actually, an older debate - to disable or not to disable the header
      * if table disabled. Decided to synch header disabled (via listener in
      * JXTableHeader. This is consistent with ColumnControlButton.
@@ -119,7 +119,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     /**
      * Issue #485-swingx: table header disappears if all header values are
      * empty. 
-     * 
+     * <p>
      * fixed for SwingX.
      *
      */
@@ -138,7 +138,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     /**
      * Issue #485-swingx: table header disappears if all header values are
      * empty. 
-     * 
+     * <p>
      * fixed for Swingx.
      *
      */
@@ -156,7 +156,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     /**
      * Issue #390-swingx: JXTableHeader: throws AIOOB on removing dragged column.
      * Test that getDraggedColumn is null if removed.
-     * 
+     * <p>
      * Problem was reported on mac:
      * http://forums.java.net/jive/thread.jspa?threadID=18368&tstart=0
      * when hiding column while drag(?) is in process.
@@ -177,7 +177,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     /**
      * Issue #390-swingx: JXTableHeader: throws AIOOB on removing dragged column.
      * Test that getDraggedColumn is visible or null.
-     * 
+     * <p>
      * Problem was reported on mac:
      * http://forums.java.net/jive/thread.jspa?threadID=18368&tstart=0
      * when hiding column while drag(?) is in process.
@@ -238,7 +238,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     
     /**
      * #212-swingx: second last column cannot be set to invisible programatically.
-     * 
+     * <p>
      * One reason for the "trick" of reselecting the last is that 
      * the header and with it the columnControl vanishes if there is 
      * no visible column.
@@ -264,7 +264,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
     
     /**
      * #212-swingx: second last column cannot be set to invisible programatically.
-     * 
+     * <p>
      * One reason for the "trick" of reselecting the last is that 
      * the header and with it the columnControl vanishes if there is 
      * no visible column.
@@ -357,7 +357,7 @@ public class JXTableHeaderTest extends InteractiveTestCase {
         frame.setVisible(true);
         
     }
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JXTableHeaderTest test = new JXTableHeaderTest();
         try {
           test.runInteractiveTests();

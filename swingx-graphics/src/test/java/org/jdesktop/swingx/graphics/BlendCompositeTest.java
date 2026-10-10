@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.swingx.util.GraphicsUtilities.createCompatibleImage;
 import static org.jdesktop.swingx.util.GraphicsUtilities.getPixels;
 import static org.jdesktop.swingx.util.GraphicsUtilities.loadCompatibleImage;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 

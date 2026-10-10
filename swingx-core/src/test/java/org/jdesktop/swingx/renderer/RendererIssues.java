@@ -21,7 +21,6 @@
  */
 package org.jdesktop.swingx.renderer;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -47,9 +46,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
@@ -78,11 +75,8 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
 import org.jdesktop.swingx.decorator.PatternPredicate;
-import org.jdesktop.swingx.painter.BusyPainter;
-import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.rollover.RolloverProducer;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
@@ -135,7 +129,7 @@ public class RendererIssues extends InteractiveTestCase {
     /**
      * Issue ??-swingx: Boolean renderer background is slightly darker if 
      * background color is part-transparent.
-     * 
+     * <p>
      * Not only checkbox as renderer - there seem to be subtle differences 
      * when painting buttons, labels, ... plus it's laf dependent.
      * 
@@ -180,11 +174,7 @@ public class RendererIssues extends InteractiveTestCase {
         JXTable table = new JXTable(new org.jdesktop.test.AncientSwingTeam());
         table.setBackground(PaintUtils.setAlpha(Color.YELLOW, 100));
         table.setOpaque(false);
-        table.addHighlighter(new RowHighlighter(new HighlightPredicate() {
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                return ((Boolean) adapter.getValue(4)).booleanValue();
-            }
-        }));
+        table.addHighlighter(new RowHighlighter((renderer, adapter) -> (Boolean) adapter.getValue(4)));
         showWithScrollingInFrame(table, "boolean renderer and alpha background");
         
     }
@@ -211,7 +201,7 @@ public class RendererIssues extends InteractiveTestCase {
     /**
      * example to configure treeTable hierarchical column with
      * custom icon and content mapping. The nodes are actually of type File.
-     * 
+     * <p>
      * Problem: 
      * painting on resizing tree column sluggish, especially if the PatternHighlighter
      * is on. Reason seems to be the FileSystemView - prepare time increases with
@@ -232,27 +222,21 @@ public class RendererIssues extends InteractiveTestCase {
         };
         final JXTreeTable table = new JXTreeTable(model);
         table.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
-                       + " Type: " 
-                       + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value)
-                    ; 
-                } 
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof File) {
+                return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
+                   + " Type: "
+                   + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value)
+                ;
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        IconValue iv = new IconValue() {
-
-            public Icon getIcon(Object value) {
-                if (value instanceof File) {
-                    return  FileSystemView.getFileSystemView().getSystemIcon((File) value);
-                } 
-                return null;
-            }};
+        IconValue iv = value -> {
+            if (value instanceof File) {
+                return  FileSystemView.getFileSystemView().getSystemIcon((File) value);
+            }
+            return null;
+        };
         final DefaultTreeRenderer treeRenderer = new DefaultTreeRenderer(iv, sv);
         table.setTreeCellRenderer(treeRenderer);
         // string based. Note: this example is locale dependent
@@ -263,16 +247,11 @@ public class RendererIssues extends InteractiveTestCase {
         calendar.add(Calendar.YEAR, -1);
         final Date lastYear = calendar.getTime();
         // install value based highlighter 
-        HighlightPredicate valueBased = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                if (!(adapter.getValue() instanceof File)) return false;
-                File file = (File) adapter.getValue();
-                Date date = new Date(file.lastModified());
-                return date.after(lastYear);
-            }
-            
+        HighlightPredicate valueBased = (renderer, adapter) -> {
+            if (!(adapter.getValue() instanceof File)) return false;
+            File file = (File) adapter.getValue();
+            Date date = new Date(file.lastModified());
+            return date.after(lastYear);
         };
         final ColorHighlighter back =  new ColorHighlighter(valueBased, Color.YELLOW, null);
         JXFrame frame =showWithScrollingInFrame(table, "TreeTable: performance bottleneck is FileSystemView");
@@ -349,12 +328,9 @@ public class RendererIssues extends InteractiveTestCase {
             if (context.getComponent() !=  null) {
                 Point p = (Point) context.getComponent()
                         .getClientProperty(RolloverProducer.ROLLOVER_KEY);
-                if (/*hasFocus || */(p != null && (p.x >= 0) && 
-                        (p.x == context.getColumn()) && (p.y == context.getRow()))) {
-                     rendererComponent.getModel().setRollover(true);
-                } else {
-                    rendererComponent.getModel().setRollover(false);
-                }
+                /*hasFocus || */
+                rendererComponent.getModel().setRollover(p != null && (p.x >= 0) &&
+                        (p.x == context.getColumn()) && (p.y == context.getRow()));
             }
         }
 
@@ -568,12 +544,9 @@ public class RendererIssues extends InteractiveTestCase {
             rendererComponent.setBorder(border);
             Point p = (Point) context.getComponent().getClientProperty(
                     RolloverProducer.ROLLOVER_KEY);
-            if (/* hasFocus || */(p != null && (p.x >= 0)
-                    && (p.x == context.getColumn()) && (p.y == context.getRow()))) {
-                rendererComponent.getModel().setRollover(true);
-            } else {
-                rendererComponent.getModel().setRollover(false);
-            }
+            /* hasFocus || */
+            rendererComponent.getModel().setRollover(p != null && (p.x >= 0)
+                    && (p.x == context.getColumn()) && (p.y == context.getRow()));
         }
 
 
@@ -607,7 +580,7 @@ public class RendererIssues extends InteractiveTestCase {
     
     /**
      * Issue #794-swingx: tooltip must be reset.
-     * 
+     * <p>
      * Here: TreeTableCellRenderer (the tree used for rendering the hierarchical 
      * column)
      * 
@@ -626,7 +599,7 @@ public class RendererIssues extends InteractiveTestCase {
 
     /**
      * Issue #774-swingx: support per node-type icons.
-     * 
+     * <p>
      * postponed to 0.9.x - will break all interface implementors.
      * 
      */
@@ -635,13 +608,9 @@ public class RendererIssues extends InteractiveTestCase {
        TreeCellContext context = new TreeCellContext();
        context.installContext(null, "dummy", -1, -1, false, false, false, true);
        final Icon custom = XTestUtils.loadDefaultIcon();
-       IconValue iv = new IconValue() {
-
-        public Icon getIcon(Object value) {
-            // TODO Auto-generated method stub
-            return custom;
-        }
-           
+       IconValue iv = value -> {
+           // TODO Auto-generated method stub
+           return custom;
        };
        WrappingProvider provider = new WrappingProvider(iv);
        WrappingIconPanel comp = provider.getRendererComponent(context);
@@ -696,7 +665,7 @@ public class RendererIssues extends InteractiveTestCase {
      * with LinkRenderer
      * "no ComponentUI class for: org.jdesktop.swingx.LinkRenderer$1"
      * that's the inner class JXHyperlink which overrides updateUI.
-     * 
+     * <p>
      * PENDING: this was moved from tableUnitTest - had been passing with
      * LinkRenderer but with HyperlinkProvider
      * now is failing (on server with defaultToSystem == false, locally win os 

@@ -29,6 +29,6 @@ import java.util.regex.Pattern;
  * @author Ramesh Gupta
  */
 public interface PatternMatcher {
-    public Pattern getPattern();
-    public void setPattern(Pattern pattern);
+    Pattern getPattern();
+    void setPattern(Pattern pattern);
 }

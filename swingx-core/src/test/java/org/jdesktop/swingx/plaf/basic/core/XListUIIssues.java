@@ -48,7 +48,7 @@ public class XListUIIssues extends InteractiveTestCase {
     /**
      * getContext(component) should throw if given component is not ours (for
      * 1:1 delegate implemenations). 
-     * 
+     * <p>
      * PENDING JW: moved out of XListUITest because server doesn't know Nimbus
      * back again if jdk version updated to u10+. Or: can we have conditions
      * in the expected clause?

@@ -38,7 +38,7 @@ public interface Searchable {
      *
      * @return index of matched <code>String</code> or -1 if a match cannot be found.
      */
-    public int search(String searchString);
+    int search(String searchString);
     
     /**
      * Search <code>searchString</code> from the given position in a document.
@@ -48,7 +48,7 @@ public interface Searchable {
      *
      * @return index of matched <code>String</code> or -1 if a match cannot be found.
      */
-    public int search(String searchString, int startIndex);
+    int search(String searchString, int startIndex);
 
     /**
      * Search <code>searchString</code> in the given direction from the some position in a document.
@@ -60,7 +60,7 @@ public interface Searchable {
      *
      * @return index of matched <code>String</code> or -1 if a match cannot be found.
      */
-    public int search(String searchString, int startIndex, boolean backward);
+    int search(String searchString, int startIndex, boolean backward);
     
     /**
      * Search for the pattern from the beginning of the document.
@@ -69,7 +69,7 @@ public interface Searchable {
      *
      * @return  index of matched <code>Pattern</code> or -1 if a match cannot be found.
      */
-    public int search(Pattern pattern);
+    int search(Pattern pattern);
 
     /**
      * Search for the pattern from the start index.
@@ -77,7 +77,7 @@ public interface Searchable {
      * @param startIndex starting index of search. If -1 then start from the beginning
      * @return index of matched pattern or -1 if a match cannot be found.
      */
-    public int search(Pattern pattern, int startIndex);
+    int search(Pattern pattern, int startIndex);
 
     /**
      * Search for the pattern from the start index.
@@ -86,5 +86,5 @@ public interface Searchable {
      * @param backward indicates the direction if true then search is backwards
      * @return index of matched pattern or -1 if a match cannot be found.
      */
-    public int search(Pattern pattern, int startIndex, boolean backward);
+    int search(Pattern pattern, int startIndex, boolean backward);
 }

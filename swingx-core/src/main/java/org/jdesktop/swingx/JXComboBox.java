@@ -40,7 +40,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.ComboPopup;
@@ -373,7 +372,7 @@ public class JXComboBox extends JComboBox {
             for (int i = startIndex, c = aModel.getSize(); i < c; i++) {
                 String v = getStringAt(i).toLowerCase();
                 
-                if (v.length() > 0 && v.charAt(0) == aKey) {
+                if (!v.isEmpty() && v.charAt(0) == aKey) {
                     return i;
                 }
             }
@@ -381,7 +380,7 @@ public class JXComboBox extends JComboBox {
             for (int i = startIndex, c = aModel.getSize(); i < c; i++) {
                 String v = getStringAt(i).toLowerCase();
                 
-                if (v.length() > 0 && v.charAt(0) == aKey) {
+                if (!v.isEmpty() && v.charAt(0) == aKey) {
                     return i;
                 }
             }
@@ -389,7 +388,7 @@ public class JXComboBox extends JComboBox {
             for (int i = 0; i < startIndex; i++) {
                 String v = getStringAt(i).toLowerCase();
                 
-                if (v.length() > 0 && v.charAt(0) == aKey) {
+                if (!v.isEmpty() && v.charAt(0) == aKey) {
                     return i;
                 }
             }
@@ -400,7 +399,7 @@ public class JXComboBox extends JComboBox {
         @Override
         public void updateUI() {
             Long l = (Long) UIManager.get("ComboBox.timeFactor");
-            timeFactor = l == null ? 1000L : l.longValue();
+            timeFactor = l == null ? 1000L : l;
         }
     }
 
@@ -476,7 +475,7 @@ public class JXComboBox extends JComboBox {
     }
 
     private void init() {
-        pendingEvents = new ArrayList<KeyEvent>();
+        pendingEvents = new ArrayList<>();
         
         if (keySelectionManager == null || keySelectionManager instanceof UIResource) {
             setKeySelectionManager(createDefaultKeySelectionManager());
@@ -523,18 +522,15 @@ public class JXComboBox extends JComboBox {
                 pendingEvents.add(e);
                 isDispatching = true;
 
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            for (KeyEvent event : pendingEvents) {
-                                editor.getEditorComponent().dispatchEvent(event);
-                            }
-
-                            pendingEvents.clear();
-                        } finally {
-                            isDispatching = false;
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        for (KeyEvent event : pendingEvents) {
+                            editor.getEditorComponent().dispatchEvent(event);
                         }
+
+                        pendingEvents.clear();
+                    } finally {
+                        isDispatching = false;
                     }
                 });
             }
@@ -853,13 +849,10 @@ public class JXComboBox extends JComboBox {
      * @return the ChangeListener defining the reaction to changes of highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
-        return new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                // need to fire change so JXComboBox can update
-                firePropertyChange("highlighters", null, getHighlighters());
-                repaint();
-            }
+        return e -> {
+            // need to fire change so JXComboBox can update
+            firePropertyChange("highlighters", null, getHighlighters());
+            repaint();
         };
     }
     

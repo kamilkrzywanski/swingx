@@ -24,14 +24,7 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.EventListener;
-import java.util.Hashtable;
-import java.util.Locale;
-import java.util.SortedSet;
-import java.util.TimeZone;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -43,7 +36,6 @@ import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.calendar.DaySelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
-import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.event.EventListenerMap;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
@@ -242,7 +234,7 @@ public class JXMonthView extends JComponent {
     private Color monthStringForeground;
     private Color daysOfTheWeekForeground;
     private Color selectedBackground;
-    private Hashtable<Integer, Color> dayToColorTable = new Hashtable<Integer, Color>();
+    private Hashtable<Integer, Color> dayToColorTable = new Hashtable<>();
     private Color flaggedDayForeground;
 
     private Color selectedForeground;
@@ -365,7 +357,7 @@ public class JXMonthView extends JComponent {
     
     /**
      * Returns a clone of the internal calendar, with it's time set to firstDisplayedDate.
-     * 
+     * <p> <p>
      * PENDING: firstDisplayed useful as reference time? It's timezone dependent anyway. 
      * Think: could return with monthView's today instead? 
      * 
@@ -394,7 +386,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Sets the time zone with the given time zone value.
-     * 
+     * <p> <p>
      * This is a bound property. 
      * 
      * @param tz The <code>TimeZone</code>.
@@ -434,7 +426,7 @@ public class JXMonthView extends JComponent {
      * Initializes selection model related internals. If the Locale is
      * null, it falls back to JComponent.defaultLocale. If the model
      * is null it creates a default model with the locale.
-     * 
+     * <p> <p>
      * PENDING JW: leave default locale fallback to model?
      * 
      * @param model the DateSelectionModel which should drive the monthView. 
@@ -468,16 +460,11 @@ public class JXMonthView extends JComponent {
      */
     private DateSelectionListener getDateSelectionListener() {
         if (modelListener == null) {
-            modelListener = new DateSelectionListener() {
-
-                @Override
-                public void valueChanged(DateSelectionEvent ev) {
-                    if (EventType.CALENDAR_CHANGED.equals(ev.getEventType())) {
-                        updateCalendar();
-                    }
-                    
+            modelListener = ev -> {
+                if (EventType.CALENDAR_CHANGED.equals(ev.getEventType())) {
+                    updateCalendar();
                 }
-                
+
             };
         }
         return modelListener;
@@ -552,7 +539,7 @@ public class JXMonthView extends JComponent {
     /**
      * All dates are "cleaned" relative to the timezone they had been set.
      * After changing the timezone, they need to be updated to the new.
-     * 
+     * <p> <p>
      * Here: clear everything. 
      * 
      * @param oldTimeZone the timezone before the change
@@ -671,7 +658,7 @@ public class JXMonthView extends JComponent {
      * Returns the Date at the given location. May be null if the
      * coordinates don't map to a day in the month which contains the 
      * coordinates. Specifically: hitting leading/trailing dates returns null.
-     * 
+     * <p> <p>
      * Mapping pixel to calendar day.
      *
      * @param x the x position of the location in pixel
@@ -688,7 +675,7 @@ public class JXMonthView extends JComponent {
     /**
      * Returns the current Date (whateverthatmeans). Internally always invoked when
      * the current default is needed. Introduced mainly for testing, don't override!
-     * 
+     * <p> <p>
      * This implementation returns a Date instantiated with <code>System.currentTimeInMillis</code>.
      * 
      * @return the date deemed as current. 
@@ -700,7 +687,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Sets today from the current system time. 
-     * 
+     * <p> <p>
      * temporary widened access for testing.
      */
     protected void updateTodayFromCurrentTime() {
@@ -709,7 +696,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Increments today. This is used by the timer.
-     * 
+     * <p> <p>
      * PENDING: is it safe? doesn't check if we are really tomorrow?
      * temporary widened access for testing.
      */
@@ -723,7 +710,7 @@ public class JXMonthView extends JComponent {
      * Sets the date which represents today. Internally 
      * modified to the start of the day which contains the
      * given date in this monthView's calendar coordinates.
-     *  
+     * <p> <p>
      * temporary widened access for testing.
      * 
      * @param date the date which should be used as today.
@@ -927,7 +914,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Returns the earliest selected date. 
-     * 
+     * <p> <p>
      * PENDING JW: keep this? it was introduced before the first/last 
      *   in model. When delegating everything, we duplicate here.
      *   
@@ -1030,10 +1017,7 @@ public class JXMonthView extends JComponent {
     public void setUnselectableDates(Date... unselectableDates) {
         Contract.asNotNull(unselectableDates,
                 "unselectable dates must not be null");
-        SortedSet<Date> unselectableSet = new TreeSet<Date>();
-        for (Date unselectableDate : unselectableDates) {
-            unselectableSet.add(unselectableDate);
-        }
+        SortedSet<Date> unselectableSet = new TreeSet<>(Arrays.asList(unselectableDates));
         getSelectionModel().setUnselectableDates(unselectableSet);
         // PENDING JW: check that ui does the repaint!
         repaint();
@@ -1075,7 +1059,7 @@ public class JXMonthView extends JComponent {
    }
     /**
      * Adds the dates to the flags. 
-     * 
+     * <p> <p>
      * NOTE: neither the given array nor any of its elements should be null.
      * Currently, a null array will be tolerated to ease migration. A null
      * does nothing.
@@ -1095,7 +1079,7 @@ public class JXMonthView extends JComponent {
     
     /**
      * Unflags the given dates.
-     * 
+     * <p> <p>
      * NOTE: neither the given array nor any of its elements should be null.
      * Currently, a null array will be tolerated to ease migration. 
      *
@@ -1277,7 +1261,7 @@ public class JXMonthView extends JComponent {
      * this method the first days of the week days[0] is assumed to be
      * <code>Calendar.SUNDAY</code>. If null, the representation provided
      * by the MonthViewUI is used.
-     * 
+     * <p> <p>
      * The default value is the representation as 
      * returned from the MonthViewUI.
      * 
@@ -1694,12 +1678,7 @@ public class JXMonthView extends JComponent {
 
         if (todayTimer == null) {
             todayTimer = new Timer(secondsTillTomorrow * 1000,
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            incrementToday();
-                        }
-                    });
+                    e -> incrementToday());
         }
 
         // Modify the initial delay by the current time.

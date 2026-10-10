@@ -27,8 +27,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -169,10 +167,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
         frame.pack();
         frame.setVisible(true);
-        SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                                evaluateChildren(frame.getContentPane().getComponents());
-                        }});
+        SwingUtilities.invokeLater(() -> evaluateChildren(frame.getContentPane().getComponents()));
 
     }
 
@@ -201,10 +196,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
         frame.pack();
         frame.setVisible(true);
-        SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                                evaluateChildren(frame.getContentPane().getComponents());
-                        }});
+        SwingUtilities.invokeLater(() -> evaluateChildren(frame.getContentPane().getComponents()));
 
     }
 
@@ -231,10 +223,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				evaluateChildren(frame.getContentPane().getComponents());
-			}});
+        SwingUtilities.invokeLater(() -> evaluateChildren(frame.getContentPane().getComponents()));
 
     }
 
@@ -305,18 +294,13 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         // PENDING JW: removed while fixing #1186-swingx (no dependency on sun packages)
         // revisit: why do we do this at all? If really needed replace
 //        sun.awt.AppContext.getAppContext().put("JComponent.defaultLocale", Locale.FRANCE);
-        Map<String, char[]> aMap = new HashMap<String, char[]>();
+        Map<String, char[]> aMap = new HashMap<>();
         aMap.put("asdf", "asdf".toCharArray());
         JXLoginPane panel = new JXLoginPane(new SimpleLoginService(aMap));
         panel.setSaveMode(JXLoginPane.SaveMode.BOTH);
-        panel.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(
-                    PropertyChangeEvent thePropertyChangeEvent) {
-                System.err.println(thePropertyChangeEvent.getPropertyName()
-                        + " " + thePropertyChangeEvent.getOldValue()
-                        + " -> " + thePropertyChangeEvent.getNewValue());
-            }
-        });
+        panel.addPropertyChangeListener(thePropertyChangeEvent -> System.err.println(thePropertyChangeEvent.getPropertyName()
+                + " " + thePropertyChangeEvent.getOldValue()
+                + " -> " + thePropertyChangeEvent.getNewValue()));
         JFrame frame = JXLoginPane.showLoginFrame(panel);
 
         frame.pack();
@@ -332,13 +316,10 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
     public void interactiveCapsLockTest() {
         CapsLockSupport cls = CapsLockSupport.getInstance();
-        cls.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println(evt);
-                System.out.println(CapsLockSupport.getInstance().isCapsLockEnabled());
-                System.out.println();
-            }
+        cls.addPropertyChangeListener(evt -> {
+            System.out.println(evt);
+            System.out.println(CapsLockSupport.getInstance().isCapsLockEnabled());
+            System.out.println();
         });
         showInFrame(new JTextField(), "Caps Lock Test");
     }

@@ -78,10 +78,7 @@ public class AbstractPainterTest {
      */
     @Test
     public void testPaintWithNullGraphics() {
-        assertThrows(NullPointerException.class, () -> {
-        p.paint(null, null, 10, 10);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> p.paint(null, null, 10, 10));}
 
     /**
      * {@link AbstractPainter} will pass {@code null} objects to

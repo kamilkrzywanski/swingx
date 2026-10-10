@@ -135,7 +135,7 @@ public class JXFindPanel extends AbstractPatternPanel {
     
     /**
      * called from listening to empty property of PatternModel.
-     * 
+     * <p>
      * this implementation calls super and additionally synchs the 
      * enabled state of FIND_NEXT_ACTION_COMMAND, FIND_PREVIOUS_ACTION_COMMAND
      * to !empty.

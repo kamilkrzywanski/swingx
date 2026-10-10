@@ -54,7 +54,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.UIResource;
 
-import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXCollapsiblePane.CollapsiblePaneContainer;
 import org.jdesktop.swingx.plaf.basic.BasicDatePickerUI;
 import org.junit.jupiter.api.AfterEach;
@@ -74,7 +73,7 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
             .getLogger(SwingXUtilitiesTest.class.getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         setSystemLF(true);
 //        Locale.setDefault(new Locale("es"));
         SwingXUtilitiesTest test = new SwingXUtilitiesTest();
@@ -116,7 +115,7 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
             LOG.info("cannot run test - no safe LFs to toggle");
             return;
         }
-        List<RootPaneContainer> toplevels = new ArrayList<RootPaneContainer>();
+        List<RootPaneContainer> toplevels = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             JXFrame frame = new JXFrame();
             toplevels.add(frame);
@@ -167,10 +166,7 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
 
     @Test
     public void testGetTranslucentRepaintManagerWithNull() {
-        assertThrows(NullPointerException.class, () -> {
-        SwingXUtilities.getTranslucentRepaintManager(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> SwingXUtilities.getTranslucentRepaintManager(null));}
     
     @Test
     public void testGetTranslucentRepaintManagerWithTranslucent() {
@@ -211,16 +207,13 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
     public void testInvokeLater() {
         assertThat(SwingUtilities.isEventDispatchThread(), is(false));
         
-        Callable<Void> callable = new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                assertThat(SwingUtilities.isEventDispatchThread(), is(true));
-                
-                //wait a long time
-                Thread.sleep(1000);
-                
-                return null;
-            }
+        Callable<Void> callable = () -> {
+            assertThat(SwingUtilities.isEventDispatchThread(), is(true));
+
+            //wait a long time
+            Thread.sleep(1000);
+
+            return null;
         };
         
         long start = System.currentTimeMillis();
@@ -232,16 +225,13 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
     public void testInvokeAndWait() throws Exception {
         assertThat(SwingUtilities.isEventDispatchThread(), is(false));
         
-        Callable<Boolean> callable = new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                assertThat(SwingUtilities.isEventDispatchThread(), is(true));
-                
-                //wait a long time
-                Thread.sleep(1000);
-                
-                return true;
-            }
+        Callable<Boolean> callable = () -> {
+            assertThat(SwingUtilities.isEventDispatchThread(), is(true));
+
+            //wait a long time
+            Thread.sleep(1000);
+
+            return true;
         };
         
         long start = System.currentTimeMillis();
@@ -328,12 +318,10 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
         assertFalse(SwingXUtilities.isDescendingFrom(picker.getMonthView(), picker));
         Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                assertTrue( ((BasicDatePickerUI) picker.getUI()).isPopupVisible(),"popup visible ");
-                assertTrue(SwingXUtilities.isDescendingFrom(picker.getMonthView(), picker));
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertTrue( ((BasicDatePickerUI) picker.getUI()).isPopupVisible(),"popup visible ");
+            assertTrue(SwingXUtilities.isDescendingFrom(picker.getMonthView(), picker));
+
         });
         frame.dispose();
     }

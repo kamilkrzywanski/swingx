@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.swing.AbstractListModel;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -46,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FindTest extends InteractiveTestCase {
     private static final Logger LOG = Logger
             .getLogger(FindTest.class.getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
       setSystemLF(true);
 //      Locale.setDefault(new Locale("es"));
       FindTest test = new FindTest();
@@ -104,7 +103,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * Issue #718-swingx: shared FindPanel not updated on LF change.
-     * 
+     * <p>
      * Here: check that containing dialog is disposed, new api with flag.
      */
     @Test
@@ -128,7 +127,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * Issue #718-swingx: shared FindPanel not updated on LF change.
-     * 
+     * <p>
      * Here: check that containing dialog is not disposed.
      */
     @Test
@@ -207,7 +206,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * test if search loops all columns of previous row (backwards search).
-     * 
+     * <p>
      * Hmm... not testable? 
      * Needed to widen access for lastFoundColumn.
      */
@@ -240,7 +239,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * test if search loops all columns of next row.
-     *
+     * <p>
      * Hmm... not testable? 
      * Needed to widen access for lastFoundColumn.
      */
@@ -288,7 +287,7 @@ public class FindTest extends InteractiveTestCase {
     
     /**
      * Issue #718-swingx: shared FindPanel not updated on LF change.
-     * 
+     * <p>
      * Here: check that dialog is new for different owner and old has been disposed.
      */
     @Test
@@ -318,7 +317,7 @@ public class FindTest extends InteractiveTestCase {
     
     /**
      * Issue #720: JXTree - selection lost on release the searchable.
-     * 
+     * <p>
      * assert JXList behaviour.
      * Note: JXList not clearing the selection has been an accidental, undocumented
      * side-effect of DefaultListSelectionModel.setSelectionInterval - it backs
@@ -340,7 +339,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * Issue #720: JXTree - selection lost on release the searchable.
-     * 
+     * <p>
      * assert JXTable behaviour.
      */
     @Test
@@ -359,7 +358,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * Issue #720: JXTree - selection lost on release the searchable.
-     * 
+     * <p>
      * Base problem was a slight difference in the tree- vs. ListSelectionModel 
      * (not completely documented). The TreeSelection
      * interprets a null path array as clearSelection, same for null path in 
@@ -404,7 +403,7 @@ public class FindTest extends InteractiveTestCase {
 
     /**
      * Issue #374-swingx: default search keystroke never found.
-     * 
+     * <p>
      * This was probably introduced when fixing #353-swingx: 
      * swingx must not try to leave sandbox.
      * 
@@ -671,7 +670,7 @@ public class FindTest extends InteractiveTestCase {
     /**
      * testing incremental search: 
      * must start search at given position (inclusive).
-     * 
+     * <p>
      * This implies that search(xx, -1) is equivalent to 
      * search(xx, 0) if the match is at position 0.
      *
@@ -769,9 +768,7 @@ public class FindTest extends InteractiveTestCase {
 
         public Object getValueAt(int row, int column) {
             checkCoordinates(row, column);
-            StringBuffer buffer = new StringBuffer(data[column]);
-            buffer.append(row);
-            return buffer.toString();
+            return data[column] + row;
         }
         private void checkCoordinates(int row, int column) {
             if ((row < 0) || (row >= getRowCount())

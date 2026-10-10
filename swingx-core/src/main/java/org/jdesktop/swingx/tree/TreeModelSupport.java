@@ -30,13 +30,13 @@ import org.jdesktop.swingx.util.Contract;
 
 /**
  * Support for change notification, usable by {@code TreeModel}s.
- * 
+ * <p>
  * The changed/inserted/removed is expressed in terms of a {@code TreePath},
  * it's up to the client model to build it as appropriate.
- * 
+ * <p>
  * This is inspired by {@code AbstractTreeModel} from Christian Kaufhold,
  * www.chka.de.
- * 
+ * <p>
  * TODO - implement and test precondition failure of added/removed notification
  * 
  * @author JW

@@ -92,7 +92,7 @@ public class JXHeader extends JXPanel {
     /**
      * Specifies desired location of the icon relative to the title/description text.
      */
-    public static enum IconPosition {
+    public enum IconPosition {
         /**
          * Positions icon left from the text.
          */

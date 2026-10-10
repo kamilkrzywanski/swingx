@@ -104,8 +104,7 @@ public class TableSearchable extends AbstractSearchable {
      *         found in this row or null if no match is found
      */
     private SearchResult findMatchForwardInRow(Pattern pattern, int row) {
-        int startColumn = (lastSearchResult.foundColumn < 0) ? 0
-                : lastSearchResult.foundColumn;
+        int startColumn = Math.max(lastSearchResult.foundColumn, 0);
         if (isValidIndex(row)) {
             for (int column = startColumn; column < table.getColumnCount(); column++) {
                 SearchResult result = findMatchAt(pattern, row, column);
@@ -151,7 +150,7 @@ public class TableSearchable extends AbstractSearchable {
      */
     protected SearchResult findMatchAt(Pattern pattern, int row, int column) {
         String text = table.getStringAt(row, column);
-        if ((text != null) && (text.length() > 0)) {
+        if ((text != null) && (!text.isEmpty())) {
             Matcher matcher = pattern.matcher(text);
             if (matcher.find()) {
                 return createSearchResult(matcher, row, column);
@@ -237,7 +236,7 @@ public class TableSearchable extends AbstractSearchable {
     /**
      * Configures the match highlighter to the current match. Ensures that the
      * matched cell is visible, if there is a match.
-     * 
+     * <p>
      * PRE: markByHighlighter
      * 
      */

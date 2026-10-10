@@ -14,7 +14,6 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +28,7 @@ public class JXTableHeaderVisualCheck extends InteractiveTestCase {
     private static final Logger LOG = Logger
             .getLogger(JXTableHeaderVisualCheck.class.getName());
     
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JXTableHeaderVisualCheck test = new JXTableHeaderVisualCheck();
         try {
 //          test.runInteractiveTests();
@@ -56,7 +55,7 @@ public class JXTableHeaderVisualCheck extends InteractiveTestCase {
     public void interactiveHeaderCoreRowSorter() {
         JXTable table = new JXTable(30, 5);
         table.setAutoCreateRowSorter(false);
-        table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+        table.setRowSorter(new TableRowSorter<>(table.getModel()));
         showWithScrollingInFrame(table, "core resize columns with mouse");
     }
     /**

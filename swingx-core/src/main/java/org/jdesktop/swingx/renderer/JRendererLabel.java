@@ -20,8 +20,6 @@
  */
 package org.jdesktop.swingx.renderer;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -37,7 +35,7 @@ import org.jdesktop.swingx.painter.Painter;
  * 
  * <i>Note</i>: the painter support will be switched to painter_work as 
  * soon it enters main. 
- * 
+ * <p>
  * The reasoning for the performance-overrides is copied from core: <p>
  * 
  * The standard <code>JLabel</code> component was not

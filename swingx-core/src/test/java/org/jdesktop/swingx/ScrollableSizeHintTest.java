@@ -1,7 +1,5 @@
 package org.jdesktop.swingx;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import javax.swing.SwingConstants;
 
 import org.junit.jupiter.api.Test;

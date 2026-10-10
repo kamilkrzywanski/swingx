@@ -33,7 +33,7 @@ import org.jdesktop.swingx.util.OS;
 
 /**
  * Loads LF specific background striping colors. 
- * 
+ * <p>
  * The colors are based on the LF selection colors for certain
  * LFs and themes, for unknown LFs/themes a generic grey is used.  
  * 

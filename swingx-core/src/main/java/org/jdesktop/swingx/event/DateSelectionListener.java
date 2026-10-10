@@ -27,5 +27,5 @@ import java.util.EventListener;
  * @author Joshua Outwater
  */
 public interface DateSelectionListener extends EventListener {
-    public void valueChanged(DateSelectionEvent ev);
+    void valueChanged(DateSelectionEvent ev);
 }

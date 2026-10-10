@@ -33,7 +33,7 @@ package org.jdesktop.swingx.treetable;
  * };
  * table.setColumnFactory(factory);
  * table.setTreeTableModel(new FileSystemModel());
- * 
+ * <p>
  * </code>
  * </pre>
  * 

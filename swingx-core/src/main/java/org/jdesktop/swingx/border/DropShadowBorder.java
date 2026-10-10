@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,11 +66,11 @@ public class DropShadowBorder implements Border, Serializable {
      */
     private static final long serialVersionUID = 715287754750604058L;
 
-    private static enum Position {TOP, TOP_LEFT, LEFT, BOTTOM_LEFT,
+    private enum Position {TOP, TOP_LEFT, LEFT, BOTTOM_LEFT,
                     BOTTOM, BOTTOM_RIGHT, RIGHT, TOP_RIGHT}
                     
     private static final Map<Double,Map<Position,BufferedImage>> CACHE 
-            = new HashMap<Double,Map<Position,BufferedImage>>();
+            = new HashMap<>();
                         
     private Color shadowColor;
     private int shadowSize;
@@ -251,7 +252,7 @@ public class DropShadowBorder implements Border, Serializable {
         //if so, use the cache. Else, draw and save
         Map<Position,BufferedImage> images = CACHE.get(shadowSize + (shadowColor.hashCode() * .3) + (shadowOpacity * .12));//TODO do a real hash
         if (images == null) {
-            images = new HashMap<Position,BufferedImage>();
+            images = new HashMap<>();
 
             /*
              * To draw a drop shadow, I have to:
@@ -285,9 +286,7 @@ public class DropShadowBorder implements Border, Serializable {
             
             float blurry = 1.0f / (shadowSize * shadowSize);
             float[] blurKernel = new float[shadowSize * shadowSize];
-            for (int i=0; i<blurKernel.length; i++) {
-                blurKernel[i] = blurry;
-            }
+            Arrays.fill(blurKernel, blurry);
             ConvolveOp blur = new ConvolveOp(new Kernel(shadowSize, shadowSize, blurKernel));
             BufferedImage targetImage = GraphicsUtilities.createCompatibleTranslucentImage(imageWidth, imageWidth);
             ((Graphics2D)targetImage.getGraphics()).drawImage(image, blur, -(shadowSize/2), -(shadowSize/2));

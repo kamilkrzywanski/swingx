@@ -30,12 +30,12 @@ public class ColumnModelReport implements TableColumnModelExtListener {
     /**
      * Holds a list of all received ValueChangeEvents.
      */
-    private List<TableColumnModelEvent> removedEvents = Collections.synchronizedList(new LinkedList<TableColumnModelEvent>());
-    private List<TableColumnModelEvent> addedEvents = Collections.synchronizedList(new LinkedList<TableColumnModelEvent>());
-    private List<TableColumnModelEvent> movedEvents = Collections.synchronizedList(new LinkedList<TableColumnModelEvent>());
+    private List<TableColumnModelEvent> removedEvents = Collections.synchronizedList(new LinkedList<>());
+    private List<TableColumnModelEvent> addedEvents = Collections.synchronizedList(new LinkedList<>());
+    private List<TableColumnModelEvent> movedEvents = Collections.synchronizedList(new LinkedList<>());
     
-    private List<ListSelectionEvent> selectionEvents = Collections.synchronizedList(new LinkedList<ListSelectionEvent>());
-    private List<ChangeEvent> changeEvents = Collections.synchronizedList(new LinkedList<ChangeEvent>());
+    private List<ListSelectionEvent> selectionEvents = Collections.synchronizedList(new LinkedList<>());
+    private List<ChangeEvent> changeEvents = Collections.synchronizedList(new LinkedList<>());
     
 //    private List<PropertyChangeEvent> columnPropertyEvents = new LinkedList<PropertyChangeEvent>();
 

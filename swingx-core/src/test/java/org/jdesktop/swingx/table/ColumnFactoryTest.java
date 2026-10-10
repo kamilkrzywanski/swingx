@@ -97,7 +97,7 @@ public class ColumnFactoryTest extends InteractiveTestCase {
     /**
      * Issue #564-swingx: allow custom factories to return null column.
      * Here: check how to implement model-based decision.
-     * 
+     * <p>
      * PENDING: need additional api? Left to subclasses for now. 
      */
     @Test
@@ -275,7 +275,7 @@ public class ColumnFactoryTest extends InteractiveTestCase {
     
     /**
      * Issue #266-swingx: support customization of pack margin.
-     * 
+     * <p>
      * added property to ColumnFactory. 
      *  
      */

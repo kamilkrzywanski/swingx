@@ -237,7 +237,7 @@ public class JXCollapsiblePane extends JXPanel {
 
         private final boolean vertical;
 
-        private Direction(boolean vertical) {
+        Direction(boolean vertical) {
             this.vertical = vertical;
         }
 
@@ -496,12 +496,7 @@ public class JXCollapsiblePane extends JXPanel {
             	if (animateTimer.isRunning()) {
             		//TODO should we listen for animation state change?
             		//yes, but we're best off creating a UI delegate for these changes
-            		SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							currentDimension = -1;
-						}
-					});
+            		SwingUtilities.invokeLater(() -> currentDimension = -1);
             	} else {
             		currentDimension = -1;
             	}
@@ -775,7 +770,7 @@ public class JXCollapsiblePane extends JXPanel {
      * is enough but there might be cases where the parent's parent must be
      * validated.
      */
-    public static interface CollapsiblePaneContainer {
+    public interface CollapsiblePaneContainer {
         Container getValidatingContainer();
     }
 
@@ -968,7 +963,7 @@ public class JXCollapsiblePane extends JXPanel {
 
             if (parent != null) {
                 if (parent instanceof JComponent) {
-                    ((JComponent)parent).revalidate();
+                    parent.revalidate();
                 } else {
                     parent.invalidate();
                 }

@@ -61,24 +61,15 @@ public class RowFiltersTest extends InteractiveTestCase {
     
     @Test
     public void testIllegalArgumentOnNegative() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        RowFilters.regexFilter(0, "some", -1);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> RowFilters.regexFilter(0, "some", -1));}
     
     @Test
     public void testNPEOnNullRegex() {
-        assertThrows(NullPointerException.class, () -> {
-        RowFilters.regexFilter(0, null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> RowFilters.regexFilter(0, null));}
     
     @Test
     public void testNPEOnNullPattern() {
-        assertThrows(NullPointerException.class, () -> {
-        RowFilters.regexFilter((Pattern) null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> RowFilters.regexFilter((Pattern) null));}
     
     @Test
     public void testCaseFlagAndColumn() {
@@ -174,18 +165,13 @@ public class RowFiltersTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
 
     @BeforeEach

@@ -26,7 +26,6 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -61,13 +60,13 @@ public class DefaultTableColumnModelExt extends DefaultTableColumnModel
      * contains a list of all columns, in the order in which were
      * added to the model.
      */
-    private List<TableColumn> initialColumns = new ArrayList<TableColumn>();
+    private List<TableColumn> initialColumns = new ArrayList<>();
     
     /**
      * contains a list of all column, in the order they would appear if
      * all were visible.
      */
-    private List<TableColumn> currentColumns = new ArrayList<TableColumn>();
+    private List<TableColumn> currentColumns = new ArrayList<>();
 
     /**
      * Listener attached to TableColumnExt instances to listen for changes
@@ -90,7 +89,7 @@ public class DefaultTableColumnModelExt extends DefaultTableColumnModel
     @Override
     public List<TableColumn> getColumns(boolean includeHidden) {
         if (includeHidden) {
-            return new ArrayList<TableColumn>(initialColumns);
+            return new ArrayList<>(initialColumns);
         } 
         return Collections.list(getColumns());
     }
@@ -111,8 +110,7 @@ public class DefaultTableColumnModelExt extends DefaultTableColumnModel
      */
     @Override
     public TableColumnExt getColumnExt(Object identifier) {
-        for (Iterator<TableColumn> iter = initialColumns.iterator(); iter.hasNext();) {
-            TableColumn column = iter.next();
+        for (TableColumn column : initialColumns) {
             if ((column instanceof TableColumnExt) && (identifier.equals(column.getIdentifier()))) {
                 return (TableColumnExt) column;
             }
@@ -172,7 +170,7 @@ public class DefaultTableColumnModelExt extends DefaultTableColumnModel
         if (column instanceof TableColumnExt) {   
             oldVisible = ((TableColumnExt) column).isVisible();
             ((TableColumnExt) column).setVisible(true);
-            ((TableColumnExt)column).removePropertyChangeListener(visibilityListener);
+            column.removePropertyChangeListener(visibilityListener);
         }
         currentColumns.remove(column);
         initialColumns.remove(column);
@@ -270,7 +268,7 @@ public class DefaultTableColumnModelExt extends DefaultTableColumnModel
         super.addColumn(col);
         // this is analogous to the proposed fix in #253-swingx
         // but uses the currentColumns as reference.
-        Integer addIndex = currentColumns.indexOf(col);
+        int addIndex = currentColumns.indexOf(col);
         for (int i = 0; i < (getColumnCount() - 1); i++) {
             TableColumn tableCol = getColumn(i);
             int actualPosition = currentColumns.indexOf(tableCol);

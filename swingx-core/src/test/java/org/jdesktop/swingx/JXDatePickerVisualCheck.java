@@ -29,7 +29,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -235,7 +234,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
     /**
      * Issue #940-swingx: support multiple selection in picker.
      * Nothing out-off-the-box, trying to manipulate the mouseEvent.
-     * 
+     * <p>
      * No success: no way to unselect
      */
     public void interactiveMultipleSelectionWithoutCtrl() {
@@ -417,16 +416,11 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         final JXDatePicker picker = new JXDatePicker(new Date());
         final JFormattedTextField field = new JFormattedTextField(picker.getDate());
         field.setEditable(false);
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    if (picker.getDate() != null)
-                     field.setValue(picker.getDate());
-                }
+        PropertyChangeListener l = evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                if (picker.getDate() != null)
+                 field.setValue(picker.getDate());
             }
-            
         };
         picker.addPropertyChangeListener(l);
         JXPanel panel = new JXPanel();
@@ -448,16 +442,11 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         JFormattedTextField textField = ((DefaultEditor) spinner.getEditor()).getTextField();
         textField.setFormatterFactory(
                 new DefaultFormatterFactory(new DateFormatter(format)));
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    if (picker.getDate() != null)
-                     spinner.setValue(picker.getDate());
-                }
+        PropertyChangeListener l = evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                if (picker.getDate() != null)
+                 spinner.setValue(picker.getDate());
             }
-            
         };
         picker.addPropertyChangeListener(l);
         JXPanel panel = new JXPanel();
@@ -469,12 +458,12 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
      * Issue #565-swingx: popup not closed if open and 
      * clicking into other focus-tricksing component (like
      * picker, combo).
-     * 
+     * <p>
      * Issue #1011-swingx: popup of first picker opened on click on second
      * (mac only?)
-     * 
+     * <p>
      * And: Compare picker and combo behaviour on toggle lf.
-     * 
+     * <p>
      * Not really comparable: the combo has complete control over the popup, re-creates
      * both popup and content on install.
      * 
@@ -517,22 +506,22 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
     
     /**
      * Visually characterize focus behaviour.
-     * 
+     * <p>
      * Issue #577-swingx: JXDatePicker focus cleanup.
      * After commit/cancel in popup: picker's editor should be focused.
-     * 
+     * <p>
      * 
      * Issue #757-swingx: JXDatePicker inconsistent focusLost firing.
-     * 
+     * <p>
      * JXDatePicker must not fire focusLost, the picker's editor should.
-     * 
+     * <p>
      * New (?) problem: after closing focused popup by clicking into 
      * another the focus is in the picker's editor and can't be moved
      * with tab
      * - open popup, 
      * - focus popup (by clicking next month, no keyboard, nor commit/cancel)
      * - click into textfield: popup closed, picker editor has focus
-     *  
+     * <p>
      * Independent of forcing focus into picker itself or its editor on open. 
      * Looks dependent on heavyweight popup: okay on resizing the frame so 
      * that the popup fits in.
@@ -576,7 +565,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #568-swingx: DatePicker must not reset time fields.
-     * 
+     * <p>
      * Behaviour defined by selection model of monthView. While the default 
      * (DaySelectionModel) normalizes the dates to the start of the day in the
      * model's calendar coordinates, a SingleDaySelectionModel keeps the date as-is.
@@ -596,19 +585,14 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         picker.setFormats(format);
         final JFormattedTextField field = new JFormattedTextField(format);
         field.setValue(picker.getDate());
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    field.setValue(evt.getNewValue());
-                    LOG.info("picker/editor/monthView: " + picker.getDate() + "/" 
-                           + picker.getEditor().getValue() + "/"
-                           + picker.getMonthView().getSelectionDate());
-                }
-                
+        PropertyChangeListener l = evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                field.setValue(evt.getNewValue());
+                LOG.info("picker/editor/monthView: " + picker.getDate() + "/"
+                       + picker.getEditor().getValue() + "/"
+                       + picker.getMonthView().getSelectionDate());
             }
-            
+
         };
         picker.addPropertyChangeListener(l);
         Action setDate = new AbstractActionExt("set date") {
@@ -632,7 +616,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #568-swingx: DatePicker must not reset time fields.
-     * 
+     * <p>
      * Behaviour defined by selection model of monthView. While the default 
      * (DaySelectionModel) normalizes the dates to the start of the day in the
      * model's calendar coordinates, a SingleDaySelectionModel keeps the date as-is.
@@ -659,19 +643,14 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         picker.setFormats(format);
         final JFormattedTextField field = new JFormattedTextField(format);
         field.setValue(picker.getDate());
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    field.setValue(evt.getNewValue());
-                    LOG.info("picker/editor/monthView: " + picker.getDate() + "/" 
-                           + picker.getEditor().getValue() + "/"
-                           + picker.getMonthView().getSelectionDate());
-                }
-                
+        PropertyChangeListener l = evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                field.setValue(evt.getNewValue());
+                LOG.info("picker/editor/monthView: " + picker.getDate() + "/"
+                       + picker.getEditor().getValue() + "/"
+                       + picker.getMonthView().getSelectionDate());
             }
-            
+
         };
         picker.addPropertyChangeListener(l);
         Action setDate = new AbstractActionExt("set date") {
@@ -716,15 +695,15 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, action);
         frame.pack();
-    };
-    
+    }
+
 
     /**
      * Issue #1292-swingx: prefsize growing on inserting text into empty editor.
-     * 
+     * <p>
      * PrefSize should be independent of empty/filled picker. 
      * If not, the initial size might appear kind of collapsed.
-     *  
+     * <p>
      * adapted code example from bug report: revalidate on text insert/remove  
      * Note: this simulation doesn't survive a LAF change - picker's editor is recreated
      * and listener not re-wired. 
@@ -773,7 +752,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #764-swingx: JXDatePicker sizing.
-     * 
+     * <p>
      * Compare pref size with/-out date initially. 
      * - null date is slightly narrower than not null
      * - formats using the day of week are cut a bit (for "long" day names like wed)
@@ -817,7 +796,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #764-swingx: JXDatePicker sizing.
-     * 
+     * <p>
      * Compare pref size with/-out date initially. 
      * - null date is slightly narrower than not null
      * - formats using the day of week are cut a bit (for "long" day names like wed)
@@ -914,7 +893,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #665-swingx: make JXDatePicker Locale-aware.
-     * 
+     * <p>
      * Here: instantiate the picker with a non-default locale. 
      * Check that the dates in LinkPanel and editor 
      * are formatted as appropriate for the Locale 
@@ -954,10 +933,10 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #665-swingx: make JXDatePicker Locale-aware.
-     * 
+     * <p>
      * Tests reaction to default locales set via both JComponent.setDefault and
      * Locale.setDefault. Going that way, catches the locales fine.
-     * 
+     * <p>
      * Also Issue #681-swingx - the first row of days in the monthview
      * overlaps with the day names for locales which have the monday as the 
      * first day of week. 
@@ -1054,16 +1033,8 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         JFormattedTextField textField = new JFormattedTextField(DateFormat.getDateInstance());
         textField.setValue(new Date());
         
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent e) {
-                LOG.info("got pce from: " + e.getSource().getClass().getSimpleName() + 
-                        "\n" + e.getPropertyName() + e.getNewValue());
-                
-            }
-            
-        };
+        PropertyChangeListener l = e -> LOG.info("got pce from: " + e.getSource().getClass().getSimpleName() +
+                "\n" + e.getPropertyName() + e.getNewValue());
         textField.addPropertyChangeListener(l);
         picker.addPropertyChangeListener(l);
 //        picker.getMonthView().addActionListener(l);
@@ -1081,24 +1052,24 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #235-swingx: action events
-     * 
+     * <p>
      * Compare textfield, formatted, picker, combo after keyboard.
-     * 
+     * <p>
      * TextField
      * - simple field fires on enter always
      * - formatted fire on enter if value had been edited
-     *
+     * <p>
      * ComboBox
      * - fires on enter always
      * - fires on click in dropdown
-     * 
+     * <p>
      * Calendar widgets after cleanup: 
-     * 
+     * <p>
      * Picker
      * - fires "datePickerCommit" on click (actually released) into monthView
      * - fires "datePickerCommit"/-"Cancel" on enter/escape, both in input field
      * and if popup is open
-     * 
+     * <p>
      * MonthView
      * - fires "monthViewCommit" on click (actually released)
      * - fires "monthViewCommit"/-"Cancel" on enter/esc 
@@ -1152,7 +1123,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #235-swingx: action events
-     * 
+     * <p>
      * Compare textfield, formatted, picker and combo: programatic change.
      * - only combo fires
      * 
@@ -1165,15 +1136,8 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         final JComboBox box = new JComboBox(new Object[] {"one", "two", "three"});
         box.setEditable(true);
         
-        ActionListener l = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LOG.info("got action from: " + e.getSource().getClass().getName() + 
-                        "\n" + e);
-            }
-            
-        };
+        ActionListener l = e -> LOG.info("got action from: " + e.getSource().getClass().getName() +
+                "\n" + e);
         simpleField.addActionListener(l);
         textField.addActionListener(l);
         picker.addActionListener(l);
@@ -1210,7 +1174,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
     /**
      * Issue #99-swingx: null date and opening popup forces selection.
      * Status? Looks fixed..
-     * 
+     * <p>
      * Sizing issue if init with null date
      */
     public void interactiveNullDate() {
@@ -1274,13 +1238,8 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
                 UIManager.setLookAndFeel(plaf);
                 SwingUtilities.updateComponentTreeUI(w);
                 w.pack();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (InstantiationException e1) {
-                e1.printStackTrace();
-            } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
-            } catch (UnsupportedLookAndFeelException e1) {
+            } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException |
+                     InstantiationException e1) {
                 e1.printStackTrace();
             }
         }

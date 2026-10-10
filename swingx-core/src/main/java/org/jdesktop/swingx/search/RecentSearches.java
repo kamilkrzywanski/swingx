@@ -32,9 +32,9 @@ public class RecentSearches implements ActionListener {
 
 	private int maxRecents = 5;
 
-	private List<String> recentSearches = new ArrayList<String>();
+	private List<String> recentSearches = new ArrayList<>();
 
-	private List<ChangeListener> listeners = new ArrayList<ChangeListener>();
+	private List<ChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * Creates a list of recent searches and uses <code>saveName</code> to
@@ -114,7 +114,7 @@ public class RecentSearches implements ActionListener {
 	 * <code>null</code> or empty nothing will be added. If the search string
 	 * already exists, the old element will be removed. The modified list will
 	 * automatically be persisted.
-	 * 
+	 * <p>
 	 * If the number of elements exceeds the maximum number of entries, the last
 	 * entry will be removed.
 	 * 
@@ -123,7 +123,7 @@ public class RecentSearches implements ActionListener {
 	 *            the search string to add
 	 */
 	public void put(String searchString) {
-		if (searchString == null || searchString.trim().length() == 0) {
+		if (searchString == null || searchString.trim().isEmpty()) {
 			return;
 		}
 
@@ -229,7 +229,7 @@ public class RecentSearches implements ActionListener {
 	 * Creates the recent searches popup menu which will be used by
 	 * {@link #install(JXSearchField)} to set a search popup menu on
 	 * <code>searchField</code>.
-	 * 
+	 * <p>
 	 * Override to return a custom popup menu.
 	 * 
 	 * @param searchField
@@ -246,7 +246,7 @@ public class RecentSearches implements ActionListener {
 	 * Also registers an {@link ActionListener} on <code>searchField</code>
 	 * and adds the search string to the list of recent searches whenever a
 	 * {@link ActionEvent} is received.
-	 * 
+	 * <p>
 	 * Uses {@link NativeSearchFieldSupport} to achieve compatibility with the native
 	 * search field support provided by the Mac Look And Feel since Mac OS 10.5.
 	 * 

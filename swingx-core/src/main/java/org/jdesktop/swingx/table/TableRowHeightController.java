@@ -132,8 +132,8 @@ public class TableRowHeightController {
      * @return
      */
     protected PropertyChangeListener createTablePropertyListener() {
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
+        return new PropertyChangeListener() {
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 invokedPropertyChanged(evt);
@@ -143,30 +143,21 @@ public class TableRowHeightController {
              * @param evt
              */
             private void invokedPropertyChanged(final PropertyChangeEvent evt) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ("model".equals(evt.getPropertyName())) {
-                            updateModel((TableModel) evt.getOldValue());
-                        }
-                        
+                SwingUtilities.invokeLater(() -> {
+                    if ("model".equals(evt.getPropertyName())) {
+                        updateModel((TableModel) evt.getOldValue());
                     }
+
                 });
             }
         };
-        return l;
     }
 
     protected TableModelListener createTableModelListener() {
-        TableModelListener l = new TableModelListener() {
+        return new TableModelListener() {
             @Override
             public void tableChanged(final TableModelEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        invokedTableChanged(e);
-                    }
-                });
+                SwingUtilities.invokeLater(() -> invokedTableChanged(e));
             }
 
             private void invokedTableChanged(TableModelEvent e) {
@@ -174,11 +165,10 @@ public class TableRowHeightController {
                     updatePreferredRowHeights();
                 } else  if (isUpdate(e) || isInsert(e)) {
                     updatePreferredRowHeights(e.getFirstRow(), e.getLastRow());
-                } 
+                }
                 // do nothing on delete
             }
         };
-        return l;
     }
     /**
      * 

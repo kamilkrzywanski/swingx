@@ -45,13 +45,13 @@ public class DatePickerFormatter extends
     
     private static final Logger LOG = Logger
             .getLogger(DatePickerFormatter.class.getName());
-    private DateFormat _formats[] = null;
+    private DateFormat[] _formats = null;
 
     
     /**
      * Instantiates a formatter with the localized format patterns defined
      * in the swingx.properties.
-     * 
+     * <p>
      * These formats are localizable and fields may be re-arranged, such as
      * swapping the month and day fields.  The keys for localizing these fields
      * are:
@@ -75,7 +75,7 @@ public class DatePickerFormatter extends
      *   use defaults or empty to do nothing (?), but must not contain
      *   null formats.
      */
-    public DatePickerFormatter(DateFormat formats[]) {
+    public DatePickerFormatter(DateFormat[] formats) {
         this(formats, null);
     }
 
@@ -92,7 +92,7 @@ public class DatePickerFormatter extends
 
     /**
      * Instantiates a formatter with the given formats and locale.
-     * 
+     * <p>
      * PENDING JW: makes no sense as a public constructor because the locale is ignored
      * if the formats are null. So has same public behaviour as the constructor with
      * formats only ...
@@ -100,7 +100,7 @@ public class DatePickerFormatter extends
      * @param formats
      * @param locale
      */
-    public DatePickerFormatter(DateFormat formats[], Locale locale) {
+    public DatePickerFormatter(DateFormat[] formats, Locale locale) {
 //        super();
         if (locale == null) {
             locale = Locale.getDefault();
@@ -132,7 +132,7 @@ public class DatePickerFormatter extends
         Object result = null;
         ParseException pex = null;
 
-        if (text == null || text.trim().length() == 0) {
+        if (text == null || text.trim().isEmpty()) {
             return null;
         }
 
@@ -176,14 +176,14 @@ public class DatePickerFormatter extends
      * @return the localized default formats.
      */
     protected DateFormat[] createDefaultFormats(Locale locale) {
-        List<DateFormat> f = new ArrayList<DateFormat>();
+        List<DateFormat> f = new ArrayList<>();
         addFormat(f, "JXDatePicker.longFormat", locale);
         addFormat(f, "JXDatePicker.mediumFormat", locale);
         addFormat(f, "JXDatePicker.shortFormat", locale);
-        if (f.size() == 0) {
+        if (f.isEmpty()) {
            addSystemDefaultFormat(f, locale); 
         }
-        return f.toArray(new DateFormat[f.size()]);
+        return f.toArray(new DateFormat[0]);
     }
 
     /**

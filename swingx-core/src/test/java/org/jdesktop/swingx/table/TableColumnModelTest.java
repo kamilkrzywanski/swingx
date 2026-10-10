@@ -28,14 +28,13 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.event.TableColumnModelExtListener;
 import org.jdesktop.swingx.test.ColumnModelReport;
 import org.jdesktop.test.TestUtils;
-import org.jdesktop.test.matchers.Matchers;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Skeleton to unit test DefaultTableColumnExt.
- * 
+ * <p>
  * Incomplete list of issues to test: 
  *   fired added after setVisible(true)
  *   behaviour when adding/removing invisible columns
@@ -254,7 +253,7 @@ public class TableColumnModelTest extends InteractiveTestCase {
     
     /**
      * Issue #253-swingx: hiding/showing columns changes column sequence.
-     * 
+     * <p>
      * The test is modelled after the example code as 
      * http://forums.java.net/jive/thread.jspa?threadID=7344.
      *
@@ -263,13 +262,13 @@ public class TableColumnModelTest extends InteractiveTestCase {
     public void testHideShowColumns() {
         DefaultTableColumnModelExt model = (DefaultTableColumnModelExt) createColumnModel(10);   
         int[] columnsToHide = new int[] { 4, 7, 6, 8, };
-        for (int i = 0; i < columnsToHide.length; i++) {
-            model.getColumnExt(String.valueOf(columnsToHide[i])).setVisible(false);
+        for (int k : columnsToHide) {
+            model.getColumnExt(String.valueOf(k)).setVisible(false);
         }
         // sanity: actually hidden
         assertEquals(model.getColumnCount(true) - columnsToHide.length, model.getColumnCount());
-        for (int i = 0; i < columnsToHide.length; i++) {
-            model.getColumnExt(String.valueOf(columnsToHide[i])).setVisible(true);
+        for (int j : columnsToHide) {
+            model.getColumnExt(String.valueOf(j)).setVisible(true);
         }
         // sanity: all visible again
         assertEquals(10, model.getColumnCount());
@@ -282,7 +281,7 @@ public class TableColumnModelTest extends InteractiveTestCase {
     
     /**
      * test sequence of visible columns after hide/move/show.
-     * 
+     * <p>
      * Expected behaviour should be like in Thunderbird.
      *
      */

@@ -68,7 +68,7 @@ public class XListUITest extends InteractiveTestCase {
 
     /**
      * Issue 1152-swingx: JXList re-enable sorting.
-     * 
+     * <p>
      * here: add managing ListSortUI to responsibility of XListUI. 
      */
     @Test
@@ -81,7 +81,7 @@ public class XListUITest extends InteractiveTestCase {
     }
     /**
      * Issue 1152-swingx: JXList re-enable sorting.
-     * 
+     * <p>
      * here: add managing ListSortUI to responsibility of XListUI. 
      */
     @Test

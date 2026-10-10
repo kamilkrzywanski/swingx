@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to exposed known issues of <code>TableColumnExt</code>.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.
@@ -79,7 +79,7 @@ public class TableColumnExtIssues {
     
     /**
      * Try a TableColumn sub with a better-behaved clone - removes the cloned listeners.
-     * 
+     * <p>
      * Doesn't help: the listeners are removed from the original as well. The problem
      * is in core - it doesn't provide a well-behaved clone implementation (in fact, it
      * doesn't provide any implementation). With the private listener registering there
@@ -107,7 +107,7 @@ public class TableColumnExtIssues {
 
     /**
      * Issue #??-swingx: tableColumnExt does not fire propertyChange on resizable.
-     * 
+     * <p>
      * Happens, if property is changed indirectly by changing min/max value
      * to be the same.
      *

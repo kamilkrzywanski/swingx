@@ -13,8 +13,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -26,11 +24,9 @@ public class ImageEditor extends PropertyEditorSupport {
     ImagePicker picker = new ImagePicker();
     /** Creates a new instance of ImageEditor */
     public ImageEditor() {
-        picker.imageView.addPropertyChangeListener("image",new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                image = picker.imageView.getImage();
-                firePropertyChange();
-            }
+        picker.imageView.addPropertyChangeListener("image", propertyChangeEvent -> {
+            image = picker.imageView.getImage();
+            firePropertyChange();
         });
     }
     

@@ -51,7 +51,7 @@ public interface IconValue extends Serializable {
     /**
      * The cell type the icon is used for.
      */
-    public enum IconType {
+    enum IconType {
         
         LEAF,
         
@@ -65,7 +65,7 @@ public interface IconValue extends Serializable {
      * A marker icon used to indicate a null. 
      * 
      */
-    public final static Icon NULL_ICON = new EmptyIcon();
+    Icon NULL_ICON = new EmptyIcon();
     
     
     /**

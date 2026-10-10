@@ -47,8 +47,7 @@ public class Point2DPropertyEditor extends PropertyEditorSupport {
     
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        
-        String originalParam = text;
+
         try {
             Point2D val = (Point2D)PropertyEditorUtil.createValueFromString(
                     text, 2, Point2D.Double.class, double.class);
@@ -56,7 +55,7 @@ public class Point2DPropertyEditor extends PropertyEditorSupport {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [x,y] or [x , y] or [x y]", e);
         }
     }

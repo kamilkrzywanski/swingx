@@ -112,7 +112,7 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  * <i>Note:</i> for full functionality, a DefaultTreeRenderer must be installed
  * as TreeCellRenderer. This is not done by default, because there are
  * unresolved issues when editing. PENDING JW: still? Check!
- * 
+ * <p>
  * <i>Note:</i> to support the highlighting this implementation wraps the
  * TreeCellRenderer set by client code with a DelegatingRenderer which applies
  * the Highlighter after delegating the default configuration to the wrappee. As
@@ -238,7 +238,7 @@ public class JXTree extends JTree {
      * Constructs a <code>JXTree</code> with each element of the specified array
      * as the child of a new root node which is not displayed. By default, this
      * tree defines a leaf node as any node without children.
-     *
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      *
@@ -253,7 +253,7 @@ public class JXTree extends JTree {
      * Constructs a <code>JXTree</code> with each element of the specified
      * Vector as the child of a new root node which is not displayed.
      * By default, this tree defines a leaf node as any node without children.
-     *
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      *
@@ -269,7 +269,7 @@ public class JXTree extends JTree {
      * display with root. Each value-half of the key/value pairs in the HashTable
      * becomes a child of the new root node. By default, the tree defines a leaf
      * node as any node without children.
-     *
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      *
@@ -284,7 +284,7 @@ public class JXTree extends JTree {
      * Constructs a <code>JXTree</code> with the specified TreeNode as its root,
      * which displays the root node. By default, the tree defines a leaf node as
      * any node without children.
-     *
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      *
@@ -299,7 +299,7 @@ public class JXTree extends JTree {
      * Constructs a <code>JXTree</code> with the specified TreeNode as its root,
      * which displays the root node and which decides whether a node is a leaf
      * node in the specified manner.
-     *
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      *
@@ -316,7 +316,7 @@ public class JXTree extends JTree {
     /**
      * Constructs an instance of <code>JXTree</code> which displays the root
      * node -- the tree is created using the specified data model.
-     * 
+     * <p>
      * This version of the constructor simply invokes the super class version
      * with the same arguments.
      * 
@@ -331,7 +331,7 @@ public class JXTree extends JTree {
     /**
      * Instantiates JXTree state which is new compared to super. Installs the
      * Delegating renderer and editor, registers actions and keybindings.
-     * 
+     * <p>
      * This must be called from each constructor.
      */
     private void init() {
@@ -810,7 +810,7 @@ public class JXTree extends JTree {
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
     protected TreeRolloverController<JXTree> createLinkController() {
-        return new TreeRolloverController<JXTree>();
+        return new TreeRolloverController<>();
     }
 
     /**
@@ -931,12 +931,7 @@ public class JXTree extends JTree {
      *         highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
-        return new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                repaint();
-            }
-        };
+        return e -> repaint();
     }
     
     /**
@@ -957,10 +952,10 @@ public class JXTree extends JTree {
     
     /**
      * Sets the Icon to use for the handle of a collapsed node.
-     * 
+     * <p>
      * Note: this will only succeed if the current ui delegate is
      * a BasicTreeUI otherwise it will do nothing.
-     *  
+     * <p>
      * PENDING JW: incomplete api (no getter) and not a bound property.
      * 
      * @param collapsedIcon the Icon to use for the handle of a collapsed node.
@@ -980,7 +975,7 @@ public class JXTree extends JTree {
      * PENDING JW: this (all setXXIcon) is old api pulled up from the JXTreeTable. 
      * Need to review if we really want it - problematic if sharing the same
      * renderer instance across different trees.
-     * 
+     * <p>
      * PENDING JW: incomplete api (no getter) and not a bound property.<p>
      * 
      * @param leafIcon the Icon to use for a leaf node.
@@ -991,10 +986,10 @@ public class JXTree extends JTree {
     
     /**
      * Sets the Icon to use for an open folder node.
-     * 
+     * <p>
      * Note: this will only succeed if current renderer is a 
      * DefaultTreeCellRenderer.
-     * 
+     * <p>
      * PENDING JW: incomplete api (no getter) and not a bound property.
      * 
      * @param openIcon the Icon to use for an open folder node.
@@ -1005,10 +1000,10 @@ public class JXTree extends JTree {
     
     /**
      * Sets the Icon to use for a closed folder node.
-     * 
+     * <p>
      * Note: this will only succeed if current renderer is a 
      * DefaultTreeCellRenderer.
-     * 
+     * <p>
      * PENDING JW: incomplete api (no getter) and not a bound property.
      * 
      * @param closedIcon the Icon to use for a closed folder node.
@@ -1022,7 +1017,7 @@ public class JXTree extends JTree {
      * copied to the renderer on setCellRenderer. <p>
      * 
      * The default value is false.
-     * 
+     * <p>
      * PENDING: should update the current renderer's icons when 
      * setting to true?
      * 
@@ -1192,7 +1187,7 @@ public class JXTree extends JTree {
          * Sets the delegate. If the
          * delegate is null, the default is created via the list's factory method.
          * Updates the folder/leaf icons. 
-         * 
+         * <p>
          * THINK: how to update? always override with this.icons, only
          * if renderer's icons are null, update this icons if they are not,
          * update all if only one is != null.... ??

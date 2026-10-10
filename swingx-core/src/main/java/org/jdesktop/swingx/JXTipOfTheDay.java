@@ -347,11 +347,11 @@ public void updateUI() {
 
   /**
    * Pops up a "Tip of the day" dialog.
-   * 
+   * <p>
    * If <code>choice</code> is not null, the method first checks if
    * {@link ShowOnStartupChoice#isShowingOnStartup()} is true before showing the
    * dialog.
-   * 
+   * <p>
    * Additionally, it saves the state of the "Show tips on startup" checkbox
    * using the given {@link ShowOnStartupChoice} object.
    * 
@@ -369,12 +369,12 @@ public void updateUI() {
 
   /**
    * Pops up a "Tip of the day" dialog.
-   * 
+   * <p>
    * If <code>choice</code> is not null, the method first checks if
    * <code>force</code> is true or if
    * {@link ShowOnStartupChoice#isShowingOnStartup()} is true before showing the
    * dialog.
-   * 
+   * <p>
    * Additionally, it saves the state of the "Show tips on startup" checkbox
    * using the given {@link ShowOnStartupChoice} object.
    * 
@@ -427,7 +427,7 @@ public void updateUI() {
   /**
    * Calls
    * {@link TipOfTheDayUI#createDialog(Component, JXTipOfTheDay.ShowOnStartupChoice)}.
-   * 
+   * <p>
    * This method can be overriden in order to control things such as the
    * placement of the dialog or its title.
    * 
@@ -445,7 +445,7 @@ public void updateUI() {
    * {@link JXTipOfTheDay#showDialog(Component, ShowOnStartupChoice)} to save the
    * "Show tips on startup" choice.
    */
-  public static interface ShowOnStartupChoice {
+  public interface ShowOnStartupChoice {
     
     /**
      * Persists the user choice

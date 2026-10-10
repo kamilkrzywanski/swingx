@@ -27,7 +27,7 @@ import org.jdesktop.beans.BeanInfoSupport;
 
 /**
  * Fix for #951-swingx: JXMonthView looks weird in Netbeans form.
- * 
+ * <p>
  * Applied as provided by hmichel@dev.java.net.
  * 
  */

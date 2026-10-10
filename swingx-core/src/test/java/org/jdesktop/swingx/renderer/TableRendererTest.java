@@ -494,7 +494,7 @@ public class TableRendererTest extends InteractiveTestCase {
     
     /**
      * characterize opaqueness of rendering components.
-     * 
+     * <p>
      * that's useless: the opaque magic only applies if parent != null
      */
     @Test

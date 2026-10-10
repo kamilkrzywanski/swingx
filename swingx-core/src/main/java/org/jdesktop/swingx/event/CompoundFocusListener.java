@@ -6,7 +6,6 @@ package org.jdesktop.swingx.event;
 
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
@@ -159,15 +158,12 @@ public class CompoundFocusListener extends AbstractBean {
      */
     private PropertyChangeListener getManagerListener() {
         if (managerListener == null) {
-            managerListener = new PropertyChangeListener() {
+            managerListener = evt -> {
+                if ("permanentFocusOwner".equals(evt.getPropertyName())) {
+                    permanentFocusOwnerChanged((Component) evt.getNewValue());
+                }
 
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("permanentFocusOwner".equals(evt.getPropertyName())) {
-                        permanentFocusOwnerChanged((Component) evt.getNewValue());
-                    }
-                    
-                }};
+            };
         }
         return managerListener;
     }

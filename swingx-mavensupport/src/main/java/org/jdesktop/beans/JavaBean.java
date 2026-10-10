@@ -19,7 +19,7 @@ public @interface JavaBean {
     @Documented
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.SOURCE)
-    public static @interface Property {
+    @interface Property {
         
     }
     

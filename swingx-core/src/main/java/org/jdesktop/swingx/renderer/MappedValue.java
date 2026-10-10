@@ -28,7 +28,7 @@ import javax.swing.Icon;
  * 
  * Quick hack around #590-swingx: LabelProvider should respect StringValue
  * when formatting (instead of going clever with icons).
- * 
+ * <p>
  * Note: this will change!
  * 
  * @see CheckBoxProvider

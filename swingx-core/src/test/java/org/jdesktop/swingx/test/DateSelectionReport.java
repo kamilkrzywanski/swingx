@@ -26,7 +26,7 @@ public class DateSelectionReport implements DateSelectionListener {
     /**
      * Holds a list of all received DateSelectionEvents.
      */
-    protected List<DateSelectionEvent> events = Collections.synchronizedList(new LinkedList<DateSelectionEvent>());
+    protected List<DateSelectionEvent> events = Collections.synchronizedList(new LinkedList<>());
     
     /**
      * Instantiates a DateSelectionReport.

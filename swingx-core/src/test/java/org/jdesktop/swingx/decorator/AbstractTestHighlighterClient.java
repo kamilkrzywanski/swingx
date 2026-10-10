@@ -131,7 +131,7 @@ public abstract class AbstractTestHighlighterClient {
     public void testSetHighlightersEmptyArray() {
         HighlighterClient client = createHighlighterClient();
         int initialCount = client.getHighlighters().length;
-        client.setHighlighters(new Highlighter[] {});
+        client.setHighlighters();
         assertEquals(initialCount, client.getHighlighters().length);
     }
 
@@ -152,7 +152,7 @@ public abstract class AbstractTestHighlighterClient {
 
     /**
      * Test strict enforcement of not null allowed in setHighlighters for JXTable.
-     * 
+     * <p>
      * Here: null highlighter.
      */
     @Test
@@ -167,7 +167,7 @@ public abstract class AbstractTestHighlighterClient {
 
     /**
      * Test strict enforcement of not null allowed in setHighlighters for JXTable.
-     * 
+     * <p>
      * Here: null array
      */
     @Test
@@ -183,7 +183,7 @@ public abstract class AbstractTestHighlighterClient {
 
     /**
      * Test strict enforcement of not null allowed in setHighlighters for JXTable.
-     * 
+     * <p>
      * Here: null array element.
      */
     @Test
@@ -342,7 +342,7 @@ public abstract class AbstractTestHighlighterClient {
      * <p>
      * 
      */
-    public static interface HighlighterClient {
+    public interface HighlighterClient {
 
         /**
          * Sets the <code>Highlighter</code>s to this client, replacing any old settings.

@@ -75,7 +75,7 @@ public class DefaultSortControllerIssues extends InteractiveTestCase {
     
     /**
      * RowSorter not shareable!
-     * 
+     * <p>
      * Here: remove first row of model - no exception, incorrect view row count
      */
     @Test
@@ -121,7 +121,7 @@ public class DefaultSortControllerIssues extends InteractiveTestCase {
         super.setUp();
         rows = 10;
         model = createAscendingTableModel(rows);
-        sorter = new TableSortController<TableModel>(model);
+        sorter = new TableSortController<>(model);
     }
 
     

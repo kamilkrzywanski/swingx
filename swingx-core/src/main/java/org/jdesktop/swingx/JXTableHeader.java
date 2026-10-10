@@ -263,7 +263,7 @@ public class JXTableHeader extends JTableHeader
      * column has been unsorted before. This is introduced to support
      * feature request #271-swingx. It is effective only if the coupled table
      * is of type JXTable and has full control about its RowSorter's properties.
-     * 
+     * <p>
      * The default value is false. 
      * 
      * @param resortsOnDoubleClick a boolean indicating whether or not the
@@ -485,16 +485,11 @@ public class JXTableHeader extends JTableHeader
      * @return the PropertyChangeListener to register on the owning table.
      */
     protected PropertyChangeListener createTablePropertyChangeListener() {
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("enabled".equals(evt.getPropertyName())) {
-                    updateEnabledFromTable();
-                }
+        return evt -> {
+            if ("enabled".equals(evt.getPropertyName())) {
+                updateEnabledFromTable();
             }
         };
-        return l;
     }
 
 
@@ -526,7 +521,7 @@ public class JXTableHeader extends JTableHeader
 
     /**
      * A MouseListener implementation to support enhanced tableHeader functionality.
-     * 
+     * <p>
      * Supports column "packing" by double click in resize region. Works around
      * core issue #6862170 (must not sort column by click into resize region).
      * <p>
@@ -543,7 +538,7 @@ public class JXTableHeader extends JTableHeader
      * <p>
      * 
      * Supports resort on double click if enabled in the JXTableHeader (Issue #271-swingx). 
-     * 
+     * <p>
      * Is fully effective only if JXTable has control over the row sorter, that is
      * if the row sorter is of type SortController.
      * 
@@ -625,10 +620,7 @@ public class JXTableHeader extends JTableHeader
         }
 
         private boolean canCacheSortColumn(MouseEvent e) {
-            if (hasSortController() && !isInResizeRegion(e) && getResortsOnDoubleClick()) {
-                return true;
-            }
-            return false;
+            return hasSortController() && !isInResizeRegion(e) && getResortsOnDoubleClick();
         }
         
         /**

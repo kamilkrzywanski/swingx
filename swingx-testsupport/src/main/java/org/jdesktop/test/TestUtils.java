@@ -9,10 +9,7 @@
 
 package org.jdesktop.test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +32,7 @@ public final class TestUtils {
             if (clazz.isAssignableFrom(object.getClass())) {
                 found++;
             }
-        };
+        }
         assertEquals( count, found,"unexpected number of elements of type " + clazz);
     }
     
@@ -131,8 +128,8 @@ public final class TestUtils {
                 assertEquals( oldValue, report.getLastOldValue(),"last old value");
             }
             if (verifyArrayItems && newValue != null && newValue.getClass().isArray()) {
-                List l1 = Arrays.asList(newValue);
-                List l2 = Arrays.asList(report.getLastNewValue());
+                List l1 = Collections.singletonList(newValue);
+                List l2 = Collections.singletonList(report.getLastNewValue());
                 assertEquals( l1.size(), l2.size(),"last new value");
                 for (int i = 0; i < l1.size();i++) {
                     assertEquals( l1.get(i), l2.get(i),"last new value");

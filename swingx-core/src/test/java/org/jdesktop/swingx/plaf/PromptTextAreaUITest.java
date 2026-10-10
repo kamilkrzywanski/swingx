@@ -1,7 +1,5 @@
 package org.jdesktop.swingx.plaf;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import javax.swing.JTextArea;
 
 import org.jdesktop.swingx.JXTextArea;

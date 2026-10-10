@@ -5,12 +5,12 @@
 package org.jdesktop.swingx;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -20,7 +20,6 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.DefaultRowSorter;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -28,13 +27,10 @@ import javax.swing.ListModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.RowFilter.Entry;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -84,10 +80,10 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         final JXList list = new JXList(model, true);
         final RowFilter filter = new RowFilters.GeneralFilter() {
 
-            List excludes = Arrays.asList(0);
+            List excludes = Collections.singletonList(0);
             @Override
             protected boolean include(
-                    Entry<? extends Object, ? extends Object> entry,
+                    Entry<?, ?> entry,
                     int index) {
                 return !excludes.contains(entry.getIdentifier());
             }
@@ -125,16 +121,16 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     }
     /**
      * Issue #1261-swingx: list goes blank after setting model and filter.
-     * 
+     * <p> <p>
      * To reproduce:
      * - click on setModel: resets the model and turns on filter (expected)
      * - click on filterOff: clears the list (unexpected - the expected behaviour
      *   is to show all entries
-     * 
+     * <p> <p>
      * Workaround:
      * - click on invalidate to explicitly invalidated the cell size cache 
      *  (should be done automatically) - fixed to now do in ListSortUI.sorterChanged
-     * 
+     * <p> <p>
      * example adjusted from reporter
      */
     public void interactiveRowFilterAfterSetModel() {
@@ -150,9 +146,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
                     @Override
                     public boolean include(
                             Entry<? extends ListModel, ? extends Integer> entry) {
-                        boolean include = entry.getStringValue(entry.getIdentifier())
+                        return entry.getStringValue(entry.getIdentifier())
                                 .toLowerCase().contains("o");
-                        return include;
                     }
 
                 });
@@ -213,26 +208,9 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
      */
     public void interactiveDynamicCellHeight() {
         final JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
-        ListSelectionListener l = new ListSelectionListener() {
-            
-            @Override
-            public void valueChanged(final ListSelectionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        list.invalidateCellSizeCache();
-                    }
-                });
-            }
-            
-        };
+        ListSelectionListener l = e -> SwingUtilities.invokeLater(list::invalidateCellSizeCache);
         list.addListSelectionListener(l);
-        HighlightPredicate selected = new HighlightPredicate() {
-            
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                return adapter.isSelected();
-            }
-        };
+        HighlightPredicate selected = (renderer, adapter) -> adapter.isSelected();
         Highlighter hl = new FontHighlighter(selected, list.getFont().deriveFont(50f));
         list.addHighlighter(hl);
         JXFrame frame = wrapWithScrollingInFrame(list, "big font on focus");
@@ -376,7 +354,7 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     public void interactiveTestRolloverHighlightAndLink() {
         JXList list = new JXList(createListModelWithLinks());
         EditorPaneLinkVisitor editorPaneLinkVisitor = new EditorPaneLinkVisitor();
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(editorPaneLinkVisitor);
+        LinkModelAction<?> action = new LinkModelAction<>(editorPaneLinkVisitor);
         HyperlinkProvider h = new HyperlinkProvider(action, LinkModel.class);
         list.setCellRenderer(new DefaultListRenderer(h));
         list.setRolloverEnabled(true);
@@ -395,7 +373,7 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     protected DefaultListModel createAscendingListModel(int startRow, int count) {
         DefaultListModel l = new DefaultListModel();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(row);
         }
         return l;
     }

@@ -176,7 +176,7 @@ public class HighlighterTest extends InteractiveTestCase {
 
     /**
      * Issue #851-swingx: Highlighter must notify on painter property change.
-     * 
+     * <p>
      * Here: the Highlighter must not fire if the painter is changed during
      * the decoration. Supported in base to ease subclassing and keep
      * backward compatibility
@@ -507,17 +507,11 @@ public class HighlighterTest extends InteractiveTestCase {
     
     @Test
     public void testAlignmentHighlighterConstructorAlignmentInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        new AlignmentHighlighter(SwingConstants.TOP);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> new AlignmentHighlighter(SwingConstants.TOP));}
     
     @Test
     public void testAlignmentHighlighterConstructorAlignmentInvalid2() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        new AlignmentHighlighter(null, SwingConstants.TOP);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> new AlignmentHighlighter(null, SwingConstants.TOP));}
     
     
     @Test
@@ -1074,7 +1068,7 @@ public class HighlighterTest extends InteractiveTestCase {
      * @return
      */
     protected ComponentAdapter createComponentAdapter(final JLabel label, final boolean selected) {
-        ComponentAdapter adapter = new ComponentAdapter(label) {
+        return new ComponentAdapter(label) {
 
             @Override
             public Object getValueAt(int row, int column) {
@@ -1107,7 +1101,7 @@ public class HighlighterTest extends InteractiveTestCase {
             public boolean isEditable() {
                 return false;
             }
-            
+
             @Override
             public boolean isSelected() {
                 return selected;
@@ -1118,13 +1112,12 @@ public class HighlighterTest extends InteractiveTestCase {
                 return null;
             }
 
-            
+
         };
-        return adapter;
     }
  
     private ComponentAdapter createDummyComponentAdapter(JComponent allColored) {
-        ComponentAdapter adapter = new ComponentAdapter(allColored) {
+        return new ComponentAdapter(allColored) {
 
             @Override
             public Object getFilteredValueAt(int row, int column) {
@@ -1162,7 +1155,6 @@ public class HighlighterTest extends InteractiveTestCase {
                 return false;
             }
         };
-        return adapter;
     }
 
 }

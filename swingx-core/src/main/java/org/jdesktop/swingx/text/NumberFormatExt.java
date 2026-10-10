@@ -60,7 +60,7 @@ public class NumberFormatExt extends NumberFormat {
     public StringBuffer format(Object obj, StringBuffer toAppendTo,
             FieldPosition pos) {
         if (obj == null)
-            return new StringBuffer("");
+            return new StringBuffer();
         return childFormat.format(obj, toAppendTo, pos);
     }
 
@@ -70,7 +70,7 @@ public class NumberFormatExt extends NumberFormat {
             pos.setIndex(1); // otherwise Format thinks parse failed
             return null;
         }
-        if (source.trim().equals("")) {
+        if (source.trim().isEmpty()) {
             pos.setIndex(1); // otherwise Format thinks parse failed
             return null;
         }

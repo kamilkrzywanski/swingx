@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ListSelectionIssues {
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * Is it allowed that event.getFirstIndex < 0? This happens in 
      * table.clearLeadAnchor
      *
@@ -75,7 +75,7 @@ public class ListSelectionIssues {
 
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * Is it allowed that event.getFirstIndex < 0? This happens in 
      * table.clearLeadAnchor
      *
@@ -103,11 +103,11 @@ public class ListSelectionIssues {
 
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * behaviour for a single selected and removal of that single selected: 
      * if "last" selected (==lead/anchor) and removed then the
      * selection is empty but lead/anchor are on the new "last" row.
-     * 
+     * <p>
      * behaviour for single selected and removal of larger interval: 
      * anchor/lead moved down by the amount of the range removed.
      * 
@@ -121,16 +121,15 @@ public class ListSelectionIssues {
         assertEquals(selected, viewSelectionModel.getAnchorSelectionIndex());
         assertEquals(selected, viewSelectionModel.getLeadSelectionIndex());
         viewSelectionModel.clearSelection();
-        int anchor = selected;
         assertTrue(viewSelectionModel.isSelectionEmpty());
-        assertEquals(anchor, viewSelectionModel.getAnchorSelectionIndex());
-        assertEquals(anchor, viewSelectionModel.getLeadSelectionIndex());
+        assertEquals(selected, viewSelectionModel.getAnchorSelectionIndex());
+        assertEquals(selected, viewSelectionModel.getLeadSelectionIndex());
         
     }
 
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * Here: select index 5, remove 5..5 -> lead == 4
      *
      */
@@ -142,7 +141,7 @@ public class ListSelectionIssues {
 
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * 
      * Here: select index 5, remove 0..5 -> lead == -1
      */
@@ -154,7 +153,7 @@ public class ListSelectionIssues {
 
     /**
      * sanity: understand DefaultListSelectionModel behaviour.
-     * 
+     * <p>
      * 
      * Here: select 0, remove 0..0 --> lead == 0 (expected -1)
      */

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * "hand test" sandbox restrictions 
  * (here: around Utilities.initNamesAndValue, #353-swingx).
- * 
+ * <p>
  * JW: Need to investigate further. Running the test via the 
  * build test-target lets this TestCase fail. Eclipse only?
  * Setting the securityManager has side-effects on the TestRunner. 

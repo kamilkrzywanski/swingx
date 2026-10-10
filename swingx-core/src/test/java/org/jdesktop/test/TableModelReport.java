@@ -41,10 +41,10 @@ public class TableModelReport implements TableModelListener {
     private static final Logger LOG = Logger.getLogger(TableModelReport.class
             .getName());
     
-    List<TableModelEvent> allEvents = Collections.synchronizedList(new LinkedList<TableModelEvent>());
-    List<TableModelEvent> updateEvents = Collections.synchronizedList(new LinkedList<TableModelEvent>());
-    List<TableModelEvent> insertEvents = Collections.synchronizedList(new LinkedList<TableModelEvent>());
-    List<TableModelEvent> deleteEvents = Collections.synchronizedList(new LinkedList<TableModelEvent>());
+    List<TableModelEvent> allEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TableModelEvent> updateEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TableModelEvent> insertEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TableModelEvent> deleteEvents = Collections.synchronizedList(new LinkedList<>());
     private boolean verbose;
     
     /**
@@ -208,16 +208,14 @@ public class TableModelReport implements TableModelListener {
 
     public static String printEvent(TableModelEvent e) {
         if (e == null) return "null";
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("Type: ");
-        buffer.append(typeStrings[e.getType() + 1]);
-        buffer.append(", firstRow: ");
-        buffer.append(e.getFirstRow());
-        buffer.append(", lastRow: ");
-        buffer.append(e.getLastRow());
-        buffer.append(", column: ");
-        buffer.append(e.getColumn());
-        return buffer.toString();
+        return "Type: " +
+                typeStrings[e.getType() + 1] +
+                ", firstRow: " +
+                e.getFirstRow() +
+                ", lastRow: " +
+                e.getLastRow() +
+                ", column: " +
+                e.getColumn();
     }
     
     private static String[] typeStrings = { "DELETE", "UPDATE", "INSERT" };

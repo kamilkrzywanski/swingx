@@ -21,9 +21,6 @@
  */
 package org.jdesktop.swingx.plaf.basic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -64,13 +61,8 @@ public class BasicErrorPaneUIIssues extends InteractiveTestCase {
         pane.add(showErrorPane);
         final JXFrame frame = showInFrame(showErrorPane, "NPE on closing");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        showErrorPane.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JXErrorPane.showDialog(frame, new ErrorInfo("Title",
-                        "Message", "Details", null, null, null, null));
-            }
-        });
+        showErrorPane.addActionListener(e -> JXErrorPane.showDialog(frame, new ErrorInfo("Title",
+                "Message", "Details", null, null, null, null)));
         addStatusMessage(frame, "1. show error, 2. change laf, 3. close frame - NPE");
         show(frame);
     }

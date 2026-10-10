@@ -69,7 +69,7 @@ public interface ColumnControlPopup extends UIDependent {
      * its <code>selected</code> property bound to a column's
      * <code>visible</code> property, that is toggling the selected will
      * toggle the column's visibility (if the action is enabled).
-     * 
+     * <p>
      * The  <code>Action</code>s <code>name</code> property is bound to 
      * the column's <code>title</code>.
      * 
@@ -90,7 +90,7 @@ public interface ColumnControlPopup extends UIDependent {
     /**
      * Splits and returns a List of actions into sub-lists. 
      */
-    public interface ActionGrouper {
+    interface ActionGrouper {
         <A extends Action> List<List<A>> group(List<A> actions);
     }
     
@@ -99,8 +99,8 @@ public interface ColumnControlPopup extends UIDependent {
      * Implementations of ColumnControlPopup may implement this 
      * if they support grouping of additional action.
      */
-    public interface ActionGroupable {
-        public void setActionGrouper(ActionGrouper grouper);
+    interface ActionGroupable {
+        void setActionGrouper(ActionGrouper grouper);
     }
     
 

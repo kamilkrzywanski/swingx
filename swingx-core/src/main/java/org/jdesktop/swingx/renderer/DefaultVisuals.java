@@ -163,7 +163,7 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
 
     /**
      * Configures min-, max, preferredSize properties of the renderingComponent.
-     * 
+     * <p>
      * Here: set all to null.
      * 
      * @param renderingComponent the component to configure, must not be null

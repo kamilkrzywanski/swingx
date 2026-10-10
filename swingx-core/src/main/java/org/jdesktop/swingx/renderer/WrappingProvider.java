@@ -87,7 +87,7 @@ public class WrappingProvider extends
     /**
      * Instantiates a WrappingProvider with default wrappee configured
      * with the given StringValue. 
-     * 
+     * <p>
      * PENDING: we have a slight semantic glitch compared to super because
      * the given StringValue is <b>not</b> for use in this provider but for use 
      * in the wrappee!

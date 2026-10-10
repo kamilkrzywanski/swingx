@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
@@ -61,7 +60,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
     private static final Logger LOG = Logger
             .getLogger(JXHeaderVisualCheck.class.getName());
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JXHeaderVisualCheck test = new JXHeaderVisualCheck();
         try {
             test.runInteractiveTests();
@@ -122,15 +121,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
 
 		JButton changeFont = new JButton("Font");
 		f.add(changeFont, BorderLayout.SOUTH);
-		changeFont.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						header.setFont(new Font("Tahoma", Font.PLAIN, 18));
-					}
-				});
-			}
-		});
+		changeFont.addActionListener(e -> SwingUtilities.invokeLater(() -> header.setFont(new Font("Tahoma", Font.PLAIN, 18))));
 
 		f.setSize(400, 200);
 		f.setVisible(true);
@@ -139,7 +130,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
     /**
      * Short description in header produces unexpected line wraps in
      * footer.
-     *
+     * <p>
      * Note: the frame is not packed to simulate the appframework
      * context.
      */
@@ -173,7 +164,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
 
     /**
      * Long description in header produces expected line-wrap in footer.
-     *
+     * <p>
      * Note: the frame is not packed to simulate the appframework
      * context.
      */
@@ -250,7 +241,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
 
     /**
      * Test custom title font and color use.
-     *
+     * <p>
      * All values are passed in the constructor.
      */
     public void interactiveCustomTitleFont() {

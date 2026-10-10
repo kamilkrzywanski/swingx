@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -28,24 +26,24 @@ import org.jdesktop.swingx.search.RecentSearches;
 /**
  * A text field with a find icon in which the user enters text that identifies
  * items to search for.
- * 
+ * <p>
  * JXSearchField almost looks and behaves like a native Windows Vista search
  * box, a Mac OS X search field, or a search field like the one used in Mozilla
  * Thunderbird 2.0 - depending on the current look and feel.
- * 
+ * <p>
  * JXSearchField is a text field that contains a find button and a cancel
  * button. The find button normally displays a lens icon appropriate for the
  * current look and feel. The cancel button is used to clear the text and
  * therefore only visible when text is present. It normally displays a 'x' like
  * icon. Text can also be cleared, using the 'Esc' key.
- * 
+ * <p>
  * The position of the find and cancel buttons can be customized by either
  * changing the search fields (text) margin or button margin, or by changing the
  * {@link LayoutStyle}.
- * 
+ * <p>
  * JXSearchField supports two different search modes: {@link SearchMode#INSTANT}
  * and {@link SearchMode#REGULAR}.
- * 
+ * <p>
  * A search can be performed by registering an {@link ActionListener}. The
  * {@link ActionEvent}s command property contains the text to search for. The
  * search should be cancelled, when the command text is empty or null.
@@ -89,9 +87,9 @@ public class JXSearchField extends JXTextField {
 		 * </p>
 		 */
 		MAC
-	};
+	}
 
-	/**
+    /**
 	 * Defines when action events are posted.
 	 */
 	public enum SearchMode {
@@ -119,10 +117,10 @@ public class JXSearchField extends JXTextField {
 		/**
 		 * In INSTANT search mode, an action event is fired, when the user
 		 * presses enter or changes the search text.
-		 * 
+		 * <p>
 		 * The action event is delayed about the number of milliseconds
 		 * specified by {@link JXSearchField#getInstantSearchDelay()}.
-		 * 
+		 * <p>
 		 * No rollover and pressed icon is used for the find button.
 		 */
 		INSTANT
@@ -195,27 +193,18 @@ public class JXSearchField extends JXTextField {
 		});
 
 		// Map specific native properties to general JXSearchField properties.
-		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, new PropertyChangeListener() {
-			@Override
-            public void propertyChange(PropertyChangeEvent evt) {
-				JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
-				firePropertyChange("findPopupMenu", oldPopup, evt.getNewValue());
-			}
-		});
-		addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, new PropertyChangeListener() {
-			@Override
-            public void propertyChange(PropertyChangeEvent evt) {
-				ActionListener oldAction = (ActionListener) evt.getOldValue();
-				firePropertyChange("cancelAction", oldAction, evt.getNewValue());
-			}
-		});
-		addPropertyChangeListener(NativeSearchFieldSupport.FIND_ACTION_PROPERTY, new PropertyChangeListener() {
-			@Override
-            public void propertyChange(PropertyChangeEvent evt) {
-				ActionListener oldAction = (ActionListener) evt.getOldValue();
-				firePropertyChange("findAction", oldAction, evt.getNewValue());
-			}
-		});
+		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, evt -> {
+            JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
+            firePropertyChange("findPopupMenu", oldPopup, evt.getNewValue());
+        });
+		addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, evt -> {
+            ActionListener oldAction = (ActionListener) evt.getOldValue();
+            firePropertyChange("cancelAction", oldAction, evt.getNewValue());
+        });
+		addPropertyChangeListener(NativeSearchFieldSupport.FIND_ACTION_PROPERTY, evt -> {
+            ActionListener oldAction = (ActionListener) evt.getOldValue();
+            firePropertyChange("findAction", oldAction, evt.getNewValue());
+        });
 	}
 
 	/**
@@ -275,7 +264,7 @@ public class JXSearchField extends JXTextField {
 	 * Set the instant search delay in milliseconds. In
 	 * {@link SearchMode#INSTANT}, when the user changes the text, an action
 	 * event will be fired after the specified instant search delay.
-	 * 
+	 * <p>
 	 * It is recommended to use a instant search delay to avoid the firing of
 	 * unnecessary events. For example when the user replaces the whole text
 	 * with a different text the search fields underlying {@link Document}
@@ -370,7 +359,7 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns the cancel button.
-	 * 
+	 * <p>
 	 * Calls {@link #createCancelButton()} to create the cancel button and
 	 * registers an {@link ActionListener} that delegates actions to the
 	 * {@link ActionListener} returned by {@link #getCancelAction()}, if
@@ -381,28 +370,22 @@ public class JXSearchField extends JXTextField {
 	public final JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = createCancelButton();
-			cancelButton.addActionListener(new ActionListener() {
-				@Override
-                public void actionPerformed(ActionEvent e) {
-					getCancelAction().actionPerformed(e);
-				}
-			});
+			cancelButton.addActionListener(e -> getCancelAction().actionPerformed(e));
 		}
 		return cancelButton;
 	}
 
 	/**
 	 * Creates and returns the cancel button.
-	 * 
+	 * <p>
 	 * Override to use a custom cancel button.
 	 * 
 	 * @see #getCancelButton()
 	 * @return the cancel button
 	 */
 	protected JButton createCancelButton() {
-		BuddyButton btn = new BuddyButton();
 
-		return btn;
+        return new BuddyButton();
 	}
 
 	/**
@@ -432,7 +415,7 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns the find button.
-	 * 
+	 * <p>
 	 * Calls {@link #createFindButton()} to create the find button and registers
 	 * an {@link ActionListener} that delegates actions to the
 	 * {@link ActionListener} returned by {@link #getFindAction()}, if needed.
@@ -442,12 +425,7 @@ public class JXSearchField extends JXTextField {
 	public final JButton getFindButton() {
 		if (findButton == null) {
 			findButton = createFindButton();
-			findButton.addActionListener(new ActionListener() {
-				@Override
-                public void actionPerformed(ActionEvent e) {
-					getFindAction().actionPerformed(e);
-				}
-			});
+			findButton.addActionListener(e -> getFindAction().actionPerformed(e));
 		}
 		return findButton;
 	}
@@ -455,22 +433,21 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Creates and returns the find button. The buttons action is set to the
 	 * action returned by {@link #getSearchAction()}.
-	 * 
+	 * <p>
 	 * Override to use a custom find button.
 	 * 
 	 * @see #getFindButton()
 	 * @return the find button
 	 */
 	protected JButton createFindButton() {
-		BuddyButton btn = new BuddyButton();
 
-		return btn;
+        return new BuddyButton();
 	}
 
 	/**
 	 * Returns the popup button. If a find popup menu is set, it will be
 	 * displayed when this button is clicked.
-	 * 
+	 * <p>
 	 * This button will only be visible, if {@link #isUseSeperatePopupButton()}
 	 * returns <code>true</code>. Otherwise the popup menu will be displayed
 	 * when the find button is clicked.
@@ -572,11 +549,11 @@ public class JXSearchField extends JXTextField {
 	 * {@link #isUseSeperatePopupButton()} returns <code>false</code>, the
 	 * popup button will be displayed instead of the find button. Otherwise the
 	 * popup button will be displayed in addition to the find button.
-	 * 
+	 * <p>
 	 * The find popup menu is managed using {@link NativeSearchFieldSupport} to
 	 * achieve compatibility with the native search field support provided by
 	 * the Mac Look And Feel since Mac OS 10.5.
-	 * 
+	 * <p>
 	 * If a recent searches save key has been set and therefore a recent
 	 * searches popup menu is installed, this method does nothing. You must
 	 * first remove the recent searches save key, by calling
@@ -617,7 +594,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	private boolean isValidRecentSearchesKey(String key) {
-		return key != null && key.length() > 0;
+		return key != null && !key.isEmpty();
 	}
 
 	/**
@@ -674,19 +651,14 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Returns the {@link Timer} used to delay the firing of action events in
 	 * instant search mode when the user enters text.
-	 * 
+	 * <p>
 	 * This timer calls {@link #postActionEvent()}.
 	 * 
 	 * @return the {@link Timer} used to delay the firing of action events
 	 */
 	public Timer getInstantSearchTimer() {
 		if (instantSearchTimer == null) {
-			instantSearchTimer = new Timer(0, new ActionListener() {
-				@Override
-                public void actionPerformed(ActionEvent e) {
-					postActionEvent();
-				}
-			});
+			instantSearchTimer = new Timer(0, e -> postActionEvent());
 			instantSearchTimer.setRepeats(false);
 		}
 		return instantSearchTimer;
@@ -695,7 +667,7 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Returns <code>true</code> if this search field is the focus owner or
 	 * the find popup menu is visible.
-	 * 
+	 * <p>
 	 * This is a hack to make the search field paint the focus indicator in Mac
 	 * OS X Aqua when the find popup menu is visible.
 	 * 
@@ -758,7 +730,7 @@ public class JXSearchField extends JXTextField {
 	public void customSetUIProperty(String propertyName, Object value, boolean override) {
 		if (propertyName == "useSeperatePopupButton") {
 			if (!useSeperatePopupButtonSet || override) {
-				setUseSeperatePopupButton(((Boolean) value).booleanValue());
+				setUseSeperatePopupButton((Boolean) value);
 				useSeperatePopupButtonSet = false;
 			}
 		} else if (propertyName == "layoutStyle") {
@@ -779,7 +751,7 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Overriden to prevent any delayed {@link ActionEvent}s from being sent
 	 * after posting this action.
-	 * 
+	 * <p>
 	 * For example, if the current {@link SearchMode} is
 	 * {@link SearchMode#INSTANT} and the instant search delay is greater 0. The
 	 * user enters some text and presses enter. This method will be invoked
@@ -831,7 +803,7 @@ public class JXSearchField extends JXTextField {
 		/**
 		 * In regular search mode posts an action event if the search field is
 		 * the focus owner.
-		 * 
+		 * <p>
 		 * Also requests the focus for the search field and selects the whole
 		 * text.
 		 */

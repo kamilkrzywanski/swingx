@@ -36,11 +36,11 @@ import javax.swing.tree.TreeModel;
  */
 public class TreeModelReport implements TreeModelListener {
 
-    List<TreeModelEvent> allEvents = Collections.synchronizedList(new LinkedList<TreeModelEvent>());
-    List<TreeModelEvent> updateEvents = Collections.synchronizedList(new LinkedList<TreeModelEvent>());
-    List<TreeModelEvent> insertEvents = Collections.synchronizedList(new LinkedList<TreeModelEvent>());
-    List<TreeModelEvent> deleteEvents = Collections.synchronizedList(new LinkedList<TreeModelEvent>());
-    List<TreeModelEvent> structureEvents = Collections.synchronizedList(new LinkedList<TreeModelEvent>());
+    List<TreeModelEvent> allEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TreeModelEvent> updateEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TreeModelEvent> insertEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TreeModelEvent> deleteEvents = Collections.synchronizedList(new LinkedList<>());
+    List<TreeModelEvent> structureEvents = Collections.synchronizedList(new LinkedList<>());
     
     /**
      * Instantiates a report.

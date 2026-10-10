@@ -119,7 +119,7 @@ public final class ListSortUI {
 
     /**
      * Called after notification from selectionModel.
-     * 
+     * <p>
      * Invoked when the selection, on the view, has changed.
      */
     public void viewSelectionChanged(ListSelectionEvent e) {
@@ -450,17 +450,11 @@ public final class ListSortUI {
      * @return rowSorterListener to install on sorter.
      */
     protected RowSorterListener createRowSorterListener() {
-        RowSorterListener l = new RowSorterListener() {
-
-            @Override
-            public void sorterChanged(RowSorterEvent e) {
-                if (e.getType() == RowSorterEvent.Type.SORTED) {
-                    sortedChanged(e);
-                }
+        return e -> {
+            if (e.getType() == RowSorterEvent.Type.SORTED) {
+                sortedChanged(e);
             }
-            
         };
-        return l;
     }
     /**
      * ModelChange is used when sorting to restore state, it corresponds

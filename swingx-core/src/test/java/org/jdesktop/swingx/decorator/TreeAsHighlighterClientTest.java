@@ -39,7 +39,7 @@ public class TreeAsHighlighterClientTest extends AbstractTestHighlighterClient {
     }
 
     private HighlighterClient createHighlighterClient(final JXTree table) {
-        HighlighterClient client = new HighlighterClient() {
+        return new HighlighterClient() {
 
             public void addHighlighter(Highlighter highlighter) {
                 table.addHighlighter(highlighter);
@@ -68,9 +68,8 @@ public class TreeAsHighlighterClientTest extends AbstractTestHighlighterClient {
             public void updateUI() {
                 table.updateUI();
             }
-            
+
         };
-        return client;
     }
 
 }

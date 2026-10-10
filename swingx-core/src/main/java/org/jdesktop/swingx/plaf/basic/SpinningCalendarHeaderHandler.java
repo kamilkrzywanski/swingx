@@ -3,7 +3,6 @@ package org.jdesktop.swingx.plaf.basic;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -210,16 +209,11 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
      */
     private PropertyChangeListener getPropertyChangeListener() {
         if (monthPropertyListener == null) {
-            monthPropertyListener = new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("firstDisplayedDay".equals(evt.getPropertyName())) {
-                        firstDisplayedDayChanged();
-                    } else if ("locale".equals(evt.getPropertyName())) {
-                        localeChanged();
-                    }
-
+            monthPropertyListener = evt -> {
+                if ("firstDisplayedDay".equals(evt.getPropertyName())) {
+                    firstDisplayedDayChanged();
+                } else if ("locale".equals(evt.getPropertyName())) {
+                    localeChanged();
                 }
 
             };
@@ -231,7 +225,7 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
 
     /**
      * Returns the current year of the monthView. Callback for spinner model.
-     * 
+     * <p>
      * return the current year of the monthView.
      */
     private int getYear() {
@@ -244,7 +238,7 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
      * <p>
      * 
      * PENDING JW: check against lower bound.
-     * 
+     * <p>
      * return the previous year of the monthView.
      */
     private int getPreviousYear() {
@@ -258,7 +252,7 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
      * <p>
      * 
      * PENDING JW: check against upper bound.
-     * 
+     * <p>
      * return the next year of the monthView.
      */
     private int getNextYear() {
@@ -275,7 +269,7 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
      * @return a boolean indicating if a change actually happened.
      */
     private boolean setYear(Object value) {
-        int year = ((Integer) value).intValue();
+        int year = (Integer) value;
         Calendar cal = monthView.getCalendar();
         if (cal.get(Calendar.YEAR) == year)
             return false;
@@ -361,7 +355,7 @@ public class SpinningCalendarHeaderHandler extends CalendarHeaderHandler {
 
         /**
          * Sets the focusable property of the spinner's editor's text field.
-         * 
+         * <p>
          * The default value is false.
          * 
          * @param focusable the focusable property of the spinner's editor.

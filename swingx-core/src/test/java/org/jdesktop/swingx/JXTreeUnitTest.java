@@ -71,7 +71,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #1231-swingx: tree cell renderer size problems.
-     * 
+     * <p>
      * Cache not invalidated on setCellRenderer due to not firing a 
      * propertyChange (it's wrapped). Problem or not is LAF dependent ;-)
      * The not-firing is clearly a bug.
@@ -257,7 +257,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #817-swingx: Delegating renderer must create list's default.
      * Delegating has default from list initially, here: default default.
-     * 
+     * <p>
      * Note: this test has to be changed once we switch to default to DefaultTreeRenderer.
      */
     @Test
@@ -320,23 +320,19 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on JXTable.
      */
     @Test
     public void testGetStringForRow() {
         JXTree tree = new JXTree(AncientSwingTeam.createNamedColorTreeModel());
         tree.expandAll();
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(sv));
         Object value =((DefaultMutableTreeNode) tree.getPathForRow(2).getLastPathComponent()).getUserObject();
@@ -346,23 +342,19 @@ public class JXTreeUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on JXTable.
      */
     @Test
     public void testGetStringForPath() {
         JXTree tree = new JXTree(AncientSwingTeam.createNamedColorTreeModel());
         tree.expandAll();
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(sv));
         Object value =((DefaultMutableTreeNode) tree.getPathForRow(2).getLastPathComponent()).getUserObject();
@@ -372,7 +364,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize tree behaviour.
-     * 
+     * <p>
      * Here: icon on renderer must be respected if overwrite is false.
      */
     @Test
@@ -387,7 +379,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize tree behaviour.
-     * 
+     * <p>
      * Here: icon on renderer must be overwritten if overwrite is true.
      */
     @Test
@@ -407,7 +399,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize tree behaviour.
-     * 
+     * <p>
      * Here: set icon on tree is passed on to renderer always.
      */
     @Test
@@ -423,7 +415,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize tree behaviour.
-     * 
+     * <p>
      * Here: set icon on tree is passed on to renderer always.
      */
     @Test
@@ -440,7 +432,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize tree behaviour.
-     * 
+     * <p>
      * Here: default overwriteOnRenderer is false.
      */
     @Test
@@ -568,8 +560,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
         TreePath path = tree.getPathForRow(2);
         tree.startEditingAtPath(path);
         DefaultTreeCellEditor cellEditor = (DefaultTreeCellEditor) tree.getCellEditor();
-        int listenerCount = cellEditor.getCellEditorListeners().length;
-        return listenerCount;
+        return cellEditor.getCellEditorListeners().length;
     }
     
 
@@ -694,7 +685,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Issue #221-swingx: actionMap not initialized in JXTreeNode constructor.
      * Issue #231-swingx: icons lost in editor, enhanced default editor not installed.
-     * 
+     * <p>
      * PENDING: test all constructors!
      *
      */
@@ -702,8 +693,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testInitInConstructors() {
         assertXTreeInit(new JXTree());
         assertXTreeInit(new JXTree(new Object[] {}));
-        assertXTreeInit(new JXTree(new Vector<Object>()));
-        assertXTreeInit(new JXTree(new Hashtable<Object, Object>()));
+        assertXTreeInit(new JXTree(new Vector<>()));
+        assertXTreeInit(new JXTree(new Hashtable<>()));
         assertXTreeInit(new JXTree(new DefaultMutableTreeNode("dummy"), false));
         assertXTreeInit(new JXTree(new DefaultMutableTreeNode("dummy")));
         assertXTreeInit(new JXTree(new DefaultTreeModel(new DefaultMutableTreeNode("dummy"))));
@@ -744,18 +735,13 @@ public class JXTreeUnitTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
     
 

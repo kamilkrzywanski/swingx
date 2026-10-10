@@ -66,7 +66,7 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     /**
      * visualize datepicker editing of the hierarchical column, both
      * in a tree and a xTree switching CO.
-     *
+     * <p>
      * standard editor
      */
     public void interactiveTreeEditingRToLDatePicker() {
@@ -88,8 +88,7 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     private TreeModel createTreeModelWithDates() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Date());
         root.add(new DefaultMutableTreeNode(new Date()));
-        TreeModel model = new DefaultTreeModel(root);
-        return model;
+        return new DefaultTreeModel(root);
     }
 
     /**
@@ -114,7 +113,7 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     /**
      * Issue ??-swingx: picker cell editor popup commit/cancel 
      * transfers focus out-off the table (1.5)
-     * 
+     * <p>
      * Looks like a core issue - editable combo misbehaves as well.
      * Here we use a JXTable.
      */
@@ -141,7 +140,7 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     /**
      * Issue ??-swingx: picker cell editor popup commit/cancel 
      * transfers focus out-off the tree (1.5)
-     * 
+     * <p>
      * 
      * a) commit by keyboard - commit okay but focus moved where?
      * b) click into popup to commit - did not commit. 
@@ -150,11 +149,11 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
      * c) click on month navigation - editing canceled fixed. 
      * d) click in month navigation, then cancel by keyboard - 
      *    focus where?
-     *    
+     * <p>
      * focus handling is done in BasicTreeUI.completeEditing - and
      * does not cope with popup. All termination is done in uidelegate,
      * no central method in the tree called.
-     *      
+     * <p>
      * independent on stopCellEditing flag - semantic in tree is
      * different from semantic in table (first is "how" to terminate, 
      * second is "if" to terminate)  
@@ -183,7 +182,7 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     /**
      * Issue ??-swingx: picker cell editor popup commit/cancel 
      * transfers focus out-off the table (1.5)
-     * 
+     * <p>
      * Looks like a core issue - editable combo misbehaves as well.
      * Here we use a core table.
      */

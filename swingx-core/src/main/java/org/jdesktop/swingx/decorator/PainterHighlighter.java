@@ -21,7 +21,6 @@
 package org.jdesktop.swingx.decorator;
 
 import java.awt.Component;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.jdesktop.swingx.painter.AbstractPainter;
@@ -198,16 +197,10 @@ public class PainterHighlighter extends AbstractHighlighter {
      *   of the painter.
      */
     protected PropertyChangeListener createPainterListener() {
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (isAdjusting) return;
-                fireStateChanged();
-            }
-            
+        return evt -> {
+            if (isAdjusting) return;
+            fireStateChanged();
         };
-        return l;
     }
     
     /**

@@ -38,7 +38,7 @@ public abstract class MonthViewUI extends ComponentUI {
      * Returns the Date at the given location. May be null if the
      * coordinates don't map to a day in the month which contains the 
      * coordinates. Specifically: hitting leading/trailing dates returns null.
-     * 
+     * <p>
      * Mapping pixel to calendar day.
      *
      * @param x the x position of the location in pixel

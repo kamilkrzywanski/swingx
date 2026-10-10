@@ -204,7 +204,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
     @Test
     public void testSetHighlightersEmptyArray() {
         CompoundHighlighter support = new CompoundHighlighter();
-        support.setHighlighters(new Highlighter[] {});
+        support.setHighlighters();
         assertEquals(0, support.getHighlighters().length);
         assertSame(CompoundHighlighter.EMPTY_HIGHLIGHTERS, support.getHighlighters());
     }
@@ -355,8 +355,8 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
 
         hls = pipeline.getHighlighters();
         assertTrue(hls.length == 3);
-        for (int i = 0; i < hls.length; i++) {
-            assertTrue(hls[i] != hl);
+        for (Highlighter value : hls) {
+            assertTrue(value != hl);
         }
 
         // remove another highligher
@@ -364,8 +364,8 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
 
         hls = pipeline.getHighlighters();
         assertTrue(hls.length == 2);
-        for (int i = 0; i < hls.length; i++) {
-            assertTrue(hls[i] != hl2);
+        for (Highlighter highlighter : hls) {
+            assertTrue(highlighter != hl2);
         }
     }
 
@@ -479,7 +479,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
      * @return
      */
     protected ComponentAdapter createComponentAdapter(final JLabel label, final boolean selected) {
-        ComponentAdapter adapter = new ComponentAdapter(label) {
+        return new ComponentAdapter(label) {
 
             @Override
             public Object getValueAt(int row, int column) {
@@ -495,7 +495,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
             public Object getValue() {
                 return getValueAt(row, column);
             }
-            
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 // TODO Auto-generated method stub
@@ -512,7 +512,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
             public boolean isEditable() {
                 return false;
             }
-            
+
             @Override
             public boolean isSelected() {
                 return selected;
@@ -523,9 +523,8 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
                 return null;
             }
 
-            
+
         };
-        return adapter;
     }
  
 

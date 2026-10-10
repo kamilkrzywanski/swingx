@@ -29,7 +29,7 @@ import java.awt.LayoutManager;
 /**
  * C&p'ed from swingx: keeps pref size of components. 
  * Used for quick comparing sizes.
- * 
+ * <p>
  * Organizes components in a vertical layout.
  * 
  * @author fred

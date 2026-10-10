@@ -48,15 +48,15 @@ import org.jdesktop.swingx.plaf.basic.BasicErrorPaneUI;
 /**
  * 
  * Ok, the Title becomes the first line in the error dialog
- * 
+ * <p>
  * The text immediately follows. Then come the "Details". This is a 
  * toggle button with an icon and text but no border and no background. The icon
  * looks like a tree toggle (arrow right or down).
- * 
+ * <p>
  * There is then more optional text. The best way to support this is to look
  * in the client properties of the JXErrorPane for any "sub text". Ideally this
  * sub text would be part of the ErrorInfo. Maybe I should just add it there?
- * 
+ * <p>
  * Finally come the buttons. If there is no report action and the error < fatal,
  * the shown ok button should say "close". Otherwise, if there is no report action
  * but the error >= fatal, it should say "Exit Application". If there is a report
@@ -64,7 +64,7 @@ import org.jdesktop.swingx.plaf.basic.BasicErrorPaneUI;
  * the report button. If there is a report action and the error >= fatal, then
  * one button should say "Exit", and the report button should say
  * "Send Report and Exit".
- * 
+ * <p>
  * Whenever either button is clicked (ok button or report button), the "close dialog"
  * procedure should occur.
  *

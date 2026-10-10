@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
  * <li> empty - true if there's no searchString
  * <li> incremental - a hint to clients to react immediately
  *      to pattern changes.
- * 
+ * <p>
  * </ul>
  * 
  * Relevant in find contexts:
@@ -261,7 +261,7 @@ public class PatternModel {
      */
 
     private boolean isEmpty(String text) {
-        return (text == null) || (text.length() == 0);
+        return (text == null) || (text.isEmpty());
     }
 
     private void updatePattern(String regEx) {
@@ -385,7 +385,7 @@ public class PatternModel {
 
         private List<String> createAndInitRules() {
             if (!supportsRules()) return Collections.emptyList();
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add(MATCH_RULE_CONTAINS);
             list.add(MATCH_RULE_EQUALS);
             list.add(MATCH_RULE_STARTSWITH);
@@ -401,7 +401,7 @@ public class PatternModel {
  
     /**
      * Support for anchored input.
-     * 
+     * <p>
      * PENDING: NOT TESTED - simply moved!
      * Need to define requirements...
      * 
@@ -416,7 +416,7 @@ public class PatternModel {
         @Override
         public String createRegEx(String searchExp) {
           if (isAutoDetect()) {
-              StringBuffer buf = new StringBuffer(searchExp.length() + 4);
+              StringBuilder buf = new StringBuilder(searchExp.length() + 4);
               if (!hasStartAnchor(searchExp)) {
                   if (isStartAnchored()) {
                       buf.append("^");
@@ -438,7 +438,7 @@ public class PatternModel {
         }
 
         private boolean hasStartAnchor(String str) {
-            return str.startsWith("^");
+            return !str.isEmpty() && str.charAt(0) == '^';
         }
 
         private boolean hasEndAnchor(String str) {
@@ -530,7 +530,7 @@ public class PatternModel {
     /**
      * Set the strategy to use for compiling a pattern from
      * rawtext.
-     * 
+     * <p>
      * NOTE: This is imcomplete (in fact it wasn't implemented at 
      * all) - only recognizes REGEX_ANCHORED, every other value
      * results in REGEX_MATCH_RULES.
@@ -549,7 +549,7 @@ public class PatternModel {
     /**
      * Creates and sets the strategy to use for compiling a pattern from
      * rawtext.
-     * 
+     * <p>
      * NOTE: This is imcomplete (in fact it wasn't implemented at 
      * all) - only recognizes REGEX_ANCHORED, every other value
      * results in REGEX_MATCH_RULES.

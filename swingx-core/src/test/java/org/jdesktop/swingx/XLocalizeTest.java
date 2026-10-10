@@ -24,7 +24,6 @@ package org.jdesktop.swingx;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -44,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to expose known issues around <code>Locale</code> setting.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.
@@ -94,7 +93,7 @@ public class XLocalizeTest extends InteractiveTestCase {
 
     /**
      * Issue #1394-swingx: missing properties for _en
-     * 
+     * <p>
      * fix - added empty properties file named swingx_en
      */
     @Test
@@ -105,7 +104,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     
     /**
      * Issue #1394-swingx: missing properties for _en
-     * 
+     * <p>
      * fix - added empty properties file named TipOfTheDay_en
      */
     @Test
@@ -118,7 +117,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     
     /**
      * Issue #1394-swingx: missing properties for _en
-     * 
+     * <p>
      * fix - added empty properties file named LoginPane_en
      */
     @Test
@@ -130,7 +129,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     
     /**
      * Issue #1394-swingx: missing properties for _en
-     * 
+     * <p>
      * fix - added empty properties file named ErrorPane_en
      */
     @Test
@@ -143,7 +142,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     
     /**
      * Issue #1394-swingx: missing properties for _en
-     * 
+     * <p>
      * fix - added empty properties file named SearchField_en
      */
     @Test
@@ -157,13 +156,13 @@ public class XLocalizeTest extends InteractiveTestCase {
     /**
      * test correct PropertyChangeNotification: must fire after
      * all internal state is set ... dooohhh.
-     * 
+     * <p>
      * Here: test JXDialog.
      */
     /**
      * test correct PropertyChangeNotification: must fire after
      * all internal state is set ...
-     * 
+     * <p>
      * Here: test FindPanel
      */
     @Test
@@ -187,22 +186,19 @@ public class XLocalizeTest extends InteractiveTestCase {
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
         final Locale alternative = getAlternativeLocale(dialog);
-        PropertyChangeListener report = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                // sanity
-                // wrong assumption: find widgets name is changed as well
+        PropertyChangeListener report = evt -> {
+            // sanity
+            // wrong assumption: find widgets name is changed as well
 //                assertTrue("locale property changed, instead: " + evt.getPropertyName(), "locale".equals(evt.getPropertyName()));
-                if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + titleKey,
-                        alternative);
-                String altName = dialog.getTitle();
-                assertEquals( 
-                        altUIValue, altName,"name must be updated before fire propertyChange");
+            if (!"locale".equals(evt.getPropertyName())) return;
+            String altUIValue = UIManagerExt.getString(prefix + titleKey,
+                    alternative);
+            String altName = dialog.getTitle();
+            assertEquals(
+                    altUIValue, altName,"name must be updated before fire propertyChange");
 
-                
-            }};
+
+        };
         dialog.addPropertyChangeListener(report);
         PropertyChangeReport r = new PropertyChangeReport();
         dialog.addPropertyChangeListener(r);
@@ -215,7 +211,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     /**
      * test correct PropertyChangeNotification: must fire after
      * all internal state is set ... dooohhh.
-     * 
+     * <p>
      * Here: test FindBar.
      */
     @Test
@@ -235,21 +231,18 @@ public class XLocalizeTest extends InteractiveTestCase {
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
         final Locale alternative = getAlternativeLocale(findPanel);
-        PropertyChangeListener report = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                // sanity
+        PropertyChangeListener report = evt -> {
+            // sanity
 //                assertTrue("locale property changed", "locale".equals(evt.getPropertyName()));
-                if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
-                String altName = (String) action.getValue(Action.NAME);
-                assertEquals( 
-                        altUIValue, altName,"name must be updated before fire propertyChange");
+            if (!"locale".equals(evt.getPropertyName())) return;
+            String altUIValue = UIManagerExt.getString(prefix + actionCommand,
+                    alternative);
+            String altName = (String) action.getValue(Action.NAME);
+            assertEquals(
+                    altUIValue, altName,"name must be updated before fire propertyChange");
 
-                
-            }};
+
+        };
             PropertyChangeReport r = new PropertyChangeReport();
             findPanel.addPropertyChangeListener(r);
             findPanel.setLocale(alternative);
@@ -260,7 +253,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     /**
      * test correct PropertyChangeNotification: must fire after
      * all internal state is set ...
-     * 
+     * <p>
      * Here: test FindPanel
      */
     @Test
@@ -280,22 +273,19 @@ public class XLocalizeTest extends InteractiveTestCase {
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
         final Locale alternative = getAlternativeLocale(findPanel);
-        PropertyChangeListener report = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                // sanity
-                // wrong assumption: find widgets name is changed as well
+        PropertyChangeListener report = evt -> {
+            // sanity
+            // wrong assumption: find widgets name is changed as well
 //                assertTrue("locale property changed, instead: " + evt.getPropertyName(), "locale".equals(evt.getPropertyName()));
-                if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
-                String altName = (String) action.getValue(Action.NAME);
-                assertEquals( 
-                        altUIValue, altName,"name must be updated before fire propertyChange");
+            if (!"locale".equals(evt.getPropertyName())) return;
+            String altUIValue = UIManagerExt.getString(prefix + actionCommand,
+                    alternative);
+            String altName = (String) action.getValue(Action.NAME);
+            assertEquals(
+                    altUIValue, altName,"name must be updated before fire propertyChange");
 
-                
-            }};
+
+        };
         findPanel.addPropertyChangeListener(report);
         PropertyChangeReport r = new PropertyChangeReport();
         findPanel.addPropertyChangeListener(r);
@@ -331,7 +321,7 @@ public class XLocalizeTest extends InteractiveTestCase {
     /**
      * test correct PropertyChangeNotification: must fire after
      * all internal state is set ... 
-     * 
+     * <p>
      * Here: test JXTable.
      */
     @Test
@@ -348,20 +338,17 @@ public class XLocalizeTest extends InteractiveTestCase {
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
         final Locale alternative = getAlternativeLocale(table);
-        PropertyChangeListener report = new PropertyChangeListener() {
+        PropertyChangeListener report = evt -> {
+            // sanity
+            assertTrue( "locale".equals(evt.getPropertyName()),"locale property changed");
+            String altUIValue = UIManagerExt.getString(prefix + actionCommand,
+                    alternative);
+            String altName = (String) action.getValue(Action.NAME);
+            assertEquals(
+                    altUIValue, altName,"name must be updated before fire propertyChange");
 
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                // sanity
-                assertTrue( "locale".equals(evt.getPropertyName()),"locale property changed");
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
-                String altName = (String) action.getValue(Action.NAME);
-                assertEquals( 
-                        altUIValue, altName,"name must be updated before fire propertyChange");
 
-                
-            }};
+        };
         table.addPropertyChangeListener(report);
         table.setLocale(alternative);
     }

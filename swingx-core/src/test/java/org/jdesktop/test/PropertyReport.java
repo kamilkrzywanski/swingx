@@ -10,7 +10,7 @@ import org.jdesktop.beans.AbstractBean;
 
 /**
  * Subclass as quick-fix for dependency issue.
- * 
+ * <p>
  * PENDING JW: need better solution ... 
  *  PropertyChangeReport resides in swingx-testsupport which is stand-alone.
  *  Convenience constructor needs AbstractBean which is in swingx-common.

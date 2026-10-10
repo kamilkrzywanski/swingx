@@ -44,7 +44,7 @@ import javax.swing.event.ChangeListener;
  * only attributes the renderer guarantees to reset on every call are safe to
  * alter. For SwingX renderering support these are listed in
  * <code>ComponentProvider</code>.
- * 
+ * <p>
  * 
  * Implementations supporting mutable internal state which effects the
  * decoration must notify its listeners about the change. Typically, the

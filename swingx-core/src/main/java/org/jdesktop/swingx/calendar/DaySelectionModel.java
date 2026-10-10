@@ -59,8 +59,8 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
         super(locale);
         this.listenerMap = new EventListenerMap();
         this.selectionMode = SelectionMode.SINGLE_SELECTION;
-        this.selectedDates = new TreeSet<Date>();
-        this.unselectableDates = new TreeSet<Date>();
+        this.selectedDates = new TreeSet<>();
+        this.unselectableDates = new TreeSet<>();
         
     }
     /**
@@ -163,7 +163,7 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
         endDate = startOfDay(endDate);
         long startDateMs = startDate.getTime();
         long endDateMs = endDate.getTime();
-        ArrayList<Date> datesToRemove = new ArrayList<Date>();
+        ArrayList<Date> datesToRemove = new ArrayList<>();
         for (Date selectedDate : selectedDates) {
             long selectedDateMs = selectedDate.getTime();
             if (selectedDateMs >= startDateMs && selectedDateMs <= endDateMs) {
@@ -172,7 +172,7 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
         }
 
         if (!datesToRemove.isEmpty()) {
-            selectedDates.removeAll(datesToRemove);
+            datesToRemove.forEach(selectedDates::remove);
             fireValueChanged(EventType.DATES_REMOVED);
         }
     }
@@ -196,7 +196,7 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
      */
     @Override
     public SortedSet<Date> getSelection() {
-        return new TreeSet<Date>(selectedDates);
+        return new TreeSet<>(selectedDates);
     }
 
     /**
@@ -237,7 +237,7 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
      */
     @Override
     public SortedSet<Date> getUnselectableDates() {
-        return new TreeSet<Date>(unselectableDates);
+        return new TreeSet<>(unselectableDates);
     }
 
     /**

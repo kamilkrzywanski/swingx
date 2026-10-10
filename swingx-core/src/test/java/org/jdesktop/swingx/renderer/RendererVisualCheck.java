@@ -34,7 +34,6 @@ import java.awt.event.MouseEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyDescriptor;
 import java.io.File;
@@ -121,7 +120,6 @@ import org.jdesktop.swingx.hyperlink.EditorPaneLinkVisitor;
 import org.jdesktop.swingx.hyperlink.HyperlinkAction;
 import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.hyperlink.LinkModelAction;
-import org.jdesktop.swingx.painter.BusyPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
@@ -179,7 +177,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * Issue swingx-1514: icon background always highlighted. <p>
      * Actually a problem introduced by #3789 version of JXPanel
      * Not special to the hierarchical nature, same for list
-     * 
+     * <p>
      * Not fixed (1.6.5) for Nimbus (and potentially other synth-based lafs)
      * 
      * @see org.jdesktop.swingx.renderer.RendererVisualCheck#interactiveIconTextAlignmentAndExtendsOpacity
@@ -197,8 +195,8 @@ public class RendererVisualCheck extends InteractiveTestCase {
     
     private Action createToggleExtendsOpacityAction(final WrappingProvider provider, final JComponent target) {
         final String text = "toggle extendsOpacity to: ";
-        Action a = new AbstractAction(text + !provider.getExtendsComponentOpacity()) {
-            
+        return new AbstractAction(text + !provider.getExtendsComponentOpacity()) {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean old = provider.getExtendsComponentOpacity();
@@ -207,7 +205,6 @@ public class RendererVisualCheck extends InteractiveTestCase {
                 target.repaint();
             }
         };
-        return a;
     }
 
 
@@ -215,7 +212,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * Issue #1513-swingx: opacity of JRendererCheckBox can't be effected by 
      * client code.
-     * 
+     * <p>
      * Stand-alone JRendererCheckBox showing permutations of 
      * not/opaque and with/out painter
      */
@@ -265,7 +262,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * Issue #1513-swingx: opacity of JRendererCheckBox can't be effected by 
      * client code.
-     * 
+     * <p>
      * Here's a use-case: make all components in the stack not-opaque to show
      * a background image. (note: opacity not false for number column)
      */
@@ -292,16 +289,16 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * Issue #??-swingx: first click in unselected (in terms of 
      * listSelection, not checkBox) checkbox does not change 
      * the editor background to selected. 
-     * 
+     * <p>
      * Suspected culprit is the editor: the click starts the 
      * edit, but doesn't update the background of the editor
      * itself. Once selected, the editor will be selected as well.
-     * 
+     * <p>
      * Core issue: Problem is that at the time of getting the
      * editing component, the row is not yet selected. Based on 
      * shouldSelectedCell, the table's row selection is updated 
      * _after_ installing the editing component.
-     * 
+     * <p>
      * Options:
      * - override changeSelection to special case the editing comp
      * - tweak the editor to config the renderer with isSelected == true
@@ -319,7 +316,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #897-swingx: Opacity issues of JRendererCheckBox - striping lost.
-     * 
+     * <p>
      *  Reported against Nimbus, but similar in other LAFs if combined
      *  with Painter.
      */
@@ -337,7 +334,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     
     /**
      * Conditionally hide the renderingComponent
-     * 
+     * <p>
      * http://stackoverflow.com/questions/9311455/swingx-component-provider-hide-component-on-certain-rows
      */
     public void interactiveButtonProvider() {
@@ -421,17 +418,17 @@ public class RendererVisualCheck extends InteractiveTestCase {
     private Object[] columnNames = {
             "Buy/Sell", "Type", "SubType", "Ccy1", "Amount1", "Ccy2", "Amount2", "DealId"};
         private Object[][] data = {
-            {"Buy&Sell", "Ccy Swap", "A1", "EUR", new Double(1000000.00), "USD", new Double(1439000.00), 50},
-            {"Buy&Sell", "Ccy Swap", "A3", "USD", new Double(1438900.00), "EUR", new Double(1000000.00), 50},
-            {"Buy&Sell", "Ccy Swap", "A1", "EUR", new Double(500000.00), "CHF", new Double(550000.00), 350},
-            {"Buy&Sell", "Ccy Swap", "A1", "CHF", new Double(549800.00), "EUR", new Double(500000.00), 350},
-            {"Sell&Buy", "Ccy Swap", "A3", "USD", new Double(1000000.00), "EUR", new Double(749000.00), 2250},
-            {"Sell&Buy", "Ccy Swap", "A1", "EUR", new Double(748900.00), "USD", new Double(1000000.00), 2250},
-            {"Buy&Sell", "Ccy Swap", "A1", "GBP", new Double(1000000.00), "USD", new Double(1638100.00), 400},
-            {"Buy&Sell", "Ccy Swap", "A3", "USD", new Double(1638200.00), "GBP", new Double(1000000.00), 400},
-            {"Sell", "Ccy Spot", "A1", "AUD", new Double(343575.0), "EUR", new Double(250000.0), 11990},
-            {"Buy", "Ccy Spot", "A1", "EUR", new Double(100000.00), "JPY", new Double(1099000.00), 259},
-            {"Sell", "Ccy Fwd", "A3", "DKK", new Double(74889.00), "EUR", new Double(10000.00), 115439},};
+            {"Buy&Sell", "Ccy Swap", "A1", "EUR", 1000000.00, "USD", 1439000.00, 50},
+            {"Buy&Sell", "Ccy Swap", "A3", "USD", 1438900.00, "EUR", 1000000.00, 50},
+            {"Buy&Sell", "Ccy Swap", "A1", "EUR", 500000.00, "CHF", 550000.00, 350},
+            {"Buy&Sell", "Ccy Swap", "A1", "CHF", 549800.00, "EUR", 500000.00, 350},
+            {"Sell&Buy", "Ccy Swap", "A3", "USD", 1000000.00, "EUR", 749000.00, 2250},
+            {"Sell&Buy", "Ccy Swap", "A1", "EUR", 748900.00, "USD", 1000000.00, 2250},
+            {"Buy&Sell", "Ccy Swap", "A1", "GBP", 1000000.00, "USD", 1638100.00, 400},
+            {"Buy&Sell", "Ccy Swap", "A3", "USD", 1638200.00, "GBP", 1000000.00, 400},
+            {"Sell", "Ccy Spot", "A1", "AUD", 343575.0, "EUR", 250000.0, 11990},
+            {"Buy", "Ccy Spot", "A1", "EUR", 100000.00, "JPY", 1099000.00, 259},
+            {"Sell", "Ccy Fwd", "A3", "DKK", 74889.00, "EUR", 10000.00, 115439},};
 
     public void interactiveAlternateRowGrouping() {
         JXTable table = new JXTable(data, columnNames);
@@ -502,7 +499,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
 
     public void interactiveAlternateRowGroupingRob() {
         JTable table = new JTable(data, columnNames) {
-            private Map<Object, Color> rowColor = new HashMap<Object, Color>();
+            private Map<Object, Color> rowColor = new HashMap<>();
 
             private Color nextColor = Color.ORANGE;
 
@@ -535,7 +532,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #1345-swingx: make TableCellContext handle LAF provided alternateRowColor.
-     * 
+     * <p>
      * Note: running this method has static side-effects, run in isolation or press cleanup.
      */
     public void interactiveOptionalAlternateRowBackground() {
@@ -573,7 +570,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * Requirement: left aligned icon and right aligned text.
      * http://forums.java.net/jive/thread.jspa?messageID=398448#398448
-     * 
+     * <p>
      * Issue #1309-swingx: WrappingProvider needs option to "highlight" the icon as well.
      */
     public void interactiveIconTextAlignmentAndExtendsOpacity() {
@@ -606,18 +603,13 @@ public class RendererVisualCheck extends InteractiveTestCase {
         ListModel files = createFileListModel();
         
         JXList table = new JXList(files);
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
-                       + " Type: " 
-                       + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value); 
-                } 
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof File) {
+                return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
+                   + " Type: "
+                   + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value);
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         IconValue iv = IconValues.FILE_ICON;
         table.setCellRenderer(new DefaultListRenderer(new MappedValue(sv, iv)));
@@ -635,17 +627,11 @@ public class RendererVisualCheck extends InteractiveTestCase {
         calendar.add(Calendar.YEAR, -1);
         final Date lastYear = calendar.getTime();
         // install value based highlighter 
-        final HighlightPredicate valueBased = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                if (!(adapter.getValue() instanceof File)) return false;
-                File file = (File) adapter.getValue();
-                Date date = new Date(file.lastModified());
-                return date.after(lastYear);
-            }
-            
+        final HighlightPredicate valueBased = (renderer, adapter) -> {
+            if (!(adapter.getValue() instanceof File)) return false;
+            File file = (File) adapter.getValue();
+            Date date = new Date(file.lastModified());
+            return date.after(lastYear);
         };
         final ColorHighlighter back =  new ColorHighlighter(valueBased, Color.YELLOW, null);
         table.addHighlighter(back);
@@ -747,7 +733,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * example to configure treeTable hierarchical column (same for tree) with
      * custom icon and content mapping. Here the nodes are actually of type File.
-     * 
+     * <p>
      * PENDING JW:
      * TreeTable string rep is not correctly recognized in the PatternHighlighter,
      *  - will be correct automatically, once we make it to really use the table/model rep
@@ -767,29 +753,21 @@ public class RendererVisualCheck extends InteractiveTestCase {
             
         };
         JXTreeTable table = new JXTreeTable(model);
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
-                       + " Type: " 
-                       + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value)
-                    ; 
-                } 
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof File) {
+                return FileSystemView.getFileSystemView().getSystemDisplayName((File) value)
+                   + " Type: "
+                   + FileSystemView.getFileSystemView().getSystemTypeDescription((File) value)
+                ;
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        IconValue iv = new IconValue() {
-
-            @Override
-            public Icon getIcon(Object value) {
-                if (value instanceof File) {
-                    return  FileSystemView.getFileSystemView().getSystemIcon((File) value);
-                } 
-                return null;
-            }};
+        IconValue iv = value -> {
+            if (value instanceof File) {
+                return  FileSystemView.getFileSystemView().getSystemIcon((File) value);
+            }
+            return null;
+        };
         final DefaultTreeRenderer treeRenderer = new DefaultTreeRenderer(iv, sv);
         table.setTreeCellRenderer(treeRenderer);
         final JXTree tree = new JXTree(model);
@@ -807,17 +785,11 @@ public class RendererVisualCheck extends InteractiveTestCase {
         calendar.add(Calendar.YEAR, -1);
         final Date lastYear = calendar.getTime();
         // install value based highlighter 
-        HighlightPredicate valueBased = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                if (!(adapter.getValue() instanceof File)) return false;
-                File file = (File) adapter.getValue();
-                Date date = new Date(file.lastModified());
-                return date.after(lastYear);
-            }
-            
+        HighlightPredicate valueBased = (renderer, adapter) -> {
+            if (!(adapter.getValue() instanceof File)) return false;
+            File file = (File) adapter.getValue();
+            Date date = new Date(file.lastModified());
+            return date.after(lastYear);
         };
         ColorHighlighter back =  new ColorHighlighter(valueBased, Color.YELLOW, null);
         table.addHighlighter(back);
@@ -896,7 +868,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * Configures the table to allow individual row heights based on rendering components
      * pref size and inits the sizes. Installs an extended column model listener to 
      * update the rowHeights on changes to the column widths.
-     * 
+     * <p>
      * NOTE: this is not complete - real-world methods must 
      * - listen to the TableModel to update the rowHeight 
      * - listen to table's property changes for its Table/ColumnModel to 
@@ -1239,7 +1211,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * Compare xtable using core default renderer vs. swingx default renderer.<p>
      * Obsolete - swingx renderers registered by default.
-     * 
+     * <p>
      * Unselected background of lead is different for editable/not-editable cells.
      * With core renderer: can't because LegacyHighlighter hack jumps in.
      * 
@@ -1316,7 +1288,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     /**
      * 
      * Example for custom StringValue: bound to bean property.
-     * 
+     * <p>
      * A column of xtable and the xlist share the same component controller.<p>
      * 
      *  
@@ -1445,7 +1417,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     public void interactiveTestTableLinkRenderer() {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         JXTable table = new JXTable(createModelWithLinks());
-        LinkModelAction<LinkModel> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<LinkModel> action = new LinkModelAction<>(visitor);
         ComponentProvider<JXHyperlink> controller = new HyperlinkProvider(action, LinkModel.class);
         table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer(controller));
         JXFrame frame = wrapWithScrollingInFrame(table, visitor.getOutputComponent(), "show link renderer in table");
@@ -1469,7 +1441,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         JXList list = new JXList(createListModelWithLinks(20));
         list.setRolloverEnabled(true);
-        LinkModelAction<LinkModel> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<LinkModel> action = new LinkModelAction<>(visitor);
         ComponentProvider<JXHyperlink> context = new HyperlinkProvider(action, LinkModel.class);
         list.setCellRenderer(new DefaultListRenderer(context));
         JFrame frame = wrapWithScrollingInFrame(list, visitor.getOutputComponent(), "show link renderer in list");
@@ -1493,7 +1465,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         JXTree tree = new JXTree(createTreeModelWithLinks(20));
         tree.setRolloverEnabled(true);
-        LinkModelAction<LinkModel> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<LinkModel> action = new LinkModelAction<>(visitor);
         ComponentProvider<JXHyperlink> context = new HyperlinkProvider(action, LinkModel.class);
         tree.setCellRenderer(new DefaultTreeRenderer(new WrappingProvider(context)));
         JFrame frame = wrapWithScrollingInFrame(tree, visitor.getOutputComponent(), "show link renderer in list");
@@ -1514,27 +1486,17 @@ public class RendererVisualCheck extends InteractiveTestCase {
         JXList list = new JXList();
         // quick-fill and hook to table columns' visibility state
         configureList(list, table, true);
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof AbstractActionExt) {
+                return ((AbstractActionExt) value).getName();
             }
-
+            return StringValues.TO_STRING.getString(value);
         };
-        BooleanValue bv = new BooleanValue() {
-
-            @Override
-            public boolean getBoolean(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).isSelected();
-                }
-                return false;
+        BooleanValue bv = value -> {
+            if (value instanceof AbstractActionExt) {
+                return ((AbstractActionExt) value).isSelected();
             }
-
+            return false;
         };
         CheckBoxProvider provider = new CheckBoxProvider(new MappedValue(sv,
                 null, bv), JLabel.LEADING);
@@ -1551,7 +1513,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * Fills the list with a collection of actions (as returned from the 
      * table's column control). Binds space and double-click to toggle
      * the action's selected state.
-     * 
+     * <p>
      * note: this is just an example to show-off the button renderer in a list!
      * ... it's very dirty!!
      * 
@@ -1559,7 +1521,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * @param table
      */
     private void configureList(final JXList list, final JXTable table, boolean useRollover) {
-        final List<Action> actions = new ArrayList<Action>();
+        final List<Action> actions = new ArrayList<>();
         // quick and dirty access to column visibility actions
         @SuppressWarnings("all")
         ColumnControlButton columnControl = new ColumnControlButton(table) {
@@ -1627,16 +1589,11 @@ public class RendererVisualCheck extends InteractiveTestCase {
                 
             }
             
-            PropertyChangeListener l = new PropertyChangeListener() {
-                
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    int index = indexOf(evt.getSource());
-                    if (index >= 0) {
-                        fireContentsChanged(reallyThis, index, index);
-                    }
+            PropertyChangeListener l = evt -> {
+                int index = indexOf(evt.getSource());
+                if (index >= 0) {
+                    fireContentsChanged(reallyThis, index, index);
                 }
-                
             };
         };
         for (Action action : actions) {
@@ -1712,24 +1669,16 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * @return
      */
     private Highlighter createPropertyRespectingHighlighter(final Highlighter delegate) {
-        HighlightPredicate predicate = new HighlightPredicate() {
+        HighlightPredicate predicate = (renderer, adapter) -> ((JComponent) renderer).getClientProperty("renderer-dont-touch") == null;
 
-            @Override
-            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-                return ((JComponent) renderer).getClientProperty("renderer-dont-touch") == null;
-            }
-            
-        };
-        
-        Highlighter highlighter = new AbstractHighlighter(predicate) {
+        return new AbstractHighlighter(predicate) {
 
             @Override
             public Component doHighlight(Component renderer, ComponentAdapter adapter) {
                 return delegate.highlight(renderer, adapter);
             }
-            
+
         };
-        return highlighter;
     }
 
 
@@ -1779,8 +1728,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      */
     protected TableCellRenderer createColorRendererExt() {
         ComponentProvider<JLabel> context = createColorRenderingLabelController();
-        TableCellRenderer renderer = new DefaultTableRenderer(context);
-        return renderer;
+        return new DefaultTableRenderer(context);
     }
 
     /**
@@ -1789,8 +1737,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
      */
     protected ListCellRenderer createListColorRendererExt() {
         ComponentProvider<JLabel> context = createColorRenderingLabelController();
-        ListCellRenderer renderer = new DefaultListRenderer(context);
-        return renderer;
+        return new DefaultListRenderer(context);
     }
 
     /**
@@ -1799,12 +1746,12 @@ public class RendererVisualCheck extends InteractiveTestCase {
      * @return
      */
     private ComponentProvider<JLabel> createColorRenderingLabelController() {
-        ComponentProvider<JLabel> context = new LabelProvider() {
+        return new LabelProvider() {
             Border selectedBorder;
             @Override
-            protected void format(CellContext context) {
-                super.format(context);
-                Object value = context.getValue();
+            protected void format(CellContext context1) {
+                super.format(context1);
+                Object value = context1.getValue();
                 if (value instanceof Color) {
                     rendererComponent.setBackground((Color) value);
                     rendererComponent.putClientProperty("renderer-dont-touch", "color");
@@ -1814,12 +1761,12 @@ public class RendererVisualCheck extends InteractiveTestCase {
             }
 
             /**
-             * 
-             * @param context
+             *
+             * @param context1
              */
             @Override
-            protected void configureState(CellContext context) {
-                Object value = context.getValue();
+            protected void configureState(CellContext context1) {
+                Object value = context1.getValue();
                 if (value instanceof Color) {
                     Color newColor = (Color) value;
                     rendererComponent.setToolTipText("RGB value: " + newColor.getRed() + ", "
@@ -1828,18 +1775,17 @@ public class RendererVisualCheck extends InteractiveTestCase {
                 } else {
                     rendererComponent.setToolTipText(null);
                 }
-                if (context.isSelected()) {
+                if (context1.isSelected()) {
                     selectedBorder = BorderFactory.createMatteBorder(2, 5,
-                            2, 5, context.getSelectionBackground());
+                            2, 5, context1.getSelectionBackground());
                 } else {
                     selectedBorder = BorderFactory.createMatteBorder(2, 5,
-                            2, 5, context.getBackground());
+                            2, 5, context1.getBackground());
                 }
                 rendererComponent.setBorder(selectedBorder);
             }
-            
+
         };
-        return context;
     }
 
     
@@ -2080,7 +2026,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
     
     /**
      * c&p'd from JGoodies BeanUtils.
-     * 
+     * <p>
      * Looks up and returns a <code>PropertyDescriptor</code> for the
      * given Java Bean class and property name using the standard 
      * Java Bean introspection behavior.
@@ -2103,9 +2049,9 @@ public class RendererVisualCheck extends InteractiveTestCase {
 
         BeanInfo info = Introspector.getBeanInfo(beanClass);
         PropertyDescriptor[] descriptors = info.getPropertyDescriptors();
-        for (int i = 0; i < descriptors.length; i++) {
-            if (propertyName.equals(descriptors[i].getName()))
-                return descriptors[i];
+        for (PropertyDescriptor descriptor : descriptors) {
+            if (propertyName.equals(descriptor.getName()))
+                return descriptor;
         }
         throw new IntrospectionException(
             "Property '" + propertyName + "' not found in bean " + beanClass);
@@ -2113,7 +2059,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
 
     /**
      * c&p'd from JGoodies BeanUtils.
-     * 
+     * <p>
      * Returns the value of the specified property of the given non-null bean.
      * This operation is unsupported if the bean property is read-only.<p>
      * 

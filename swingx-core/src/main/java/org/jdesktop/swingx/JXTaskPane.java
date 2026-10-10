@@ -24,8 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -63,7 +61,7 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
  * When the JXTaskPane is expanded or collapsed, it will be
  * animated with a fade effect. The animated can be disabled on a per
  * component basis through {@link #setAnimated(boolean)}.
- * 
+ * <p>
  * To disable the animation for all newly created <code>JXTaskPane</code>,
  * use the UIManager property:
  * <code>UIManager.put("TaskPane.animate", Boolean.FALSE);</code>.
@@ -239,13 +237,8 @@ public class JXTaskPane extends JPanel implements
       setAnimated(!Boolean.FALSE.equals(UIManager.get("TaskPane.animate")));
       
       // listen for animation events and forward them to registered listeners
-        collapsePane.addPropertyChangeListener("collapsed", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                JXTaskPane.this.firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
-                        evt.getNewValue());
-            }
-        });
+        collapsePane.addPropertyChangeListener("collapsed", evt -> JXTaskPane.this.firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
+                evt.getNewValue()));
   }
 
   /**
@@ -519,7 +512,7 @@ public class JXTaskPane extends JPanel implements
         } else if(lci == -1) {
             mnemonicIndex = uci;
         } else {
-            mnemonicIndex = (lci < uci) ? lci : uci;
+            mnemonicIndex = Math.min(lci, uci);
         }
     }
 
@@ -632,11 +625,11 @@ public Container getValidatingContainer() {
       + ",icon="
       + getIcon()
       + ",collapsed="
-      + String.valueOf(isCollapsed())
+      + isCollapsed()
       + ",special="
-      + String.valueOf(isSpecial())
+      + isSpecial()
       + ",scrollOnExpand=" 
-      + String.valueOf(isScrollOnExpand())
+      + isScrollOnExpand()
       + ",ui=" + getUI();
   }
 

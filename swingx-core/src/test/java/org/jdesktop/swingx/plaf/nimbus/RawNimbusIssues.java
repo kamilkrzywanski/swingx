@@ -22,7 +22,6 @@
 package org.jdesktop.swingx.plaf.nimbus;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +63,11 @@ public class RawNimbusIssues extends InteractiveTestCase {
     /**
      * Core Issue ??: Nimbus install must be complete on propertyChangeNotification
      *   from UIManager.
-     *   
+     * <p>
      * The error is to "derive" the color only after firing, that is when receiving
      * the notification of the change to itself (how weird is that?) and 
      * changing the color value without notifying listeners to the defaults.
-     * 
+     * <p>
      * Here we test the alternative: if the color is not yet completely installed
      * at the time of firing a lookAndFeel property change, then at least the 
      * color must fire a property change on derive (as is documented in the 
@@ -79,18 +78,14 @@ public class RawNimbusIssues extends InteractiveTestCase {
     @Test
     public void testColorInCompleteFireChange() throws Exception {
         setLookAndFeel("Metal");
-        final List<Color> colors = new ArrayList<Color>();
-        final List<Integer> rgb = new ArrayList<Integer>();
+        final List<Color> colors = new ArrayList<>();
+        final List<Integer> rgb = new ArrayList<>();
         final PropertyChangeReport report = new PropertyChangeReport();
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
-                colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
-                rgb.add(colors.get(0).getRGB());
-                
-            }
+        PropertyChangeListener l = evt -> {
+            UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
+            colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
+            rgb.add(colors.get(0).getRGB());
+
         };
         try {
             
@@ -108,11 +103,11 @@ public class RawNimbusIssues extends InteractiveTestCase {
     /**
      * Core Issue ??: Nimbus install must be complete on propertyChangeNotification
      *   from UIManager.
-     *   
+     * <p>
      * The error is to "derive" the color only after firing, that is when receiving
      * the notification of the change to itself (how weird is that?) and 
      * changing the color value without notifying listeners to the defaults.
-     * 
+     * <p>
      * Here we test that the color is the same instance as when the lookAndFeel
      * property change and that it is unchanged if no event fired from the 
      * lookandfeelDefaults
@@ -122,18 +117,14 @@ public class RawNimbusIssues extends InteractiveTestCase {
     @Test
     public void testColorCompleteInstalled() throws Exception {
         setLookAndFeel("Metal");
-        final List<Color> colors = new ArrayList<Color>();
-        final List<Integer> rgb = new ArrayList<Integer>();
+        final List<Color> colors = new ArrayList<>();
+        final List<Integer> rgb = new ArrayList<>();
         final PropertyChangeReport report = new PropertyChangeReport();
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
-                colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
-                rgb.add(colors.get(0).getRGB());
-               
-            }
+        PropertyChangeListener l = evt -> {
+            UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
+            colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
+            rgb.add(colors.get(0).getRGB());
+
         };
         try {
             
@@ -153,7 +144,7 @@ public class RawNimbusIssues extends InteractiveTestCase {
 
     /**
      * Core issue: UIDefaults not firing on remove.
-     * 
+     * <p>
      * Reported with review id: 1610127
      */
     @Test
@@ -172,9 +163,9 @@ public class RawNimbusIssues extends InteractiveTestCase {
     
     /**
      * Core issue: UIDefaults not firing on remove.
-     * 
+     * <p>
      * Reported with review id: 1610127
-     * 
+     * <p>
      * This tests the workaround: don't use remove but put(key, null) instead.
      */
     @Test

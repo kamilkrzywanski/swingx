@@ -96,14 +96,12 @@ public class TreeRendererIssues extends InteractiveTestCase {
     public void interactiveTransparentRenderer() throws IOException {
         final JXTree tree = new JXTree(new ComponentTreeTableModel(new JXFrame()));
         tree.setEditable(true);
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Component) {
-                    return ((Component) value).getName();
-                }
-                return " - no component - ";
-            }};
+        StringValue sv = value -> {
+            if (value instanceof Component) {
+                return ((Component) value).getName();
+            }
+            return " - no component - ";
+        };
         DefaultTreeRenderer renderer = new DefaultTreeRenderer(sv);
         tree.setCellRenderer(renderer);
         tree.setForeground(Color.WHITE);
@@ -168,7 +166,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
     
     /**
      * base interaction with list: renderer uses list's unselected  colors
-     * 
+     * <p>
      * currently, this test fails because the assumptions are wrong! Core
      * renderer behaves slightly unexpected.
      * 
@@ -196,7 +194,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
     /**
      * base interaction with list: renderer uses list's unselected custom
      * colors.
-     * 
+     * <p>
      * currently, this test fails because the assumptions are wrong! Core
      * renderer behaves slightly unexpected.
      * 

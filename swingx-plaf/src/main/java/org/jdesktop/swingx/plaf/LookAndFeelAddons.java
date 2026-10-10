@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -72,7 +71,7 @@ import org.jdesktop.swingx.painter.Painter;
 @SuppressWarnings("nls")
 public abstract class LookAndFeelAddons {
 
-    private static List<ComponentAddon> contributedComponents = new ArrayList<ComponentAddon>();
+    private static List<ComponentAddon> contributedComponents = new ArrayList<>();
 
     /**
      * Key used to ensure the current UIManager has been populated by the LookAndFeelAddons.
@@ -132,25 +131,23 @@ public abstract class LookAndFeelAddons {
      * @see UIManager#setLookAndFeel
      */
     public void initialize() {
-        for (Iterator<ComponentAddon> iter = contributedComponents.iterator(); iter.hasNext();) {
-            ComponentAddon addon = iter.next();
+        for (ComponentAddon addon : contributedComponents) {
             addon.initialize(this);
         }
     }
 
     public void uninitialize() {
-        for (Iterator<ComponentAddon> iter = contributedComponents.iterator(); iter.hasNext();) {
-            ComponentAddon addon = iter.next();
+        for (ComponentAddon addon : contributedComponents) {
             addon.uninitialize(this);
         }
     }
 
     /**
      * Adds the given defaults in UIManager.
-     * 
+     * <p>
      * Note: the values are added only if they do not exist in the existing look and feel defaults.
      * This makes it possible for look and feel implementors to override SwingX defaults.
-     * 
+     * <p>
      * Note: the array is traversed in reverse order. If a key is found twice in the array, the
      * key/value with the highest position in the array gets precedence over the other key in the
      * array
@@ -211,35 +208,20 @@ public abstract class LookAndFeelAddons {
         ClassLoader cl = null;
         
         try {
-            cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                @Override
-                public ClassLoader run() {
-                    return LookAndFeelAddons.class.getClassLoader();
-                }
-            });
+            cl = AccessController.doPrivileged((PrivilegedAction<ClassLoader>) LookAndFeelAddons.class::getClassLoader);
         } catch (SecurityException ignore) { }
         
         if (cl == null) {
             final Thread t = Thread.currentThread();
             
             try {
-                cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                    @Override
-                    public ClassLoader run() {
-                        return t.getContextClassLoader();
-                    }
-                });
+                cl = AccessController.doPrivileged((PrivilegedAction<ClassLoader>) t::getContextClassLoader);
             } catch (SecurityException ignore) { }
         }
         
         if (cl == null) {
             try {
-                cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                    @Override
-                    public ClassLoader run() {
-                        return ClassLoader.getSystemClassLoader();
-                    }
-                });
+                cl = AccessController.doPrivileged((PrivilegedAction<ClassLoader>) ClassLoader::getSystemClassLoader);
             } catch (SecurityException ignore) { }
         }
         
@@ -281,13 +263,8 @@ public abstract class LookAndFeelAddons {
 
     public static String getCrossPlatformAddonClassName() {
         try {
-            return AccessController.doPrivileged(new PrivilegedAction<String>() {
-                @Override
-                public String run() {
-                    return System.getProperty("swing.crossplatformlafaddon",
-                            "org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons");
-                }
-            });
+            return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty("swing.crossplatformlafaddon",
+                    "org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons"));
         } catch (SecurityException ignore) {
         }
 
@@ -367,7 +344,7 @@ public abstract class LookAndFeelAddons {
                     + " with UIClassID " + component.getUIClassID());
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("Existing UI defaults keys: "
-                        + new ArrayList<Object>(UIManager.getDefaults().keySet()));
+                        + new ArrayList<>(UIManager.getDefaults().keySet()));
             }
             // really ugly hack. Should be removed as soon as we figure out what is causing the
             // issue
@@ -399,7 +376,7 @@ public abstract class LookAndFeelAddons {
             if (realUIClass != null) {
                 try {
                     Method createUIMethod = realUIClass.getMethod("createUI",
-                            new Class[] { JComponent.class });
+                            JComponent.class);
 
                     return (ComponentUI) createUIMethod.invoke(null, new Object[] { component });
                 } catch (NoSuchMethodException e) {
@@ -424,7 +401,7 @@ public abstract class LookAndFeelAddons {
      * previously added by LookAndFeelAddons will be removed) but the addon will not reinitialize
      * because addon initialize itself through the static block in components and the classes do not
      * get reloaded. This means component.updateUI will fail because it will not find its UI.
-     * 
+     * <p>
      * This method ensures LookAndFeelAddons get re-initialized if needed. It must be called in
      * every component updateUI methods.
      */

@@ -41,7 +41,7 @@ public class JXEditorPaneIssues extends JXEditorPaneTest {
     /**
      * Issue #289-swingx: JXEditorPane actions should be disabled if not
      * applicable.
-     * 
+     * <p>
      * undo must not perform on non-editable editor.
      * 
      */

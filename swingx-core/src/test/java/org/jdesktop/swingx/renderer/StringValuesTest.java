@@ -43,7 +43,7 @@ public class StringValuesTest {
 
     @Test
     public void testLocaleSVPrefixNotContained() {
-        Map<Object, String> lookup = new HashMap<Object, String>();
+        Map<Object, String> lookup = new HashMap<>();
         String value = "not contained";
         lookup.put(value, "unreasonableDummyKey");
 //        StringValue sv = new LocalizableStringValue(lookup, "prefix.", Locale.GERMANY);
@@ -54,7 +54,7 @@ public class StringValuesTest {
     
     @Test
     public void testLocaleSVPrefixContained() {
-        Map<Object, String> lookup = new HashMap<Object, String>();
+        Map<Object, String> lookup = new HashMap<>();
         lookup.put(PatternModel.MATCH_RULE_ENDSWITH, PatternModel.MATCH_RULE_ENDSWITH);
         StringValue sv = new LocalizableStringValue(lookup, PatternModel.SEARCH_PREFIX, Locale.GERMAN);
         assertEquals("endet mit", sv.getString(PatternModel.MATCH_RULE_ENDSWITH));
@@ -62,7 +62,7 @@ public class StringValuesTest {
     
     @Test
     public void testLocaleSVDirectContained() {
-        Map<Object, String> lookup = new HashMap<Object, String>();
+        Map<Object, String> lookup = new HashMap<>();
         lookup.put(PatternModel.MATCH_RULE_ENDSWITH, PatternModel.SEARCH_PREFIX + PatternModel.MATCH_RULE_ENDSWITH);
         StringValue sv = new LocalizableStringValue(lookup,  Locale.GERMAN);
         assertEquals("endet mit", sv.getString(PatternModel.MATCH_RULE_ENDSWITH));
@@ -70,7 +70,7 @@ public class StringValuesTest {
     
     @Test
     public void testLocaleSVNotContained() {
-        Map<Object, String> lookup = new HashMap<Object, String>();
+        Map<Object, String> lookup = new HashMap<>();
         String value = "not contained";
         lookup.put(value, "unreasonableDummyKey");
         StringValue sv = new LocalizableStringValue(lookup);
@@ -81,7 +81,7 @@ public class StringValuesTest {
     public void testLocaleSVDefaultLocale() {
         Locale old = Locale.getDefault();
         try {
-            LocalizableStringValue sv = new LocalizableStringValue(new HashMap<Object, String>());
+            LocalizableStringValue sv = new LocalizableStringValue(new HashMap<>());
             assertEquals(old, sv.getLocale());
             Locale other = Locale.CHINESE;
             if (old.equals(other)) {
@@ -96,32 +96,19 @@ public class StringValuesTest {
     
     @Test
     public void testLocaleStringValueConstructor() {
-        assertThrows(NullPointerException.class, () -> {
-        new LocalizableStringValue(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new LocalizableStringValue(null));}
     
     @Test
     public void testUIResource() {
         final String constant = "dummy";
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                return constant;
-            }
-            
-        };
+        StringValue sv = value -> constant;
         StringValue wrapper = new StringValueUIResource(sv);
         assertEquals(constant, wrapper.getString("whatever"));
     }
     
     @Test
     public void testUIResourceConstructor() {
-        assertThrows(NullPointerException.class, () -> {
-        new StringValueUIResource(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new StringValueUIResource(null));}
     
     /**
      * Issue #1273-swingx: Locale-dependent StringValues constants 
@@ -136,10 +123,10 @@ public class StringValuesTest {
             number.set(Calendar.MONTH, Calendar.DECEMBER);
             Locale.setDefault(Locale.GERMAN);
             String german = StringValues.DATE_TO_STRING.getString(number.getTime());
-            assertTrue( german.indexOf(".") >= 0,"formatted German " + german);
+            assertTrue(german.contains("."),"formatted German " + german);
             Locale.setDefault(Locale.US);
             String us = StringValues.DATE_TO_STRING.getString(number.getTime());
-            assertTrue( us.indexOf("Dec") >= 0,"formatted us " + us);
+            assertTrue(us.contains("Dec"),"formatted us " + us);
         } finally {
             Locale.setDefault(locale);
         }
@@ -156,10 +143,10 @@ public class StringValuesTest {
             float number = 10.5f;
             Locale.setDefault(Locale.US);
             String us = StringValues.NUMBER_TO_STRING.getString(number);
-            assertTrue( us.indexOf(".") > 0,"formatted us " + us);
+            assertTrue( us.indexOf('.') > 0,"formatted us " + us);
             Locale.setDefault(Locale.GERMAN);
             String german = StringValues.NUMBER_TO_STRING.getString(number);
-            assertTrue( german.indexOf(",") > 0,"formatted German " + german);
+            assertTrue( german.indexOf(',') > 0,"formatted German " + german);
         } finally {
             Locale.setDefault(locale);
         }

@@ -222,27 +222,23 @@ public class JXListTest extends InteractiveTestCase {
         final JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
         showWithScrollingInFrame(list, "");
         final Dimension size = list.getSize();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                RowFilter<? super ListModel, ? super Integer> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
-                list.setRowFilter(filter);
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            RowFilter<? super ListModel, ? super Integer> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
+            list.setRowFilter(filter);
         });
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                // subtraction arbitrary number, don't want to depend on single pixels
-                assertTrue( 
-                		size.height - 50 > list.getSize().height,"height must be adjusted to reduced number of rows, " +
-                		"but was (old/current): " + size.height + "/" + list.getSize().height);
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            // subtraction arbitrary number, don't want to depend on single pixels
+            assertTrue(
+                    size.height - 50 > list.getSize().height,"height must be adjusted to reduced number of rows, " +
+                    "but was (old/current): " + size.height + "/" + list.getSize().height);
 
-            }
         });
     }
 //--------------- string rep
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test Pattern filtering uses string rep
      */
     @Test
@@ -258,7 +254,7 @@ public class JXListTest extends InteractiveTestCase {
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test list has stringValueProvider and configures the sortController with it
      */
     @Test
@@ -270,7 +266,7 @@ public class JXListTest extends InteractiveTestCase {
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test updates the sortController on renderer change.
      */
     @Test
@@ -284,7 +280,7 @@ public class JXListTest extends InteractiveTestCase {
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test getStringAt use provider (sanity, trying to pull the rag failed
      * during re-enable)
      */
@@ -300,7 +296,7 @@ public class JXListTest extends InteractiveTestCase {
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
      * was: Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test getStringAt of ComponentAdapter use provider 
      * (sanity, trying to pull the rag failed during re-enable)
      */
@@ -456,7 +452,7 @@ public class JXListTest extends InteractiveTestCase {
         list.setSortable(false);
         Collator comparator = Collator.getInstance();
         list.setComparator(comparator);
-        ListSortController<?> controller = new ListSortController<ListModel>(list.getModel());
+        ListSortController<?> controller = new ListSortController<>(list.getModel());
         list.setRowSorter(controller);
         assertEquals( false, controller.isSortable(0),"sortable propagated");
         assertSame( comparator, controller.getComparator(0),"comparator propagated");
@@ -525,17 +521,17 @@ public class JXListTest extends InteractiveTestCase {
     public void testConstructorAutoCreateSorter() {
         assertAutoCreateRowSorter(new JXList(), false);
         assertAutoCreateRowSorter(new JXList(new DefaultListModel()), false);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>()), false);
+        assertAutoCreateRowSorter(new JXList(new Vector<>()), false);
         assertAutoCreateRowSorter(new JXList(new Object[] { }), false);
         
         assertAutoCreateRowSorter(new JXList(false), false);
         assertAutoCreateRowSorter(new JXList(new DefaultListModel(), false), false);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>(), false), false);
+        assertAutoCreateRowSorter(new JXList(new Vector<>(), false), false);
         assertAutoCreateRowSorter(new JXList(new Object[] { }, false), false);
 
         assertAutoCreateRowSorter(new JXList(true), true);
         assertAutoCreateRowSorter(new JXList(new DefaultListModel(), true), true);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>(), true), true);
+        assertAutoCreateRowSorter(new JXList(new Vector<>(), true), true);
         assertAutoCreateRowSorter(new JXList(new Object[] { }, true), true);
     }
     
@@ -547,7 +543,7 @@ public class JXListTest extends InteractiveTestCase {
     @Test
     public void testRowSorterSet() {
         assertNull(list.getRowSorter());
-        ListSortController<ListModel> controller = new ListSortController<ListModel>(list.getModel());
+        ListSortController<ListModel> controller = new ListSortController<>(list.getModel());
         PropertyChangeReport report = new PropertyChangeReport(list);
         list.setRowSorter(controller);
         TestUtils.assertPropertyChangeEvent(report, list, "rowSorter", null, controller);
@@ -703,22 +699,18 @@ public class JXListTest extends InteractiveTestCase {
     
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test api on JXTable.
      */
     @Test
     public void testGetString() {
         JXList list = new JXList(AncientSwingTeam.createNamedColorListModel());
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         list.setCellRenderer(new DefaultListRenderer(sv));
         String text = list.getStringAt(0);
@@ -871,9 +863,9 @@ public class JXListTest extends InteractiveTestCase {
 
     private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXList table, String propertyName) {
         PropertyChangeListener[] listeners = table.getPropertyChangeListeners(propertyName);
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof ListRolloverController<?>) {
-                return (ListRolloverController<?>) listeners[i];
+        for (PropertyChangeListener listener : listeners) {
+            if (listener instanceof ListRolloverController<?>) {
+                return listener;
             }
         }
         return null;
@@ -888,7 +880,7 @@ public class JXListTest extends InteractiveTestCase {
     protected DefaultListModel createAscendingListModel(int startRow, int count) {
         DefaultListModel l = new DefaultListModel();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(row);
         }
         return l;
     }
@@ -919,18 +911,13 @@ public class JXListTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
     
 

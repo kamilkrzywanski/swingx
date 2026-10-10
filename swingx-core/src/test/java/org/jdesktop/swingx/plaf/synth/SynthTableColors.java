@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -58,20 +59,18 @@ public class SynthTableColors extends JFrame {
             + "</synth>";
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new SynthTableColors();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                new SynthTableColors();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
     public SynthTableColors() throws Exception {
         setTitle(System.getProperty("java.version"));
-        InputStream is = new ByteArrayInputStream(synthXml.getBytes("UTF8"));
+        InputStream is = new ByteArrayInputStream(synthXml.getBytes(StandardCharsets.UTF_8));
         SynthLookAndFeel laf = new SynthLookAndFeel();
         laf.load(is, SynthTableColors.class);
         UIManager.setLookAndFeel(laf);

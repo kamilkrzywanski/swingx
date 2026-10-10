@@ -22,9 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Locale;
 
@@ -111,15 +109,10 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
             }
 
             private PropertyChangeListener createExpansionListener() {
-                PropertyChangeListener l = new PropertyChangeListener() {
-
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        // TODO Auto-generated method stub
-                        updateCurrentTaskPane((JXTaskPane) evt.getSource());
-                    }
+                return evt -> {
+                    // TODO Auto-generated method stub
+                    updateCurrentTaskPane((JXTaskPane) evt.getSource());
                 };
-                return l;
             }
             
 
@@ -159,10 +152,7 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
     public void interactiveContainerColor() {
         JXTaskPaneContainer container = new JXTaskPaneContainer();
         container.setOpaque(false);
-        Painter<?> nullPainter = new Painter<Object>() {
-            @Override
-            public void paint(Graphics2D g, Object object, int width, int height) {
-            }
+        Painter<?> nullPainter = (Painter<Object>) (g, object, width, height) -> {
         };
         container.setBackgroundPainter(nullPainter);
         addTaskPane(container);

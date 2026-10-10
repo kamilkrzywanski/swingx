@@ -37,10 +37,10 @@ import javax.swing.plaf.synth.SynthContext;
  */
 public interface SynthUI {
     
-    public SynthContext getContext(JComponent arg0);
+    SynthContext getContext(JComponent arg0);
 
-    public void paintBorder(SynthContext context, Graphics g, int x,
-            int y, int w, int h);
+    void paintBorder(SynthContext context, Graphics g, int x,
+                     int y, int w, int h);
 
 
 }

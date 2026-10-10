@@ -81,9 +81,9 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
         
         @Override
         public <A extends Action> List<List<A>> group(List<A> actions) {
-            List<List<A>> result = new ArrayList<List<A>>();
-            List<Object> keys = new ArrayList<Object>();
-            List<A> noKey = new ArrayList<A>();
+            List<List<A>> result = new ArrayList<>();
+            List<Object> keys = new ArrayList<>();
+            List<A> noKey = new ArrayList<>();
             for (A action : actions) {
                 Object groupKey = action.getValue(GROUP_KEY);
                 if (groupKey != null) {
@@ -91,7 +91,7 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
                     if (index < 0) {
                         keys.add(groupKey);
                         index = keys.size() - 1;
-                        result.add(new ArrayList<A>());
+                        result.add(new ArrayList<>());
                     }
                     result.get(index).add(action);
                 } else {
@@ -115,7 +115,7 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
              */
             @Override
             protected ColumnControlPopup createColumnControlPopup() {
-                ColumnControlPopup controlPopup = new DefaultColumnControlPopup() {
+                return new DefaultColumnControlPopup() {
 
                     /**
                      * @inherited <p>
@@ -133,7 +133,6 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
                     }
 
                 };
-                return controlPopup;
             }
 
         };
@@ -273,10 +272,10 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
     /**
      * Issue #192: initially invisibility columns are hidden but marked as
      * visible in control.
-     * 
+     * <p> <p>
      * Issue #38 (swingx): initially invisble columns don't show up in the
      * column control list.
-     * 
+     * <p> <p>
      * Visual check: first enable column control then set column invisible.
      * 
      */
@@ -304,10 +303,10 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
     /**
      * Issue #192: initially invisibility columns are hidden but marked as
      * visible in control.
-     * 
+     * <p>
      * Issue #38 (swingx): initially invisble columns don't show up in the
      * column control list.
-     * 
+     * <p>
      * Visual check: first set column invisible then enable column control.
      * 
      */
@@ -323,7 +322,7 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue #212: programmatically toggle column vis does not work.
-     * 
+     * <p>
      * Visual check: compare toggle column visibility both via the columnControl
      * and programmatically by button. While the columnControl prevents to hide
      * the very last visible column, developers have full control to do so

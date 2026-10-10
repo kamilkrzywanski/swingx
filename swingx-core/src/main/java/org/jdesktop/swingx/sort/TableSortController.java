@@ -117,10 +117,7 @@ public class TableSortController<M extends TableModel> extends DefaultSortContro
         if (columnClass == String.class) {
             return false;
         }
-        if (Comparable.class.isAssignableFrom(columnClass)) {
-            return false;
-        }
-        return true;
+        return !Comparable.class.isAssignableFrom(columnClass);
     }
 
 

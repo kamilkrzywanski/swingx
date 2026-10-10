@@ -32,7 +32,7 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
     public ActionMapTreeTableModel(JComponent comp) {
         super();
         setRoot(createRootNodeExt(comp));
-        Vector<String> names = new Vector<String>();
+        Vector<String> names = new Vector<>();
         names.add("Key Name");
         names.add("Action Name");
         names.add("Action Command");
@@ -44,7 +44,7 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
         ActionMap map = comp.getActionMap();
         if (map == null)
             throw new IllegalArgumentException("Component must have ActionMap");
-        List<ActionMap> actionMaps = new ArrayList<ActionMap>();
+        List<ActionMap> actionMaps = new ArrayList<>();
         actionMaps.add(map);
         while ((map = map.getParent()) != null) {
             actionMaps.add(0, map);
@@ -53,12 +53,12 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
     }
 
     private ActionEntryNode createActionEntryNodes(List<ActionMap> actionMaps) {
-        ActionMap topLevel = (ActionMap) actionMaps.get(0);
+        ActionMap topLevel = actionMaps.get(0);
         ActionEntryNode mapRoot = new ActionEntryNode("topLevel", topLevel, null);
         ActionEntryNode current = mapRoot;
         for (int i = 1; i < actionMaps.size(); i++) {
             current = current.addActionMapAsChild("childMap " + i,
-                    (ActionMap) actionMaps.get(i));
+                    actionMaps.get(i));
         }
         return mapRoot;
     }
@@ -85,11 +85,11 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
             this.parent = parent;
             this.key = key;
             this.actionMap = map;
-            children = new ArrayList<ActionEntryNode>();
+            children = new ArrayList<>();
             Object[] keys = map.keys();
-            for (int i = 0; i < keys.length; i++) {
-                children.add(new ActionEntryNode(keys[i], (Action) map
-                        .get(keys[i]), this));
+            for (Object o : keys) {
+                children.add(new ActionEntryNode(o, map
+                        .get(o), this));
             }
         }
 

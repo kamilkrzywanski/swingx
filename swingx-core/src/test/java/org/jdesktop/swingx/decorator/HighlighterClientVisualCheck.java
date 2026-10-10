@@ -39,7 +39,6 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.test.XTestUtils;
-import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.test.AncientSwingTeam;
 
 
@@ -151,13 +150,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase  {
     public void interactiveToolTipOnTruncatedText() {
         JXTable table = new JXTable(new AncientSwingTeam());
         final Icon icon = XTestUtils.loadDefaultIcon();
-        IconValue iv = new IconValue() {
-            
-            @Override
-            public Icon getIcon(Object value) {
-                return icon;
-            }
-        };
+        IconValue iv = value -> icon;
         table.getColumn(AncientSwingTeam.COLOR_COLUMN).setCellRenderer(new DefaultTableRenderer(StringValues.TO_STRING, iv));
         table.addHighlighter(new ToolTipHighlighter(HighlightPredicate.IS_TEXT_TRUNCATED));
         JXFrame frame = showWithScrollingInFrame(table, "ToolTip on truncated text");

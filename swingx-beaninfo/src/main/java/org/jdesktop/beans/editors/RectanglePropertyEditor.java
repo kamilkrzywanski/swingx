@@ -36,14 +36,13 @@ public class RectanglePropertyEditor extends PropertyEditorSupport {
     
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        String originalParam = text;
         try {
             Rectangle val = (Rectangle)PropertyEditorUtil.createValueFromString(text, 4, Rectangle.class, int.class);
             setValue(val);
         } catch (Throwable e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [x,y,w,h] or [x , y , w , h] or [x y w h]", e);
         }
     }

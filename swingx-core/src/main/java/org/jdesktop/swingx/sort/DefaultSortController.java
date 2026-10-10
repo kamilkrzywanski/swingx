@@ -29,7 +29,6 @@ import java.util.List;
 import javax.swing.DefaultRowSorter;
 import javax.swing.SortOrder;
 
-import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.util.Contract;
 
@@ -126,7 +125,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
         // nothing to toggle through
         if (firstInCycle == null)
             return;
-        List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
+        List<SortKey> keys = new ArrayList<>(getSortKeys());
         SortKey sortKey = SortUtils.getFirstSortKeyForColumn(keys, column);
         if (keys.indexOf(sortKey) == 0)  {
             //  primary key: in this case we'll use next sortorder in cylce
@@ -169,7 +168,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
      * @return the first SortOrder in the sort order cycle or null if empty.
      */
     private SortOrder getFirstInCycle() {
-        return sortCycle.size() > 0 ? sortCycle.get(0) : null;
+        return !sortCycle.isEmpty() ? sortCycle.get(0) : null;
     }
 
     private void checkColumn(int column) {
@@ -190,7 +189,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     public void setSortOrder(int column, SortOrder sortOrder) {
         if (!isSortable(column)) return;
         SortKey replace = new SortKey(column, sortOrder);
-        List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
+        List<SortKey> keys = new ArrayList<>(getSortKeys());
         SortUtils.removeFirstSortKeyForColumn(keys, column);
         keys.add(0, replace);
         // PENDING max sort keys, respect here?
@@ -214,7 +213,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     @Override
     public void resetSortOrders() {
         if (!isSortable()) return;
-        List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
+        List<SortKey> keys = new ArrayList<>(getSortKeys());
         for (int i = keys.size() -1; i >= 0; i--) {
             SortKey sortKey = keys.get(i);
             if (isSortable(sortKey.getColumn())) {
@@ -278,14 +277,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
         return Arrays.copyOf(DEFAULT_CYCLE, DEFAULT_CYCLE.length);
     }
     
-    private static final StringValueProvider DEFAULT_PROVIDER = new StringValueProvider() {
-
-        @Override
-        public StringValue getStringValue(int row, int column) {
-            return StringValues.TO_STRING;
-        }
-        
-    };
+    private static final StringValueProvider DEFAULT_PROVIDER = (row, column) -> StringValues.TO_STRING;
     
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -4,14 +4,8 @@
  */
 package org.jdesktop.swingx.action;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
@@ -24,6 +18,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +40,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #255-swingx: probs in synch selectable button <--> action. 
-     * 
+     * <p>
      * test that configured button is kept in synch with
      *  action selected state and the other way round. This uses a 
      *  custom configure via the ActionContainerFactory.configureSelectableButton.
@@ -75,7 +70,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #255-swingx: probs in synch selectable button <--> action. 
-     * 
+     * <p>
      * test that configured button is kept in synch with
      *  action selected state and the other way round. This uses the 
      *  ActionContainerFactory.createButton().
@@ -105,7 +100,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #255-swingx: probs in synch selectable button <--> action. 
-     *  
+     * <p>
      * test that the button always has mostly one
      * Action registered as itemListener and that
      * this registered listener is the same as the buttons
@@ -256,7 +251,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #229-swingx: increasing listener list in column actions.
-     * 
+     * <p>
      * sub-issue: ActionContainerFactory doesn't check if the action is
      * already synchronizing to the same button. 
      */
@@ -270,7 +265,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #229-swingx: increasing listener list in column actions.
-     * 
+     * <p>
      * sub-issue: ActionContainerFactory doesn't check if the action is
      * already synchronizing to the same button. 
      */
@@ -303,7 +298,7 @@ public class AbstractActionExtTest {
 
     /**
      * Issue #229-swingx: increasing listener list in column actions.
-     * 
+     * <p>
      * sub-issue: ActionContainerFactory registers the action multiple times to
      * the same button as ItemListener
      */
@@ -346,8 +341,8 @@ public class AbstractActionExtTest {
     protected void assertCountAsItemListener(AbstractButton checkBoxItem, ItemListener extAction, int expectedCount) {
         int count = 0;
         ItemListener[] itemListeners = checkBoxItem.getItemListeners();
-        for (int j = 0; j < itemListeners.length; j++) {
-            if (extAction == itemListeners[j]) {
+        for (ItemListener itemListener : itemListeners) {
+            if (extAction == itemListener) {
                 count++;
             }
         }
@@ -380,15 +375,11 @@ public class AbstractActionExtTest {
             }
             
         };
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("enabled".equals(evt.getPropertyName())) {
-                    assertEquals(evt.getNewValue(), ((Action) evt.getSource()).isEnabled());
-                }
-                
+        PropertyChangeListener l = evt -> {
+            if ("enabled".equals(evt.getPropertyName())) {
+                Assertions.assertEquals(evt.getNewValue(), ((Action) evt.getSource()).isEnabled());
             }
-            
+
         };
         action.addPropertyChangeListener(l);
         action.putValue("enabled", false);

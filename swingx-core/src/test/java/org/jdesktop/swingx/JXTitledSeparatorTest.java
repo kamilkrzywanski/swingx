@@ -43,7 +43,7 @@ public class JXTitledSeparatorTest extends InteractiveTestCase {
 
     /**
      * Issue #305-swingx: JXTitledSeparator prefSize should depend on title length.
-     * 
+     * <p>
      * (to solve: never-ever call setPrefSize() - override getPrefSize() instead)
      *
      */
@@ -86,10 +86,10 @@ public class JXTitledSeparatorTest extends InteractiveTestCase {
     /**
      * Issue #304-swingx: JXTitledSeparator should have same orientation
      * dependent behaviour as TitledBorder.
-     * 
+     * <p>
      * Looking at bidi-compliance: LEFT/RIGHT should be absolute,
      * as opposed to LEADING/TRAILING which is orientation dependent.
-     *  
+     * <p>
      * weird (unrelated to the titledSeparator) the dynamic update
      * of orientation isn't taken - only after resize. Problem of
      * panel, frame, ?? An equivalent check for jxtable which resides

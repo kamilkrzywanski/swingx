@@ -178,7 +178,7 @@ public class PatternPredicate implements HighlightPredicate {
             return false;
         String value = adapter.getString(testColumn);
         
-        if ((value == null) || (value.length() == 0)) {
+        if ((value == null) || (value.isEmpty())) {
             return false;
         }
         return pattern.matcher(value).find();

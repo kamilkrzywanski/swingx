@@ -35,7 +35,6 @@ import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -108,32 +107,17 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     public void interactiveDynamicCellHeightTree() {
       final JXTree tree = new  JXTree(AncientSwingTeam.createNamedColorTreeModel());
       
-      TreeSelectionListener l = new TreeSelectionListener() {
-          
-          @Override
-          public void valueChanged(TreeSelectionEvent e) {
-              LOG.info("height " + tree.getRowHeight());
+      TreeSelectionListener l = e -> {
+          LOG.info("height " + tree.getRowHeight());
 //              tree.setRowHeight(-1);
-              SwingUtilities.invokeLater(new Runnable() {
-                  public void run() {
-                      tree.invalidateCellSizeCache();
-                  }
-              });
-              
-          }
-          
+          SwingUtilities.invokeLater(tree::invalidateCellSizeCache);
+
       };
       tree.addTreeSelectionListener(l);
       tree.setCellRenderer(new DefaultTreeRenderer());
 //      tree.setLargeModel(true);
       tree.setRowHeight(0);
-      HighlightPredicate selected = new HighlightPredicate() {
-          
-          @Override
-          public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-              return adapter.isSelected();
-          }
-      };
+      HighlightPredicate selected = (renderer, adapter) -> adapter.isSelected();
       Highlighter hl = new FontHighlighter(selected, tree.getFont().deriveFont(50f));
       tree.addHighlighter(hl);
       showWithScrollingInFrame(tree, "big font on focus");
@@ -142,7 +126,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
 
     /**
      * Issue #1231-swingx: tree cell renderer size problems.
-     * 
+     * <p>
      * Cache not invalidated on setCellRenderer due to not firing a 
      * propertyChange (it's wrapped). Problem or not is LAF dependent ;-)
      * The not-firing is clearly a bug.
@@ -231,16 +215,12 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     public void interactiveNoIconsNoUnwrap() {
         TreeModel model = new ActionMapTreeTableModel(new JXTable());
         JXTree tree = new JXTree(model);
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if ((value instanceof TreeTableNode) 
-                        && ((TreeTableNode) value).getColumnCount() > 0) {
-                    value = ((TreeTableNode) value).getValueAt(0);
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if ((value instanceof TreeTableNode)
+                    && ((TreeTableNode) value).getColumnCount() > 0) {
+                value = ((TreeTableNode) value).getValueAt(0);
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         DefaultTreeRenderer renderer = new DefaultTreeRenderer(IconValues.NONE, sv);
         ((WrappingProvider) renderer.getComponentProvider()).setUnwrapUserObject(false);
@@ -257,21 +237,21 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
      * Requirements:
      * - striping effect on leaf, extend to full width of tree
      * - striping relative to parent (not absolute position of row)
-     * 
+     * <p>
      * Trick (from forum): set the rendering component's pref width
      *   in the renderer.
-     *   
+     * <p>
      * Applied to SwingX: 
      * - use a highlighter for the pref width setting
      * - use a predicate to decide which striping to turn on
-     *   
+     * <p>
      * Problem: difficult to get rid off size cache of BasicTreeUI.
-     * 
+     * <p>
      * The sizing of the nodes is cached before the actual expansion.
      * That is the row index is invalid at the time of messaging the
      * renderer, so decoration which effects the size (like setting pref
      * f.i.) is ignored. Except for largeModel and fixed row height.
-     * 
+     * <p>
      * Note: as is, it cannot cope with RToL component orientation.
      */
     public void interactiveExpandToWidthHighlighter() {
@@ -285,27 +265,17 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
         int indent = ((BasicTreeUI) tree.getUI()).getLeftChildIndent()
            + ((BasicTreeUI) tree.getUI()).getRightChildIndent();
         int depthOffset = getDepthOffset(tree);
-        HighlightPredicate evenChild = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                if (!(adapter.getComponent() instanceof JTree)) return false;
-                TreePath path = ((JTree) adapter.getComponent()).getPathForRow(adapter.row);
-                return path == null ? false : 
-                    (adapter.row - ((JTree) adapter.getComponent()).getRowForPath(path.getParentPath())) % 2 == 0;
-            }
-
+        HighlightPredicate evenChild = (renderer, adapter) -> {
+            if (!(adapter.getComponent() instanceof JTree)) return false;
+            TreePath path = ((JTree) adapter.getComponent()).getPathForRow(adapter.row);
+            return path == null ? false :
+                (adapter.row - ((JTree) adapter.getComponent()).getRowForPath(path.getParentPath())) % 2 == 0;
         };
-        HighlightPredicate oddChild = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                if (!(adapter.getComponent() instanceof JTree)) return false;
-                TreePath path = ((JTree) adapter.getComponent()).getPathForRow(adapter.row);
-                return path == null ? false : 
-                    (adapter.row - ((JTree) adapter.getComponent()).getRowForPath(path.getParentPath())) % 2 == 1;
-            }
-            
+        HighlightPredicate oddChild = (renderer, adapter) -> {
+            if (!(adapter.getComponent() instanceof JTree)) return false;
+            TreePath path = ((JTree) adapter.getComponent()).getPathForRow(adapter.row);
+            return path == null ? false :
+                (adapter.row - ((JTree) adapter.getComponent()).getRowForPath(path.getParentPath())) % 2 == 1;
         };
         final ExtendToWidthHighlighter extendToWidthHighlighter = new ExtendToWidthHighlighter(null, indent, depthOffset);
         tree.setHighlighters(
@@ -414,7 +384,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
             @Override
             public boolean stopCellEditing() {
                 String value = String.valueOf(getCellEditorValue());
-                if (value.startsWith("s")) {
+                if (!value.isEmpty() && value.charAt(0) == 's') {
                     return false;
                 }
                 return super.stopCellEditing();
@@ -473,7 +443,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
 
     /**
      * Issue #503-swingx: JXList rolloverEnabled disables custom cursor.
-     * 
+     * <p>
      * Sanity test for JXTree (looks okay).
      *
      */
@@ -501,7 +471,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     
     /**
      * Issue ??: Background highlighters not working on JXTree.
-     *
+     * <p>
      * Works with SwingX renderer
      */
     public void interactiveTestRolloverHighlightBackground() {
@@ -516,10 +486,9 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     
     private Highlighter createRolloverHighlighter(boolean useForeground) {
         Color color = new Color(0xF0, 0xF0, 0xE0); //LegacyHighlighter.ledgerBackground.getBackground();
-        Highlighter highlighter = new ColorHighlighter(
-                HighlightPredicate.ROLLOVER_ROW, useForeground ? null : color, 
+        return new ColorHighlighter(
+                HighlightPredicate.ROLLOVER_ROW, useForeground ? null : color,
                         useForeground ? color.darker() : null);
-        return highlighter;
     }
     
     private Highlighter[] createDepthHighlighters() {
@@ -533,7 +502,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     
     /**
      * Issue ??: Background highlighters not working on JXTree.
-     * 
+     * <p>
      * It's a problem of core DefaultTreeCellRenderer. SwingX renderers are okay.
      *
      */
@@ -566,18 +535,12 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
     
     private TreeCellRenderer createRenderer() {
         final TreeCellRenderer delegate = new DefaultTreeCellRenderer();
-        TreeCellRenderer renderer = new TreeCellRenderer() {
-
-            public Component getTreeCellRendererComponent(JTree tree, Object value, 
-                    boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Component result = delegate.getTreeCellRendererComponent(tree, value, 
-                        selected, expanded, leaf, row, hasFocus);
-                ((JComponent) result).setToolTipText(String.valueOf(tree.getPathForRow(row)));
-                 return result;
-            }
-            
+        return (tree, value, selected, expanded, leaf, row, hasFocus) -> {
+            Component result = delegate.getTreeCellRendererComponent(tree, value,
+                    selected, expanded, leaf, row, hasFocus);
+            ((JComponent) result).setToolTipText(String.valueOf(tree.getPathForRow(row)));
+             return result;
         };
-        return renderer;
     }
 
     /**

@@ -1,7 +1,5 @@
 package org.jdesktop.swingx.plaf.basic;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.applet.Applet;
 import java.awt.GraphicsEnvironment;
 import java.util.logging.Logger;

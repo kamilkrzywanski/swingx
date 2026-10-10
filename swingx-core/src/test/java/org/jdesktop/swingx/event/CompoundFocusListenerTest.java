@@ -7,7 +7,6 @@ package org.jdesktop.swingx.event;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.KeyboardFocusManager;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
@@ -65,13 +64,7 @@ public class CompoundFocusListenerTest extends InteractiveTestCase {
         panel.setBorder(new TitledBorder("has focus dispatcher"));
         // register the compound dispatcher
         CompoundFocusListener focusDispatcher = new CompoundFocusListener(picker);
-        PropertyChangeListener l = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                LOG.info("focused on picker " +  evt.getNewValue());
-                
-            }};
+        PropertyChangeListener l = evt -> LOG.info("focused on picker " +  evt.getNewValue());
         focusDispatcher.addPropertyChangeListener(l);    
         
         JComponent box = Box.createVerticalBox();
@@ -82,10 +75,7 @@ public class CompoundFocusListenerTest extends InteractiveTestCase {
 
     @Test
     public void testNullRoot() {
-        assertThrows(NullPointerException.class, () -> {
-        new CompoundFocusListener(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new CompoundFocusListener(null));}
     
     @Test
     public void testFocusedInitialFalse() {
@@ -105,15 +95,12 @@ public class CompoundFocusListenerTest extends InteractiveTestCase {
         }
         final JXDatePicker picker = getRealizedDatePicker();
         picker.requestFocusInWindow();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
-                assertTrue( 
-                        SwingXUtilities.isDescendingFrom(focusOwner, picker),"sanity: focus transfered into picker hierarchy");
-                CompoundFocusListener l = new CompoundFocusListener(picker);
-                assertTrue( l.isFocused(),"listener must take initial focused state ");
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+            assertTrue(
+                    SwingXUtilities.isDescendingFrom(focusOwner, picker),"sanity: focus transfered into picker hierarchy");
+            CompoundFocusListener l = new CompoundFocusListener(picker);
+            assertTrue( l.isFocused(),"listener must take initial focused state ");
         });
     }
 
@@ -154,12 +141,7 @@ public class CompoundFocusListenerTest extends InteractiveTestCase {
         l.addPropertyChangeListener(report);
         l.release();
         picker.requestFocusInWindow();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(0, report.getEventCount("focused"));
-            }
-        });
+        SwingUtilities.invokeAndWait((Runnable) () -> assertEquals(0, report.getEventCount("focused")));
     }
 
     /**
@@ -183,12 +165,7 @@ public class CompoundFocusListenerTest extends InteractiveTestCase {
         final PropertyChangeReport report = new PropertyChangeReport();
         l.addPropertyChangeListener(report);
         picker.requestFocusInWindow();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(1, report.getEventCount("focused"));
-            }
-        });
+        SwingUtilities.invokeAndWait((Runnable) () -> assertEquals(1, report.getEventCount("focused")));
     }
 
     /**

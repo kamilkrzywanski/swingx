@@ -113,7 +113,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
             tableModel.setValueAt(i, i, 0);
         }
         final JXTable table = new JXTable(tableModel);
-        final ListSortController<ListModel> controller = new ListSortController<ListModel>(list.getModel());
+        final ListSortController<ListModel> controller = new ListSortController<>(list.getModel());
         list.setRowSorter(controller);
         controller.setComparator(0, TableSortController.COMPARABLE_COMPARATOR);
         Action sort = new AbstractAction("toggle sort") {
@@ -201,7 +201,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
         }
         final JTable table = new JTable(tableModel);
         final JTable core = new JTable(table.getModel());
-        final TableSortController<TableModel> rowSorter = new TableSortController<TableModel>(table.getModel());
+        final TableSortController<TableModel> rowSorter = new TableSortController<>(table.getModel());
         table.setRowSorter(rowSorter);
         core.setRowSorter(rowSorter);
         core.setSelectionModel(table.getSelectionModel());
@@ -268,7 +268,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
         }
         final JTable table = new JTable(tableModel);
         final JTable core = new JTable(table.getModel());
-        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(table.getModel());
+        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(rowSorter);
         core.setRowSorter(rowSorter);
         core.setSelectionModel(table.getSelectionModel());
@@ -344,7 +344,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
         }
         final JXTable table = new JXTable(tableModel);
         final JTable core = new JTable(table.getModel());
-        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(table.getModel());
+        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
         core.setRowSorter(rowSorter);
         JXFrame frame = showWithScrollingInFrame(table, core, "xTable <> core");
         Action fireAllChanged = new AbstractAction("fireDataChanged") {
@@ -460,7 +460,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
                     selected = list.convertIndexToModel(selected);
                 }
                 if (selected > 0) {
-                    int newValue = ((Integer) model.getElementAt(selected - 1)).intValue() + 10;
+                    int newValue = (Integer) model.getElementAt(selected - 1) + 10;
                     model.set(selected - 1, newValue);
                 } 
                 
@@ -520,11 +520,12 @@ public class JXListSortRevamp extends InteractiveTestCase {
         public void fireContentsChanged() {
             fireContentsChanged(this, -1, -1);
         }
-    };
+    }
+
     protected DefaultListModelF createAscendingListModel(int startRow, int count) {
         DefaultListModelF l = new DefaultListModelF();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(row);
         }
         return l;
     }
@@ -580,7 +581,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
         listModel = createListModel();
         ascendingListModel = createAscendingListModel(0, 22);
         list = new JXList(ascendingListModel);
-        controller = new ListSortController<ListModel>(list.getModel());
+        controller = new ListSortController<>(list.getModel());
         controller.setComparator(0, TableSortController.COMPARABLE_COMPARATOR);
         list.setRowSorter(controller);
 

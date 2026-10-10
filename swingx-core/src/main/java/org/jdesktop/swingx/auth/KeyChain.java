@@ -23,10 +23,10 @@ package org.jdesktop.swingx.auth;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -81,14 +81,8 @@ public class KeyChain {
             store = KeyStore.getInstance("JCEKS");
             store.load(inputStream, masterPassword);
 
-        } catch (KeyStoreException ex) {
+        } catch (KeyStoreException | EOFException | NoSuchAlgorithmException | CertificateException ex) {
             LOG.log(Level.WARNING, "", ex);
-        } catch (CertificateException ex) {
-                        LOG.log(Level.WARNING, "", ex);
-        } catch (NoSuchAlgorithmException ex) {
-                        LOG.log(Level.WARNING, "", ex);
-        } catch (EOFException ex) {
-                        LOG.log(Level.WARNING, "", ex);
         }
 
     }
@@ -108,11 +102,7 @@ public class KeyChain {
                     .getEntry(user + "@" + server,
                             new KeyStore.PasswordProtection(masterPassword));
             return new String(entry2.getSecretKey().getEncoded());
-        } catch (KeyStoreException ex) {
-            LOG.log(Level.WARNING, "", ex);
-        } catch (UnrecoverableEntryException ex) {
-            LOG.log(Level.WARNING, "", ex);
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableEntryException ex) {
             LOG.log(Level.WARNING, "", ex);
         }
 
@@ -163,11 +153,7 @@ public class KeyChain {
     public void store(OutputStream ostream) throws IOException {
         try {
             store.store(ostream, masterPassword);
-        } catch (KeyStoreException ex) {
-                        LOG.log(Level.WARNING, "", ex);
-        } catch (CertificateException ex) {
-                        LOG.log(Level.WARNING, "", ex);
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException ex) {
                         LOG.log(Level.WARNING, "", ex);
         }
     }
@@ -196,7 +182,7 @@ public class KeyChain {
                 LOG.fine("key =" + i + " pass ="
                         + kc.getPassword("" + i, "sun-ds.sfbay"));
             }
-            kc.store(new FileOutputStream(file));
+            kc.store(Files.newOutputStream(file.toPath()));
         } catch (Exception e) {
             LOG.log(Level.WARNING, "", e);
         }

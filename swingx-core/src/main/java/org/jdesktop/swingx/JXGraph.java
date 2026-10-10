@@ -40,7 +40,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -514,7 +513,7 @@ public class JXGraph extends JXPanel {
         this.setMajorY(this.defaultMajorY = majorY);
         this.setMinorCountY(minorCountY);
         
-        this.plots = new LinkedList<DrawablePlot>();
+        this.plots = new LinkedList<>();
         
         this.mainFormatter = NumberFormat.getInstance();
         this.mainFormatter.setMaximumFractionDigits(2);
@@ -533,12 +532,7 @@ public class JXGraph extends JXPanel {
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
         
-        plotChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                repaint();
-            }
-        };
+        plotChangeListener = evt -> repaint();
     }
 
     /**

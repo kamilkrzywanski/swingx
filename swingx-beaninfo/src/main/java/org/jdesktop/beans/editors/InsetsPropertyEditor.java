@@ -29,14 +29,13 @@ public class InsetsPropertyEditor extends PropertyEditorSupport {
     
     @Override
     public void setAsText(String text) {
-        String originalParam = text;
-        
+
         try {
             Insets val = (Insets)PropertyEditorUtil.createValueFromString(
                     text, 4, Insets.class, int.class);
             setValue(val);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [top,left,bottom,right] or [top , left , bottom , right] or [top left bottom right]", e);
         }
     }

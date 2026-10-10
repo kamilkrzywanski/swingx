@@ -143,7 +143,7 @@ public class BoundAction extends AbstractActionExt {
     /**
      * The callback for the toggle/state changed action that invokes a method 
      * with a boolean argument on a target.
-     *
+     * <p>
      * TODO: should reimplement this class as something that can be persistable.
      */
     private class BooleanInvocationHandler implements ItemListener {
@@ -236,8 +236,8 @@ public class BoundAction extends AbstractActionExt {
     public void actionPerformed(ActionEvent evt) {
         ActionListener[] alist = getActionListeners();
         if (alist != null) {
-            for (int i = 0 ; i < alist.length; i++) {
-                alist[i].actionPerformed(evt);
+            for (ActionListener actionListener : alist) {
+                actionListener.actionPerformed(evt);
             }
         }
     }
@@ -259,8 +259,8 @@ public class BoundAction extends AbstractActionExt {
             // Forward the event to the delgate for handling.
             ItemListener[] ilist = getItemListeners();
             if (ilist != null) {
-                for (int i = 0; i < ilist.length; i++) {
-                    ilist[i].itemStateChanged(evt);
+                for (ItemListener itemListener : ilist) {
+                    itemListener.itemStateChanged(evt);
                 }
             }
         }

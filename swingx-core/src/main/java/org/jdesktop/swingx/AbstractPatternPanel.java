@@ -21,7 +21,6 @@
 package org.jdesktop.swingx;
 
 import java.awt.Dimension;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Locale;
 
@@ -43,10 +42,10 @@ import org.jdesktop.swingx.search.PatternModel;
 
 /**
  * Common base class of ui clients.
- * 
+ * <p>
  * Implements basic synchronization between PatternModel state and
  * actions bound to it.
- * 
+ * <p>
  * 
  * 
  * PENDING: extending JXPanel is a convenience measure, should be extracted
@@ -105,7 +104,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
     /**
      * creates and registers all "executable" actions.
      * Meaning: the actions bound to a callback method on this.
-     * 
+     * <p>
      * PENDING: not quite correctly factored? Name?
      *
      */
@@ -218,7 +217,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
     
     /**
      * Updates locale-dependent state.
-     * 
+     * <p>
      * Here: updates registered column actions' locale-dependent state.
      * <p>
      * 
@@ -245,7 +244,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
 
     /**
      * called from listening to pattern property of PatternModel.
-     * 
+     * <p>
      * This implementation calls match() if the model is in
      * incremental state.
      *
@@ -285,7 +284,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
 
     /**
      * creates and returns a PropertyChangeListener to the PatternModel.
-     * 
+     * <p>
      * NOTE: the patternModel is totally under control of this class - currently
      * there's no need to keep a reference to the listener.
      * 
@@ -293,39 +292,35 @@ public abstract class AbstractPatternPanel extends JXPanel {
      *  <code>PropertyChangeListener</code>
      */
     protected PropertyChangeListener getPatternModelListener() {
-        return new PropertyChangeListener() {    
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                String property = evt.getPropertyName();
-                if ("pattern".equals(property)) {
-                    refreshPatternFromModel();
-                } else if ("rawText".equals(property)) {
-                    refreshDocumentFromModel();
-                } else if ("caseSensitive".equals(property)){
-                    getAction(PatternModel.MATCH_CASE_ACTION_COMMAND).
-                        setSelected(((Boolean) evt.getNewValue()).booleanValue());
-                } else if ("wrapping".equals(property)) {
-                    getAction(PatternModel.MATCH_WRAP_ACTION_COMMAND).
-                    setSelected(((Boolean) evt.getNewValue()).booleanValue());
-                } else if ("backwards".equals(property)) {
-                    getAction(PatternModel.MATCH_BACKWARDS_ACTION_COMMAND).
-                    setSelected(((Boolean) evt.getNewValue()).booleanValue());
-                } else if ("incremental".equals(property)) {
-                    getAction(PatternModel.MATCH_INCREMENTAL_ACTION_COMMAND).
-                    setSelected(((Boolean) evt.getNewValue()).booleanValue());
+        return evt -> {
+            String property = evt.getPropertyName();
+            if ("pattern".equals(property)) {
+                refreshPatternFromModel();
+            } else if ("rawText".equals(property)) {
+                refreshDocumentFromModel();
+            } else if ("caseSensitive".equals(property)){
+                getAction(PatternModel.MATCH_CASE_ACTION_COMMAND).
+                    setSelected((Boolean) evt.getNewValue());
+            } else if ("wrapping".equals(property)) {
+                getAction(PatternModel.MATCH_WRAP_ACTION_COMMAND).
+                setSelected((Boolean) evt.getNewValue());
+            } else if ("backwards".equals(property)) {
+                getAction(PatternModel.MATCH_BACKWARDS_ACTION_COMMAND).
+                setSelected((Boolean) evt.getNewValue());
+            } else if ("incremental".equals(property)) {
+                getAction(PatternModel.MATCH_INCREMENTAL_ACTION_COMMAND).
+                setSelected((Boolean) evt.getNewValue());
 
-                } else if ("empty".equals(property)) {
-                    refreshEmptyFromModel();
-                }   
-    
+            } else if ("empty".equals(property)) {
+                refreshEmptyFromModel();
             }
-    
+
         };
     }
 
     /**
      * called from listening to empty property of PatternModel.
-     * 
+     * <p>
      * this implementation synch's the enabled state of the action with
      * MATCH_ACTION_COMMAND to !empty.
      * 
@@ -350,12 +345,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      */
     protected void refreshDocumentFromModel() {
         if (searchField.getText().equals(getPatternModel().getRawText())) return;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                searchField.setText(getPatternModel().getRawText());
-            }
-        });
+        SwingUtilities.invokeLater(() -> searchField.setText(getPatternModel().getRawText()));
     }
 
     /**

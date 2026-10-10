@@ -18,7 +18,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 /**
  * Test to exposed known issues of <code>TableColumnModelExt</code>
  * implementations.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behaviour.
@@ -27,7 +27,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
  */
 public class TableColumnModelExtIssues extends TableColumnModelTest {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         setSystemLF(false);
        TableColumnModelExtIssues test = new TableColumnModelExtIssues();
        try {

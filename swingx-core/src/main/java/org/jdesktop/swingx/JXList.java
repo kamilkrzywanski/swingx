@@ -42,7 +42,6 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ListUI;
 import javax.swing.text.Position.Bias;
@@ -78,7 +77,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * 
  * <h2>Sorting and Filtering</h2>
  * JXList supports sorting and filtering. 
- * 
+ * <p>
  * Changed to use core support. Usage is very similar to J/X/Table.
  * It provides api to apply a specific sort order, to toggle the sort order and to reset a sort.
  * Sort sequence can be configured by setting a custom comparator.
@@ -94,7 +93,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * JXList provides api to access items of the underlying model in view coordinates
  * and to convert from/to model coordinates. 
- * 
+ * <p>
  * <b>Note</b>: JXList needs a specific ui-delegate - BasicXListUI and subclasses - which
  * is aware of model vs. view coordiate systems and which controls the synchronization of 
  * selection/dataModel and sorter state. SwingX comes with a subclass for Synth. 
@@ -189,9 +188,6 @@ public class JXList extends JList {
      */
     public final static String uiClassID = "XListUI";
     
-    /**
-     * Registers a Addon for JXList.
-     */
     static {
         LookAndFeelAddons.contribute(new XListAddon());
     }
@@ -493,7 +489,7 @@ public class JXList extends JList {
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
     protected ListRolloverController<JXList> createLinkController() {
-        return new ListRolloverController<JXList>();
+        return new ListRolloverController<>();
     }
 
 
@@ -557,18 +553,18 @@ public class JXList extends JList {
     /**
      * Creates and returns the default RowSorter. Note that this is already
      * configured to the current ListModel.
-     * 
+     * <p>
      * PENDING JW: review method signature - better expose the need for the
      * model by adding a parameter? 
      * 
      * @return the default RowSorter.
      */
     protected RowSorter<? extends ListModel> createDefaultRowSorter() {
-        return new ListSortController<ListModel>(getModel());
+        return new ListSortController<>(getModel());
     }
     /**
      * Returns the object responsible for sorting.
-     *
+     *beaninfo
      * @return the object responsible for sorting
      * @since 1.6
      */
@@ -613,7 +609,7 @@ public class JXList extends JList {
     /**
      * Sets &quot;sortable&quot; property indicating whether or not this list
      * isSortable. 
-     * 
+     * <p>
      * <b>Note</b>: as of post-1.0 this property is propagated to the SortController. 
      * Whether or not a change triggers a re-sort is up to either the concrete controller 
      * implementation (the default doesn't) or client code. This behaviour is
@@ -762,7 +758,6 @@ public class JXList extends JList {
      * 
      * @return the filter used in the sorter.
      */
-    @SuppressWarnings("unchecked")
     public RowFilter<?, ?> getRowFilter() {
         return hasSortController() ? getSortController().getRowFilter() : null;
     }
@@ -863,7 +858,7 @@ public class JXList extends JList {
      * touch the sorter's configuration.<p>
      * 
      * This implementation returns true if the sorter is of type SortController.
-     * 
+     * <p>
      * Note: the synchronization is unidirection from the table to the sorter. 
      * Changing the sorter under the table's feet might lead to undefined
      * behaviour.
@@ -933,12 +928,12 @@ public class JXList extends JList {
                     setSelectedIndex(i);
                     if(shouldScroll)
                         ensureIndexIsVisible(i);
-                    repaint();  /** FIX-ME setSelectedIndex does not redraw all the time with the basic l&f**/
+                    repaint();  /* FIX-ME setSelectedIndex does not redraw all the time with the basic l&f*/
                     return;
                 }
             setSelectedIndex(-1);
         }
-        repaint(); /** FIX-ME setSelectedIndex does not redraw all the time with the basic l&f**/
+        repaint(); /* FIX-ME setSelectedIndex does not redraw all the time with the basic l&f*/
     }
 
     /**
@@ -953,9 +948,9 @@ public class JXList extends JList {
     @Override
     public List<Object> getSelectedValuesList() {
         int[] selectedIndexes = getSelectedIndices();
-        List<Object> selectedValues = new ArrayList<Object>(selectedIndexes.length);
-        for (int i = 0; i < selectedIndexes.length; i++) {
-            selectedValues.add(getElementAt(selectedIndexes[i]));
+        List<Object> selectedValues = new ArrayList<>(selectedIndexes.length);
+        for (int selectedIndex : selectedIndexes) {
+            selectedValues.add(getElementAt(selectedIndex));
         }
         return selectedValues;
     }
@@ -1090,7 +1085,7 @@ public class JXList extends JList {
          */
         @Override
         public boolean hasFocus() {
-            /** TODO: Think through printing implications */
+            // TODO: Think through printing implications
             return list.isFocusOwner() && (row == list.getLeadSelectionIndex());
         }
 
@@ -1150,7 +1145,7 @@ public class JXList extends JList {
          */
         @Override
         public boolean isSelected() {
-            /** TODO: Think through printing implications */
+            //TODO: Think through printing implications
             return list.isSelectedIndex(row);
         }
         
@@ -1277,12 +1272,7 @@ public class JXList extends JList {
      *         highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
-        return new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                repaint();
-            }
-        };
+        return e -> repaint();
     }
 
     /**

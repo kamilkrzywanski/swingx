@@ -40,7 +40,7 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
     @SuppressWarnings("all")
     private static final Logger LOG = Logger
             .getLogger(JXTableHeaderIssues.class.getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         
         JXTableHeaderIssues test = new JXTableHeaderIssues();
 //        setSystemLF(true);
@@ -58,7 +58,7 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
     
     /**
      * Issue #683-swingx: autoscroll if columns are dragged outside.
-     * 
+     * <p>
      * Enabled if autoscroll property is true. Changed default to true.
      * Temporarily disabled - clashes with table's horizontalScrollEnabled.
      */
@@ -71,7 +71,7 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
     /**
      * Issue #1154-swingx: Regression after switching to Mustang.
      * was: Issue #31 (swingx): clicking header must not sort if table !enabled.
-     *
+     * <p>
      * OOOKayyyy ... this is a core issue: mouse listener in BasicTableHeaderUI
      * don't respect the header's enabled property (reported with review id 1605216).
      * It's possible to drag, resize, sort even if disabled. The only "normal"
@@ -132,18 +132,18 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
                 DefaultTableColumnModelExt columnModel = (DefaultTableColumnModelExt) getColumnModel();
                 List<TableColumn> columns = columnModel.getColumns(false);
                 int startX = 0;
-                for (int i = 0; i < columns.size(); i++) {
-                    if (columns.get(i) == getDraggedColumn()) {
-                        // at the wrong column the very moment 
-                        // before the dock neighbour is 
+                for (TableColumn column : columns) {
+                    if (column == getDraggedColumn()) {
+                        // at the wrong column the very moment
+                        // before the dock neighbour is
                         // actually replaced with the second next dock neighbour
                         // need to add the stop-column width as well
                         if (distance * oldDistance < 0) {
-                            startX += columns.get(i).getWidth();
+                            startX += column.getWidth();
                         }
-                         break;
+                        break;
                     }
-                    startX += columns.get(i).getWidth();
+                    startX += column.getWidth();
                 }
                 return startX + distance;
             }
@@ -196,7 +196,7 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
      * Issue #281-swingx, Issue #334-swing: 
      * header should be auto-repainted on changes to
      * header title, value. Must update size if appropriate.
-     * 
+     * <p>
      * still not solved: core #4292511 - autowrapping is weird,
      * even with the swingx fix 
      *
@@ -246,21 +246,15 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
         Component comp = renderer.getTableCellRendererComponent(other, "A", false, false, -1, 0);
         final Border border = renderer.getBorder();
         final Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 20);
-        TableCellRenderer wrapper = new TableCellRenderer() {
-
-            public Component getTableCellRendererComponent(JTable mtable,
-                    Object value, boolean isSelected, boolean hasFocus,
-                    int row, int column) {
-                JComponent comp = (JComponent) renderer.getTableCellRendererComponent(mtable, value, 
-                        isSelected, hasFocus, row, column);
-                if (table.getSortedColumn() == null) {
-                    comp.setBorder(border);
-                } else {
-                    comp.setBorder(new CompoundBorder(border, emptyBorder));
-                }
-                return comp;
+        TableCellRenderer wrapper = (mtable, value, isSelected, hasFocus, row, column) -> {
+            JComponent comp1 = (JComponent) renderer.getTableCellRendererComponent(mtable, value,
+                    isSelected, hasFocus, row, column);
+            if (table.getSortedColumn() == null) {
+                comp1.setBorder(border);
+            } else {
+                comp1.setBorder(new CompoundBorder(border, emptyBorder));
             }
-            
+            return comp1;
         };
         other.getTableHeader().setDefaultRenderer(wrapper);
         Action action = new AbstractActionExt("toggle sorter order") {
@@ -285,9 +279,9 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
     /**
      * Issue #271-swingx: make sort triggering mouseEvents
      * customizable.
-     * 
+     * <p>
      * added SortGestureRecognizer.
-     * 
+     * <p>
      * No longer supported - need to re-think (maybe could push core addition?)
      * Anyway, re-opened the old issue.
      *
@@ -362,7 +356,7 @@ public class JXTableHeaderIssues extends JXTableHeaderTest {
      * Looks like a problem in MetalBorders.TableHeaderBorder: extends AbstractBorder but
      * does not override getBorderInsets(comp, insets) which is used by the labelUI getPrefSize
      * to determine the insets and calc the view rect.
-     * 
+     * <p>
      * Here we compound the default metal border
      */
     @Test

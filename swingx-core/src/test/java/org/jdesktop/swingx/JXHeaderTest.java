@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>
  *
  * All test methods in this class are expected to pass.
- * 
+ * <p>
  * PENDING JW: some of the tests are dirty in that they rely on hidden (from the
  * perspective of the JXHeader) implementation
  * details of BasicHeaderUI (like how the different parts are implemented). 

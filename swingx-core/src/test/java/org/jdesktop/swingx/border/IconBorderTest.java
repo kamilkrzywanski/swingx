@@ -210,7 +210,7 @@ public class IconBorderTest extends InteractiveTestCase {
 
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         IconBorderTest test = new IconBorderTest();
         try {
           test.runInteractiveTests();

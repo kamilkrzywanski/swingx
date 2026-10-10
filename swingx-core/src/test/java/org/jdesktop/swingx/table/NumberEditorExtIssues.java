@@ -38,8 +38,6 @@ import javax.swing.text.NumberFormatter;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.table.DatePickerCellEditor;
-import org.jdesktop.swingx.table.NumberEditorExt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,14 +83,14 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
     /**
      * Issue #1236-swingx: NumberEditorExt only handles columns with type
      *    Number.
-     *    
+     * <p>
      * Perceived as overly restrictive, fails f.i. in usage in property sheet.   
      * 
      */
 //    @Test
     public void interactiveMixedColumnEditors() {
         // mixed types in column
-        Object[] values = new Object[] {new Integer(10), new Double(10.5), new Date(),
+        Object[] values = new Object[] {10, 10.5, new Date(),
                 new JLabel("dummy"),
                 new Point(4, 6)};
         DefaultTableModel model = new DefaultTableModel(10, 2) {
@@ -140,7 +138,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      * Check IllegalStateException as doc'ed - the strict version doesn't. 
      * Need to check the delegate implementation?
      */
@@ -158,7 +156,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
     /**
      * Issue ??-swingx: editor with strict number formatter throws on 
      *    committing null value.
-     *   
+     * <p>
      *  happens only if active editor in table. Use non-strict for comparison.
      *  InternationalFormatter with bounds throws as well. But not using
      *  strict catches this in isValid, that is stopCellEditing returns false.
@@ -183,7 +181,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         // no need to do anything special - parsing of doubles fails if out-off range?
         NumberFormatter formatter = new NumberFormatter(format);
-        String text = "9" + new Double(Double.MAX_VALUE).toString();
+        String text = "9" + Double.MAX_VALUE;
         Number number = (Number) formatter.stringToValue(text);
         LOG.info("number: " + number);
     

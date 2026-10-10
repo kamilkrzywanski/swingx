@@ -445,7 +445,7 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
 
     /**
      * Issue #212-swingx: 
-     * 
+     * <p>
      * Behaviour change: 
      * <ul>
      * <li>before - guarantee that exactly one column is always visible, 
@@ -477,10 +477,10 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     }
     /**
      * Issue #212-swingx: 
-     * 
+     * <p>
      * guarantee that exactly one column is always visible if 
      * visibility is toggled via the ColumnControl.
-     * 
+     * <p>
      * Here we deselect the menuitem.
      * 
      */
@@ -502,7 +502,7 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
    /** 
     * Issue #192: initially invisibility columns are hidden
     * but marked as visible in control.
-    *
+    * <p>
     * Issue #38 (swingx): initially invisble columns don't show up
     * in the column control list.
     * 
@@ -522,12 +522,12 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
        assertNotNull( columnControl.popup,"popup menu not null");
        int columnMenuItems = 0;
        Component[] items = ((DefaultColumnControlPopup) columnControl.getColumnControlPopup()).getPopupMenu().getComponents();
-       for (int i = 0; i < items.length; i++) {
-           if (!(items[i] instanceof JMenuItem)) {
-               break;
-           }
-           columnMenuItems++;
-       }
+        for (Component item : items) {
+            if (!(item instanceof JMenuItem)) {
+                break;
+            }
+            columnMenuItems++;
+        }
        // wrong assumption - has separator and actions!
        assertEquals( totalColumnCount, 
                columnMenuItems,"menu items must be equal to columns");
@@ -555,7 +555,7 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
          sortableTableModel = new AncientSwingTeam();
      }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
        setSystemLF(false);
       ColumnControlButtonTest test = new ColumnControlButtonTest();
       try {

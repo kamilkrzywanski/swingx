@@ -66,9 +66,9 @@ public class RectanglePainterTest extends AbstractAreaPainterTest {
         
         AbstractAreaPainter aap = (AbstractAreaPainter) p;
         assertThat(aap.getAreaEffects(), is(new AreaEffect[0]));
-        assertThat(aap.getBorderPaint(), CoreMatchers.<Paint>is(Color.BLACK));
+        assertThat(aap.getBorderPaint(), CoreMatchers.is(Color.BLACK));
         assertThat(aap.getBorderWidth(), is(1f));
-        assertThat(aap.getFillPaint(), CoreMatchers.<Paint>is(Color.RED));
+        assertThat(aap.getFillPaint(), CoreMatchers.is(Color.RED));
         assertThat(aap.getStyle(), is(AbstractAreaPainter.Style.BOTH));
         
         RectanglePainter rp = (RectanglePainter) p;

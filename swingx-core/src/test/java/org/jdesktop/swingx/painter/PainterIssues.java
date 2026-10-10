@@ -41,7 +41,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 
 /**
  * Test to exposed known issues of <code>Painter</code>s.
- * 
+ * <p>
  * Ideally, there would be at least one failing test method per open
  * Issue in the issue tracker. Plus additional failing test methods for
  * not fully specified or not yet decided upon features/behavior.
@@ -52,7 +52,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 public class PainterIssues extends InteractiveTestCase {
     
     static Logger log = Logger.getAnonymousLogger();
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 //      setSystemLF(true);
         PainterIssues test = new PainterIssues();
         try {
@@ -78,10 +78,10 @@ public class PainterIssues extends InteractiveTestCase {
         final JXLabel foreground = new JXLabel(
                 "setup: compound - default and overlay ");
         ShapePainter shapePainter = new ShapePainter();
-        AlphaPainter<?> alpha = new AlphaPainter<Object>();
+        AlphaPainter<?> alpha = new AlphaPainter<>();
         alpha.setAlpha(0.2f);
         alpha.setPainters(shapePainter);
-        CompoundPainter<?> compound = new CompoundPainter<Object>(alpha, foreground
+        CompoundPainter<?> compound = new CompoundPainter<>(alpha, foreground
                 .getForegroundPainter());
         foreground.setForegroundPainter(compound);
         box.add(foreground);
@@ -99,13 +99,7 @@ public class PainterIssues extends InteractiveTestCase {
      */
     public void interactiveRestoreGraphics() {
         Border redLine = BorderFactory.createLineBorder(Color.RED, 3);
-        final Painter<JComponent> permanentTranslate = new Painter<JComponent>() {
-
-            public void paint(Graphics2D g, JComponent object, int width, int height) {
-                g.translate(50, 0); 
-            }
-            
-        };
+        final Painter<JComponent> permanentTranslate = (g, object, width, height) -> g.translate(50, 0);
         JLabel label = new JLabel() {
 
             @Override

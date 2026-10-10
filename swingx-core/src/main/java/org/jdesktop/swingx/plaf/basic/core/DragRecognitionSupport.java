@@ -28,7 +28,6 @@ package org.jdesktop.swingx.plaf.basic.core;
  * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-import java.awt.Toolkit;
 import java.awt.event.*;
 import java.awt.dnd.DragSource;
 import javax.swing.*;
@@ -65,8 +64,8 @@ public class DragRecognitionSupport {
      * This interface allows us to pass in a handler to mouseDragged,
      * so that we can be notified immediately before a drag begins.
      */
-    public static interface BeforeDrag {
-        public void dragStarting(MouseEvent me);
+    public interface BeforeDrag {
+        void dragStarting(MouseEvent me);
     }
 
     /**
@@ -95,7 +94,7 @@ public class DragRecognitionSupport {
      * Returns whether or not the event is potentially part of a drag sequence.
      */
     public static boolean mousePressed(MouseEvent me) {
-        return ((DragRecognitionSupport)getDragRecognitionSupport()).
+        return getDragRecognitionSupport().
             mousePressedImpl(me);
     }
 
@@ -104,7 +103,7 @@ public class DragRecognitionSupport {
      * that started the recognition. Otherwise, return null.
      */
     public static MouseEvent mouseReleased(MouseEvent me) {
-        return ((DragRecognitionSupport)getDragRecognitionSupport()).
+        return getDragRecognitionSupport().
             mouseReleasedImpl(me);
     }
 
@@ -112,7 +111,7 @@ public class DragRecognitionSupport {
      * Returns whether or not a drag gesture recognition is ongoing.
      */
     public static boolean mouseDragged(MouseEvent me, BeforeDrag bd) {
-        return ((DragRecognitionSupport)getDragRecognitionSupport()).
+        return getDragRecognitionSupport().
             mouseDraggedImpl(me, bd);
     }
 

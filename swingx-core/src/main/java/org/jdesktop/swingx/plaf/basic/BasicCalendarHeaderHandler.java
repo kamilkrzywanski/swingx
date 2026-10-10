@@ -24,7 +24,6 @@ package org.jdesktop.swingx.plaf.basic;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -107,19 +106,14 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
 
         public ZoomOutAction() {
             super();
-            tsv = new StringValue() {
-                
-                @Override
-                public String getString(Object value) {
-                    if (value instanceof Calendar) {
-                        String month = monthNames[((Calendar) value)
-                                                  .get(Calendar.MONTH)];
-                        return month + " "
-                        + ((Calendar) value).get(Calendar.YEAR); 
-                    }
-                    return StringValues.TO_STRING.getString(value);
+            tsv = value -> {
+                if (value instanceof Calendar) {
+                    String month = monthNames[((Calendar) value)
+                                              .get(Calendar.MONTH)];
+                    return month + " "
+                    + ((Calendar) value).get(Calendar.YEAR);
                 }
-                
+                return StringValues.TO_STRING.getString(value);
             };
         }
         
@@ -174,19 +168,14 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
 
         private PropertyChangeListener getTargetListener() {
             if (linkListener == null) {
-             linkListener = new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("firstDisplayedDay".equals(evt.getPropertyName())) {
-                        updateFromTarget();
-                    } else if ("locale".equals(evt.getPropertyName())) {
-                        updateLocale();
-                        updateFromTarget();
-                    }
-                }
-                
-            };
+             linkListener = evt -> {
+                 if ("firstDisplayedDay".equals(evt.getPropertyName())) {
+                     updateFromTarget();
+                 } else if ("locale".equals(evt.getPropertyName())) {
+                     updateLocale();
+                     updateFromTarget();
+                 }
+             };
             }
             return linkListener;
         }

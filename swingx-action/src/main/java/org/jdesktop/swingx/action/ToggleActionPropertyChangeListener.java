@@ -31,7 +31,7 @@ import javax.swing.Action;
 /**
  * Added to the Toggle type buttons and menu items so that various components
  * which have been created from a single StateChangeAction can be in synch. 
- * 
+ * <p>
  * This listener is responsible for updating the selected property from the 
  * Action to the AbstractButton. <p>
  * 
@@ -49,7 +49,7 @@ class ToggleActionPropertyChangeListener implements PropertyChangeListener {
     
     public ToggleActionPropertyChangeListener(Action action, AbstractButton button) {
         if (shouldAddListener(action, button)) {
-            this.buttonRef = new WeakReference<AbstractButton>(button);
+            this.buttonRef = new WeakReference<>(button);
             action.addPropertyChangeListener(this);
         }
     }
@@ -101,13 +101,13 @@ class ToggleActionPropertyChangeListener implements PropertyChangeListener {
 
         if (propertyName.equals("selected")) {
             Boolean selected = (Boolean)evt.getNewValue();
-            button.setSelected(selected.booleanValue());
+            button.setSelected(selected);
         }
     }
 
     /**
      * Returns the target button to synchronize from the listener.
-     * 
+     * <p>
      * Side-effects if the target is no longer reachable:
      *  - the internal reference to target is nulled.
      *  - if the given action is != null, this listener removes 
@@ -134,7 +134,7 @@ class ToggleActionPropertyChangeListener implements PropertyChangeListener {
 
     /**
      * Check if this is already synchronizing the given AbstractButton.
-     * 
+     * <p>
      * This may have the side-effect of releasing the weak reference to
      * the target button.
      * 
@@ -151,7 +151,7 @@ class ToggleActionPropertyChangeListener implements PropertyChangeListener {
     /**
      * Checks if this is synchronizing to the same target button as the
      * given listener.
-     * 
+     * <p>
      * This may have the side-effect of releasing the weak reference to
      * the target button.
      * 

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class FindIssues extends FindTest {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         setSystemLF(true);
 //        Locale.setDefault(new Locale("es"));
         FindIssues test = new FindIssues();

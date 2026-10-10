@@ -69,7 +69,7 @@ public class RolloverTest extends InteractiveTestCase {
 
     /**
      * Issue #1249-swingx: RolloverProducer clears rollover point when inserting child
-     * 
+     * <p>
      * Happens f.i. when starting an edit.
      * 
      */
@@ -84,7 +84,7 @@ public class RolloverTest extends InteractiveTestCase {
     
     /**
      * Issue #1193-swingx: rollover state not updated on scrolling/mouseWheel
-     * 
+     * <p>
      * visualize behaviour on 
      * - scrolling (with mouse wheel)
      * - resizing (added custom actions)
@@ -100,7 +100,7 @@ public class RolloverTest extends InteractiveTestCase {
 
     /**
      * Issue #1193-swingx: rollover state not updated on scrolling/mouseWheel
-     * 
+     * <p>
      * visualize behaviour on 
      * - scrolling (with mouse wheel)
      * - resizing (added custom actions)
@@ -115,7 +115,7 @@ public class RolloverTest extends InteractiveTestCase {
     
     /**
      * Issue #1193-swingx: rollover state not updated on scrolling/mouseWheel
-     * 
+     * <p>
      * visualize behaviour on 
      * - scrolling (with mouse wheel)
      * - resizing (added custom actions)

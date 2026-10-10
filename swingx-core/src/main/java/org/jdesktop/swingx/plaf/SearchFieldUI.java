@@ -401,7 +401,7 @@ public class SearchFieldUI extends BuddyTextFieldUI {
 
     private boolean hasText() {
         return searchField.getText() != null
-                && searchField.getText().length() > 0;
+                && !searchField.getText().isEmpty();
     }
 
     class Handler implements PropertyChangeListener, ActionListener,
@@ -412,8 +412,7 @@ public class SearchFieldUI extends BuddyTextFieldUI {
             Object src = evt.getSource();
 
             if (src.equals(searchField)) {
-                if ("findPopupMenu".equals(prop) || "searchMode".equals(prop)
-                        || "useSeperatePopupButton".equals(prop)
+                if ("findPopupMenu".equals(prop) || "useSeperatePopupButton".equals(prop)
                         || "searchMode".equals(prop)
                         || "layoutStyle".equals(prop)) {
                     layoutButtons();

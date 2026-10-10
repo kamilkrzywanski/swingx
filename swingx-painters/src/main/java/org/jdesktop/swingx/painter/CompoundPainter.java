@@ -69,7 +69,7 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
         private final WeakReference<CompoundPainter<?>> ref;
         
         public Handler(CompoundPainter<?> painter) {
-            ref = new WeakReference<CompoundPainter<?>>(painter);
+            ref = new WeakReference<>(painter);
         }
         
         /**
@@ -325,7 +325,7 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      *
      * <p>Call #clearLocalCache if you only want to clear the cache of this
      * <code>CompoundPainter</code>
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override

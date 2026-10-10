@@ -25,7 +25,7 @@ import java.util.Date;
 
 /**
  * Calendar manipulation.
- * 
+ * <p>
  * PENDING: replace by something tested - as is c&p'ed dateUtils 
  * to work on a calendar instead of using long
  * 
@@ -634,7 +634,7 @@ public class CalendarUtils {
      * 
      * The only way to guarantee a flushed state is to let client code call
      * getTime or getTimeInMillis. See
-     * 
+     * <p>
      * <a href=http://forums.java.net/jive/thread.jspa?threadID=74472&tstart=0>Despairing
      * in Calendar</a>
      * <p>

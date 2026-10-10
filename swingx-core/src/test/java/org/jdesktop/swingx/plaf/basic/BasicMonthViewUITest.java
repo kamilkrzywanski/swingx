@@ -117,7 +117,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
-     * 
+     * <p>
      * f.i. Jan, 2011 in de: first of Jan is week 52
      */
     @Test
@@ -127,7 +127,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
     
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
-     * 
+     * <p>
      * f.i. Dec, 2008 in de: last of dec is first week of next year
      */
     @Test
@@ -137,7 +137,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
-     * 
+     * <p>
      * f.i. Oct, 2008 in de: must frequent case, days spread across 5 weeks
      */
     @Test
@@ -169,7 +169,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
     }
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
-     * 
+     * <p>
      * month with fully six weeks: April 2010
      */
     @Test
@@ -179,7 +179,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
-     * 
+     * <p>
      * month with minimal 4 weeks: Feb 2010
      */
     @Test
@@ -218,7 +218,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
     /**
      * Issue #77-swingx: support year-wise navigation.
      * Alleviate the problem by allowing custom calendar headers.
-     * 
+     * <p>
      * Here: test that the monthViewUI uses the custom header if available.
      */
     @Test
@@ -274,7 +274,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
         // digging into internals
         Component header = monthView.getComponent(0);
         if (header instanceof CellRendererPane) {
-            header = (Container) monthView.getComponent(1);
+            header = monthView.getComponent(1);
         }
         assertTrue( header instanceof BasicCalendarHeaderHandler.BasicCalendarHeader,"expected BasicCalendarHeader but was " + header.getClass());
     }
@@ -1219,20 +1219,52 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 
     /**
      * coordinate mapping: logical grid coordinates.
+     * <p>
+     * The probe is the center of a laid-out month. A fixed pixel such as
+     * (20, 20) depends on native window insets, which are applied
+     * asynchronously after the frame is shown.
      */
     @Test
-    public void testMonthGridPositionAtLocation() {
+    public void testMonthGridPositionAtLocation() throws Exception {
         // This test will not work in a headless configuration.
         if (GraphicsEnvironment.isHeadless()) {
             LOG.fine("cannot run test - headless environment");
             return;
         }
-        BasicMonthViewUI uiRToL = getRealizedMonthViewUI(ComponentOrientation.RIGHT_TO_LEFT);
-        BasicMonthViewUI uiLToR = getRealizedMonthViewUI(ComponentOrientation.LEFT_TO_RIGHT);
-        Point gridPositionLToR = uiLToR.getMonthGridPositionAtLocation(20, 20);
-        assertEquals(0, gridPositionLToR.x);
-        Point gridPositionRToL = uiRToL.getMonthGridPositionAtLocation(20, 20);
-        assertEquals(1, gridPositionRToL.x);
+        assertMonthColumn(ComponentOrientation.LEFT_TO_RIGHT, 0);
+        assertMonthColumn(ComponentOrientation.RIGHT_TO_LEFT, 1);
+    }
+
+    /**
+     * Lays the month view out on the event dispatch thread at its preferred
+     * size plus a fixed margin, then checks the logical column at the center
+     * of {@code expectedColumn}. That column is the visual left one.
+     */
+    private void assertMonthColumn(ComponentOrientation orientation, int expectedColumn) throws Exception {
+        Rectangle[] months = new Rectangle[2];
+        Point[] probed = new Point[1];
+        SwingUtilities.invokeAndWait(() -> {
+            JXMonthView monthView = new JXMonthView();
+            monthView.setPreferredColumnCount(2);
+            monthView.setPreferredRowCount(2);
+            monthView.setComponentOrientation(orientation);
+            Calendar calendar = monthView.getCalendar();
+            calendar.set(2008, Calendar.FEBRUARY, 20);
+            monthView.setFirstDisplayedDay(calendar.getTime());
+            Dimension preferred = monthView.getPreferredSize();
+            monthView.setSize(preferred.width + 40, preferred.height + 40);
+            monthView.doLayout();
+            BasicMonthViewUI ui = (BasicMonthViewUI) monthView.getUI();
+            months[0] = ui.getMonthBounds(0, 0);
+            months[1] = ui.getMonthBounds(0, 1);
+            Rectangle month = months[expectedColumn];
+            probed[0] = ui.getMonthGridPositionAtLocation(
+                    month.x + month.width / 2, month.y + month.height / 2);
+        });
+        assertNotNull(probed[0]);
+        assertEquals(expectedColumn, probed[0].x);
+        assertEquals(0, probed[0].y);
+        assertTrue(months[expectedColumn].x < months[1 - expectedColumn].x);
     }
     
     
@@ -1353,7 +1385,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
     /**
      * Returns the ui of a realized JXMonthView with 2 columns and the 
      * given componentOrientation without showingWeekNumbers.
-     * 
+     * <p>
      * NOTE: this must not be used in a headless environment.
      * 
      * @param co
@@ -1368,10 +1400,10 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      * given componentOrientation and showingWeekNumbers flag.
      * It's prefColumns/Rows are set to 2. The first displayedDate is 
      * 20. Feb. 2008 (to have fixed leading/trailing dates)
-     * 
+     * <p>
      * The frame is packed and it's size extended by 40, 40 to
      * give a slight off-position (!= 0) of the months shown. 
-     * 
+     * <p>
      * NOTE: this must not be used in a headless environment.
      * 
      * @param co the componentOrientation to use
@@ -1477,7 +1509,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
     
     /**
      * Issue ??-swingx: zero millis are valid.
-     * 
+     * <p>
      * bad marker in ui-delegate ... but looks okay? 
      */
     @Test
@@ -1491,7 +1523,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p>
      * Here: test that lastDisplayedDate is unchanged.
      */
     @Test
@@ -1500,12 +1532,12 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
         Date first = monthView.getUI().getLastDisplayedDay();
         monthView.updateUI();
         assertEquals(first, monthView.getUI().getLastDisplayedDay());
-    };
+    }
 
-    
+
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p>
      * Here: test that firstDisplayedYear is unchanged.
      */
     @Test
@@ -1514,11 +1546,11 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
         long first = ((BasicMonthViewUI) monthView.getUI()).getFirstDisplayedYear();
         monthView.updateUI();
         assertEquals(first, ((BasicMonthViewUI) monthView.getUI()).getFirstDisplayedYear());
-    };
-    
+    }
+
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p>
      * Here: test that firstDisplayedMonth is unchanged.
      */
     @Test
@@ -1530,7 +1562,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
         long first = ((BasicMonthViewUI) monthView.getUI()).getFirstDisplayedMonth();
         monthView.updateUI();
         assertEquals(first, ((BasicMonthViewUI) monthView.getUI()).getFirstDisplayedMonth());
-    };
-    
+    }
+
 
 }

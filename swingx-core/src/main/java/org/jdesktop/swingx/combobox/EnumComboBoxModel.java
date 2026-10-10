@@ -23,7 +23,6 @@ package org.jdesktop.swingx.combobox;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -110,23 +109,20 @@ public class EnumComboBoxModel<E extends Enum<E>> extends ListComboBoxModel<E> {
      *             than one constant
      */
     public EnumComboBoxModel(Class<E> en) {
-        super(new ArrayList<E>(EnumSet.allOf(en)));
+        super(new ArrayList<>(EnumSet.allOf(en)));
         
         //we could size these, probably not worth it; enums are usually small 
-        valueMap = new HashMap<String, E>();
+        valueMap = new HashMap<>();
         enumClass = en;
-        
-        Iterator<E> iter = data.iterator();
-        
-        while (iter.hasNext()) {
-            E element = iter.next();
+
+        for (E element : data) {
             String s = element.toString();
-            
+
             if (valueMap.containsKey(s)) {
                 throw new IllegalArgumentException(
                         "multiple constants map to one string value");
             }
-            
+
             valueMap.put(s, element);
         }
     }

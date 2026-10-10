@@ -46,7 +46,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #456-swingx: Rollover highlighter not showing while dragging.
-     * 
+     * <p>
      * Example how to force rollover while dragging (NOT dnd - in that case the visuals
      * are controlled by the dnd mechanism): subclass JXList to install a custom 
      * RolloverProducer
@@ -59,9 +59,9 @@ public class RolloverVisualCheck extends InteractiveTestCase {
              */
             @Override
             protected RolloverProducer createRolloverProducer() {
-                ListRolloverProducer producer = new ListRolloverProducer() {
+                return new ListRolloverProducer() {
 
-                    /** 
+                    /**
                      * @inherited <p>
                      */
                     @Override
@@ -69,9 +69,8 @@ public class RolloverVisualCheck extends InteractiveTestCase {
                         super.mouseDragged(e);
                         updateRollover(e, ROLLOVER_KEY, false);
                     }
-                    
+
                 };
-                return producer;
             }
             
         };
@@ -102,7 +101,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #456-swingx: Rollover highlighter not showing while dragging.
-     * 
+     * <p>
      * The expected behaviour: 
      * - don't show the xRollover while dragging during a dnd,
      * - update the rollover to the released.
@@ -136,7 +135,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #1387-swingx: Rollover click-on-release-after drag.
-     * 
+     * <p>
      * PENDING JW: what's the expected behaviour?
      */
     public void interactiveRolloverClickAfterDrag() {
@@ -195,7 +194,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #1374-swingx: Rollover click must be disabled if target disabled
-     * 
+     * <p>
      * Visual test for JXTable, adapted from reporter's test case
      */
     public void interactiveRolloverDisabledClickList() {
@@ -221,7 +220,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #1374-swingx: Rollover click must be disabled if target disabled
-     * 
+     * <p>
      * Visual test for JXTable, adapted from reporter's test case
      */
     public void interactiveRolloverDisabledClickTree() {
@@ -248,7 +247,7 @@ public class RolloverVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #1374-swingx: Rollover click must be disabled if target disabled
-     * 
+     * <p>
      * Visual test for JXTable, adapted from reporter's test case
      */
     public void interactiveRolloverDisabledClickTable() {

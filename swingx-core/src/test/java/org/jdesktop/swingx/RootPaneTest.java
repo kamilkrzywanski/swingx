@@ -82,9 +82,9 @@ public class RootPaneTest {
 	JXStatusBar statusBar = new JXStatusBar();
 	rootPane.setStatusBar(statusBar);
 
-	for (int i = 0; i < comps.length; i++) {
-	    rootPane.getContentPane().add(comps[i]);
-	}
+        for (JLabel jLabel : comps) {
+            rootPane.getContentPane().add(jLabel);
+        }
 
 	Component[] cs = rootPane.getContentPane().getComponents();
 	assertEquals(cs.length, comps.length);
@@ -99,9 +99,9 @@ public class RootPaneTest {
 //	}
 //
 	// Remove all components.
-	for (int i = 0; i < comps.length; i++) {
-	    rootPane.getContentPane().remove(comps[i]);
-	}
+        for (JLabel comp : comps) {
+            rootPane.getContentPane().remove(comp);
+        }
 	cs = rootPane.getContentPane().getComponents();
 	assertEquals(cs.length, 0);
 
@@ -163,9 +163,9 @@ public class RootPaneTest {
     @Test
     public void testStatusBar() {
 	JXRootPane rootPane = new JXRootPane();
-	for (int i = 0; i < comps.length; i++) {
-	    rootPane.add(comps[i]);
-	}
+        for (JLabel comp : comps) {
+            rootPane.add(comp);
+        }
 
 	JXStatusBar statusBar = new JXStatusBar();
 	rootPane.setStatusBar(statusBar);
@@ -202,9 +202,9 @@ public class RootPaneTest {
 	rootPane.setStatusBar(new JXStatusBar());
 
 	JToolBar toolBar = new JToolBar();
-	for (int i = 0; i < actions.length; i++) {
-	    toolBar.add(actions[i]);
-	}
+        for (Action action : actions) {
+            toolBar.add(action);
+        }
 
 	// set the baseline number of mouse listeners
 	Component[] comps = toolBar.getComponents();
@@ -241,9 +241,9 @@ public class RootPaneTest {
 	JMenuBar menuBar = new JMenuBar();
 	JMenu menu = new JMenu("File");
 
-	for (int i = 0; i < actions.length; i++) {
-	    menu.add(actions[i]);
-	}
+        for (Action action : actions) {
+            menu.add(action);
+        }
 	menuBar.add(menu);
 
 	// set the baseline number of mouse listeners
@@ -283,10 +283,10 @@ public class RootPaneTest {
 	JMenuBar menuBar = new JMenuBar();
 	JMenu menu = new JMenu("File");
 
-	for (int i = 0; i < actions.length; i++) {
-	    toolBar.add(actions[i]);
-	    menu.add(actions[i]);
-	}
+        for (Action action : actions) {
+            toolBar.add(action);
+            menu.add(action);
+        }
 	menuBar.add(menu);
 
 	JXRootPane rootPane = new JXRootPane();
@@ -301,9 +301,9 @@ public class RootPaneTest {
 	rootPane.setToolBar(toolBar);
 	rootPane.setJMenuBar(menuBar);
 
-	for (int i = 0; i < comps.length; i++) {
-	    rootPane.add(comps[i]);
-	}
+        for (Component comp : comps) {
+            rootPane.add(comp);
+        }
 	rootPane.add(new JPanel());
 
 	JXFrame frame = new JXFrame();
@@ -319,7 +319,7 @@ public class RootPaneTest {
 	public TestAction(String name, int mnemonic,
 			  String description) {
 	    super(name);
-	    putValue(Action.MNEMONIC_KEY, new Integer(mnemonic));
+	    putValue(Action.MNEMONIC_KEY, mnemonic);
 	    putValue(Action.LONG_DESCRIPTION, description);
 	}
 	public void actionPerformed(ActionEvent evt) {}

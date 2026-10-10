@@ -42,12 +42,7 @@ public final class StringValues {
      * A {@code StringValue} that always presents an empty string.
      */
     @SuppressWarnings("serial")
-    public final static StringValue EMPTY = new StringValue() {
-        @Override
-        public String getString(Object value) {
-            return "";
-        }
-    };
+    public final static StringValue EMPTY = value -> "";
     
     /**
      * A {@code StringValue} that presents a {@link Object#toString() toString}
@@ -55,12 +50,7 @@ public final class StringValues {
      * the same effect as {@link StringValues#EMPTY}.
      */
     @SuppressWarnings("serial")
-    public final static StringValue TO_STRING = new StringValue() {
-        @Override
-        public String getString(Object value) {
-            return (value != null) ? value.toString() : StringValues.EMPTY.getString(value);
-        }
-    };
+    public final static StringValue TO_STRING = value -> (value != null) ? value.toString() : StringValues.EMPTY.getString(value);
 
     /**
      * A {@code StringValue} that presents the current L&F display name for a
@@ -68,17 +58,14 @@ public final class StringValues {
      * {@link File}, this has the same effect as {@link StringValues#TO_STRING}.
      */
     @SuppressWarnings("serial")
-    public static final StringValue FILE_NAME = new StringValue() {
-        @Override
-        public String getString(Object value) {
-            if (value instanceof File) {
-                FileSystemView fsv = FileSystemView.getFileSystemView();
+    public static final StringValue FILE_NAME = value -> {
+        if (value instanceof File) {
+            FileSystemView fsv = FileSystemView.getFileSystemView();
 
-                return fsv.getSystemDisplayName((File) value);
-            }
-
-            return StringValues.TO_STRING.getString(value);
+            return fsv.getSystemDisplayName((File) value);
         }
+
+        return StringValues.TO_STRING.getString(value);
     };
 
     /**
@@ -87,17 +74,14 @@ public final class StringValues {
      * {@link File}, this has the same effect as {@link StringValues#TO_STRING}.
      */
     @SuppressWarnings("serial")
-    public static final StringValue FILE_TYPE = new StringValue() {
-        @Override
-        public String getString(Object value) {
-            if (value instanceof File) {
-                FileSystemView fsv = FileSystemView.getFileSystemView();
-                
-                return fsv.getSystemTypeDescription((File) value);
-            }
-            
-            return StringValues.TO_STRING.getString(value);
+    public static final StringValue FILE_TYPE = value -> {
+        if (value instanceof File) {
+            FileSystemView fsv = FileSystemView.getFileSystemView();
+
+            return fsv.getSystemTypeDescription((File) value);
         }
+
+        return StringValues.TO_STRING.getString(value);
     };
 
     

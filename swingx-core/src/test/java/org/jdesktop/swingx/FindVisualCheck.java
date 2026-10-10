@@ -45,7 +45,7 @@ public class FindVisualCheck extends InteractiveTestCase {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(FindVisualCheck.class
             .getName());
-    public static void main(String args[]) {
+    public static void main(String[] args) {
       setSystemLF(true);
 //      Locale.setDefault(new Locale("es"));
       FindVisualCheck test = new FindVisualCheck();
@@ -213,8 +213,7 @@ public class FindVisualCheck extends InteractiveTestCase {
             base = new ColorHighlighter(Color.YELLOW.brighter(), null, 
                     Color.YELLOW.darker(), null);
             cell = new ColorHighlighter(Color.YELLOW.darker(), null);
-            CompoundHighlighter match = new CompoundHighlighter(base, cell);
-            return match;
+            return new CompoundHighlighter(base, cell);
         }
 
     }
@@ -222,10 +221,10 @@ public class FindVisualCheck extends InteractiveTestCase {
     
    /**
     * Requirement: hook into close. 
-    * 
+    * <p>
     * Solution: put the custom action in the panel's action map with the 
     * key JXDialog.CLOSE_ACTION_COMMAND.
-    * 
+    * <p>
     * Nasty problem is that the custom action overwrites the default, 
     * so the dialog is not closed. Nasty solution is to go up the until the
     * JXDialog is found and manually invoke its close.
@@ -268,12 +267,12 @@ public class FindVisualCheck extends InteractiveTestCase {
     }
     /**
      * Issue #720, 692-swingx: findDialog on tree selection as match-marker lost
-     * 
+     * <p>
      * Scenario (#692): open find via button
      * - press button to open find
      * - run a search with match, selects a node
      * - close findDialog, clears selection
-     * 
+     * <p>
      * Scenario (#702): open find via ctrl-f
      * - focus tree
      * - ctrl-f to open findDialog
@@ -300,10 +299,10 @@ public class FindVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #718-swingx: finddialog not updated on LF switch.
-     * 
+     * <p>
      * Hmm .. shouldn't a lf-switcher update all windows? Like the
      * setPlafAction in InteractiveTestCase does (since today <g>).
-     * 
+     * <p>
      * Yeah, but the dialog had been disposed and the findPanel unparented 
      * if focus is moved somewhere "outside" of the target. Needed to add something
      * focusable to reproduce here: 

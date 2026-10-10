@@ -229,11 +229,7 @@ public class ShadowRenderer {
         
         if (shadowOpacity < 0.0) {
             this.opacity = 0.0f;
-        } else if (shadowOpacity > 1.0f) {
-            this.opacity = 1.0f;
-        } else {
-            this.opacity = shadowOpacity;
-        }
+        } else this.opacity = Math.min(shadowOpacity, 1.0f);
         
         changeSupport.firePropertyChange(OPACITY_CHANGED_PROPERTY,
                                          oldOpacity,
@@ -258,12 +254,8 @@ public class ShadowRenderer {
      */
     public void setSize(final int shadowSize) {
         int oldSize = this.size;
-        
-        if (shadowSize < 0) {
-            this.size = 0;
-        } else {
-            this.size = shadowSize;
-        }
+
+        this.size = Math.max(shadowSize, 0);
         
         changeSupport.firePropertyChange(SIZE_CHANGED_PROPERTY,
                                          new Integer(oldSize),

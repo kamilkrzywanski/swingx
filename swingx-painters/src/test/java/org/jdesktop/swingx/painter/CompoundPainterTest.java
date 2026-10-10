@@ -92,7 +92,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
      */
     @Test
     public void testSetNullPainters() {
-        CompoundPainter<Object> painter = new CompoundPainter<Object>();
+        CompoundPainter<Object> painter = new CompoundPainter<>();
         // changed to cast to Painter, since uncasted it is equivalent to
         // Painter[], which is checked in the next test
         painter.setPainters((Painter<?>) null);
@@ -104,7 +104,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
      */
     @Test
     public void testSetEmptyPainters() {
-        CompoundPainter<Object> painter = new CompoundPainter<Object>();
+        CompoundPainter<Object> painter = new CompoundPainter<>();
         // okay
         painter.setPainters();
         // fails
@@ -151,7 +151,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
         ArgumentCaptor<PropertyChangeEvent> captor = ArgumentCaptor.forClass(PropertyChangeEvent.class);
         verify(pcl).propertyChange(captor.capture());
         
-        assertThat(captor.getValue().getSource(), CoreMatchers.<Object>is(sameInstance(p)));
+        assertThat(captor.getValue().getSource(), CoreMatchers.is(sameInstance(p)));
         assertThat(captor.getValue().getPropertyName(), is("dirty"));
         assertThat(captor.getAllValues().size(), is(1));
     }

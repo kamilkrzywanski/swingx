@@ -90,7 +90,7 @@ public class BasicMonthViewUIIssues extends InteractiveTestCase {
 
     /**
      * Issue #786-swingx: IllegalStateException when paintDays of April 2008.
-     * 
+     * <p>
      * Set the default timezone and get the default calendar.
      * 
      */
@@ -143,7 +143,7 @@ public class BasicMonthViewUIIssues extends InteractiveTestCase {
     /**
      * Returns the ui of a realized JXMonthView with 2 columns and the 
      * given componentOrientation without showingWeekNumbers.
-     * 
+     * <p>
      * NOTE: this must not be used in a headless environment.
      * 
      * @param co
@@ -158,10 +158,10 @@ public class BasicMonthViewUIIssues extends InteractiveTestCase {
      * given componentOrientation and showingWeekNumbers flag.
      * It's prefColumns/Rows are set to 2. The first displayedDate is 
      * 20. Feb. 2008 (to have fixed leading/trailing dates)
-     * 
+     * <p>
      * The frame is packed and it's size extended by 40, 40 to
      * give a slight off-position (!= 0) of the months shown. 
-     * 
+     * <p>
      * 
      * 
      * NOTE: this must not be used in a headless environment.
@@ -184,8 +184,7 @@ public class BasicMonthViewUIIssues extends InteractiveTestCase {
         frame.pack();
         frame.setSize(frame.getWidth() + 40, frame.getHeight() + 40);
         frame.setVisible(true);
-        BasicMonthViewUI ui = (BasicMonthViewUI) monthView.getUI();
-        return ui;
+        return (BasicMonthViewUI) monthView.getUI();
     }
 
     

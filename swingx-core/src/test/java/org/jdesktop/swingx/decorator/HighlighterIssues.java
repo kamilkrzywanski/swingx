@@ -47,7 +47,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 
     /**
      * test if background changes with LF.
-     * 
+     * <p>
      * PENDING: this is not entirely correct, might fail because
      *   both LFs fall back to GenericGray.
      */
@@ -75,7 +75,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
     }
     /**
      * test if background changes with LF.
-     * 
+     * <p>
      * PENDING: this is not entirely correct, might fail because
      *   both LFs fall back to GenericGray.
      */
@@ -116,7 +116,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 
     //---------------
  
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 //      setSystemLF(true);
       HighlighterIssues test = new HighlighterIssues();
       try {
@@ -224,7 +224,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
      * 
      * Visualizing effect of hack: table-internally, a ResetDTCRColorHighlighter
      * tries to neutralize DefaultTableCellRenderer's color memory.
-     * 
+     * <p>
      * Problem: if pre-hack-highlighting and selected on first rendering,
      * the renderer always uses the selection color. Bug in hacking highlighter?
      * Not much it can do about it: the hacking does not store the color if
@@ -329,7 +329,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
     /**
      * Issue #178-swingx: Highlighters must not change the selection color if selection colors 
      * not set.
-     * 
+     * <p>
      * Compare table with empty highlighter to table without highlighter.
      */
     public void interactiveTableWithDoNothingHighlighter() {

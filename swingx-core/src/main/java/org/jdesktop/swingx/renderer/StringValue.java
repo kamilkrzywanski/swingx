@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * A simple converter to return a String representation of an object.
- * 
+ * <p>
  * This class is intended to be the "small coin" to configure/format textual
  * cell content of concrete subclasses of <code>ComponentProvider</code>.
  * <p>

@@ -95,7 +95,7 @@ import javax.swing.SwingUtilities;
 //moved to package-private instead of deleting; needed by JXLoginPane
 @Deprecated
 class JXImagePanel extends JXPanel {
-    public static enum Style {
+    public enum Style {
         CENTERED, TILED, SCALED, SCALED_KEEP_ASPECT_RATIO
     }
 
@@ -110,7 +110,7 @@ class JXImagePanel extends JXPanel {
     /**
      * The image to draw
      */
-    private SoftReference<Image> img = new SoftReference<Image>(null);
+    private SoftReference<Image> img = new SoftReference<>(null);
 
     /**
      * If true, then the image can be changed. Perhaps a better name is
@@ -161,7 +161,7 @@ class JXImagePanel extends JXPanel {
     public void setImage(Image image) {
         if (image != img.get()) {
             Image oldImage = img.get();
-            img = new SoftReference<Image>(image);
+            img = new SoftReference<>(image);
             firePropertyChange("image", oldImage, img);
             invalidate();
             repaint();
@@ -178,7 +178,7 @@ class JXImagePanel extends JXPanel {
         if (image == null && imageLoader != null) {
             try {
                 image = imageLoader.call();
-                img = new SoftReference<Image>(image);
+                img = new SoftReference<>(image);
             } catch (Exception e) {
                 LOG.log(Level.WARNING, "", e);
             }
@@ -283,16 +283,13 @@ class JXImagePanel extends JXPanel {
                 protected void done() {
                     super.done();
                     
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JXImagePanel.this.setImage(get());
-                            } catch (InterruptedException e) {
-                                // ignore - canceled image load
-                            } catch (ExecutionException e) {
-                                LOG.log(Level.WARNING, "", e);
-                            }
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            JXImagePanel.this.setImage(get());
+                        } catch (InterruptedException e) {
+                            // ignore - canceled image load
+                        } catch (ExecutionException e) {
+                            LOG.log(Level.WARNING, "", e);
                         }
                     });
                 }

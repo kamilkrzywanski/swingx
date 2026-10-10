@@ -1,7 +1,5 @@
 package org.jdesktop.swingx.search;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -29,11 +27,7 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	@Test
 	public void testFindActionPropertyChangeEvent() throws Exception {
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.FIND_ACTION_PROPERTY, this);
-		NativeSearchFieldSupport.setFindAction(tf, new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				eventFired = true;
-			}
-		});
+		NativeSearchFieldSupport.setFindAction(tf, e -> eventFired = true);
 		Assertions.assertTrue(eventFired);
 		eventFired = false;
 		NativeSearchFieldSupport.setFindAction(tf, null);
@@ -43,11 +37,7 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	@Test
 	public void testCancelActionPropertyChangeEvent() throws Exception {
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, this);
-		NativeSearchFieldSupport.setCancelAction(tf, new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				eventFired = true;
-			}
-		});
+		NativeSearchFieldSupport.setCancelAction(tf, e -> eventFired = true);
 		Assertions.assertTrue(eventFired);
 		eventFired = false;
 		NativeSearchFieldSupport.setCancelAction(tf, null);

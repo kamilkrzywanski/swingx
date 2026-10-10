@@ -1,19 +1,19 @@
 /**
  * $Id$
- * 
+ * <p>
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for <code>JXMonthView</code>
- *
+ * <p>
  * There's another class with passing unit tests for JXMonthView (JXMonthViewVisualTest)
  * because this 
  * extended mock while the other extends InteractiveTestCase. Both are expected
@@ -142,12 +142,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
         JXMonthView monthView = new JXMonthView();
         final JXFrame frame = new JXFrame();
         frame.add(monthView);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                frame.dispose();
-                
-            }
-        });
+        SwingUtilities.invokeAndWait((Runnable) frame::dispose);
     }
     
     /**
@@ -177,7 +172,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     
     /**
-     * @param string
+     * @param language
      * @return
      */
     private Locale getLocal(String language) {
@@ -235,15 +230,14 @@ public class JXMonthViewTest extends InteractiveTestCase {
      * @param clock the time source used by monthView.
      */
     public static JXMonthView createMonthViewWithClock(final Clock clock) {
-        JXMonthView monthView = new JXMonthView() {
+        return new JXMonthView() {
 
             @Override
             Date getCurrentDate() {
                 return clock.getCurrentDate();
             }
-            
+
         };
-        return monthView;
     }
     
     /**
@@ -349,7 +343,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #1046-swingx: month title not updated when traversing months
      * (programatically or by navigating in monthView)
-     * 
+     * <p> <p>
      * Test that zoomOutActin is installed for zoomable.
      */
     @Test
@@ -437,10 +431,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
      */
     @Test
     public void testDayForegroundBeforeSunday() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        monthView.setDayForeground(Calendar.SUNDAY - 1, Color.RED);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> monthView.setDayForeground(Calendar.SUNDAY - 1, Color.RED));}
 
     /**
      * Issue #??-swingx: test accaptable values in setDayForeground.
@@ -450,10 +441,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
      */
     @Test
     public void testDayForegroundAfterSaturday() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        monthView.setDayForeground(Calendar.SATURDAY + 1, Color.RED);
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> monthView.setDayForeground(Calendar.SATURDAY + 1, Color.RED));}
 
  
     /**
@@ -874,7 +862,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: test that model settings are respected in constructor - minimaldays.
      */
     @Test
@@ -891,7 +879,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     }
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: test that monthView is updated to model after setSelectionModel.
      */
     @Test
@@ -930,7 +918,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: test that model settings are respected in constructor - minimaldays.
      */
     @SuppressWarnings("unused")
@@ -946,9 +934,9 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #736-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: test that model settings are respected in setModel - minimaldays.
-     * 
+     * <p> <p>
      * Model must not reset minimalDaysInfirstWeek, but Locales with values
      * > 1 confuse the BasicDatePickerUI - need to track down and solve there.
      */
@@ -966,7 +954,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: minimal days of first week.
      */
     @Test
@@ -981,7 +969,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #733-swingx: TimeZone in model and monthView not synched.
-     *  
+     * <p> <p>
      *  Test that the selected is normalized in the monthView's timezone. 
      */
     @Test
@@ -1001,7 +989,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: timezone of flagged dates not synched.
      * This was introduced by moving the control of flagged dates into
      * a internal model. Need to synch that model as well.
@@ -1022,7 +1010,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: setting the timezone clears the flagged dates, must notify of change.
       */
     @Test
@@ -1044,7 +1032,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: setting the timezone clears the flagged dates, must notify of change.
       */
     @Test
@@ -1063,7 +1051,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: Locale changed in monthView.
      */
     @Test
@@ -1080,7 +1068,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: Locale changed in selection model.
      */
     @Test
@@ -1099,7 +1087,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: Locale changed in monthView.
      */
     @Test
@@ -1115,7 +1103,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: set first day of week in monthView.
      */
     @Test
@@ -1132,7 +1120,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: set first day of week in model.
      */
     @Test
@@ -1148,7 +1136,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     }
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: first day of week.
      */
     @Test
@@ -1159,7 +1147,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     }
     /**
      * Issue #733-swingx: model and monthView cal not synched.
-     * 
+     * <p> <p>
      * Here: minimal days of first week.
      */
     @Test
@@ -1173,10 +1161,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: isSelected
      * 
      */
@@ -1194,10 +1182,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: isSelected
      * 
      */
@@ -1215,10 +1203,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: isSelected
      * 
      */
@@ -1236,10 +1224,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: set unselectables on model
      * 
      */
@@ -1249,7 +1237,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
         // guard against accidental startofday
         calendar.set(Calendar.HOUR_OF_DAY, 5);
         Date date = calendar.getTime();
-        SortedSet<Date> unselectables = new TreeSet<Date>();
+        SortedSet<Date> unselectables = new TreeSet<>();
         unselectables.add(date);
         monthView.getSelectionModel().setUnselectableDates(unselectables);
         assertTrue(monthView.getSelectionModel().isUnselectableDate(date));
@@ -1259,10 +1247,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: set selected on model
      * 
      */
@@ -1280,10 +1268,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: selection related properties must be independent 
      * of way-of setting.
-     * 
+     * <p> <p>
      * View must delegate to model, so asking view or model with same 
      * parameters must return the same result.
-     * 
+     * <p> <p>
      * Here: set selected on model, ask for selected date
      * 
      */
@@ -1301,7 +1289,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * #703-swingx: set date to first of next doesn't update the view.
-     * 
+     * <p> <p>
      * Behaviour is consistent with core components, must not update
      * 
      */
@@ -1338,16 +1326,14 @@ public class JXMonthViewTest extends InteractiveTestCase {
         final Date first = us.getFirstDisplayedDay();
         today.add(Calendar.DAY_OF_MONTH, 2);
         us.setSelectionDate(today.getTime());
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                us.revalidate();
-                // need to validate frame - why?
-                frame.validate();
-                assertEquals( 
-                        first, us.getFirstDisplayedDay(),"firstDisplayed must not be changed on revalidate");
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            us.revalidate();
+            // need to validate frame - why?
+            frame.validate();
+            assertEquals(
+                    first, us.getFirstDisplayedDay(),"firstDisplayed must not be changed on revalidate");
 //                assertEquals(first, us.getFirstDisplayedDate());
 //                fail("weird (threading issue?): the firstDisplayed is changed in layoutContainer - not testable here");
-            }
         });
     }
     
@@ -1423,7 +1409,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p> <p>
      * Here: test that today is unchanged.
      */
     @Test
@@ -1432,12 +1418,12 @@ public class JXMonthViewTest extends InteractiveTestCase {
         Date first = monthView.getToday();
         monthView.updateUI();
         assertEquals(first, monthView.getToday());
-    };
+    }
 
-    
+
     /**
      * Issue #711-swingx: remove fake property change notification.
-     * 
+     * <p> <p>
      * Here: test that ensureVisibleDate fires once only.
      */
     @Test
@@ -1457,7 +1443,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #711-swingx: remove fake property change notification.
-     * 
+     * <p> <p>
      * Here: test that setFirstDisplayedDate fires once only.
      */
     @Test
@@ -1476,7 +1462,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #708-swingx
-     * 
+     * <p> <p>
      * test update of lastDisplayedDate if resized.
      */
     @Test
@@ -1508,7 +1494,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p> <p>
      * Here: test that firstDisplayedDate is unchanged.
      */
     @Test
@@ -1517,12 +1503,12 @@ public class JXMonthViewTest extends InteractiveTestCase {
         Date first = monthView.getFirstDisplayedDay();
         monthView.updateUI();
         assertEquals(first, monthView.getFirstDisplayedDay());
-    };
+    }
 
 
     /**
      * Issue #708-swingx: updateUI changes state.
-     * 
+     * <p> <p>
      * Here: test that lastDisplayedDate is unchanged.
      */
     @Test
@@ -1531,12 +1517,12 @@ public class JXMonthViewTest extends InteractiveTestCase {
         Date first = monthView.getLastDisplayedDay();
         monthView.updateUI();
         assertEquals(first, monthView.getLastDisplayedDay());
-    };
+    }
 
     /**
      * Issue #659-swingx: lastDisplayedDate must be synched.
      * test that lastDisplayed from monthView is same as lastDisplayed from ui.
-     * 
+     * <p> <p>
      * Here: initial packed size - one month shown.
      * 
      * @throws InvocationTargetException 
@@ -1551,21 +1537,19 @@ public class JXMonthViewTest extends InteractiveTestCase {
         final JXMonthView monthView = new JXMonthView();
         final JXFrame frame = wrapInFrame(monthView, "");
         frame.setVisible(true);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                Date uiLast = monthView.getUI().getLastDisplayedDay();
-                Date viewLast = monthView.getLastDisplayedDay();
-                assertEquals(uiLast, viewLast);
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            Date uiLast = monthView.getUI().getLastDisplayedDay();
+            Date viewLast = monthView.getLastDisplayedDay();
+            assertEquals(uiLast, viewLast);
         });
     }
     
     /**
      * 
      * Issue #659-swingx: lastDisplayedDate must be synched.
-     * 
+     * <p> <p>
      * test that lastDisplayed from monthView is same as lastDisplayed from ui.
-     * 
+     * <p> <p>
      * Here: change the size of the view which allows the ui to display more
      * columns/rows.
      * 
@@ -1585,12 +1569,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
         // force a revalidate
         frame.invalidate();
         frame.validate();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                Date uiLast = monthView.getUI().getLastDisplayedDay();
-                Date viewLast = monthView.getLastDisplayedDay();
-                assertEquals(uiLast, viewLast);
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            Date uiLast = monthView.getUI().getLastDisplayedDay();
+            Date viewLast = monthView.getLastDisplayedDay();
+            assertEquals(uiLast, viewLast);
         });
     }
     
@@ -1598,7 +1580,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * 
      * Issue #659-swingx: lastDisplayedDate must be synched.
-     * 
+     * <p> <p>
      * test that ensureDateVisible works as doc'ed if multiple months shown: 
      * if the new date is in the
      * month following the last visible then the first must be set in a manner that
@@ -1620,30 +1602,28 @@ public class JXMonthViewTest extends InteractiveTestCase {
         // force a revalidate
         frame.invalidate();
         frame.validate();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(monthView.getFirstDisplayedDay());
-                int firstMonth = calendar.get(Calendar.MONTH);
-                Date uiLast = monthView.getUI().getLastDisplayedDay();
-                calendar.setTime(uiLast);
-                int lastMonth = calendar.get(Calendar.MONTH);
-                // sanity: more than one month shown
-                assertFalse(firstMonth == lastMonth);
-                // first day of next month 
-                calendar.add(Calendar.DATE, 1);
-                // sanity
-                int newLastMonth = calendar.get(Calendar.MONTH);
-                assertFalse(lastMonth == newLastMonth);
-                monthView.ensureDateVisible(calendar.getTime());
-                CalendarUtils.endOfMonth(calendar);
-                Date newUILast = monthView.getUI().getLastDisplayedDay();
-                assertEquals(newUILast, monthView.getLastDisplayedDay());
-                calendar.setTime(newUILast);
-//                LOG.info("first/last: " + new Date(monthView.getFirstDisplayedDate()) + 
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(monthView.getFirstDisplayedDay());
+            int firstMonth = calendar.get(Calendar.MONTH);
+            Date uiLast = monthView.getUI().getLastDisplayedDay();
+            calendar.setTime(uiLast);
+            int lastMonth = calendar.get(Calendar.MONTH);
+            // sanity: more than one month shown
+            assertFalse(firstMonth == lastMonth);
+            // first day of next month
+            calendar.add(Calendar.DATE, 1);
+            // sanity
+            int newLastMonth = calendar.get(Calendar.MONTH);
+            assertFalse(lastMonth == newLastMonth);
+            monthView.ensureDateVisible(calendar.getTime());
+            CalendarUtils.endOfMonth(calendar);
+            Date newUILast = monthView.getUI().getLastDisplayedDay();
+            assertEquals(newUILast, monthView.getLastDisplayedDay());
+            calendar.setTime(newUILast);
+//                LOG.info("first/last: " + new Date(monthView.getFirstDisplayedDate()) +
 //                        "/" + new Date(newUILast));
-                assertEquals(newLastMonth, calendar.get(Calendar.MONTH));
-            }
+            assertEquals(newLastMonth, calendar.get(Calendar.MONTH));
         });
     }
     
@@ -1652,7 +1632,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #660-swingx: JXMonthView must protect its calendar.
      * Client manipulation on calendar must not change internal state.
-     * 
+     * <p> <p>
      * This is guaranteed by returning a clone instead of the life object.
      */
     @Test
@@ -1666,10 +1646,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #660-swingx: JXMonthView must protect its calendar.
-     * 
+     * <p> <p>
      * Added invariant to the monthView's getCalender: clone and
      * config to firstDisplayDate.
-     * 
+     * <p> <p>
      * The various tests are various contexts which broke the 
      * expectation before fixing the issue. 
      * Here the context is: select.
@@ -1693,10 +1673,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
    /**
     * Issue #660-swingx: JXMonthView must protect its calendar.
-    * 
+    * <p> <p>
     * Added invariant to the monthView's getCalender: clone and
     * config to firstDisplayDate.
-    * 
+    * <p> <p>
     * The various tests are various contexts which broke the 
     * expectation before fixing the issue. 
     * Here the context is: check for selection.
@@ -1721,10 +1701,10 @@ public class JXMonthViewTest extends InteractiveTestCase {
 
     /**
      * Issue #660-swingx: JXMonthView must protect its calendar.
-     * 
+     * <p> <p>
      * Added invariant to the monthView's getCalender: clone and
      * config to firstDisplayDate.
-     * 
+     * <p> <p>
      * The various tests are various contexts which broke the 
      * expectation before fixing the issue. 
      * Here the context is: set first displayed date (formerly left
@@ -1864,7 +1844,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Selected dates are "start of day" in the timezone they had been 
      * selected. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the selection. 
@@ -1886,7 +1866,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Bound dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the bound. 
@@ -1902,7 +1882,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Bound dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear the bound. 
@@ -1918,7 +1898,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Flagged dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear them. 
@@ -1926,7 +1906,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     @Test
     public void testTimeZoneChangeResetFlaggedDates() {
         JXMonthView monthView = new JXMonthView();
-        monthView.setFlaggedDates(new Date[] {yesterday});
+        monthView.setFlaggedDates(yesterday);
         monthView.setTimeZone(getTimeZone(monthView.getTimeZone(), CalendarUtils.THREE_HOURS));
         // accidentally passes - because it is meaningful only in the timezone 
         // it was set ...
@@ -1939,7 +1919,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Unselectable dates are "start of day" in the timezone they had been 
      * set. As such they make no sense in a new timezone: must
      * either be adjusted or cleared. Currently we clear them. 
@@ -1974,7 +1954,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Here: test anchor invariant to time zone change
      */
     @Test
@@ -1991,14 +1971,14 @@ public class JXMonthViewTest extends InteractiveTestCase {
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Here: test that the first displayed date is offset by offset diff of
      * timezones. Configure the monthView with a fixed timezone to clear up the
      * mist ...
-     * 
+     * <p> <p>
      * This did fail on the server on 31mar2008, us/pacific timezone, en_US
      * locale. Trying to sim the context then.
-     * 
+     * <p> <p>
      * Failed again at Tue Sep 30 10:12:31 PDT 2008, en_US locale. Next
      * (testTimeZoneChangeOffsetFirstDisplayedDate) failed at the same time, 
      */
@@ -2077,11 +2057,11 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Here: test that the first displayed date is offset by offset diff of 
      * timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
-     * 
+     * <p> <p>
      * failed along with previous test, (Tue Sep 30 10:12:31 PDT 2008, en_US locale)
      * error out:
      * first displayed must be offset by real offset expected:
@@ -2122,7 +2102,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     
     /**
      * Returns a timezone with a rawoffset with a different offset.
-     * 
+     * <p> <p>
      * 
      * PENDING: this is acutally for european time, not really thought of 
      *   negative/rolling +/- problem?
@@ -2135,14 +2115,13 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         int offset = timeZone.getRawOffset();
         int newOffset = offset < 0 ? offset + diffRawOffset : offset - diffRawOffset;
         String[] availableIDs = TimeZone.getAvailableIDs(newOffset);
-        TimeZone newTimeZone = TimeZone.getTimeZone(availableIDs[0]);
-        return newTimeZone;
+        return TimeZone.getTimeZone(availableIDs[0]);
     }
     
     /**
      * Issue #618-swingx: JXMonthView displays problems with non-default
      * timezones.
-     * 
+     * <p> <p>
      * Here: test timezone fire
      */
     @Test
@@ -2155,7 +2134,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         String[] availableIDs = TimeZone.getAvailableIDs(newOffset);
         TimeZone newTimeZone = TimeZone.getTimeZone(availableIDs[0]);
         // sanity
-        assertFalse(timezone.equals(newTimeZone));
+        assertNotEquals(timezone, newTimeZone);
         PropertyChangeReport report = new PropertyChangeReport();
         monthView.addPropertyChangeListener(report);
         monthView.setTimeZone(newTimeZone);
@@ -2224,7 +2203,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p> <p>
      * test that actions resets model.adjusting to false.
      */
     @Test
@@ -2242,7 +2221,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     }
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p> <p>
      * test that actions fire as expected.
      *
      */
@@ -2262,7 +2241,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p> <p>
      * test that actions fire as expected.
      *
      */
@@ -2285,7 +2264,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
 
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p> <p>
      * test that actions are registered.
      *
      */
@@ -2298,7 +2277,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p> <p>
      * test that actions are the same for new/old cancel/accept.
      *
      */
@@ -2388,7 +2367,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
 
     /**
      * Issue #557-swingx: always fire actionEvent after esc/enter.
-     * 
+     * <p> <p>
      * test fire after accept.
      */
     @Test
@@ -2405,7 +2384,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
 
     /**
      * Issue #557-swingx: always fire actionEvent after esc/enter.
-     * 
+     * <p> <p>
      * test fire after cancel.
      */
     @Test
@@ -2431,7 +2410,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         assertEquals(startOfDay(today), view.getUpperBound());
         // remove again
         view.setUpperBound(null);
-        assertEquals(null, view.getUpperBound());
+        assertNull(view.getUpperBound());
     }
     
     /**
@@ -2445,7 +2424,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         assertEquals(startOfDay(today), view.getLowerBound());
         // remove again
         view.setLowerBound(null);
-        assertEquals(null, view.getLowerBound());
+        assertNull(view.getLowerBound());
     }
 
     /**
@@ -2485,7 +2464,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
             // expected
         }
         try {
-            monthView.setUnselectableDates(new Date[] {new Date(), null});
+            monthView.setUnselectableDates(new Date(), null);
             fail("null elements must throw NPE");
         } catch (NullPointerException e) {
             // expected
@@ -2568,7 +2547,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     public void testDefaultConstructor() {
         JXMonthView monthView = new JXMonthView(Locale.US);
         assertTrue(monthView.isSelectionEmpty());
-        assertTrue(SelectionMode.SINGLE_SELECTION == monthView.getSelectionMode());
+        assertSame(SelectionMode.SINGLE_SELECTION, monthView.getSelectionMode());
         assertTrue(Calendar.SUNDAY == monthView.getFirstDayOfWeek());
     }
 
@@ -2802,7 +2781,7 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     public void testFlaggedDateGet() {
         JXMonthView monthView = new JXMonthView();
         Date date = new Date();
-        SortedSet<Date> set = new TreeSet<Date>();
+        SortedSet<Date> set = new TreeSet<>();
         set.add(monthView.getSelectionModel().getNormalizedDate(date));
         monthView.setFlaggedDates(date);
         assertEquals(set, monthView.getFlaggedDates());

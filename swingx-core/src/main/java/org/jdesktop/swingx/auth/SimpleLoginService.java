@@ -28,7 +28,7 @@ import java.util.Map;
  * An implementation of LoginService that simply matches
  * the username/password against a list of known users and their passwords.
  * This is useful for demos or prototypes where a proper login server is not available.
- *
+ * <p>
  * <em>This Implementation is NOT secure. DO NOT USE this in a real application</em>
  * To make this implementation more secure, the passwords should be passed in and
  * stored as the result of a one way hash algorithm. That way an attacker cannot 
@@ -44,7 +44,7 @@ public final class SimpleLoginService extends LoginService {
      */
     public SimpleLoginService(Map<String,char[]> passwordMap) {
         if (passwordMap == null) {
-            passwordMap = new HashMap<String,char[]>();
+            passwordMap = new HashMap<>();
         }
         this.passwordMap = passwordMap;
     }

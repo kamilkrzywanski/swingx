@@ -33,7 +33,7 @@ import org.jdesktop.swingx.search.Searchable;
 
 /**
  * A simple low-intrusion default widget for incremental search.
- * 
+ * <p>
  * Actions registered (in addition to super):
  * <ul>
  * <li> {@link JXDialog#CLOSE_ACTION_COMMAND} - an action bound to this
@@ -131,7 +131,7 @@ public class JXFindBar extends JXFindPanel {
     // --------------------------- action call back
     /**
      * Action callback method for bound action JXDialog.CLOSE_ACTION_COMMAND.
-     * 
+     * <p>
      * Here: does nothing. Subclasses can override to define custom "closing"
      * behaviour. Alternatively, any client can register a custom action with
      * the actionMap.

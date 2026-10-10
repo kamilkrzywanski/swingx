@@ -32,7 +32,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.exceptions.verification.NoInteractionsWanted;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("nls")
 public abstract class AbstractBeanInfoTest<T> {
@@ -45,7 +44,7 @@ public abstract class AbstractBeanInfoTest<T> {
     public void setUp() throws Exception {
         instance = createInstance();
         beanInfo = Introspector.getBeanInfo(instance.getClass());
-        listeners = new HashMap<Class<?>, Object>();
+        listeners = new HashMap<>();
         
         for (EventSetDescriptor descriptor : beanInfo.getEventSetDescriptors()) {
             Class<?> eventClass = descriptor.getListenerType();
@@ -152,7 +151,7 @@ public abstract class AbstractBeanInfoTest<T> {
      */
     @Test
     public void testSerialization() {
-        if (!Serializable.class.isInstance(instance)) {
+        if (!(instance instanceof Serializable)) {
             return;
         }
         

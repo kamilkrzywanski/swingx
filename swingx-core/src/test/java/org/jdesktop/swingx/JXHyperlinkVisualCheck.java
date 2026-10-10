@@ -75,7 +75,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
     
     /**
      * Issue #1530-swingx:
-     * 
+     * <p>
      * Quick check if Desktop.browse is blocking (with a lame target site)
      * - doesn't appear so.
      * 
@@ -195,11 +195,11 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
         pane.setEditable(false);
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor(pane);
         LinkModel localLink = new LinkModel("Click me! - local text", null, JXEditorPaneTest.class.getResource("resources/test.html"));
-        LinkModelAction<?> localAction = new LinkModelAction<LinkModel>(localLink, visitor);
+        LinkModelAction<?> localAction = new LinkModelAction<>(localLink, visitor);
         JXHyperlink localHyperlink = new JXHyperlink(localAction);
         
         LinkModel externalLink = new LinkModel("Click me! - external text", null, new URL("http://swingx.java.net"));
-        LinkModelAction<?> externalAction = new LinkModelAction<LinkModel>(externalLink, visitor);
+        LinkModelAction<?> externalAction = new LinkModelAction<>(externalLink, visitor);
         JXHyperlink externalHyperlink = new JXHyperlink(externalAction);
         JPanel panel = new JPanel(new BorderLayout());
         
@@ -267,7 +267,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
     public void interactiveTableHyperlinkSimpleText() {
         JXTable table = new JXTable(createModelWithLinks());
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<?> action = new LinkModelAction<>(visitor);
         // set the default renderer for LinkModel - which is basically
         // a bean wrapped around an URL
         table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer
@@ -309,7 +309,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
     public void interactiveTableHyperlinkLFStripingHighlighter() {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         final JXTable table = new JXTable(createModelWithLinks());
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<?> action = new LinkModelAction<>(visitor);
         table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer
                 (new HyperlinkProvider(action, LinkModel.class)));
         table.setHighlighters(HighlighterFactory.createSimpleStriping());
@@ -410,7 +410,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         JXList list = new JXList(createListModelWithLinks(20));
         list.setRolloverEnabled(true);
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<?> action = new LinkModelAction<>(visitor);
         list.setCellRenderer(new DefaultListRenderer(
                 new HyperlinkProvider(action, LinkModel.class)));
         JFrame frame = wrapWithScrollingInFrame(list, visitor.getOutputComponent(), "show link renderer in list");
@@ -425,7 +425,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
     public void interactiveListHyperlinkLFStripingHighlighter() {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
         JXList list = new JXList(createListModelWithLinks(20));
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
+        LinkModelAction<?> action = new LinkModelAction<>(visitor);
         list.setCellRenderer(new DefaultListRenderer(
                 new HyperlinkProvider(action, LinkModel.class)));
         list.setRolloverEnabled(true);
@@ -499,15 +499,14 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
 
     
     protected AbstractHyperlinkAction<Object> createEmptyLinkAction() {
-        AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
+        return new AbstractHyperlinkAction<Object>(null) {
 
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-               
+
        };
-        return linkAction;
     }
 
     protected AbstractHyperlinkAction<?> createEmptyLinkAction(String name) {

@@ -293,12 +293,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         detailsPanel.setVisible(false);
         copyToClipboardButton = new JButton(UIManagerExt.getString(
                 CLASS_NAME + ".copy_to_clipboard_button_text", errorMessage.getLocale()));
-        copyToClipboardListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                details.copy();
-            }
-        };
+        copyToClipboardListener = ae -> details.copy();
         copyToClipboardButton.addActionListener(copyToClipboardListener);
 
         detailsPanel.setLayout(createDetailPanelLayout());
@@ -519,7 +514,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * dialog.
      */
     private void setDetails(String details) {
-        if (details == null || details.equals("")) {
+        if (details == null || details.isEmpty()) {
             detailButton.setVisible(false);
         } else {
             this.details.setText(details);
@@ -646,25 +641,25 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
     protected String getDetailsAsHTML(ErrorInfo errorInfo) {
         if(errorInfo.getErrorException() != null) {
             //convert the stacktrace into a more pleasent bit of HTML
-            StringBuffer html = new StringBuffer("<html>");
-            html.append("<h2>" + escapeXml(errorInfo.getTitle()) + "</h2>");
+            StringBuilder html = new StringBuilder("<html>");
+            html.append("<h2>").append(escapeXml(errorInfo.getTitle())).append("</h2>");
             html.append("<HR size='1' noshade>");
             html.append("<div></div>");
             html.append("<b>Message:</b>");
             html.append("<pre>");
-            html.append("    " + escapeXml(errorInfo.getErrorException().toString()));
+            html.append("    ").append(escapeXml(errorInfo.getErrorException().toString()));
             html.append("</pre>");
             html.append("<b>Level:</b>");
             html.append("<pre>");
-            html.append("    " + errorInfo.getErrorLevel());
+            html.append("    ").append(errorInfo.getErrorLevel());
             html.append("</pre>");
             html.append("<b>Stack Trace:</b>");
             Throwable ex = errorInfo.getErrorException();
             while(ex != null) {
-                html.append("<h4>"+ex.getMessage()+"</h4>");
+                html.append("<h4>").append(ex.getMessage()).append("</h4>");
                 html.append("<pre>");
                 for (StackTraceElement el : ex.getStackTrace()) {
-                    html.append("    " + el.toString().replace("<init>", "&lt;init&gt;") + "\n");
+                    html.append("    ").append(el.toString().replace("<init>", "&lt;init&gt;")).append("\n");
                 }
                 html.append("</pre>");
                 ex = ex.getCause();
@@ -797,8 +792,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         public Dimension getPreferredSize() {
             int width = 0;
             int height = 0;
-            for(int iter = 0 ; iter < group.length ; iter++) {
-                Dimension size = group[iter].getRealPreferredSize();
+            for (EqualSizeJButton equalSizeJButton : group) {
+                Dimension size = equalSizeJButton.getRealPreferredSize();
                 width = Math.max(size.width, width);
                 height = Math.max(size.height, height);
             }
@@ -824,7 +819,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         @Override
         protected Transferable createTransferable(JComponent c) {
             String text = details.getSelectedText();
-            if (text == null || text.equals("")) {
+            if (text == null || text.isEmpty()) {
                 details.selectAll();
                 text = details.getSelectedText();
                 details.select(-1, -1);
@@ -984,7 +979,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
          *  The height necessary to show the entire message text
          *    (as long as said height does not go off the screen)
          *    plus the buttons
-         *
+         * <p> <p>
          * The preferred height changes depending on whether the details
          * are visible, or not.
          */
@@ -1130,6 +1125,6 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
     private static String escapeXml(String input) {
         String s = input == null ? "" : input.replace("&", "&amp;");
         s = s.replace("<", "&lt;");
-        return s = s.replace(">", "&gt;");
+        return s.replace(">", "&gt;");
     }
 }

@@ -86,12 +86,9 @@ public class TreeCellContext extends CellContext {
             return false;
         }
         JTree.DropLocation dropLocation = getComponent().getDropLocation();
-        if (dropLocation != null
+        return dropLocation != null
                 && dropLocation.getChildIndex() == -1
-                && getComponent().getRowForPath(dropLocation.getPath()) == row) {
-            return true;
-        }
-        return false;
+                && getComponent().getRowForPath(dropLocation.getPath()) == row;
     }
    
     @Override

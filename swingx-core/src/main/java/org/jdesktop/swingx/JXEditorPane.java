@@ -322,14 +322,11 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         // well supported with the current design ... nobody 
         // really cares about enabled as it should. 
         //
-        Runnable doEnabled = new Runnable() {
-                @Override
-                public void run() {
-                    ActionManager manager = ActionManager.getInstance();
-                    manager.setEnabled(ACTION_UNDO, undoManager.canUndo());
-                    manager.setEnabled(ACTION_REDO, undoManager.canRedo());
-                }
-            };
+        Runnable doEnabled = () -> {
+            ActionManager manager = ActionManager.getInstance();
+            manager.setEnabled(ACTION_UNDO, undoManager.canUndo());
+            manager.setEnabled(ACTION_REDO, undoManager.canRedo());
+        };
         SwingUtilities.invokeLater(doEnabled);
     }
 
@@ -449,7 +446,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         public ParagraphSelector() {
 
             // The item map is for rendering
-            itemMap = new HashMap<HTML.Tag, String>();
+            itemMap = new HashMap<>();
             itemMap.put(HTML.Tag.P, "Paragraph");
             itemMap.put(HTML.Tag.H1, "Heading 1");
             itemMap.put(HTML.Tag.H2, "Heading 2");
@@ -460,7 +457,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
             itemMap.put(HTML.Tag.PRE, "Preformatted");
 
             // The list of items
-            Vector<HTML.Tag> items = new Vector<HTML.Tag>();
+            Vector<HTML.Tag> items = new Vector<>();
             items.addElement(HTML.Tag.P);
             items.addElement(HTML.Tag.H1);
             items.addElement(HTML.Tag.H2);
@@ -498,7 +495,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
                 super.getListCellRendererComponent(list, value, index, isSelected,
                                                    cellHasFocus);
 
-                setText((String)itemMap.get(value));
+                setText(itemMap.get(value));
 
                 return this;
             }
@@ -539,15 +536,15 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         if (content != null) {
             DataFlavor[] flavors = content.getTransferDataFlavors();
             try {
-                for (int i = 0; i < flavors.length; i++) {
-                    if (String.class.equals(flavors[i].getRepresentationClass())) {
-                        Object data = content.getTransferData(flavors[i]);
+                for (DataFlavor flavor : flavors) {
+                    if (String.class.equals(flavor.getRepresentationClass())) {
+                        Object data = content.getTransferData(flavor);
 
-                        if (flavors[i].isMimeTypeEqual("text/plain")) {
+                        if (flavor.isMimeTypeEqual("text/plain")) {
                             // This works but we lose all the formatting.
                             replaceSelection(data.toString());
                             break;
-                        } 
+                        }
                     }
                 }
             } catch (Exception ex) {
@@ -608,14 +605,14 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         /**
          * checks if the searchString should be interpreted as empty.
          * here: returns true if string is null or has zero length.
-         *
+         * <p> <p>
          * TODO: This should be in a utility class.
          * 
          * @param searchString
          * @return true if string is null or has zero length
          */
         protected boolean isEmpty(String searchString) {
-            return (searchString == null) || searchString.length() == 0;
+            return (searchString == null) || searchString.isEmpty();
         }
 
         @Override
@@ -813,7 +810,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
     /**
      * Listens to the caret placement and adjusts the editing
      * properties as appropriate.
-     *
+     * <p> <p>
      * Should add more attributes as required.
      */
     private class CaretHandler implements CaretListener {
@@ -875,14 +872,14 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         @Override
         public void read(Reader in, Document doc, int pos) throws IOException, BadLocationException {
             //read the reader into a String
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             int length;
             char[] data = new char[1024];
             while ((length = in.read(data)) != -1) {
                 buffer.append(data, 0, length);
             }
             //TODO is this regex right?
-            StringReader reader = new StringReader(buffer.toString().replaceAll("/>", ">"));
+            StringReader reader = new StringReader(buffer.toString().replace("/>", ">"));
             super.read(reader, doc, pos);
         }
     }    

@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.util.logging.Logger;
 
@@ -40,7 +39,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
@@ -126,7 +124,7 @@ public class RenderingTest extends InteractiveTestCase {
     }
     /**
      * Issue #766-swingx: flickering cursor on drop over.
-     * 
+     * <p>
      * test hack configuration (arrrggg ...)
      */
     @Test
@@ -141,7 +139,7 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Issue #766-swingx: flickering cursor on drop over.
-     * 
+     * <p>
      * test hack configuration (arrrggg ...)
      */
     @Test
@@ -178,7 +176,7 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Issue #840-swingx: hyperlink foreground unreadable for dark selection colors.
-     * 
+     * <p>
      * Test that selected foreground is same as table. 
      * 
      */
@@ -213,21 +211,21 @@ public class RenderingTest extends InteractiveTestCase {
 
             @Override
             protected void installTarget() {
-                setName("pref" + String.valueOf(target));
+                setName("pref" + target);
             }
             
             
         };
         HyperlinkProvider provider = new HyperlinkProvider(linkAction, Object.class);
         Object target = null;
-        assertEquals("pref" + String.valueOf(target), provider.getString(target));
+        assertEquals("pref" + target, provider.getString(target));
     }
     
 
     
     /**
      * Issue ?? swingx: support to configure the auto-unwrap of tree/table/xx/nodes.
-     * 
+     * <p>
      * Initial default is true.
      */
     @Test
@@ -238,7 +236,7 @@ public class RenderingTest extends InteractiveTestCase {
     }
     /**
      * Issue ?? swingx: support to configure the auto-unwrap of tree/table/xx/nodes.
-     * 
+     * <p>
      * Initial default is true.
      */
     @Test
@@ -265,15 +263,11 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectString() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Point) {
+                return "x of Point: " + ((Point) value).x;
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
@@ -290,15 +284,11 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectRenderer() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Point) {
+                return "x of Point: " + ((Point) value).x;
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
@@ -316,7 +306,7 @@ public class RenderingTest extends InteractiveTestCase {
 
     /**
      * Issue #790-swingx: rendering comps must not be registered with the tooltip manager.
-     * 
+     * <p>
      * Here: TreeTableCellRenderer (the tree used for rendering the hierarchical 
      * column)
      * 
@@ -340,7 +330,7 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * Issue #790-swingx: rendering comps must not be registered with the
      * tooltip manager.
-     * 
+     * <p>
      * Here: Hyperlink in provider
      */
     @Test
@@ -371,7 +361,7 @@ public class RenderingTest extends InteractiveTestCase {
 
    /**
      * Issue #790-swingx: rendering comps must not be registered with the tooltip manager.
-     * 
+     * <p>
      * Here: JRendererCheckBox-
      */
     @Test
@@ -391,7 +381,7 @@ public class RenderingTest extends InteractiveTestCase {
 
     /**
      * Issue #790-swingx: rendering comps must not be registered with the tooltip manager.
-     * 
+     * <p>
      * Here: JRendererLabel.
      * 
      */
@@ -412,7 +402,7 @@ public class RenderingTest extends InteractiveTestCase {
 
     /**
      * Issue #790-swingx: rendering comps must not be registered with the tooltip manager.
-     * 
+     * <p>
      * Sanity: cross-check the "normal" effect of setToolTipText which is that the
      * ToolTipManager registers itself as mouseListener with the component.
      * 
@@ -478,13 +468,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testLabelProviderGetString() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+        StringValue sv = value -> "funnyconstant ... haha";
         CellContext context =  new TableCellContext();
         ComponentProvider<JLabel> provider = new LabelProvider(sv);
         JLabel label = provider.getRendererComponent(context);
@@ -498,13 +482,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testButtonProviderGetString() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+        StringValue sv = value -> "funnyconstant ... haha";
         CellContext context =  new TableCellContext();
         ComponentProvider<AbstractButton> provider = new CheckBoxProvider(sv);
         AbstractButton label = provider.getRendererComponent(context);
@@ -518,13 +496,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetString() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+        StringValue sv = value -> "funnyconstant ... haha";
         CellContext context =  new TableCellContext();
         ComponentProvider<WrappingIconPanel> provider = new WrappingProvider(sv);
         assertEquals(sv.getString(context.getValue()), provider.getString(context.getValue()));
@@ -533,21 +505,17 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Issue #768-swingx: cleanup access to string representation of provider.
-     * 
+     * <p>
      * WrappingProvider must do the same "unwrapping" magic in getString as in 
      * getRendereringComponent.
      */
     @Test
     public void testWrappingProviderGetStringFromNode() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Point) {
+                return "x of Point: " + ((Point) value).x;
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
@@ -562,13 +530,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetStringNotNullValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return String.valueOf(value) + "added ... ";
-            }
-            
-        };
+        StringValue sv = value -> value + "added ... ";
         CellContext context =  new TableCellContext();
         context.value = "dummy";
         ComponentProvider<WrappingIconPanel> provider = new WrappingProvider(sv);
@@ -577,7 +539,7 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Issue #769-swingx: support null icons.
-     * 
+     * <p>
      * enhance WrappingProvider to allow real null values. 
      * 
      */
@@ -596,7 +558,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testResetPreferredSize() {
-        DefaultVisuals<JComponent> visuals = new DefaultVisuals<JComponent>();
+        DefaultVisuals<JComponent> visuals = new DefaultVisuals<>();
         JComponent label = new  JLabel("somevalue");
         visuals.configureVisuals(label, new TableCellContext());
         Dimension prefSize = label.getPreferredSize();
@@ -608,10 +570,10 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Test provider respect converter. 
-     * 
+     * <p>
      * Here: must show the
      * description instead of setting the icon.
-     *
+     * <p>
      * PENDING JW: revisit .. Icon.EMPTY vs. Icon.NONE: what exactly is the expected 
      * behaviour?
      */
@@ -633,7 +595,7 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Test provider respect converter. 
-     * 
+     * <p>
      * Here: must show the icon and empty text.
      *
      */
@@ -652,7 +614,7 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Test provider respect converter. 
-     * 
+     * <p>
      * Here: must show both description and icon.
      *
      */
@@ -675,10 +637,7 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIcon() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        IconValue iv = new IconValue() {
-            public Icon getIcon(Object value) {
-                return icon;
-            }};
+        IconValue iv = value -> icon;
         WrappingProvider provider = new WrappingProvider(iv);
         CellContext context = new TreeCellContext();
         WrappingIconPanel iconPanel = provider.getRendererComponent(context);
@@ -693,10 +652,7 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIconAndContent() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        IconValue iv = new IconValue() {
-            public Icon getIcon(Object value) {
-                return icon;
-            }};
+        IconValue iv = value -> icon;
             
         WrappingProvider provider = new WrappingProvider(iv, StringValues.DATE_TO_STRING);
         CellContext context = new TreeCellContext();
@@ -796,20 +752,8 @@ public class RenderingTest extends InteractiveTestCase {
         String identifier = "dummyID";
         final TableColumnExt column = new TableColumnExt();
         column.setTitle(identifier);
-        BooleanValue bv = new BooleanValue(){
-
-            public boolean getBoolean(Object value) {
-                return column.isVisible();
-            }
-            
-        };
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return column.getTitle();
-            }
-            
-        };
+        BooleanValue bv = value -> column.isVisible();
+        StringValue sv = value -> column.getTitle();
         CheckBoxProvider provider = new CheckBoxProvider(new MappedValue(sv, null, bv));
         TableCellContext context = new TableCellContext();
         context.value = column;
@@ -821,7 +765,7 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * safety net for addition of BooleanValue. Defaults to
      * selected from boolean value, text empty.
-     * 
+     * <p>
      * here: constructor with null stringValue and align
      *
      */
@@ -849,7 +793,7 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * safety net for addition of BooleanValue. Defaults to
      * selected from boolean value, text empty.
-     * 
+     * <p>
      * here: constructor with null stringValue
      *
      */
@@ -877,7 +821,7 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * safety net for addition of BooleanValue. Defaults to
      * selected from boolean value, text empty.
-     * 
+     * <p>
      * here: parameterless constructor
      *
      */
@@ -1014,7 +958,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testResetTooltip() {
-        DefaultVisuals<JComponent> visuals = new DefaultVisuals<JComponent>();
+        DefaultVisuals<JComponent> visuals = new DefaultVisuals<>();
         JComponent label = new  JLabel("somevalue");
         label.setToolTipText("tooltip");
         visuals.configureVisuals(label, new TableCellContext());
@@ -1201,7 +1145,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testConfigureVisualsNullContext() {
-        DefaultVisuals<JLabel> controller = new DefaultVisuals<JLabel>();
+        DefaultVisuals<JLabel> controller = new DefaultVisuals<>();
         try {
             controller.configureVisuals(new JLabel(), null);
             fail("renderer controller must throw NPE on null context");
@@ -1218,7 +1162,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testConfigureVisualsNullComponent() {
-        DefaultVisuals<JLabel> controller = new DefaultVisuals<JLabel>();
+        DefaultVisuals<JLabel> controller = new DefaultVisuals<>();
         try {
             controller.configureVisuals(null, new TableCellContext());
             fail("renderer controller must throw NPE on null component");

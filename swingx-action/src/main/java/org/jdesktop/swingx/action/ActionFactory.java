@@ -81,8 +81,8 @@ public class ActionFactory {
     public static ServerAction createServerAction(String id, String name,
                                                   String mnemonic) {
         ServerAction action = new ServerAction(name, id);
-        if (mnemonic != null && !mnemonic.equals("")) {
-            action.putValue(Action.MNEMONIC_KEY, new Integer(mnemonic.charAt(0)));
+        if (mnemonic != null && !mnemonic.isEmpty()) {
+            action.putValue(Action.MNEMONIC_KEY, (int) mnemonic.charAt(0));
         }
         return action;
     }

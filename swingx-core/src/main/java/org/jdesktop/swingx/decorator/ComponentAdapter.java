@@ -69,7 +69,7 @@ import org.jdesktop.swingx.renderer.StringValues;
  * </code></pre>
  * 
  * The adapter is responsible for mapping column and row coordinates.
- * 
+ * <p>
  * All input column indices are in model coordinates with exactly two
  * exceptions:
  * <ul>
@@ -131,14 +131,14 @@ public abstract class ComponentAdapter {
     /**
      * Returns the column's display name (= headerValue) of the column
      * at columnIndex in model coordinates.
-     * 
+     * <p>
      * Used f.i. in SearchPanel to fill the field with the 
      * column name.<p>
      * 
      * Note: it's up to the implementation to decide for which
      * columns it returns a name - most will do so for the
      * subset with isTestable = true.
-     * 
+     * <p>
      * This implementation delegates to getColumnIdentifierAt and returns it's
      * toString or null.
      * 
@@ -154,13 +154,13 @@ public abstract class ComponentAdapter {
     /**
      * Returns logical identifier of the column at 
      * columnIndex in model coordinates.
-     * 
+     * <p>
      * Note: it's up to the implementation to decide for which
      * columns it returns an identifier - most will do so for the
      * subset with isTestable = true.<p>
      * 
      * This implementation returns DEFAULT_COLUMN_IDENTIFIER.
-     * 
+     * <p>
      * PENDING JW: This method replaces the old getColumnIdentifier(int)
      * which returned a String which is overly restrictive.
      * The only way to gently replace this method was
@@ -413,7 +413,7 @@ public abstract class ComponentAdapter {
     /**
      * Returns the filtered value of the cell identified by the row
      * in view coordinate and the column in model coordinates.
-     * 
+     * <p>
      * Note: the asymmetry of the coordinates is intentional - clients like
      * Highlighters are interested in view values but might need to access
      * non-visible columns for testing. While it is possible to access 

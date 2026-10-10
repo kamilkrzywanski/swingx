@@ -2,13 +2,11 @@ package org.jdesktop.swingx;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
@@ -25,9 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Node;
-import org.jdesktop.swingx.MultiSplitLayout.Split;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.test.AncientSwingTeam;
 import org.junit.jupiter.api.Test;
@@ -125,13 +121,9 @@ public class JXMultiSplitPaneVisualIssues extends InteractiveTestCase {
             }
             
         };
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                area.setText(editor.getText());
-                area.getDocument().addDocumentListener(docL);
-            }
+        PropertyChangeListener l = evt -> {
+            area.setText(editor.getText());
+            area.getDocument().addDocumentListener(docL);
         };
         editor.addPropertyChangeListener("page", l);
         

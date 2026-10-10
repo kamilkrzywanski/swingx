@@ -90,7 +90,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #1156-swingx: sort must use comparable
-     * 
+     * <p>
      * visually check that the custom string value for the color column is
      * used for sorting.
      */
@@ -108,7 +108,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * used in find/highlight
      */
     public void interactiveTableGetStringUsedInFind() {
@@ -126,7 +126,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * used in find/highlight
      */
     public void interactiveListGetStringUsedInFind() {
@@ -142,7 +142,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * used in find/highlight
      */
     public void interactiveTreeGetStringUsedInFind() {
@@ -160,7 +160,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #979-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * The breakage is visible in models with 
      * (node.toString) != (value for hierarchical column). 
      */
@@ -180,7 +180,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
     
     /**
      * Issue #979-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test search (accidentally passing because node is instanceof NamedColor
      * with its toString the same as the value returned for the hierarchical column)
      */
@@ -196,7 +196,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #979-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test highlight (accidentally passing because node is instanceof NamedColor
      * with its toString the same as the value returned for the hierarchical column)
      */
@@ -213,7 +213,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #821-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test highlight
      */
     @Test
@@ -230,7 +230,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #821-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * <p>
      * here: test search
      */
     @Test
@@ -246,7 +246,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test TableSearchable uses getStringXX
      */
     @Test
@@ -262,7 +262,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test TableSearchable uses getStringXX
      */
     @Test
@@ -278,7 +278,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
     
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test TableSearchable uses getStringXX
      */
     @Test
@@ -293,7 +293,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
  
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test SearchPredicate uses getStringXX.
      */
     @Test
@@ -310,7 +310,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #767-swingx: consistent string representation.
-     * 
+     * <p>
      * Here: test PatternPredicate uses getStringxx().
      */
     @Test
@@ -332,18 +332,13 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        return value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
-        return sv;
     }
 
     @Override

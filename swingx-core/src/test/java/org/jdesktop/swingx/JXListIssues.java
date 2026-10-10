@@ -28,7 +28,7 @@ public class JXListIssues extends JXListTest {
 
     /**
      * Issue #1232-swingx: JXList must fire property change on setCellRenderer.
-     * 
+     * <p>
      * The very first setting fires twice: once from super, once from 
      * the forced. Keep in mind, but do nothing for now (waiting for complaints ;-)
      * 
@@ -45,7 +45,7 @@ public class JXListIssues extends JXListTest {
 
     /**
      * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
-     * 
+     * <p>
      * Expected: plain ol' list does install UIResource (while tree doesn't)
      */
     @Test
@@ -58,7 +58,7 @@ public class JXListIssues extends JXListTest {
 
     /**
      * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
-     * 
+     * <p>
      * Expected: plain ol' list does install UIResource (while tree doesn't)
      */
     @Test

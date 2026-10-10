@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
 
@@ -291,16 +290,11 @@ public class JXHyperlink extends JButton {
                 .createActionPropertyChangeListener(a);
         // JW: need to do something better - only weak refs allowed!
         // no way to hook into super
-        return new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (AbstractHyperlinkAction.VISITED_KEY.equals(evt.getPropertyName())) {
-                    configureClickedPropertyFromAction(a);
-                } else {
-                    superListener.propertyChange(evt);
-                }
-
+        return evt -> {
+            if (AbstractHyperlinkAction.VISITED_KEY.equals(evt.getPropertyName())) {
+                configureClickedPropertyFromAction(a);
+            } else {
+                superListener.propertyChange(evt);
             }
 
         };

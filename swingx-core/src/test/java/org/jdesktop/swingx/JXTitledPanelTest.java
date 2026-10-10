@@ -123,7 +123,7 @@ public class JXTitledPanelTest extends InteractiveTestCase {
     
     /**
      * Issue #157-swingx: JXTitledPanel not fully bidi-compliant.
-     * 
+     * <p>
      * Last issue: gradient not adjusted - should be handled by 
      * the painter. See Issue #1163-swingx
      */
@@ -283,7 +283,7 @@ public class JXTitledPanelTest extends InteractiveTestCase {
      * extend of the complete corner as border insets, the general 
      * problem remains in every distribution. Fitting a square
      * titleBar into round corners isn't easily possible ;-)
-     * 
+     * <p>
      * see forum thread:
      * http://forums.java.net/jive/thread.jspa?threadID=69440&tstart=0
      */
@@ -329,7 +329,7 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JXTitledPanelTest test = new JXTitledPanelTest();
         try {
           test.runInteractiveTests("interactiveRoundedBorder");

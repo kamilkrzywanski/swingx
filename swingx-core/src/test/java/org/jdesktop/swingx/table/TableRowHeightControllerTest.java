@@ -40,7 +40,6 @@ import javax.swing.table.TableCellRenderer;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.renderer.HighlighterClientVisualCheck.FontHighlighter;
 import org.junit.jupiter.api.BeforeEach;
@@ -166,15 +165,7 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
     private JXTable createXTableWithIndyRowHeights() {
         DefaultTableModel model = createTableModel(false);
         JXTable table = new JXTable(model);
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                return BIG.equals(adapter.getValue());
-            }
-            
-        };
+        HighlightPredicate predicate = (renderer, adapter) -> BIG.equals(adapter.getValue());
         FontHighlighter highlighter = new FontHighlighter(predicate, table.getFont().deriveFont(50f));
         table.addHighlighter(highlighter);
         return table;
@@ -218,13 +209,10 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
         final DefaultTableModel model = createTableModel(true);
         table.setModel(model);
         
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( true, containsModelListener(model),"new model must be installed");
-                assertEquals( false, containsModelListener(oldModel),"oldModel must be released");
-                assertEquals(smallRowHeight, table.getRowHeight(0));
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( true, containsModelListener(model),"new model must be installed");
+            assertEquals( false, containsModelListener(oldModel),"oldModel must be released");
+            assertEquals(smallRowHeight, table.getRowHeight(0));
         });
         
     }
@@ -244,18 +232,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
     @Test
     public void testRowHeightAdjustedOnInsert() throws InterruptedException, InvocationTargetException {
         final int bigRowHeight = table.getRowHeight(1);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                ((DefaultTableModel) table.getModel()).insertRow(0, new Object[] {BIG});
-            }
-        });
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(bigRowHeight, table.getRowHeight(0));
-            }
-        });
+        SwingUtilities.invokeAndWait((Runnable) () -> ((DefaultTableModel) table.getModel()).insertRow(0, new Object[] {BIG}));
+        SwingUtilities.invokeAndWait((Runnable) () -> assertEquals(bigRowHeight, table.getRowHeight(0)));
         
     }
     
@@ -263,12 +241,7 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
     public void testRowHeightAdjustedOnUpdate() throws InterruptedException, InvocationTargetException {
         final int smallRowHeight = table.getRowHeight(0);
         table.setValueAt(table.getValueAt(0, 0), 1, 0);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(smallRowHeight, table.getRowHeight(1));
-            }
-        });
+        SwingUtilities.invokeAndWait((Runnable) () -> assertEquals(smallRowHeight, table.getRowHeight(1)));
      }
     
     @Test

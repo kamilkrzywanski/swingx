@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Contains UIColorHighlighter/Addon tests (related to Nimbus, sigh).
- * 
+ * <p>
  * PENDING JW: can't really test - addon is a static context: once contributed,
  * no way to uncontribute.
  */

@@ -1,7 +1,5 @@
 package org.jdesktop.swingx.plaf.basic;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import javax.swing.UIManager;
 import javax.swing.text.AbstractDocument;
 

@@ -95,7 +95,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
     
     /**
      * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
-     * 
+     * <p>
      * Unexpected: plain ol' tree doesn't install UIResource?
      */
     @Test
@@ -108,7 +108,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
     
     /**
      * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
-     * 
+     * <p>
      * Unexpected: plain ol' tree doesn't install UIResource?
      */
     @Test
@@ -167,7 +167,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
     
     /**
      * Issue #1060-swingx: JXTree must update renderer
-     * 
+     * <p>
      * tree renderer not updated if set on the tree (as opposed to using the 
      * default set by the ui-delegate)
      */
@@ -187,7 +187,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
 
     /**
      * Issue #1060-swingx: JXTree must update renderer
-     * 
+     * <p>
      * tree renderer not updated if set on the tree (as opposed to using the 
      * default set by the ui-delegate)
      */
@@ -206,7 +206,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
     
     /**
      * Issue #1060-swingx: JXTree must update renderer
-     * 
+     * <p>
      * tree renderer not updated if set on the tree (as opposed to using the 
      * default set by the ui-delegate)
      */
@@ -222,10 +222,10 @@ public class JXTreeIssues extends JXTreeUnitTest {
 
     /**
      * Size effecting decoration vs. initial config (in provider).
-     * 
+     * <p>
      * Decoration: use highlighter 
      * - works correctly only with largeModel (due to caching issues)
-     * 
+     * <p>
      * Config in Provider (usually not recommended): 
      * - override getRendererComponent, width always correct, height only
      *   if enabled via setRowHeight(0)
@@ -267,12 +267,12 @@ public class JXTreeIssues extends JXTreeUnitTest {
     
     /**
      * Size effecting decoration vs. initial config (in provider).
-     * 
+     * <p>
      * For comparison: JXList
-     * 
+     * <p>
      * Decoration: use highlighter 
      * - works correctly 
-     * 
+     * <p>
      * Config in Provider (usually not recommended): 
      * - override getRendererComponent, works correctly
      *  
@@ -363,17 +363,13 @@ public class JXTreeIssues extends JXTreeUnitTest {
         final Icon downIcon = XTestUtils.loadDefaultIcon("wellbottom.gif");
         final Icon upIcon = XTestUtils.loadDefaultIcon("welltop.gif");
         final StringValue sv = StringValues.FILE_NAME;
-        IconValue iv = new IconValue() {
-
-            public Icon getIcon(Object value) {
-                if (sv.getString(value).startsWith("A")) {
-                    return downIcon;
-                } else if (sv.getString(value).startsWith("D")) {
-                    return upIcon;
-                }
-                return null;
+        IconValue iv = value -> {
+            if (!sv.getString(value).isEmpty() && sv.getString(value).charAt(0) == 'A') {
+                return downIcon;
+            } else if (!sv.getString(value).isEmpty() && sv.getString(value).charAt(0) == 'D') {
+                return upIcon;
             }
-            
+            return null;
         };
         tree.setCellRenderer(new DefaultTreeRenderer(iv, sv));
         tree.setRowHeight(22);
@@ -388,15 +384,11 @@ public class JXTreeIssues extends JXTreeUnitTest {
      */    
     public void interactiveProviderStringValue() {
         final JXTree tree = new JXTree(treeTableModel);
-        final StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return ((File) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
+        final StringValue sv = value -> {
+            if (value instanceof File) {
+                return ((File) value).getName();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(sv));
         tree.setRowHeight(22);

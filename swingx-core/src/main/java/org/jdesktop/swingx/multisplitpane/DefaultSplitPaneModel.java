@@ -26,7 +26,7 @@ import org.jdesktop.swingx.MultiSplitLayout.Split;
 /**
  * A simplified SplitPaneLayout for common split pane needs. A common multi splitpane
  * need is:
- *
+ * <p>
  * +-----------+-----------+
  * |           |           |
  * |           +-----------+

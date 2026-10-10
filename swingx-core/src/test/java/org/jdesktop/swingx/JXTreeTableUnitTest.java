@@ -87,7 +87,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue swingx-1529: IOOB Exception on delete
-     * 
+     * <p>
      * Stacktrace includes DefaultSortController, so sanity testing here
      * to verify that there is none installed by default.
      */
@@ -100,7 +100,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #1527-swingx: tooltip not shown on hierarchical column after collapse/expand.
-     * 
+     * <p>
      * Part of the issue: fixed tooltip on table not returned from treeAsRenderer.
      * 
      */
@@ -155,7 +155,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     @Test
     public void testFakeSetRowSorter() {
         JXTreeTable table = new FakeSortableTreeTable();
-        TableSortController<TableModel> controller = new TableSortController<TableModel>(table.getModel());
+        TableSortController<TableModel> controller = new TableSortController<>(table.getModel());
         table.setRowSorter(controller);
         assertEquals( controller, table.getRowSorter(),"table sorter must be set");
     }
@@ -233,7 +233,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #1275-swingx: getToolTipText(MouseEvent) throws IllegalArgumentException.
-     * 
+     * <p>
      * Happens if the given mouse location doesn't map to a valid column, aka: is
      * outside of the tree table (in which case the documented return value for columnAtPoint
      * is -1). Code must cope with that.
@@ -288,7 +288,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #1121: most not be sortable
-     * 
+     * <p>
      * Here: test that the autoCreateRowSorter property is false.
      */
     @Test
@@ -298,7 +298,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     }
     /**
      * Issue #1121: most not be sortable
-     * 
+     * <p>
      * Here: test that the autoCreateRowSorter property is not settable.
      */
     @Test
@@ -310,7 +310,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #1121: most not be sortable
-     * 
+     * <p>
      * Here: test that the no rowSorter installed.
      */
     @Test
@@ -321,19 +321,19 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     }
     /**
      * Issue #1121: most not be sortable
-     * 
+     * <p>
      * Here: test that the no rowSorter installed.
      */
     @Test
     public void testRowSorterNotSettable() {
         JXTreeTable table = new JXTreeTable();
-        table.setRowSorter(new TableRowSorter<TableModel>());
+        table.setRowSorter(new TableRowSorter<>());
         assertNull( 
                 table.getRowSorter(),"rowsorter not settable, was: " + table.getRowSorter());
     }
 /**
      * Issue #766-swingx: drop image is blinking over hierarchical column.
-     * 
+     * <p>
      * Test the hack - enabled by default, can be disabled by setting the
      * client property to Boolean.FALSE.
      * 
@@ -401,28 +401,23 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     @Test
     public void testGetStringAtHierarchicalColumn() {
         JXTreeTable table = new JXTreeTableT(AncientSwingTeam.createNamedColorTreeTableModel());
-        StringValue sv = new StringValue() {
-
-            @Override
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
+        StringValue sv = value -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
             }
-            
+            return StringValues.TO_STRING.getString(value);
         };
         table.setTreeCellRenderer(new DefaultTreeRenderer(sv));
         String text = sv.getString(table.getValueAt(2, 0));
-        assertTrue( text.length() > 0,"sanity: text not empty");
+        assertTrue(!text.isEmpty(),"sanity: text not empty");
         assertEquals(text, table.getStringAt(2, 0));
     }
     
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize treeTable behaviour.
-     * 
+     * <p>
      * Here: icon on renderer must be respected if overwrite is false.
      */
     @Test
@@ -437,7 +432,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize treeTable behaviour.
-     * 
+     * <p>
      * Here: icon on renderer must be overwritten if overwrite is true.
      */
     @Test
@@ -457,7 +452,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize treeTable behaviour.
-     * 
+     * <p>
      * Here: set icon on treeTable is passed on to renderer always.
      */
     @Test
@@ -473,7 +468,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize treeTable behaviour.
-     * 
+     * <p>
      * Here: set icon on treeTable is passed on to renderer always.
      */
     @Test
@@ -490,7 +485,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #769-swingx: setXXIcon on renderer vs setXXIcon on Tree/Table.
      * Characterize treeTable behaviour.
-     * 
+     * <p>
      * Here: default overwriteOnRenderer is false.
      */
     @Test
@@ -503,7 +498,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * #561-swingx: KeyEvent on hierarchical column doesn't start editing.
-     * 
+     * <p>
      * Here: test method without event (delegates to event == null)
      */
     @Test
@@ -517,7 +512,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     /**
      * #561-swingx: KeyEvent on hierarchical column doesn't start editing.
-     * 
+     * <p>
      * Here: test method taking the event
      */
     @Test
@@ -533,7 +528,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     /**
      * #561-swingx: KeyEvent on hierarchical column doesn't start editing.
-     * 
+     * <p>
      * Here: compare with plain table (in fact plain DefaultCellEditor)
      */
     @Test
@@ -550,7 +545,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      * Issue #493-swingx: incorrect table events fired.
      * Issue #592-swingx: (no structureChanged table events) is a special
      *   case of the former.
-     *    
+     * <p>
      * Here: must fire structureChanged on setRoot(null).
      * fails - because the treeStructureChanged is mapped to a 
      * tableDataChanged.
@@ -567,14 +562,11 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         ((DefaultTreeTableModel) model).setRoot(null);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertTrue( 
-                        report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertTrue(
+                    report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
+        });
         
     }
     
@@ -582,7 +574,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      * Issue #493-swingx: incorrect table events fired.
      * Issue #592-swingx: (no structureChanged table events) is a special
      *   case of the former.
-     * 
+     * <p>
      * Here: must fire structureChanged on setRoot(otherroot).
      * failed - because the treeStructureChanged is mapped to a 
      * tableDataChanged.
@@ -599,14 +591,11 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         ((DefaultTreeTableModel) model).setRoot(new DefaultMutableTreeTableNode("other"));  
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertTrue( 
-                        report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertTrue(
+                    report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
+        });
         
     }
 
@@ -614,7 +603,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      * Issue #493-swingx: incorrect table events fired.
      * Issue #592-swingx: (no structureChanged table events) is a special
      *   case of the former.
-     * 
+     * <p>
      * Here: must not fire structureChanged on reload(subtree).
      * failed - because the treeStructureChanged is mapped to a 
      * tableDataChanged.
@@ -647,21 +636,18 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         model.removeNodeFromParent(node);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertTrue( 
-                        report.isDataChanged(report.getLastEvent()),"event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()));
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertTrue(
+                    report.isDataChanged(report.getLastEvent()),"event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()));
+        });
         
     }
     /**
      * Issue #493-swingx: incorrect table events fired.
      * Issue #592-swingx: (no structureChanged table events) is a special
      *   case of the former.
-     * 
+     * <p>
      * Here: must fire structureChanged on setModel.
      * This was okay, because the setTreeTableModel on the table is handled
      * directly (through tableChanged)
@@ -677,14 +663,11 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         table.setTreeTableModel(createCustomTreeTableModelFromDefault());  
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertTrue( 
-                        report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertTrue(
+                    report.isStructureChanged(report.getLastEvent()),"event type must be structureChanged " + TableModelReport.printEvent(report.getLastEvent()));
+        });
         
     }
 
@@ -726,9 +709,9 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing update.
-     * 
+     * <p>
      * Test update events after updating treeTableModel.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -746,23 +729,20 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         table.getModel().addTableModelListener(report);
         model.setValueAt("games",
                 table.getPathForRow(6).getLastPathComponent(), 0);   
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertEquals( 1, report.getUpdateEventCount(),"the event type must be update");
-                TableModelEvent event = report.getLastUpdateEvent();
-                assertEquals( row, event.getFirstRow(),"the updated row ");
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertEquals( 1, report.getUpdateEventCount(),"the event type must be update");
+            TableModelEvent event = report.getLastUpdateEvent();
+            assertEquals( row, event.getFirstRow(),"the updated row ");
+        });
     }
 
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing update.
-     * 
+     * <p>
      * Test delete events after tree table model.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -791,22 +771,19 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         // remove the last child from sports node
         MutableTreeTableNode firstChild = (MutableTreeTableNode) sportsNode.getChildAt(0);
         ((DefaultTreeTableModel) model).removeNodeFromParent(firstChild);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired exactly one event");
-                TableModelEvent event = report.getLastEvent();
-                assertEquals( TableModelEvent.DELETE, event.getType(),"event type must be delete");
-                assertEquals( row + 1, event.getFirstRow(),"the deleted row ");
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired exactly one event");
+            TableModelEvent event = report.getLastEvent();
+            assertEquals( TableModelEvent.DELETE, event.getType(),"event type must be delete");
+            assertEquals( row + 1, event.getFirstRow(),"the deleted row ");
+        });
     }
     /**
      * Issue #493-swingx: JXTreeTable.TreeTableModelAdapter: Inconsistency
      * firing update.
-     * 
+     * <p>
      * Test update events after updating table.
-     * 
+     * <p>
      * from tiberiu@dev.java.net
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -826,15 +803,12 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         // doesn't fire or isn't detectable? 
         // Problem was: model was not-editable.
         table.setValueAt("games", row, 0);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
-                assertEquals( 1, report.getUpdateEventCount(),"the event type must be update");
-                TableModelEvent event = report.getLastUpdateEvent();
-                assertEquals( row, event.getFirstRow(),"the updated row ");
-            }
-        });        
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+            assertEquals( 1, report.getUpdateEventCount(),"the event type must be update");
+            TableModelEvent event = report.getLastUpdateEvent();
+            assertEquals( row, event.getFirstRow(),"the updated row ");
+        });
     }
 
 
@@ -921,7 +895,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #342-swingx: default margins in JXTreeTable.
-     * 
+     * <p>
      * This is not only a treeTable issue: the coupling of 
      * margins to showing gridlines (and still get a "nice" 
      * looking selection) is not overly obvious in JTable as
@@ -963,7 +937,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         root.add(a);
         root.add(b);
         
-        Vector<String> columnNames = new Vector<String>();
+        Vector<String> columnNames = new Vector<>();
         columnNames.add("A");
         
         TreeTableModel model = new DefaultTreeTableModel(root, columnNames) {
@@ -1031,7 +1005,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     /**
      * Issue #4-, #340-swingx: duplicate notification
-     * 
+     * <p>
      * starting from unselected, the event count is 1 as expected 
      */
     @Test
@@ -1046,7 +1020,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #4-, #340-swingx: duplicate notification
-     * 
+     * <p>
      * Hmm... unexpected: the eventCount (2) is not effected by 
      * catching isAdjusting listSelectionEvents. The reason is 
      * an intermediate clearSelection which fires the additional.
@@ -1062,7 +1036,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #4-, #340-swingx: duplicate notification
-     * 
+     * <p>
      * The old in the event must be the last selected. 
      */
     @Test
@@ -1097,7 +1071,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #4-, #340-swingx: duplicate notification
-     * 
+     * <p>
      * sanity: check if there's only one event fired if selection is 
      * set directly via the treeSelectionModel. Characterize normal
      * treeSelection to mimic.
@@ -1210,7 +1184,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #168-jdnc: dnd enabled breaks node collapse/expand.
      * testing auto-detection of dragHackEnabled.
-     * 
+     * <p>
      * Removed auto-detection (cleanup 1.6)
      */
     @Test
@@ -1226,7 +1200,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #168-jdnc: dnd enabled breaks node collapse/expand.
      * testing auto-detection of dragHackEnabled.
-     * 
+     * <p>
      * Removed auto-detection (cleanup 1.6)
      * 
      */
@@ -1245,7 +1219,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * loosely related to Issue #248-swingx: setRootVisible (true) after
      * initial rootInvisible didn't show the root.
-     * 
+     * <p>
      * this here is a sanity test that there is exactly one row, the problem
      * is a missing visual update of the table.
      *
@@ -1269,12 +1243,12 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      * Issue #247-swingx: update probs with insert node.
      * The insert under a collapsed node fires a dataChanged on the table 
      * which results in the usual total "memory" loss (f.i. selection)
-     *
+     * <p>
      * The tree model is after setup is (see the bug report as well):
      * root
      *   childA
      *     childB
-     *     
+     * <p>
      * In the view childA is collapsed:
      * root
      *   childA  
@@ -1297,13 +1271,10 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         treeTable.setRowSelectionInterval(selected, selected);
         model.addChild(childB);
         // need to invoke - the tableEvent is fired delayed as well
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                int selectedAfterInsert = treeTable.getSelectedRow();
-                assertEquals(selected, selectedAfterInsert);
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            int selectedAfterInsert = treeTable.getSelectedRow();
+            assertEquals(selected, selectedAfterInsert);
 
-            }
         });
     }
     
@@ -1582,10 +1553,9 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     private TreeTableModel createCustomTreeTableModelFromDefault() {
         JXTree tree = new JXTree();
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-        TreeTableModel customTreeTableModel = TreeTableUtils
-                .convertDefaultTreeModel(treeModel);
 
-        return customTreeTableModel;
+        return TreeTableUtils
+                .convertDefaultTreeModel(treeModel);
     }
 
     /**

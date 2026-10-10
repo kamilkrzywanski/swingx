@@ -22,7 +22,6 @@
 package org.jdesktop.swingx.table;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
@@ -110,7 +109,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1236-swingx: NumberEditor throws for non-number columns.
-     * 
+     * <p>
      * Strict editor delegates to formatter -  which defaults to string valueclass.
      */
     @Test 
@@ -123,7 +122,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1236-swingx: NumberEditor throws for non-number columns.
-     * 
+     * <p>
      * Strict editor delegates to formatter -  which defaults to string valueclass.
      */
     @Test 
@@ -133,22 +132,19 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1236-swingx: NumberEditor throws for non-number columns.
-     * 
+     * <p>
      * Old default: non-strict editor throws IllegalState if column type
      * is not a subtype of Number.
      */
     @Test
     public void testEditorObjectColumn() {
-        assertThrows(IllegalStateException.class, () -> {
-        cellEditor.getTableCellEditorComponent(table, null, false, 0, OBJECT_COLUMN);
-    
-        });}
+        assertThrows(IllegalStateException.class, () -> cellEditor.getTableCellEditorComponent(table, null, false, 0, OBJECT_COLUMN));}
 
 //---------------- Sanity testing: StrictNumberFormatter - 
     
     /**
      * Issue #1528-swingx: numbereditor doesn't allow negative values.
-     * 
+     * <p>
      * Sanity: positive okay
      * @throws ParseException 
      */
@@ -164,7 +160,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1528-swingx: numbereditor doesn't allow negative values.
-     * 
+     * <p>
      * Test zero
      * 
      * @throws ParseException 
@@ -181,7 +177,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1528-swingx: numbereditor doesn't allow negative values.
-     * 
+     * <p>
      * Test negative
      * 
      * @throws ParseException 
@@ -235,7 +231,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Long.class);
-        String text = new Long(Long.MAX_VALUE).toString() + "9";
+        String text = Long.MAX_VALUE + "9";
         formatter.stringToValue(text);
     
         });}
@@ -246,7 +242,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
-        String text = "9" + new Float(Float.MAX_VALUE).toString();
+        String text = "9" + Float.MAX_VALUE;
         formatter.stringToValue(text);
     
         });}
@@ -258,7 +254,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
-        String text = "-9" + new Float(Float.MAX_VALUE).toString();
+        String text = "-9" + Float.MAX_VALUE;
         formatter.stringToValue(text);
     
         });}
@@ -290,7 +286,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Integer.class);
-        String text = new Integer(Integer.MAX_VALUE).toString() + "1";
+        String text = Integer.MAX_VALUE + "1";
         formatter.stringToValue(text);
     
         });}
@@ -300,7 +296,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      *  Sanity: checks that stopCellEditing returns false on parsing errors.   
      */
     @Test
@@ -318,7 +314,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p> <p>
      *  Sanity: checks that stopCellEditing returns false on parsing errors, use strict.   
      */
     @Test
@@ -336,7 +332,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      * Check that stopCellEditing returns false if bounds exceeded.
      */
     @Test
@@ -351,7 +347,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      * Check that stopCellEditing returns false if bounds exceeded, use strict
      */
     @Test
@@ -366,7 +362,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      * Check IllegalStateException as doc'ed
      */
     @Test
@@ -383,7 +379,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: editor with strict number formatter throws on 
      *    committing null value.
-     *   
+     * <p>
      *  happens only if active editor in table, so this test fails 
      */
     @Test
@@ -410,7 +406,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1293-swingx: NumberEditorExt removes Escape binding for all formatted text fields.
-     * 
+     * <p>
      * Here we assure that the fix for the issue doesn't effect the table edit - must
      * pass-through to allow correct cancel processing (non-strict number editor).
      */
@@ -436,7 +432,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #1293-swingx: NumberEditorExt removes Escape binding for all formatted text fields.
-     * 
+     * <p>
      * Here we assure that the fix for the issue doesn't effect the table edit - must
      * pass-through to allow correct cancel processing (strict number editor).
      */
@@ -463,9 +459,9 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue #1183-swingx: NumberEditorExt throws in getCellEditorValue if
      *   Integer (short, byte..) below/above min/max.
-     *   
+     * <p>
      *  Visualize JFormattedText behaviour.
-     *   
+     * <p>
      *  Problem is that the formattedTextField.isvalid/isValidEdit only check for 
      *  formal validity. So the assumption that at the time of constructor 
      *  invokation later the value is valid is incorrect. 
@@ -562,7 +558,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     /**
      * Issue ??-swingx: localized NumberEditor using strict.
      * Default for JXTable. 
-     * 
+     * <p>
      * Here: all column classes are Number.
      * 
      */
@@ -605,7 +601,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue ??-swingx: localized NumberEditor not using strict.
-     * 
+     * <p>
      * Column class is concrete type.
      * 
      */
@@ -648,7 +644,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue ??-swingx: localized NumberEditor using strict.
-     * 
+     * <p>
      * Column class is concrete type.
      * 
      */
@@ -688,7 +684,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #393-swingx: localized NumberEditor.
-     * 
+     * <p>
      * Column type is Number, editors as noted in header text 
      * 
      * 
@@ -729,7 +725,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     
     /**
      * Issue #393-swingx: localized NumberEditor.
-     * 
+     * <p>
      * Column type is Number, editors as noted in header text 
      * 
      * 
@@ -776,7 +772,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
 
     /**
      *  Issue #??-swingx: default number editor shows 3 digits only.
-     *  
+     * <p>
      *  Compare with plain JFromattedTextField and default NumberFormat - same. 
      *  To see, type a number with fractional digits > 3 in the first text field
      *  and press commit or transfer focus away. 
@@ -813,13 +809,9 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         field.setColumns(10);
         final JFormattedTextField target = new JFormattedTextField(moreFractionalDigits);
         target.setColumns(10);
-        field.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                target.setValue(field.getValue());
-                LOG.info("value: " + field.getValue());
-            }
-            
+        field.addActionListener(e -> {
+            target.setValue(field.getValue());
+            LOG.info("value: " + field.getValue());
         });
         FocusAdapter focusAdapter = new FocusAdapter() {
 

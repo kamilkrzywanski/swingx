@@ -31,7 +31,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -246,19 +245,21 @@ public class BasicTitledPanelUI extends TitledPanelUI {
     }
     
     protected void installListeners(final JXTitledPanel titledPanel) {
-        titleChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("title")) {
-                    caption.setText((String)evt.getNewValue());
-                } else if (evt.getPropertyName().equals("titleForeground")) {
-                    caption.setForeground((Color)evt.getNewValue());
-                } else if (evt.getPropertyName().equals("titleFont")) {
-                    caption.setFont((Font)evt.getNewValue());
-                } else if ("titlePainter".equals(evt.getPropertyName())) {
+        titleChangeListener = evt -> {
+            switch (evt.getPropertyName()) {
+                case "title":
+                    caption.setText((String) evt.getNewValue());
+                    break;
+                case "titleForeground":
+                    caption.setForeground((Color) evt.getNewValue());
+                    break;
+                case "titleFont":
+                    caption.setFont((Font) evt.getNewValue());
+                    break;
+                case "titlePainter":
                     topPanel.setBackgroundPainter(titledPanel.getTitlePainter());
                     topPanel.repaint();
-                }
+                    break;
             }
         };
         titledPanel.addPropertyChangeListener(titleChangeListener);

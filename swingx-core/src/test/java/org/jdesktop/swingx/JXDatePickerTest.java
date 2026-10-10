@@ -84,7 +84,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1393-swingx: JXDatePicker children must show parent popup if inherits true
-     * 
+     * <p>
      * Here: sanity test of JComboBox for comparison
      */
     @Test
@@ -103,7 +103,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1393-swingx: JXDatePicker children must show parent popup if inherits true
-     * 
+     * <p>
      * Here: sanity test of JComboBox for comparison
      */
     @Test
@@ -132,7 +132,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1301-swingx: Picker must be source of popupMenuEvent.
-     * 
+     * <p>
      * Tests event source on notification.
      * 
      * @throws InvocationTargetException 
@@ -154,20 +154,17 @@ public class JXDatePickerTest extends InteractiveTestCase {
         picker.addPopupMenuListener(report);
         Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(1, report.getVisibleEventCount());
-                assertEquals(picker, report.getLastEvent().getSource());
-                frame.dispose();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals(1, report.getVisibleEventCount());
+            assertEquals(picker, report.getLastEvent().getSource());
+            frame.dispose();
+
         });
     }
     
     /**
      * Issue #1301-swingx: Picker must be source of popupMenuEvent.
-     * 
+     * <p>
      * Tests event source on notification.
      * 
      * @throws InvocationTargetException 
@@ -188,30 +185,24 @@ public class JXDatePickerTest extends InteractiveTestCase {
         final Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
         final PopupMenuReport report = new PopupMenuReport();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                picker.addPopupMenuListener(report);
-                togglePopup.actionPerformed(null);
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            picker.addPopupMenuListener(report);
+            togglePopup.actionPerformed(null);
+
         });
         
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(1, report.getInvisibleEventCount());
-                assertEquals(picker, report.getLastEvent().getSource());
-                frame.dispose();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals(1, report.getInvisibleEventCount());
+            assertEquals(picker, report.getLastEvent().getSource());
+            frame.dispose();
+
         });
     }
     
 
     /**
      * Issue #1171-swingx: support popupMenuListeners.
-     * 
+     * <p>
      * Tests notification on showing.
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -231,14 +222,11 @@ public class JXDatePickerTest extends InteractiveTestCase {
         picker.addPopupMenuListener(report);
         Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(1, report.getEventCount());
-                assertEquals(1, report.getVisibleEventCount());
-                frame.dispose();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals(1, report.getEventCount());
+            assertEquals(1, report.getVisibleEventCount());
+            frame.dispose();
+
         });
     }
     
@@ -246,7 +234,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #1171-swingx: support popupMenuListeners.
      * Issue #1172-swingx: missing cancel notification.
-     * 
+     * <p>
      * Tests notification on cancel.
      * 
      * @throws InvocationTargetException 
@@ -266,30 +254,24 @@ public class JXDatePickerTest extends InteractiveTestCase {
         final Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
         final PopupMenuReport report = new PopupMenuReport();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                picker.addPopupMenuListener(report);
-                picker.getMonthView().cancelSelection();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            picker.addPopupMenuListener(report);
+            picker.getMonthView().cancelSelection();
+
         });
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(2, report.getEventCount());
-                assertEquals(1, report.getInvisibleEventCount());
-                assertEquals(1, report.getCanceledEventCount());
-                frame.dispose();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals(2, report.getEventCount());
+            assertEquals(1, report.getInvisibleEventCount());
+            assertEquals(1, report.getCanceledEventCount());
+            frame.dispose();
+
         });
     }
     
     
     /**
      * Issue #1171-swingx: support popupMenuListeners.
-     * 
+     * <p>
      * Tests notification on showing.
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -308,29 +290,23 @@ public class JXDatePickerTest extends InteractiveTestCase {
         final Action togglePopup = picker.getActionMap().get("TOGGLE_POPUP");
         togglePopup.actionPerformed(null);
         final PopupMenuReport report = new PopupMenuReport();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                picker.addPopupMenuListener(report);
-                togglePopup.actionPerformed(null);
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            picker.addPopupMenuListener(report);
+            togglePopup.actionPerformed(null);
+
         });
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                assertEquals(1, report.getEventCount());
-                assertEquals(1, report.getInvisibleEventCount());
-                frame.dispose();
-                
-            }
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertEquals(1, report.getEventCount());
+            assertEquals(1, report.getInvisibleEventCount());
+            frame.dispose();
+
         });
     }
     
     
     /**
      * Issue #1171-swingx: support popupMenuListeners.
-     * 
+     * <p>
      * Tests add/remove.
      */
     @Test
@@ -485,7 +461,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #764-swingx: JXDatePicker sizing 
-     * 
+     * <p>
      * editor must respect columns.
      */
     @Test
@@ -500,7 +476,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #764-swingx: JXDatePicker sizing 
-     * 
+     * <p>
      * editor must respect columns.
      */
     @Test
@@ -515,7 +491,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #667-swingx: don't install the datepicker border for gtk.
-     * 
+     * <p>
      * Here we are testing that the BasicPickerUI doesn't touch the 
      * editors border if it finds a null. 
      * 
@@ -599,7 +575,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #568-swingx: picker must respect selection model (as of time fields).
-     * 
+     * <p>
      * Behaviour defined by selection model of monthView. While the default 
      * (DaySelectionModel) normalizes the dates to the start of the day in the
      * model's calendar coordinates, a SingleDaySelectionModel keeps the date as-is.
@@ -622,7 +598,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Issue #??-swingx: JXDatePicker must keep monthView's firstDisplayedDate
      *   in synch with selection/today.
      * Issue #705-swingx: JXMonthView must not scroll in layoutContainer.
-     * 
+     * <p>
      * The implication is that client code (such as JXDatePicker/UI) is 
      * responsible to do the scrolling.
      */
@@ -650,7 +626,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Issue #??-swingx: JXDatePicker must keep monthView's firstDisplayedDate
      *   in synch with selection/today.
      * Issue #705-swingx: JXMonthView must not scroll in layoutContainer.
-     * 
+     * <p>
      * The implication is that client code (such as JXDatePicker/UI) is 
      * responsible to do the scrolling.
      */
@@ -676,7 +652,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Issue #??-swingx: JXDatePicker must keep monthView's firstDisplayedDate
      *   in synch with selection/today.
      * Issue #705-swingx: JXMonthView must not scroll in layoutContainer.
-     * 
+     * <p>
      * The implication is that client code (such as JXDatePicker/UI) is 
      * responsible to do the scrolling.
      */
@@ -692,7 +668,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Issue #??-swingx: JXDatePicker must keep monthView's firstDisplayedDate
      *   in synch with selection/today.
      * Issue #705-swingx: JXMonthView must not scroll in layoutContainer.
-     * 
+     * <p>
      * The implication is that client code (such as JXDatePicker/UI) is 
      * responsible to do the scrolling.
      */
@@ -736,7 +712,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #690-swingx: custom dateformats lost on switching LF.
-     * 
+     * <p>
      * Here: default formats re-set.
      */
     @Test
@@ -750,7 +726,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #690-swingx: custom dateformats lost on switching LF.
-     * 
+     * <p>
      * Sanity test: custom format set as expected.
      */
     @Test
@@ -765,7 +741,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     }
     /**
      * Issue #690-swingx: custom dateformats lost on switching LF.
-     * 
+     * <p>
      * Here: test that custom format is unchanged after updateUI
      */
     @Test
@@ -782,7 +758,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #542-swingx: NPE in init if linkFormat not set.
-     * 
+     * <p>
      * After plaf cleanup no longer as virulent as earlier: with
      * addResourceBundle, there's always at least the fall-back value in the
      * bundle, so as long as the bundle is loaded at all, we have a not-null
@@ -806,7 +782,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * Forum report: NPE under certain initial conditions.
      * 
      */
@@ -818,7 +794,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * Forum report: NPE under certain initial conditions.
      * 
      */
@@ -835,7 +811,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * Forum report: NPE under certain initial conditions.
      * 
      */
@@ -847,7 +823,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * Forum report: NPE under certain initial conditions.
      * 
      */
@@ -863,7 +839,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     }
     /**
      * Issue #584-swingx: need to clarify null handling.
-     * 
+     * <p>
      * Forum report: NPE under certain initial conditions.
      * This produced exactly the stacktrace as reported.
      * 
@@ -899,7 +875,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #565-swingx: popup not closed when focus moved to Combo
      * Issue #573-swingx: datePicker editor not focused on F2 (in table)
-     * 
+     * <p>
      * testing internals: need focus listener add/remove
      *
      */
@@ -914,7 +890,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #565-swingx: popup not closed when focus moved to Combo
      * Issue #573-swingx: datePicker editor not focused on F2 (in table)
-     * 
+     * <p>
      * testing internals: need focus listener add/remove
      *
      */
@@ -1096,7 +1072,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * test that the toggle popup is registered in the 
      * picker's actionMap.
-     *
+     * <p>
      * Issue #596-swingx: don't use space to open popup.
      */
     @Test
@@ -1113,7 +1089,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Characterization: when does picker fire action events?
-     * 
+     * <p>
      * Test that set date programmatically (directly or indirectly) 
      * does not fire an actionEvent.
      */
@@ -1140,7 +1116,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test the cancel produced by the monthview trigger
      * cancel in the picker.
      *
@@ -1159,7 +1135,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     }
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test the commit produced by the monthview trigger
      * commit in the picker.
      *
@@ -1178,7 +1154,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test that the ui installed a listener.
      */
     @Test
@@ -1223,7 +1199,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test that cancel action reverts silently: date related
      * state unchanged and no events fired (except the actionEvent).
      *
@@ -1249,7 +1225,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test that cancel fires as expected.
      * PENDING: need to invoke ... safe test?
      *
@@ -1267,7 +1243,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test that commit fires as expected.
      * PENDING: need to invoke ... safe test?
      */
@@ -1284,7 +1260,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Enhanced commit/cancel.
-     * 
+     * <p>
      * test that actions are registered.
      *
      */
@@ -1298,7 +1274,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #658-swingx: timezone in linkformat updated.
-     * 
+     * <p>
      * linkDate synced with monthView's today after setting.
      */
     @Test
@@ -1315,7 +1291,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #658-swingx: timezone in linkformat updated.
-     * 
+     * <p>
      * Initial linkDate synced with monthView's today.
      */
     @Test
@@ -1326,7 +1302,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #658-swingx: timezone in linkformat updated.
-     * 
+     * <p>
      * Here: set timezone in picker.
      */
     @Test
@@ -1388,7 +1364,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
  
     /**
      * Issue #554-swingx: timezone of formats and picker must be synched.
-     * 
+     * <p>
      * Here: set the timezone in the picker.
      */
     @Test
@@ -1418,7 +1394,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #554-swingx: timezone of formats and picker must be synched.
-     * 
+     * <p>
      * Here: initialize the formats with the pickers timezone on setting.
      */
     @Test
@@ -1630,7 +1606,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #559-swingX: date must be synched in all parts.
      * here: set date in picker
-     * 
+     * <p>
      * Note: test uses a cleaned date, do same with uncleaned.
      */
     @Test
@@ -1657,7 +1633,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #559-swingX: date must be synched in all parts.
      * here: set value in editor.
-     * 
+     * <p>
      * Note: test uses a cleaned date, do same with uncleaned.
      */
     @Test
@@ -1671,7 +1647,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #559-swingX: date must be synched in all parts.
      * here: modify value must work after changing the editor.
-     * 
+     * <p>
      * Note: this started to fail during listener cleanup.
      */
     @Test
@@ -1686,7 +1662,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     /**
      * Issue #559-swingX: date must be synched in all parts.
      * here: set selection must work after changing the monthView.
-     * 
+     * <p>
      * Note: this started to fail during listener cleanup.
      */
     @Test
@@ -1704,7 +1680,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * 
      * here: set selection must work after changing the monthView's selection
      * model.
-     * 
+     * <p>
      * Note: this started to fail during listener cleanup.
      */
     @Test
@@ -1844,7 +1820,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
     /**
      * Issue #551-swingX: editor value not updated after setMonthView.
-     * 
+     * <p>
      * quick&dirty fix: let the picker manually update.
      *
      */
@@ -1860,12 +1836,12 @@ public class JXDatePickerTest extends InteractiveTestCase {
     }
     /**
      * Issue #551-swingx: editor value not updated after setEditor. 
-     * 
+     * <p>
      * quick&dirty fix: let the picker manually update.
-     * 
+     * <p>
      * who should set it? ui-delegate when listening to editor property change?
      * or picker in setEditor?
-     * 
+     * <p>
      * Compare to JComboBox: BasicComboUI listens to editor change, does internal
      * wiring to editor and call's comboBox configureEditor with the value of the 
      * old editor.
@@ -1882,7 +1858,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #551-swingx: editor value must preserve value on LF switch.
-     * 
+     * <p>
      * This is a side-effect of picker not updating the editor's value
      * on setEditor.
      *
@@ -1912,7 +1888,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Characterization: setting the monthview's selection model updates
      * the datePicker's date to the monthView's current
      * selection.
-     * 
+     * <p>
      * Here: model with selection.
      *
      */
@@ -1933,7 +1909,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      * Characterization: setting the monthview's selection model updates
      * the datePicker's date to the monthView's current
      * selection.
-     * 
+     * <p>
      * Here: model with empty selection.
      *
      */
@@ -1987,7 +1963,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1292-swingx: prefsize growing on inserting text into empty editor.
-     * 
+     * <p>
      * PrefSize should be independent of empty/filled picker. 
      * If not, the initial size might appear kind of collapsed.
      *
@@ -2011,7 +1987,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1292-swingx: prefsize growing on inserting text into empty editor.
-     * 
+     * <p>
      * PrefSize should be independent of empty/filled picker. 
      * If not, the initial size might appear kind of collapsed.
      *
@@ -2028,7 +2004,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     
     /**
      * Issue #1292-swingx: prefsize growing on inserting text into empty editor.
-     * 
+     * <p>
      * PrefSize should be independent of empty/filled picker. 
      * If not, the initial size might appear kind of collapsed.
      *

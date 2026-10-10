@@ -93,17 +93,11 @@ public class JXPanelTest {
     
     @Test
     public void testScrollableHeightTrackNull() {
-        assertThrows(NullPointerException.class, () -> {
-        new JXPanel().setScrollableHeightHint(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new JXPanel().setScrollableHeightHint(null));}
     
     @Test
     public void testScrollableWidthTrackNull() {
-        assertThrows(NullPointerException.class, () -> {
-        new JXPanel().setScrollableWidthHint(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new JXPanel().setScrollableWidthHint(null));}
     
     /**
      * Initial value (for backward compatibility: FIT)
@@ -214,17 +208,11 @@ public class JXPanelTest {
     
     @Test
     public void testSetAlphaWithLessThanZero() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        new JXPanel().setAlpha(Math.nextAfter(0f, Float.NEGATIVE_INFINITY));
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> new JXPanel().setAlpha(Math.nextAfter(0f, Float.NEGATIVE_INFINITY)));}
     
     @Test
     public void testSetAlphaWithGreaterThanOne() {
-        assertThrows(IllegalArgumentException.class, () -> {
-        new JXPanel().setAlpha(Math.nextUp(1f));
-    
-        });}
+        assertThrows(IllegalArgumentException.class, () -> new JXPanel().setAlpha(Math.nextUp(1f)));}
     
     public void testSetAlphaLessThanOneMakesPanelNonOpaque() {
         JXPanel panel = new JXPanel();

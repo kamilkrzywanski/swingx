@@ -17,22 +17,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.DefaultRowSorter;
 import javax.swing.Icon;
@@ -64,8 +58,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.jdesktop.swingx.JXTableUnitTest.TakeItAllDummy;
-import org.jdesktop.swingx.JXTableUnitTest.ThrowingDummy;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.sort.RowFilters;
 import org.jdesktop.swingx.test.XTestUtils;
@@ -94,7 +86,7 @@ public class JTableIssues extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(JTableIssues.class
             .getName());
     
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
 //        setLookAndFeel("Nimbus");
       JTableIssues test = new JTableIssues();
       try {
@@ -130,7 +122,7 @@ public class JTableIssues extends InteractiveTestCase {
         // exclude rows based on identifier
         final RowFilter filter = new RowFilters.GeneralFilter() {
             
-            List excludes = Arrays.asList(0);
+            List excludes = Collections.singletonList(0);
             @Override
             protected boolean include(
                     Entry<? extends Object, ? extends Object> entry,
@@ -165,7 +157,7 @@ public class JTableIssues extends InteractiveTestCase {
         // exclude rows based on identifier
         final RowFilter filter = new RowFilters.GeneralFilter() {
 
-            List excludes = Arrays.asList(0);
+            List excludes = Collections.singletonList(0);
             @Override
             protected boolean include(
                     Entry<? extends Object, ? extends Object> entry,
@@ -183,7 +175,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * Issue #1536-swingx: AIOOB on restoring selection with filter
      * This is a core issue, sneaked into ListSortUI by c&p
-     * 
+     * <p>
      * Analyzed by reporter to incorrect method usage in SortManager
      * cacheSelection: selectionModel.insert/removeIndexInterval length of range 
      * but gets last index of range.
@@ -373,7 +365,7 @@ public class JTableIssues extends InteractiveTestCase {
     
     /**
      * Core issue: editing not terminated on setModel.
-     * 
+     * <p>
      * reported in sun forum:
      * http://forums.sun.com/thread.jspa?threadID=5422547&tstart=15
      */
@@ -389,7 +381,7 @@ public class JTableIssues extends InteractiveTestCase {
     
     /**
      * Core issue: editing not terminated on setModel.
-     * 
+     * <p>
      * reported in sun forum:
      * http://forums.sun.com/thread.jspa?threadID=5422547&tstart=15
      */
@@ -572,7 +564,7 @@ public class JTableIssues extends InteractiveTestCase {
           JTable table = new JTable(new AncientSwingTeam());
           PropertyChangeReport report = new PropertyChangeReport();
           table.addPropertyChangeListener(report);
-          table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+          table.setRowSorter(new TableRowSorter<>(table.getModel()));
           TestUtils.assertPropertyChangeEvent(report, "rowSorter", null, table.getRowSorter());
       }
       
@@ -629,7 +621,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * Issue #1489-swingx: terminateEditOnFocusLost leads to unexpected focus behaviour 
      * in internalFrame.
-     * 
+     * <p>
      * This is a core-issue which shows up in SwingX because JxTable has the property
      * set to true by default, while core has not.
      * 
@@ -647,20 +639,16 @@ public class JTableIssues extends InteractiveTestCase {
         jInternalFrame.setVisible(true);
         show(embddingFrame, 400, 400);
         
-        PropertyChangeListener pcl = new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                Object oldValue = evt.getOldValue();
-                Object newValue = evt.getNewValue();
-                if (newValue == null || ! JFrame.class.equals(newValue.getClass())) {
-                    int i = 1;
-                }
-                System.out.println(evt.getPropertyName() + " from "
-                        + (oldValue == null ? null : oldValue.getClass().getCanonicalName() + oldValue.hashCode())
-                        + " to "
-                        + (newValue == null ? null : newValue.getClass().getCanonicalName() + newValue.hashCode()));
+        PropertyChangeListener pcl = evt -> {
+            Object oldValue = evt.getOldValue();
+            Object newValue = evt.getNewValue();
+            if (newValue == null || ! JFrame.class.equals(newValue.getClass())) {
+                int i = 1;
             }
+            System.out.println(evt.getPropertyName() + " from "
+                    + (oldValue == null ? null : oldValue.getClass().getCanonicalName() + oldValue.hashCode())
+                    + " to "
+                    + (newValue == null ? null : newValue.getClass().getCanonicalName() + newValue.hashCode()));
         };
 
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", pcl);
@@ -710,12 +698,12 @@ public class JTableIssues extends InteractiveTestCase {
      * Core issue: terminateEditOnFocusLost weird behaviour if in InternalFrame
      * see: 
      * http://forums.java.net/jive/thread.jspa?threadID=64281
-     * 
+     * <p>
      * To reproduce: edit first column (combo dropdown), click in textfield, click again
      * in first column: editing not started again.
-     * 
+     * <p>
      * Same in JXTable, but there always: the terminateEditOnFocusLost is true by default.
-     * 
+     * <p>
      * The thread is no longer available, reported as #1489 against JXTable.
      */
     public void interactiveTerminateEditInInternalFrame() {
@@ -805,7 +793,7 @@ public class JTableIssues extends InteractiveTestCase {
      
       /**
        * Core issue #6539455: table not properly repainted on update (from model).
-       * 
+       * <p>
        * Happens if the update is not triggered by an edit in the table itself. If
        * so, all is well (repaint called for all of the table). If not, repaint is
        * limited to the cell that has been updated (not even the whole row is
@@ -832,7 +820,7 @@ public class JTableIssues extends InteractiveTestCase {
       
       /**
        * Core issue #6539455: table not properly repainted on update (from model).
-       * 
+       * <p>
        * Happens if the update is not triggered by an edit in the table itself. If
        * so, all is well (repaint called for all of the table). If not, repaint is
        * limited to the cell that has been updated (not even the whole row is
@@ -935,15 +923,16 @@ public class JTableIssues extends InteractiveTestCase {
                   if (e.allHidden) return viewRow;
                   return Math.min(viewRow, e.viewRow);
               }
-              
+
+              /**
+               * @param e
+               */
               public int getLastCombined(UpdateHandler e) {
                   if (allHidden || e.allHidden) return getRowCount() - 1;
                   return Math.max(viewRow, e.viewRow);
                   
               }
-              /**
-               * @param e
-               */
+
               private void convert() {
                   // multiple updates
                   if (firstModelRow != lastModelRow) {
@@ -1036,7 +1025,7 @@ public class JTableIssues extends InteractiveTestCase {
 
       /**
        * Core issue #6539455: table not properly repainted on update (from model).
-       * 
+       * <p>
        * This setup differs from the examples (assuming we would add a second table, arggh)
        * above in that the sorter is shared as well as the model. In this case the repaint is
        * okay, as the second table receives the event from the sorter outside of its 
@@ -1091,7 +1080,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     *
+     * <p>
      * Hmm .. unexpected: we get two stopped?
      */
     public void testStopEditingCoreTable() {
@@ -1112,10 +1101,10 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     *
+     * <p>
      * Hmm .. unexpected: we get two stopped? 
      * Here: let the table prepare the editor (but not install)
-     * 
+     * <p>
      *  in this case the generic.stopCellEditing calls super 
      *  twice!
      */
@@ -1139,7 +1128,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     *
+     * <p>
      * Hmm .. unexpected: we get two stopped? 
      * Here: get the table's editor and prepare manually.
      * this test passes ... what is in the prepare which 
@@ -1161,7 +1150,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     * 
+     * <p>
      * Core issue: 
      * Table's generic editor must not return a null component.
      */
@@ -1176,9 +1165,9 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     *
+     * <p>
      * Hmm .. unexpected: we get two stopped? 
-     * 
+     * <p>
      * Here: Must not throw NPE if calling stopCellEditing without previous 
      *   getXXComponent.
      */
@@ -1191,7 +1180,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test that all transferFocus methods stop edits and 
      * fire one stopped event.
-     *
+     * <p>
      * Hmm .. unexpected: we get two stopped? Test 
      * DefaultCellEditor - okay.
      */
@@ -1257,7 +1246,7 @@ public class JTableIssues extends InteractiveTestCase {
 
     /**
      * Characterization method: table.addColumn and invalid modelIndex.
-     * 
+     * <p>
      * Doesn't blow up because DefaultTableModel.getColumnName is lenient,
      * that is has no precondition on the index.
      *
@@ -1290,10 +1279,10 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * Core Issue ??: standalone table header throws NPE on mouse
      * events.
-     * 
+     * <p>
      * Base reason is that the ui assume a not-null table at varying
      * places in their code.
-     * 
+     * <p>
      * Reason is an unsafe implementation of viewIndexForColumn. Unconditionally
      * queries the table for index conversion.
      */
@@ -1531,7 +1520,7 @@ public class JTableIssues extends InteractiveTestCase {
     /**
      * test contract: getColumn(int) throws ArrayIndexOutofBounds with 
      * invalid column index.
-     * 
+     * <p>
      * Subtle autoboxing issue: 
      * JTable has convenience method getColumn(Object) to access by 
      * identifier, but doesn't have delegate method to columnModel.getColumn(int)
@@ -1602,9 +1591,9 @@ public class JTableIssues extends InteractiveTestCase {
      * checkLeadAnchor after structureChanged. 
      * CheckLeadAnchor did set the lead/anchor
      * to the first row if count > 0.
-     * 
+     * <p>
      * Always: BasicTableUI repaints the lead-cell in focusGained.
-     * 
+     * <p>
      * Now: need to explicitly set _both_ anchor and lead to >= 0
      * need to set anchor first. Need to do so for both row/column selection model.
      * @throws InvocationTargetException 
@@ -1641,13 +1630,11 @@ public class JTableIssues extends InteractiveTestCase {
 //        table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
 
         table.requestFocus();
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                assertTrue( table.hasFocus(),"table is focused ");
-                assertEquals( 0, table.getSelectionModel().getAnchorSelectionIndex(),"anchor must be 0");
-                assertEquals( 0, table.getSelectionModel().getLeadSelectionIndex(),"lead must be 0");
+        SwingUtilities.invokeAndWait((Runnable) () -> {
+            assertTrue( table.hasFocus(),"table is focused ");
+            assertEquals( 0, table.getSelectionModel().getAnchorSelectionIndex(),"anchor must be 0");
+            assertEquals( 0, table.getSelectionModel().getLeadSelectionIndex(),"lead must be 0");
 
-            }
         });
     }
 
@@ -1656,9 +1643,9 @@ public class JTableIssues extends InteractiveTestCase {
      * before (last code I saw is jdk1.5u4) - tableChanged would call
      * checkLeadAnchor after structureChanged. CheckLeadAnchor did set the lead/anchor
      * to the first row if count > 0.
-     * 
+     * <p>
      * Always: BasicTableUI repaints the lead-cell in focusGained.
-     * 
+     * <p>
      * Now: need to explicitly set _both_ anchor and lead to >= 0
      * need to set anchor first. Need to do so for both row/column selection model.
      * 

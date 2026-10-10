@@ -36,10 +36,10 @@ import org.jdesktop.swingx.plaf.UIDependent;
 
 /**
  * Subclassed to hack around core bug with RtoL editing (#4980473).
- * 
+ * <p>
  * The price to pay is currently is to guarantee a minimum size of the
  * editing field (is only one char wide if the node value is null).
- * 
+ * <p>
  * PENDING: any possibility to position the editorContainer? 
  * BasicTreeUI adds it to the tree and positions at the node location. 
  * That's not a problem in LToR, only

@@ -122,7 +122,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
         LEFT(StyleConstants.ALIGN_LEFT), CENTER(StyleConstants.ALIGN_CENTER), RIGHT(StyleConstants.ALIGN_RIGHT), JUSTIFY(StyleConstants.ALIGN_JUSTIFIED);
         
         private int value;
-        private TextAlignment(int val) {
+        TextAlignment(int val) {
             value = val;
         }
         
@@ -321,7 +321,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
             w = getVisibleRect().width;
         }
         View view = (View) getClientProperty(BasicHTML.propertyKey);
-        if (view != null && view instanceof Renderer) {
+        if (view instanceof Renderer) {
             view.setSize(w - occupiedWidth, h);
         }
     }
@@ -423,7 +423,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
             // 1) icon
             Rectangle iconR = calculateIconRect();
             // 2) init textR
-            boolean textIsEmpty = (getText() == null) || getText().equals("");
+            boolean textIsEmpty = (getText() == null) || getText().isEmpty();
             int lsb = 0;
             /* Unless both text and icon are non-null, we effectively ignore
              * the value of textIconGap.
@@ -439,7 +439,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
 
                 occupiedWidth = dx + iconR.width + gap;
                 Object parent = getParent();
-                if (parent != null && (parent instanceof JPanel)) {
+                if ((parent instanceof JPanel)) {
                     JPanel panel = ((JPanel) parent);
                     Border b = panel.getBorder();
                     if (b != null) {
@@ -711,7 +711,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      * or false if it should only paint inside the border. This property is true by default.
      * This property affects the width, height,
      * and initial transform passed to the background painter.
-     *
+     * <p>
      * This is a bound property.
      * @param paintBorderInsets new value of the paintBorderInsets property
      */
@@ -1014,8 +1014,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
             }
             ViewFactory f = kit.getViewFactory();
             View hview = f.create(doc.getDefaultRootElement());
-            View v = new Renderer(c, f, hview, true);
-            return v;
+            return new Renderer(c, f, hview, true);
         }
 
         public static void updateRenderer(JXLabel c) {

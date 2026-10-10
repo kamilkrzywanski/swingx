@@ -13,10 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FilterCompositeTest {
     @Test
     public void checkThrowOnNullComposite() {
-        assertThrows(NullPointerException.class, () -> {
-        new FilterComposite(null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new FilterComposite(null));}
     
     @Test
     public void checkUnaryConstructorHasNoFilter() {

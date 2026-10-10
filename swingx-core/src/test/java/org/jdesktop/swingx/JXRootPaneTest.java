@@ -45,7 +45,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
     
     /**
      * Issue #936-swingx: JXRootPane cannot cope with default laf decoration. 
-     * 
+     * <p>
      * testing implementation detail: layout's delegate is null by default
      */
     @Test
@@ -57,9 +57,9 @@ public class JXRootPaneTest extends InteractiveTestCase {
     
     /**
      * Issue #936-swingx: JXRootPane cannot cope with default laf decoration. 
-     * 
+     * <p>
      * testing implementation detail: layout's delegate is not null with laf decoration
-     * 
+     * <p>
      * How-to check if LAF supports laf decoration? Here we rely on default 
      * laf is metal which does support it
      */
@@ -88,7 +88,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
     }
     /**
      * Issue #936-swingx: JXRootPane cannot cope with default laf decoration. 
-     * 
+     * <p>
      * here the actual test: pref size with laf decoration 
      */
     @Test
@@ -163,7 +163,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
      * Test setStatusBar analogous to setToolBar 
      * (triggered by 
      * Issue #499-swingx: old toolbar not removed on setting new).
-     * 
+     * <p>
      * had not been broken. 
      */
     @Test
@@ -180,7 +180,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
      * Test setStatusBar analogous to setToolBar 
      * (triggered by 
      * Issue #499-swingx: old toolbar not removed on setting new).
-     *
+     * <p>
      * Additional fix: rootPane must fire property change event on
      * setStatusBar. 
      * 
@@ -214,10 +214,10 @@ public class JXRootPaneTest extends InteractiveTestCase {
     
     /**
      * Issue #499-swingx: old toolbar not removed on setting new.
-     *
+     * <p>
      * Additional fix: rootPane must fire property change event on
      * setToolBar. 
-     * 
+     * <p>
      * PENDING: similar issue with statusbar?
      */
     @Test
@@ -243,7 +243,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
     }
     /**
      * Issue #1358-swingx: popups not closed if has cancelButton.
-     * 
+     * <p>
      * To reproduce: open popup on any of the components, press escape. 
      * expected: popup closed, cancel action not triggered
      * bug: popup still open, cancel action triggered
@@ -296,7 +296,7 @@ public class JXRootPaneTest extends InteractiveTestCase {
         frame.setVisible(true);
     }
     
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         setSystemLF(true);
         JXRootPaneTest test = new JXRootPaneTest();
         try {

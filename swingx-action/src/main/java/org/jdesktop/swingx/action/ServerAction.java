@@ -121,7 +121,7 @@ public class ServerAction extends AbstractAction {
     public void addParam(String name, String value) {
         Map<String, String> params = getParams();
         if (params == null) {
-            params = new HashMap<String, String>();
+            params = new HashMap<>();
             setParams(params);
         }
         params.put(name, value);
@@ -160,7 +160,7 @@ public class ServerAction extends AbstractAction {
     public void addHeader(String name, String value) {
         Map<String, String> map = getHeaders();
         if (map == null) {
-            map = new HashMap<String, String>();
+            map = new HashMap<>();
             setHeaders(map);
         }
         map.put(name, value);
@@ -214,9 +214,7 @@ public class ServerAction extends AbstractAction {
             // Get all the header name/value pairs ans set the request headers
             Set<String> headerNames = getHeaderNames();
             if (headerNames != null && !headerNames.isEmpty()) {
-                Iterator<String> iter = headerNames.iterator();
-                while (iter.hasNext()) {
-                    String name = (String)iter.next();
+                for (String name : headerNames) {
                     uc.setRequestProperty(name, getHeaderValue(name));
                 }
             }
@@ -256,7 +254,7 @@ public class ServerAction extends AbstractAction {
                 }
                 String line;
 
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 while ((line = buf.readLine()) != null) {
             // RG: Fix for J2SE 5.0; Can't cascade append() calls because
             // return type in StringBuffer and AbstractStringBuilder are different
@@ -264,7 +262,7 @@ public class ServerAction extends AbstractAction {
                     buffer.append('\n');
                 }
             // JW: this used the Debug - maybe use finest level?    
-            LOG.finer("returned from connection\n" + buffer.toString());    
+            LOG.finer("returned from connection\n" + buffer);
             }
         } catch (UnknownHostException ex) {
             LOG.log(Level.WARNING, "UnknownHostException detected. Could it be a proxy issue?", ex);
@@ -282,7 +280,7 @@ public class ServerAction extends AbstractAction {
      */
     private String getPostData() {
         // Write the data into local buffer
-        StringBuffer postData = new StringBuffer();
+        StringBuilder postData = new StringBuilder();
 
         // TODO: the action should be configured to retrieve the data.
 
@@ -304,7 +302,7 @@ public class ServerAction extends AbstractAction {
             postData.setCharAt(0, '?');
         }
         
-        LOG.finer("ServerAction: POST data: " + postData.toString());
+        LOG.finer("ServerAction: POST data: " + postData);
         return postData.toString();
     }
 
@@ -315,7 +313,7 @@ public class ServerAction extends AbstractAction {
      * @param msg server message
      */
     private String createMessage(int code, String msg) {
-        StringBuffer buffer = new StringBuffer("The action \"");
+        StringBuilder buffer = new StringBuilder("The action \"");
         buffer.append(getValue(NAME));
 
         if (code < 400) {

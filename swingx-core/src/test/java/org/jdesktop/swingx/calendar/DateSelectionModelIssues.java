@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test to expose known Issues with <code>DateSelectionModel</code>
  *  and implementations.
- * 
+ * <p>
  * Moved from swingx to calendar package as of version 1.8.
  * 
  * @author Jeanette Winzenburg
@@ -55,7 +55,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
     
     /**
      * Issue #1271-swingx: undefined behaviour of old selection if hasSelection
-     * 
+     * <p>
      * One option - currently implemented in default implementations - is to
      * clear the old selection. If so, they must fire a cleared event.
      * 
@@ -68,7 +68,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
     
     /**
      * Issue #1271-swingx: undefined behaviour of old selection if hasSelection
-     * 
+     * <p>
      * One option - currently implemented in default implementations - is to
      * clear the old selection. If so, they must fire a cleared event.
      * 
@@ -81,7 +81,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
     
     /**
      * Issue #1271-swingx: undefined behaviour of old selection if hasSelection
-     * 
+     * <p>
      * One option - currently implemented in default implementations - is to
      * clear the old selection. If so, they must fire a cleared event.
      * 
@@ -99,7 +99,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
      */
     private void assertUnselectableDatesSelectedWhileHasValidSelection(
             DateSelectionModel model) {
-        SortedSet<Date> unselectableDates = new TreeSet<Date>();
+        SortedSet<Date> unselectableDates = new TreeSet<>();
         unselectableDates.add(tomorrow);
         model.setUnselectableDates(unselectableDates);
         // valid selection
@@ -155,7 +155,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
      */
     @Test
     public void testSortedSetContainsNull() {
-        SortedSet<Date> dates = new TreeSet<Date>();
+        SortedSet<Date> dates = new TreeSet<>();
         dates.contains(null); 
         dates.add(new Date());
         dates.contains(null);

@@ -115,13 +115,13 @@ public class PaintUtils {
      * If the gradient is top to bottom it will be resized to fill the entire
      * height. If the gradient is on an angle it will be resized to go from
      * one corner to the other of the rectangle formed by (0,0 -> width,height).
-     *
+     * <p> <p>
      * This method can resize java.awt.GradientPaint, java.awt.LinearGradientPaint,
      * and the LinearGradientPaint implementation from Apache's Batik project. Note,
      * this method does not require the MultipleGradientPaint.jar from Apache to
      * compile or to run. MultipleGradientPaint.jar *is* required if you want
      * to resize the LinearGradientPaint from that jar.
-     *
+     * <p> <p>
      * Any paint passed into this method which is not a kind of gradient paint (like
      * a Color or TexturePaint) will be returned unmodified. It will not throw
      * an exception. If the gradient cannot be resized due to other errors the
@@ -160,8 +160,8 @@ public class PaintUtils {
             
             Constructor<?> con = p.getClass().getDeclaredConstructor(
                     Point2D.class, Point2D.class,
-                    new float[0].getClass(),
-                    new Color[0].getClass());
+                    float[].class,
+                    Color[].class);
             return (Paint) con.newInstance(pts[0],pts[1],fractions, colors);
         } catch (Exception ex) {
             ex.printStackTrace();

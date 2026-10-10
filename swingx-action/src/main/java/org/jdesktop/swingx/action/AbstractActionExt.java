@@ -71,15 +71,15 @@ public abstract class AbstractActionExt extends AbstractAction
      */
     public AbstractActionExt(AbstractActionExt action) {
         Object[] keys = action.getKeys();
-        for (int i = 0; i < keys.length; i++) {
-            putValue((String)keys[i], action.getValue((String)keys[i]));
+        for (Object key : keys) {
+            putValue((String) key, action.getValue((String) key));
         }
         this.enabled = action.enabled;
 
         // Copy change listeners.
         PropertyChangeListener[] listeners = action.getPropertyChangeListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            addPropertyChangeListener(listeners[i]);
+        for (PropertyChangeListener listener : listeners) {
+            addPropertyChangeListener(listener);
         }
     }
 
@@ -235,8 +235,8 @@ public abstract class AbstractActionExt extends AbstractAction
     }
 
     public void setMnemonic(String mnemonic) {
-        if (mnemonic != null && mnemonic.length() > 0) {
-            putValue(Action.MNEMONIC_KEY, new Integer(mnemonic.charAt(0)));
+        if (mnemonic != null && !mnemonic.isEmpty()) {
+            putValue(Action.MNEMONIC_KEY, (int) mnemonic.charAt(0));
         }
     }
 
@@ -256,7 +256,7 @@ public abstract class AbstractActionExt extends AbstractAction
      * @see Action#putValue
      */
     public void setMnemonic(int mnemonic) {
-        putValue(Action.MNEMONIC_KEY, new Integer(mnemonic));
+        putValue(Action.MNEMONIC_KEY, mnemonic);
     }
 
     /**
@@ -267,7 +267,7 @@ public abstract class AbstractActionExt extends AbstractAction
     public int getMnemonic() {
         Integer value = (Integer)getValue(Action.MNEMONIC_KEY);
         if (value != null) {
-            return value.intValue();
+            return value;
         }
         return '\0';
     }
@@ -341,8 +341,8 @@ public abstract class AbstractActionExt extends AbstractAction
      */
     public void dispose() {
         PropertyChangeListener[] listeners = getPropertyChangeListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            removePropertyChangeListener(listeners[i]);
+        for (PropertyChangeListener listener : listeners) {
+            removePropertyChangeListener(listener);
         }
     }
 
@@ -358,7 +358,7 @@ public abstract class AbstractActionExt extends AbstractAction
     public boolean isStateAction() {
         Boolean state = (Boolean)getValue(IS_STATE);
         if (state != null) {
-            return state.booleanValue();
+            return state;
         }
         return false;
     }
@@ -376,7 +376,7 @@ public abstract class AbstractActionExt extends AbstractAction
      * @param state if true then this action will fire ItemEvents
      */
     public void setStateAction(boolean state) {
-        putValue(IS_STATE, Boolean.valueOf(state));
+        putValue(IS_STATE, state);
     }
 
     /**
@@ -389,7 +389,7 @@ public abstract class AbstractActionExt extends AbstractAction
             return false;
         }
         
-        return selected.booleanValue();
+        return selected;
     }
 
     /**
@@ -406,10 +406,10 @@ public abstract class AbstractActionExt extends AbstractAction
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer("[");
+        StringBuilder buffer = new StringBuilder("[");
         // RG: Fix for J2SE 5.0; Can't cascade append() calls because
         // return type in StringBuffer and AbstractStringBuilder are different
-        buffer.append(this.getClass().toString());
+        buffer.append(this.getClass());
         buffer.append(":");
         try {
             Object[] keys = getKeys();

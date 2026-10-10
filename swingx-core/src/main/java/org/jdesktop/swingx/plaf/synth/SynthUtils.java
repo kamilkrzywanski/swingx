@@ -134,17 +134,14 @@ public class SynthUtils {
             // been changed
             return true;
         }
-        else if ("Nimbus.Overrides.InheritDefaults" == eName) {
+        else // Always update when the JComponent.sizeVariant
+            // client property has changed
+            if ("Nimbus.Overrides.InheritDefaults" == eName) {
             // Always update when the Nimbus.Overrides.InheritDefaults
             // client property has changed
             return true;
         }
-        else if ("JComponent.sizeVariant" == eName) {
-            // Always update when the JComponent.sizeVariant
-            // client property has changed
-            return true;
-        }
-        return false;
+        else return "JComponent.sizeVariant" == eName;
     }
     
 //--------------- component related

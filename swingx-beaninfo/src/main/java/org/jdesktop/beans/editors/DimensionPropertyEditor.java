@@ -34,7 +34,6 @@ public class DimensionPropertyEditor extends PropertyEditorSupport {
     
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        String originalParam = text;
         try {
             Dimension val = (Dimension)PropertyEditorUtil.createValueFromString(
                     text, 2, Dimension.class, int.class);
@@ -42,7 +41,7 @@ public class DimensionPropertyEditor extends PropertyEditorSupport {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new IllegalArgumentException("The input value " + originalParam + " is not formatted correctly. Please " +
+            throw new IllegalArgumentException("The input value " + text + " is not formatted correctly. Please " +
                     "try something of the form [w,h] or [w , h] or [w h]", ex);
         }
     }

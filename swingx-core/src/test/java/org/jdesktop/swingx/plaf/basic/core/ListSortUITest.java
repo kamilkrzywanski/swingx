@@ -24,18 +24,17 @@ package org.jdesktop.swingx.plaf.basic.core;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.DefaultRowSorter;
 import javax.swing.ListModel;
 import javax.swing.RowFilter;
 import javax.swing.SortOrder;
 import javax.swing.RowFilter.Entry;
 import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jdesktop.swingx.InteractiveTestCase;
@@ -86,7 +85,7 @@ public class ListSortUITest extends InteractiveTestCase {
         // exclude rows based on identifier (here: first item
         final RowFilter filter = new RowFilters.GeneralFilter() {
             
-            List excludes = Arrays.asList(0);
+            List excludes = Collections.singletonList(0);
             @Override
             protected boolean include(
                     Entry<? extends Object, ? extends Object> entry,
@@ -122,7 +121,7 @@ public class ListSortUITest extends InteractiveTestCase {
         // exclude rows based on identifier
         final RowFilter filter = new RowFilters.GeneralFilter() {
             
-            List excludes = Arrays.asList(0);
+            List excludes = Collections.singletonList(0);
             @Override
             protected boolean include(
                     Entry<? extends Object, ? extends Object> entry,
@@ -139,24 +138,15 @@ public class ListSortUITest extends InteractiveTestCase {
 
     @Test
     public void testConstructorDifferentSorter() {
-        assertThrows(IllegalStateException.class, () -> {
-        new ListSortUI(new JXList(true), new ListSortController<ListModel>(ascendingListModel));
-    
-        });}
+        assertThrows(IllegalStateException.class, () -> new ListSortUI(new JXList(true), new ListSortController<ListModel>(ascendingListModel)));}
     
     @Test
     public void testConstructorNullSorter() {
-        assertThrows(NullPointerException.class, () -> {
-        new ListSortUI(new JXList(), null);
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new ListSortUI(new JXList(), null));}
     
     @Test
     public void testConstructorNullList() {
-        assertThrows(NullPointerException.class, () -> {
-        new ListSortUI(null, new ListSortController<ListModel>(ascendingListModel));
-    
-        });}
+        assertThrows(NullPointerException.class, () -> new ListSortUI(null, new ListSortController<ListModel>(ascendingListModel)));}
     
     @Test
     public void testSetFilterKeepsSelection() {
@@ -183,7 +173,7 @@ public class ListSortUITest extends InteractiveTestCase {
         assertEquals( 1, list.getSelectedIndex(),"second row must be selected");
         // add row in model coordinates
         // insert high value
-        Object row = new Integer(100);
+        Object row = 100;
         ascendingListModel.addElement(row);
         assertEquals(row, list.getElementAt(0));
         // selection must be moved one below
@@ -209,10 +199,10 @@ public class ListSortUITest extends InteractiveTestCase {
     /**
      * 
      * Issue #173-swingx.
-     * 
+     * <p>
      * table.setFilters() leads to selectionListener
      * notification while internal table state not yet stable.
-     * 
+     * <p>
      * example (second one, from Nicola):
      * http://www.javadesktop.org/forums/thread.jspa?messageID=117814
      *
@@ -223,17 +213,13 @@ public class ListSortUITest extends InteractiveTestCase {
         final int modelRow = 0;
         // set a selection 
         list.setSelectedIndex(modelRow);
-        ListSelectionListener l = new ListSelectionListener() {
+        ListSelectionListener l = e -> {
+            if (e.getValueIsAdjusting()) return;
+            int viewRow = list.getSelectedIndex();
+            assertEquals( 0, viewRow,"view index visible");
+            // JW: the following checks if the reverse conversion succeeds
+            list.convertIndexToModel(viewRow);
 
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) return;
-                int viewRow = list.getSelectedIndex(); 
-                assertEquals( 0, viewRow,"view index visible");
-                // JW: the following checks if the reverse conversion succeeds
-                list.convertIndexToModel(viewRow);
-                
-            }
-            
         };
         list.getSelectionModel().addListSelectionListener(l);
         RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
@@ -255,7 +241,7 @@ public class ListSortUITest extends InteractiveTestCase {
 
     /**
      * Issue #477-swingx:
-     * 
+     * <p>
      * Selection must be cleared after setModel. This is from
      * super's contract.
      *
@@ -298,7 +284,7 @@ public class ListSortUITest extends InteractiveTestCase {
     /**
      * test if selection is kept after deleting a row above the
      * selected.
-     * 
+     * <p>
      * This fails because the ui-delegate has its hands in removing
      * selection after removed, that is they are doubly removed.
      *
@@ -316,7 +302,7 @@ public class ListSortUITest extends InteractiveTestCase {
     /**
      * test if selection is kept after deleting a row above the
      * selected.
-     * 
+     * <p>
      * This fails because the ui-delegate has its hands in removing
      * selection after removed, that is they are doubly removed.
      *
@@ -392,7 +378,7 @@ public class ListSortUITest extends InteractiveTestCase {
     protected DefaultListModelF createAscendingListModel(int startRow, int count) {
         DefaultListModelF l = new DefaultListModelF();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(row);
         }
         return l;
     }
@@ -422,7 +408,7 @@ public class ListSortUITest extends InteractiveTestCase {
         super.setUp();
         ascendingListModel = createAscendingListModel(0, 20);
         list = new JXList(ascendingListModel, true);
-        controller = new ListSortController<ListModel>(list.getModel());
+        controller = new ListSortController<>(list.getModel());
         list.setComparator(TableSortController.COMPARABLE_COMPARATOR);
         list.setRowSorter(controller);
         testRow = 2;

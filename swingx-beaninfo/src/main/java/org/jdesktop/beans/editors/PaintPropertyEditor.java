@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Richard
  */
 public class PaintPropertyEditor extends PropertyEditorSupport {
-    private static Map<Paint, String> DEFAULT_PAINTS = new HashMap<Paint, String>();
+    private static Map<Paint, String> DEFAULT_PAINTS = new HashMap<>();
     static {
         //add the default paints
         DEFAULT_PAINTS.put(Color.BLACK, "Black");
@@ -98,7 +98,7 @@ public class PaintPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        if (text == null || text.trim().equals("") || text.trim().equalsIgnoreCase("none")
+        if (text == null || text.trim().isEmpty() || text.trim().equalsIgnoreCase("none")
                 || text.trim().equalsIgnoreCase("<none>")
                 || text.trim().equalsIgnoreCase("[none]")) {
             setValue(null);
@@ -125,11 +125,7 @@ public class PaintPropertyEditor extends PropertyEditorSupport {
         Paint p = getValue();
         if (p == null) {
             return null;
-        } else if (DEFAULT_PAINTS.containsKey(p)) {
-            return DEFAULT_PAINTS.get(p);
-        } else {
-            return "<custom>";
-        }
+        } else return DEFAULT_PAINTS.getOrDefault(p, "<custom>");
     }
 
     @Override

@@ -127,7 +127,7 @@ public interface SortController<M> {
      * @throws IndexOutOfBoundsException if <code>column</code> is outside
      *         the range of the underlying model
      */
-    public void setComparator(int column, Comparator<?> comparator);
+    void setComparator(int column, Comparator<?> comparator);
 
     /**
      * Returns the <code>Comparator</code> for the specified 
@@ -140,7 +140,7 @@ public interface SortController<M> {
      * @throws IndexOutOfBoundsException if column is outside
      *         the range of the underlying model
      */
-    public Comparator<?> getComparator(int column);
+    Comparator<?> getComparator(int column);
     
     /**
      * Sets the cycle of sort ordes to toggle through. Zero or more SortOrders which
@@ -259,7 +259,7 @@ public interface SortController<M> {
      * comes from the underlying model as well.
      * <p>
      * This method triggers a sort.
-     *
+     * <p>
      * PENDING JW: the "underlying model" is the ModelWrapper ... want to 
      * expose here as well? Otherwise, the second paramter doesn't make much sense.
      * 

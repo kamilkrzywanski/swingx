@@ -30,7 +30,7 @@ import org.jdesktop.swingx.SwingXUtilities;
  * Quick fix for #1061-swingx (which actually is a core issue): 
  * tree icons lost on toggle laf. Updates colors as well -
  * but beware: this is incomplete as some of super's properties are private!
- * 
+ * <p>
  * Will not do more because in the longer run (as soon as we've fixed the editor issues) 
  * the JXTree's default renderer will be changed to SwingX DefaultTreeRenderer.
  * 

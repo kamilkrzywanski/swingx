@@ -75,7 +75,7 @@ public class TreeTableModelTest extends InteractiveTestCase {
     /**
      * Issue #218-swingx: TreeTableModel impl break type contract for
      * hierarchical column.
-     * 
+     * <p>
      * Expected contract (non-doc'ed but common sense...)
      * 
      * <pre> <code>
@@ -120,7 +120,7 @@ public class TreeTableModelTest extends InteractiveTestCase {
     
     /**
      * Issue #984-swingx: IllegalArgumentException if removing selected node.
-     * 
+     * <p>
      * base reason: DefaultTreeTableModel getIndexOfChild violates super's 
      * contract.
      * 
@@ -166,7 +166,7 @@ public class TreeTableModelTest extends InteractiveTestCase {
                         getRoot(), i));
             }
         }
-    };
+    }
 
 
 }

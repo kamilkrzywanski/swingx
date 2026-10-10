@@ -41,7 +41,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Painter;
-import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -59,7 +58,7 @@ import org.junit.jupiter.api.Test;
  */
 public class JXPanelVisualCheck extends InteractiveTestCase {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         final JXPanelVisualCheck test = new JXPanelVisualCheck();
         setLAF("Nimbus");
 //        UIManager.put("JXPanel.patch", Boolean.TRUE);
@@ -80,7 +79,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
     /**
      * Issue #1515-swingx: painting artefacts in a JXFrame (which uses JXPanel
      * as rootPane)
-     * 
+     * <p>
      * If the upper frame contains a JXPanel with alpha, the lower background is
      * painted only below the area of the upper frame. All fine without alpha on
      * the upper. The exact outcome is erractic (sometimes half or even fully
@@ -193,20 +192,20 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
 
     /**
      * Issue ??-swingx: support core painters in synth-based LAFs
-     * 
+     * <p>
      * In synth-based LAFs (core) painters are applied on top of the background
      * fill and below the foreground (== content) painting. SwingX painters are
      * applied on top of the background but below the core painter.
-     * 
+     * <p>
      * The example below has:
-     * 
+     * <p>
      * - yellowish background color - SwingX ImagePainter - core painter which
      * paints a diagonal line (top left to bottom right) - a label as content
-     * 
+     * <p>
      * With Nimbus, all three "background" layers must be visible
-     * 
+     * <p>
      * Actions:
-     * 
+     * <p>
      * - toggle opaqueness: if false, the background color must not be painted -
      * toggle alpha of background color: must not show any artefacts - toggle
      * alpha of containter: must not show any artefacts, must respect the
@@ -355,15 +354,15 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
 
     /**
      * See a painter at work.
-     * 
+     * <p>
      * Plus Issue ??-swingx: setting opaqueness _after_ the painter leads to
      * painting artefacts.
-     * 
+     * <p>
      * Here: run this check with several tests active so that the frame create
      * here is overlapped by others, the click on its title to move to front.
      * The background is not uniform: the formerly covered part is grey, the
      * formerly exposed part is white.
-     * 
+     * <p>
      * Update: probably similar to #1515
      * 
      * @throws Exception
