@@ -153,12 +153,23 @@ public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
     public void actionPerformed(ActionEvent e) {
         if (!getURIVisitor().isEnabled(getTarget())) return;
         try {
-            getURIVisitor().visit(getTarget());
+            visitTarget(getTarget());
             setVisited(true);
         } catch (IOException e1) {
             setVisited(false);
             LOG.fine("cant visit Desktop " + e);
         }
+    }
+
+    /**
+     * Visits the target with the desktop action. Tests override this to avoid
+     * launching a browser or mail client.
+     *
+     * @param uri the target to visit
+     * @throws IOException if the desktop action fails
+     */
+    void visitTarget(URI uri) throws IOException {
+        getURIVisitor().visit(uri);
     }
     
     /**

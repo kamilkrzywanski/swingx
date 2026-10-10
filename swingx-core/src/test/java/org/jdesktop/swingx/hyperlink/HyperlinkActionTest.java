@@ -54,7 +54,12 @@ public class HyperlinkActionTest {
             return;
         }
         URI uri = new URI("http://someserver.de");
-        HyperlinkAction action = HyperlinkAction.createHyperlinkAction(uri);
+        HyperlinkAction action = new HyperlinkAction(uri, Desktop.Action.BROWSE) {
+            @Override
+            void visitTarget(URI target) {
+                // Successful visit without Desktop.browse, which opens a browser.
+            }
+        };
         action.actionPerformed(null);
         assertEquals(true, action.isVisited());
     }

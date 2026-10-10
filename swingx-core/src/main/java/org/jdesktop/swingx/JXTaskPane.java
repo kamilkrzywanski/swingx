@@ -273,6 +273,16 @@ public class JXTaskPane extends JPanel implements
   }
   
   /**
+   * Returns the look and feel (L&F) object that renders this component.
+   *
+   * @return the {@code TaskPaneUI} object that renders this component
+   */
+  @Override
+  public TaskPaneUI getUI() {
+    return (TaskPaneUI) ui;
+  }
+
+  /**
    * Sets the L&F object that renders this component.
    * 
    * @param ui the <code>TaskPaneUI</code> L&F object

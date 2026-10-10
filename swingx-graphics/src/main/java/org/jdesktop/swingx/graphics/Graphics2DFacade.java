@@ -449,6 +449,11 @@ public abstract class Graphics2DFacade extends Graphics2D {
     }
 
     @Override
+    public Rectangle getClipRect() {
+        return delegate.getClipRect();
+    }
+
+    @Override
     public boolean hitClip(int x, int y, int width, int height) {
         return delegate.hitClip(x, y, width, height);
     }
