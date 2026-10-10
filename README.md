@@ -4,7 +4,7 @@ Desktop components that pick up where the JDK Swing toolkit stops.
 
 `JXTable` shows and hides columns, packs them to their content, and stripes rows. `JXTreeTable` puts a tree in the hierarchical column. `JXDatePicker` and `JXMonthView` pick dates. `JXTaskPane` groups actions the way a desktop window expects. Painters, highlighters, and autocomplete sit beside those components. The packages are still `org.jdesktop.swingx`, so an application written against SwingLabs SwingX keeps the same imports.
 
-This repository continues that library. The current line is `1.6.6-SNAPSHOT`, the Maven group is `org.krzywanski`, and the code compiles as Java 8. It runs on Java 8 and newer. The license is LGPL-2.1-or-later.
+This repository continues that library. The current line is `1.6.6-SNAPSHOT`, the Maven group is `io.github.kamilkrzywanski`, and the code compiles as Java 8. It runs on Java 8 and newer. The license is LGPL-2.1-or-later.
 
 ## Add it to a project
 
@@ -18,7 +18,7 @@ mvn install
 
 ```xml
 <dependency>
-  <groupId>org.krzywanski</groupId>
+  <groupId>io.github.kamilkrzywanski</groupId>
   <artifactId>swingx-core</artifactId>
   <version>1.6.6-SNAPSHOT</version>
 </dependency>
