@@ -1,10 +1,10 @@
 package org.jdesktop.swingx;
 
 import org.jdesktop.beans.AbstractBeanInfoTest;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-@Ignore
+@Disabled
 public class JXRootPaneBeanInfoTest extends AbstractBeanInfoTest<JXRootPane> {
     @Override
     protected JXRootPane createInstance() {

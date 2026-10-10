@@ -27,24 +27,19 @@ import javax.swing.JTextField;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
-import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(JUnit4.class)
-public class AutoCompleteDocumentTest extends TestCase {
+public class AutoCompleteDocumentTest {
 
-    @Override
-    @Before
+    @BeforeEach
        public void setUp() {
     }
 
-    @Override
-    @After
+    @AfterEach
        public void tearDown() {
     }
 

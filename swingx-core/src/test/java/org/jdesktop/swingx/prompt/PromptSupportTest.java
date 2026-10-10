@@ -1,7 +1,7 @@
 package org.jdesktop.swingx.prompt;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,18 +9,19 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
-import junit.framework.Assert;
 
 import org.jdesktop.swingx.plaf.BuddyTextFieldUI;
 import org.jdesktop.swingx.plaf.PromptTextFieldUI;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
 
 public class PromptSupportTest {
 	private JTextField txt;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		txt = new JTextField();
 	}
@@ -42,8 +43,8 @@ public class PromptSupportTest {
 	@Test
 	public void testInitEmpty() {
 		PromptSupport.init(null, null, null, txt);
-		Assert.assertNotSame("PromptSupport should not be installed, unless it is necessary.", PromptTextFieldUI.class,
-				txt.getUI().getClass());
+		Assertions.assertNotSame( PromptTextFieldUI.class,
+				txt.getUI().getClass(),"PromptSupport should not be installed, unless it is necessary.");
 	}
 
 	@Test

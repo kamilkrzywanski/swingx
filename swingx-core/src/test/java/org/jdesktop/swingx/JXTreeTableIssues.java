@@ -75,9 +75,9 @@ import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.jdesktop.test.TableModelReport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to exposed known issues of <code>JXTreeTable</code>. <p>
@@ -172,12 +172,14 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * arbitrary tree to a TreeTableModelAdapter.
      * Dont want to change, though, as client code might have mis-used ... 
      */
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testTreeTableAdapterBind() {
+        assertThrows(IllegalStateException.class, () -> {
         JXTreeTableA table = new JXTreeTableA(createActionTreeModel());
         TreeTableModelAdapter model = table.createAdapter(new JTree()); 
         model.bind(table);
-    }
+    
+        });}
    
 
     /**
@@ -273,6 +275,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * @throws InvocationTargetException 
      * @throws InterruptedException 
      */
+    @Test
     public void testTableEventOnSetRootNoStructureChange() throws InterruptedException, InvocationTargetException {
         TreeTableModel model = createCustomTreeTableModelFromDefault();
         final JXTreeTable table = new JXTreeTable(model);
@@ -284,9 +287,9 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                assertEquals("tableModel must have fired", 1, report.getEventCount());
-                assertTrue("event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()), 
-                        report.isDataChanged(report.getLastEvent()));
+                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+                assertTrue( 
+                        report.isDataChanged(report.getLastEvent()),"event type must be dataChanged " + TableModelReport.printEvent(report.getLastEvent()));
             }
         });        
         
@@ -415,6 +418,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * @throws InvocationTargetException 
      * @throws InterruptedException 
      */
+    @Test
     public void testTableEventUpdateOnTreeTableSetValueForRoot() throws InterruptedException, InvocationTargetException {
         TreeTableModel model = createCustomTreeTableModelFromDefault();
         final JXTreeTable table = new JXTreeTable(model);
@@ -423,7 +427,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         final int row = 0;
         // sanity
         assertEquals("JTree", table.getValueAt(row, 0).toString());
-        assertTrue("root must be editable", table.getModel().isCellEditable(0, 0));
+        assertTrue( table.getModel().isCellEditable(0, 0),"root must be editable");
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         // doesn't fire or isn't detectable? 
@@ -432,11 +436,11 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                assertEquals("tableModel must have fired", 1, report.getEventCount());
-                assertEquals("the event type must be update " + TableModelReport.printEvent(report.getLastEvent())
-                        , 1, report.getUpdateEventCount());
+                assertEquals( 1, report.getEventCount(),"tableModel must have fired");
+                assertEquals( 1, report.getUpdateEventCount(),"the event type must be update " + TableModelReport.printEvent(report.getLastEvent())
+                        );
                 TableModelEvent event = report.getLastUpdateEvent();
-                assertEquals("the updated row ", row, event.getFirstRow());
+                assertEquals( row, event.getFirstRow(),"the updated row ");
             }
         });        
     }
@@ -781,6 +785,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * Issue ??-swingx: hyperlink/rollover in hierarchical column.
      *
      */
+    @Test
     public void testTreeRendererInitialRollover() {
         JXTreeTable tree = new JXTreeTable(new FileSystemModel());
         assertEquals(tree.isRolloverEnabled(), ((JXTree) tree.getCellRenderer(0, 0)).isRolloverEnabled());
@@ -790,6 +795,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * Issue ??-swingx: hyperlink/rollover in hierarchical column.
      *
      */
+    @Test
     public void testTreeRendererModifiedRollover() {
         JXTreeTable tree = new JXTreeTable(new FileSystemModel());
         tree.setRolloverEnabled(!tree.isRolloverEnabled());
@@ -1090,6 +1096,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * Issue #399-swingx: editing terminated by selecting editing row.
      *
      */
+    @Test
     public void testSelectionKeepsEditingWithExpandsTrue() {
         JXTreeTable treeTable = new JXTreeTable(new FileSystemModel()) {
 
@@ -1108,13 +1115,14 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         assertTrue(treeTable.getSelectionModel().isSelectionEmpty());
         int editingRow = treeTable.getEditingRow();
         treeTable.setRowSelectionInterval(editingRow, editingRow);
-        assertEquals("after selection treeTable editing state must be unchanged", canEdit, treeTable.isEditing());
+        assertEquals( canEdit, treeTable.isEditing(),"after selection treeTable editing state must be unchanged");
     }
     
     /**
      * Issue #212-jdnc: reuse editor, install only once.
      * 
      */
+    @Test
     public void testReuseEditor() {
         //TODO rework this test, since we no longer use TreeTableModel.class
 //        JXTreeTable treeTable = new JXTreeTable(treeTableModel);
@@ -1132,6 +1140,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * seems to clear the lead?
      *
      */
+    @Test
     public void testBasicTreeLeadSelection() {
         JXTree tree = new JXTree();
         TreePath path = tree.getPathForRow(0);
@@ -1150,6 +1159,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      *
      *  PENDING: this passes locally, fails on server
      */
+    @Test
     public void testLeadSelectionFromTable() {
         JXTreeTable treeTable = prepareTreeTable(false);
         assertEquals(-1, treeTable.getSelectionModel().getLeadSelectionIndex());
@@ -1166,6 +1176,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      *  PENDING: this passes locally, fails on server
      *
      */
+    @Test
     public void testLeadSelectionFromTree() {
         JXTreeTable treeTable = prepareTreeTable(false);
         assertEquals(-1, treeTable.getSelectionModel().getLeadSelectionIndex());
@@ -1183,6 +1194,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * test lead after remove selection via tree.
      *
      */
+    @Test
     public void testLeadAfterRemoveSelectionFromTree() {
         JXTreeTable treeTable = prepareTreeTable(true);
         treeTable.getTreeSelectionModel().removeSelectionPath(
@@ -1197,6 +1209,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * test lead after clear selection via table.
      *
      */
+    @Test
     public void testLeadAfterClearSelectionFromTable() {
         JXTreeTable treeTable = prepareTreeTable(true);
         treeTable.clearSelection();
@@ -1210,6 +1223,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
      * test lead after clear selection via table.
      *
      */
+    @Test
     public void testLeadAfterClearSelectionFromTree() {
         JXTreeTable treeTable = prepareTreeTable(true);
         treeTable.getTreeSelectionModel().clearSelection();
@@ -1237,6 +1251,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     }
 
 
+    @Test
     public void testDummy() {
         
     }

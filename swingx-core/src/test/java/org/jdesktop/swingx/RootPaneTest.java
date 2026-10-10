@@ -19,21 +19,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * There are several commented out portions of this file. They should be moved
  * or changed once a "status bean" is implemented that provides the functionality
  * originally envisioned for the JXRootPane/JXStatusBar coupling
  */
-@RunWith(JUnit4.class)
-public class RootPaneTest extends TestCase {
+public class RootPaneTest {
 
     private Action[] actions;
     private JLabel[] comps;
@@ -43,17 +40,16 @@ public class RootPaneTest extends TestCase {
     private static final int ARMS = 2;
     private static final int LEGS = 3;
 
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }
     
-    @Override
     protected void setUp() {
 	actions =  new Action[4];
 	actions[0] = new TestAction("New", 'N', "Create a new item");
@@ -68,7 +64,6 @@ public class RootPaneTest extends TestCase {
 	comps[3] = new JLabel("Legs");
     }
 
-    @Override
     protected void tearDown() {
 	for (int i = 0; i < actions.length; i++) {
 	    actions[i] = null;

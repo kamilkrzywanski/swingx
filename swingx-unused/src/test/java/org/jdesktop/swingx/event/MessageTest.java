@@ -8,20 +8,24 @@
 package org.jdesktop.swingx.event;
 
 import java.util.logging.Level;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.*;
 
-import junit.framework.TestCase;
 
 /**
  * implementation of the MessageSourceSupport class.
  * A JUnit test case for the Message event set. Mostly this tests the
  */
-public class MessageTest extends TestCase {
+public class MessageTest {
 
     private MListener[] listeners;
     private PListener[] plisteners;
 
     private static final int COUNT = 10;
 
+    @BeforeEach
     protected void setUp() {
 	listeners = new MListener[COUNT];
 	plisteners = new PListener[COUNT];
@@ -32,6 +36,7 @@ public class MessageTest extends TestCase {
 	}
     }
 
+    @AfterEach
     protected void tearDown() {
 	for (int i = 0; i < COUNT; i++) {
 	    listeners[i] = null;
@@ -41,12 +46,13 @@ public class MessageTest extends TestCase {
 	plisteners = null;
     }
 
+    @Test
     public void testMessageRegistration() {
 	MessageSource source = new MessageSourceSupport(this);
 	MessageListener[] ls = source.getMessageListeners();
 
 	assertNotNull(ls);
-	assertEquals("Number of listeners not 0", 0, ls.length);
+	assertEquals( 0, ls.length,"Number of listeners not 0");
 
 	// test add and remove methods.
 
@@ -88,6 +94,7 @@ public class MessageTest extends TestCase {
     /**
      * Test to ensure that messages are dispatched correctly.
      */
+    @Test
     public void testMessageDispatch() {
 	MessageSourceSupport source = new MessageSourceSupport(this);
 	for (int i = 0; i < listeners.length; i++) {
@@ -135,6 +142,7 @@ public class MessageTest extends TestCase {
     /**
      * Tests the exception passing mechanism.
      */
+    @Test
     public void testExceptions() {
 	MessageSourceSupport source = new MessageSourceSupport(this);
 	for (int i = 0; i < listeners.length; i++) {
@@ -160,6 +168,7 @@ public class MessageTest extends TestCase {
     /**
      * Test to ensure that progress messages are correctly propagated.
      */
+    @Test
     public void testDeterminteProgress() {
 	MessageSourceSupport source = new MessageSourceSupport(this);
 	ProgressEvent evt = null;
@@ -195,6 +204,7 @@ public class MessageTest extends TestCase {
 	}
     }
 
+    @Test
     public void testIndeterminteProgress() {
 	MessageSourceSupport source = new MessageSourceSupport(this);
 	ProgressEvent evt = null;

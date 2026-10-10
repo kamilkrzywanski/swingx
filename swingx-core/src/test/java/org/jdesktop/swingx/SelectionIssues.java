@@ -37,6 +37,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
+import org.junit.jupiter.api.Test;
 
 /**
  * Cross-component selection support.
@@ -239,6 +240,7 @@ public class SelectionIssues extends InteractiveTestCase {
     /**
      * Keep test runner happy.
      */
+    @Test
     public void testDummy() {
         
     }

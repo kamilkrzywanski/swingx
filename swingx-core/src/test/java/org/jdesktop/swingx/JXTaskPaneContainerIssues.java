@@ -22,14 +22,14 @@
 package org.jdesktop.swingx;
 
 import java.util.logging.Logger;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
 
 /**
  * 
  * @author Jeanette Winzenburg
  */
-public class JXTaskPaneContainerIssues extends TestCase {
+public class JXTaskPaneContainerIssues {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
             .getLogger(JXTaskPaneContainerIssues.class.getName());
@@ -39,6 +39,7 @@ public class JXTaskPaneContainerIssues extends TestCase {
      * Empty test method to keep the test runner happy if we have no 
      * open issues.
      */
+    @Test
     public void testDummy() {     
     }
 }

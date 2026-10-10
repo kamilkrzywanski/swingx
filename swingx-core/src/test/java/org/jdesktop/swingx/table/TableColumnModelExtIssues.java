@@ -14,8 +14,6 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.action.AbstractActionExt;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 /**
  * Test to exposed known issues of <code>TableColumnModelExt</code>
@@ -27,7 +25,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class TableColumnModelExtIssues extends TableColumnModelTest {
 
     public static void main(String args[]) {

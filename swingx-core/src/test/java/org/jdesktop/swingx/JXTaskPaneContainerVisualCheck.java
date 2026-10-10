@@ -39,6 +39,8 @@ import javax.swing.JSplitPane;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.painter.Painter;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Simple tests to ensure that the {@code JXTaskPane} can be instantiated and
@@ -303,6 +305,7 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *
      */
+    @Test
     public void testDummy() {
         
     }

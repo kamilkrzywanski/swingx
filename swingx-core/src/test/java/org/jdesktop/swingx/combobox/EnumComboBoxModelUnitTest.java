@@ -5,12 +5,10 @@
 package org.jdesktop.swingx.combobox;
 
 import org.jdesktop.swingx.InteractiveTestCase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@RunWith(JUnit4.class)
 public class EnumComboBoxModelUnitTest extends InteractiveTestCase {
     enum MyEnum1 {
         GoodStuff, BadStuff

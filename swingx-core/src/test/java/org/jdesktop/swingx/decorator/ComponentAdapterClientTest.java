@@ -45,11 +45,10 @@ import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.test.ComponentTreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -59,7 +58,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
@@ -80,12 +78,12 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
      */
     private StringValue sv;
 
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }
@@ -177,7 +175,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         JXTreeTableT table = new JXTreeTableT(model);
         table.setRootVisible(true);
         table.expandAll();
-        assertEquals("string rep must be button name", table.getValueAt(1, 0),  table.getStringAt(1, 0));
+        assertEquals( table.getValueAt(1, 0),  table.getStringAt(1, 0),"string rep must be button name");
     }
     
     /**

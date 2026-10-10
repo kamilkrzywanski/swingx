@@ -30,9 +30,8 @@ import javax.swing.table.TableColumn;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -40,7 +39,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class TableAsHighlighterClientTest extends AbstractTestHighlighterClient {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
@@ -58,7 +56,7 @@ public class TableAsHighlighterClientTest extends AbstractTestHighlighterClient 
             LOG.info("cannot run test - no ui striping color");
             return;
         }
-        assertSame("sanity", uiColor, colorHighlighter.getBackground());
+        assertSame( uiColor, colorHighlighter.getBackground(),"sanity");
         JXTable client = new JXTable(10, 3);
         for (TableColumn tableColumn : client.getColumns(true)) {
             ((TableColumnExt) tableColumn).addHighlighter(HighlighterFactory.createSimpleStriping());
@@ -69,8 +67,8 @@ public class TableAsHighlighterClientTest extends AbstractTestHighlighterClient 
         try {
             for (TableColumn tableColumn : client.getColumns(true)) {
                 Highlighter hl = ((TableColumnExt) tableColumn).getHighlighters()[0];
-                assertSame("support must update ui color", changedUIColor, 
-                        ((ColorHighlighter) hl).getBackground());
+                assertSame( changedUIColor, 
+                        ((ColorHighlighter) hl).getBackground(),"support must update ui color");
             }
             
         } finally {

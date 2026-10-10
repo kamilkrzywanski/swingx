@@ -4,9 +4,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.test.SerializableSupport.serialize;
 import static org.jdesktop.test.matchers.Matchers.equivalentTo;
 import static org.jdesktop.test.matchers.Matchers.property;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.argThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -28,10 +28,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.exceptions.verification.NoInteractionsWanted;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("nls")
 public abstract class AbstractBeanInfoTest<T> {
@@ -40,7 +41,7 @@ public abstract class AbstractBeanInfoTest<T> {
     private BeanInfo beanInfo;
     private Map<Class<?>, Object> listeners;
     
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         instance = createInstance();
         beanInfo = Introspector.getBeanInfo(instance.getClass());
@@ -160,7 +161,7 @@ public abstract class AbstractBeanInfoTest<T> {
         assertThat(serialized, is(equivalentTo(instance)));
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         for (Object listener : listeners.values()) {
             try {

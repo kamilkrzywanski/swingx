@@ -50,6 +50,7 @@ import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
 import org.jdesktop.swingx.plaf.basic.CapsLockSupport;
 import org.jdesktop.swingx.util.GraphicsUtilities;
+import org.junit.jupiter.api.Test;
 
 /**
  * Simple tests to ensure that the {@code JXLoginPane} can be instantiated and
@@ -347,6 +348,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *  
      */
+    @Test
     public void testDummy() {
 
     }

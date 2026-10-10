@@ -31,16 +31,14 @@ import javax.swing.UIManager;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXList;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Contains base tests for extended ui-delegates of JXList.
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class XListUITest extends InteractiveTestCase {
     
     @SuppressWarnings("unused")
@@ -59,11 +57,13 @@ public class XListUITest extends InteractiveTestCase {
     /**
      * Issue #1495-swingx: NPE in getBaseline()
      */
-    @Test (expected = NullPointerException.class)
+    @Test
     public void testBaselineNPEFixThrowsOnNullComponent() {
+        assertThrows(NullPointerException.class, () -> {
         JXList list = new JXList();
         list.getUI().getBaseline(null, 1, 1);
-    }
+    
+        });}
 
 
     /**
@@ -131,8 +131,8 @@ public class XListUITest extends InteractiveTestCase {
     @Test
     public void testHasExtendedUI() {
         JXList list = new JXList();
-        assertTrue("xlist must have BasicXListUI instead of " + list.getUI().getClass().getSimpleName(),
-                list.getUI() instanceof BasicXListUI);
+        assertTrue(
+                list.getUI() instanceof BasicXListUI,"xlist must have BasicXListUI instead of " + list.getUI().getClass().getSimpleName());
         
     }
     
@@ -144,9 +144,9 @@ public class XListUITest extends InteractiveTestCase {
         JXList list = new JXList();
         JList core = new JList();
         Object key = list.getActionMap().getParent().keys()[0];
-        assertTrue("sanity: key contained in core actionMap " + key, Arrays.asList(core.getActionMap().allKeys()).contains(key));
-        assertSame("sanity: xlist share actions", list.getActionMap().get(key), new JXList().getActionMap().get(key));
-        assertNotSame("core has different action", list.getActionMap().get(key), core.getActionMap().get(key));
+        assertTrue( Arrays.asList(core.getActionMap().allKeys()).contains(key),"sanity: key contained in core actionMap " + key);
+        assertSame( list.getActionMap().get(key), new JXList().getActionMap().get(key),"sanity: xlist share actions");
+        assertNotSame( list.getActionMap().get(key), core.getActionMap().get(key),"core has different action");
     }
     
     /**

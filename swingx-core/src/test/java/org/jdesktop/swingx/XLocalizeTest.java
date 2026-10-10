@@ -38,9 +38,8 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.search.PatternModel;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -52,7 +51,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class XLocalizeTest extends InteractiveTestCase {
     @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(XLocalizeTest.class
@@ -200,8 +198,8 @@ public class XLocalizeTest extends InteractiveTestCase {
                 String altUIValue = UIManagerExt.getString(prefix + titleKey,
                         alternative);
                 String altName = dialog.getTitle();
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
+                assertEquals( 
+                        altUIValue, altName,"name must be updated before fire propertyChange");
 
                 
             }};
@@ -247,8 +245,8 @@ public class XLocalizeTest extends InteractiveTestCase {
                 String altUIValue = UIManagerExt.getString(prefix + actionCommand,
                         alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
+                assertEquals( 
+                        altUIValue, altName,"name must be updated before fire propertyChange");
 
                 
             }};
@@ -293,8 +291,8 @@ public class XLocalizeTest extends InteractiveTestCase {
                 String altUIValue = UIManagerExt.getString(prefix + actionCommand,
                         alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
+                assertEquals( 
+                        altUIValue, altName,"name must be updated before fire propertyChange");
 
                 
             }};
@@ -355,12 +353,12 @@ public class XLocalizeTest extends InteractiveTestCase {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 // sanity
-                assertTrue("locale property changed", "locale".equals(evt.getPropertyName()));
+                assertTrue( "locale".equals(evt.getPropertyName()),"locale property changed");
                 String altUIValue = UIManagerExt.getString(prefix + actionCommand,
                         alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
+                assertEquals( 
+                        altUIValue, altName,"name must be updated before fire propertyChange");
 
                 
             }};
@@ -432,12 +430,12 @@ public class XLocalizeTest extends InteractiveTestCase {
         // sanity
         assertNotNull(altUIValue);
         // sanity to track unexpected failure during refactoring
-        assertFalse("new uiValue  must be different: " + uiValue + "/"
-                + altUIValue, uiValue.equals(altUIValue));
+        assertFalse( uiValue.equals(altUIValue),"new uiValue  must be different: " + uiValue + "/"
+                + altUIValue);
         String altName = (String) action.getValue(Action.NAME);
         // here are the real asserts
-        assertFalse("new action name must be different: " + name + "/"
-                + altName, name.equals(altName));
+        assertFalse( name.equals(altName),"new action name must be different: " + name + "/"
+                + altName);
         assertEquals(altName, altUIValue);
     }
     
@@ -463,7 +461,7 @@ public class XLocalizeTest extends InteractiveTestCase {
         Object defaultValue = UIManagerExt.getString(key, A_LOCALE);
         // sanity - the value must be available
         assertNotNull(defaultValue);
-        assertFalse("values must be different: " + defaultValue + "/" + alternativeValue, defaultValue.equals(alternativeValue));
+        assertFalse( defaultValue.equals(alternativeValue),"values must be different: " + defaultValue + "/" + alternativeValue);
     }
     
     /**

@@ -35,13 +35,11 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.IconUIResource;
 
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.test.XTestUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -59,8 +57,7 @@ import org.junit.runners.JUnit4;
  *
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
-public class JXHeaderTest extends TestCase {
+public class JXHeaderTest {
 
 //---------------- testing icon property, similar to #925
 // except that it's not a property normally controlled by the ui defaults.
@@ -71,7 +68,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testIconDefaultA() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         UIManager.put("Header.defaultIcon", icon);
         JXHeader header = new JXHeader();
         try {
@@ -88,7 +85,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testIconLabelDefaultB() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         UIManager.put("Header.defaultIcon", icon);
         JXHeader header = new JXHeader();
         try {
@@ -104,7 +101,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testIconLabelCustomC() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         JXHeader header = new JXHeader();
         header.setIcon(icon);
         SwingUtilities.updateComponentTreeUI(header);
@@ -119,7 +116,7 @@ public class JXHeaderTest extends TestCase {
     public void testIconLabelDefaultUpdateD() {
         Icon uiDefault = UIManager.getIcon("Header.defaultIcon");
         Icon icon = new IconUIResource(XTestUtils.loadDefaultIcon());
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         JXHeader header = new JXHeader();
         header.setIcon(icon);
         assertSame(icon, getIconLabel(header).getIcon());
@@ -156,7 +153,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUIDescriptionFontA() {
         Font color = UIManager.getFont("JXHeader.descriptionFont");
-        assertNotNull("sanity: description font available", color);
+        assertNotNull( color,"sanity: description font available");
         JXHeader header = new JXHeader();
         assertEquals(color, header.getDescriptionFont());
     }
@@ -168,7 +165,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUIDescriptionLabelFontB() {
         Font color = UIManager.getFont("JXHeader.descriptionFont");
-        assertNotNull("sanity: description font available", color);
+        assertNotNull( color,"sanity: description font available");
         JXHeader header = new JXHeader();
         assertEquals(color, getDescriptionLabel(header).getFont());
     }
@@ -182,7 +179,7 @@ public class JXHeaderTest extends TestCase {
         Font color = new Font("serif", Font.BOLD, 36);
         JXHeader header = new JXHeader();
         header.setDescriptionFont(color);
-        assertEquals("sanity: description color taken", color, getDescriptionLabel(header).getFont());
+        assertEquals( color, getDescriptionLabel(header).getFont(),"sanity: description color taken");
         SwingUtilities.updateComponentTreeUI(header);
         assertEquals(color, header.getDescriptionFont());
         assertEquals(color, getDescriptionLabel(header).getFont());
@@ -223,7 +220,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUIDescriptionForegroundA() {
         Color color = UIManager.getColor("JXHeader.descriptionForeground");
-        assertNotNull("sanity: description font available", color);
+        assertNotNull( color,"sanity: description font available");
         JXHeader header = new JXHeader();
         assertEquals(color, header.getDescriptionForeground());
     }
@@ -235,7 +232,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUIDescriptionLabelForegroundB() {
         Color color = UIManager.getColor("JXHeader.descriptionForeground");
-        assertNotNull("sanity: description font available", color);
+        assertNotNull( color,"sanity: description font available");
         JXHeader header = new JXHeader();
         assertEquals(color, getDescriptionLabel(header).getForeground());
     }
@@ -249,7 +246,7 @@ public class JXHeaderTest extends TestCase {
         Color color = Color.PINK;
         JXHeader header = new JXHeader();
         header.setDescriptionForeground(color);
-        assertEquals("sanity: description color taken", color, getDescriptionLabel(header).getForeground());
+        assertEquals( color, getDescriptionLabel(header).getForeground(),"sanity: description color taken");
         SwingUtilities.updateComponentTreeUI(header);
         assertEquals(color, header.getDescriptionForeground());
         assertEquals(color, getDescriptionLabel(header).getForeground());
@@ -286,7 +283,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUITitleForegroundA() {
         Color color = UIManager.getColor("JXHeader.titleForeground");
-        assertNotNull("sanity: title foreground available", color);
+        assertNotNull( color,"sanity: title foreground available");
         JXHeader header = new JXHeader();
         assertEquals(color, header.getTitleForeground());
     }
@@ -298,7 +295,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUITitleLabelForegroundB() {
         Color color = UIManager.getColor("JXHeader.titleForeground");
-        assertNotNull("sanity: title foreground available", color);
+        assertNotNull( color,"sanity: title foreground available");
         JXHeader header = new JXHeader();
         assertEquals(color, getTitleLabel(header).getForeground());
     }
@@ -312,7 +309,7 @@ public class JXHeaderTest extends TestCase {
         Color color = Color.PINK;
         JXHeader header = new JXHeader();
         header.setTitleForeground(color);
-        assertEquals("sanity: title foreground taken", color, getTitleLabel(header).getForeground());
+        assertEquals( color, getTitleLabel(header).getForeground(),"sanity: title foreground taken");
         SwingUtilities.updateComponentTreeUI(header);
         assertEquals(color, header.getTitleForeground());
         assertEquals(color, getTitleLabel(header).getForeground());
@@ -348,7 +345,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUITitleFontA() {
         Font font = UIManager.getFont("JXHeader.titleFont");
-        assertNotNull("sanity: title font available", font);
+        assertNotNull( font,"sanity: title font available");
         JXHeader header = new JXHeader();
         assertEquals(font, header.getTitleFont());
     }
@@ -361,7 +358,7 @@ public class JXHeaderTest extends TestCase {
     @Test
     public void testUpdateUITitleLabelFontB() {
         Font font = UIManager.getFont("JXHeader.titleFont");
-        assertNotNull("sanity: title font available", font);
+        assertNotNull( font,"sanity: title font available");
         JXHeader header = new JXHeader();
         assertEquals(font, getTitleLabel(header).getFont());
     }
@@ -376,7 +373,7 @@ public class JXHeaderTest extends TestCase {
         Font color = new Font("serif", Font.BOLD, 36);
         JXHeader header = new JXHeader();
         header.setTitleFont(color);
-        assertEquals("sanity: title color taken", color, getTitleLabel(header).getFont());
+        assertEquals( color, getTitleLabel(header).getFont(),"sanity: title color taken");
         SwingUtilities.updateComponentTreeUI(header);
         assertEquals(color, header.getTitleFont());
         assertEquals(color, getTitleLabel(header).getFont());
@@ -460,8 +457,8 @@ public class JXHeaderTest extends TestCase {
         // sanity: the property is set
         assertEquals(icon, header.getIcon());
         // fishing in the internals ... not really safe, there are 2 labels and 1 jxlabel ... indeed not safe!
-        assertEquals("the label's text must be equal to the headers title",
-                header.getIcon(), getIconLabel(header).getIcon());
+        assertEquals(
+                header.getIcon(), getIconLabel(header).getIcon(),"the label's text must be equal to the headers title");
     }
 
     /**
@@ -475,8 +472,8 @@ public class JXHeaderTest extends TestCase {
         header.setTitle(title);
         // sanity: the property is set
         assertEquals(title, header.getTitle());
-        assertEquals("the label's text must be equal to the headers title",
-                header.getTitle(), getTitleLabel(header).getText());
+        assertEquals(
+                header.getTitle(), getTitleLabel(header).getText(),"the label's text must be equal to the headers title");
     }
 
     /**
@@ -491,8 +488,8 @@ public class JXHeaderTest extends TestCase {
         JXHeader header = new JXHeader(title, null);
         // sanity: the property is set
         assertEquals(title, header.getTitle());
-        assertEquals("the label's text must be equal to the headers title",
-                header.getTitle(), getTitleLabel(header).getText());
+        assertEquals(
+                header.getTitle(), getTitleLabel(header).getText(),"the label's text must be equal to the headers title");
     }
 
     /**
@@ -569,8 +566,7 @@ public class JXHeaderTest extends TestCase {
      * contributed from {@code JXHeader}'s static initializer, so it has to
      * run before tests read {@code JXHeader.*} defaults from {@code UIManager}.
      */
-    @Before
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
         // forcing load of headerAddon
         new JXHeader();

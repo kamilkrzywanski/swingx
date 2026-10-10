@@ -93,11 +93,10 @@ import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.CellEditorReport;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -106,7 +105,6 @@ import org.junit.runners.JUnit4;
 * 
 * @author Jeanette Winzenburg
 */
-@RunWith(JUnit4.class)
 public class JXTableUnitTest extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(JXTableUnitTest.class
             .getName());
@@ -194,9 +192,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
               ((JTextField) cellEditor.getComponent()).setText("");
           }
           cellEditor.addCellEditorListener(report);
-          assertFalse("empty value is invalid, refuse stop", cellEditor.stopCellEditing());
-          assertEquals("was invalid edit, must not fire stoppedEvent", 
-                  0, report.getStoppedEventCount());
+          assertFalse( cellEditor.stopCellEditing(),"empty value is invalid, refuse stop");
+          assertEquals( 
+                  0, report.getStoppedEventCount(),"was invalid edit, must not fire stoppedEvent");
       }
       
       protected static void assertStoppedEventOnValidValue(JTable table, int row, int column, boolean forceEmpty) {
@@ -207,9 +205,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
               ((JTextField) cellEditor.getComponent()).setText("");
           }
           cellEditor.addCellEditorListener(report);
-          assertTrue("empty value is valid", cellEditor.stopCellEditing());
-          assertEquals("was valid edit, must  fire single stoppedEvent", 
-                  1, report.getStoppedEventCount());
+          assertTrue( cellEditor.stopCellEditing(),"empty value is valid");
+          assertEquals( 
+                  1, report.getStoppedEventCount(),"was valid edit, must  fire single stoppedEvent");
       }
 
       protected static DefaultTableModel create1535TableModel() {
@@ -274,8 +272,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     private void assertHyperlinkProvider(Class<?> clazz) {
         DefaultTableRenderer renderer = (DefaultTableRenderer) table.getDefaultRenderer(clazz);
-        assertTrue("expected hyperlinkProvider but was:" + renderer.getComponentProvider(),
-               renderer.getComponentProvider() instanceof HyperlinkProvider );
+        assertTrue(
+               renderer.getComponentProvider() instanceof HyperlinkProvider ,"expected hyperlinkProvider but was:" + renderer.getComponentProvider());
     }
     
     /**
@@ -310,10 +308,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setColumnControlVisible(true);
         toggleComponentOrientation(scrollPane);
         //        scrollPane.setLayout(new ScrollPaneLayout());
-        assertSame("sanity: column control in trailing corner", 
-                table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
-        assertNull("column control must not be in leading corner", 
-                scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
+        assertSame( 
+                table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity: column control in trailing corner");
+        assertNull( 
+                scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER),"column control must not be in leading corner");
         
     }
     
@@ -326,14 +324,14 @@ public class JXTableUnitTest extends InteractiveTestCase {
             JScrollPane scrollPane = new JScrollPane(table);
             table.setColumnControlVisible(true);
             scrollPane.setLayout(new ScrollPaneLayout());
-            assertSame("sanity: column control survives setLayout", 
-                    table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+            assertSame( 
+                    table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity: column control survives setLayout");
             toggleComponentOrientation(scrollPane);
     //        scrollPane.setLayout(new ScrollPaneLayout());
-            assertSame("sanity: column control in trailing corner", 
-                    table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
-            assertNull("column control must not be in leading corner", 
-                    scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
+            assertSame( 
+                    table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity: column control in trailing corner");
+            assertNull( 
+                    scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER),"column control must not be in leading corner");
             
         }
         
@@ -409,16 +407,16 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setSortable(!table.isSortable());
         if (setSorter) {
             table.setRowSorter(new TableSortController<TableModel>(table.getModel()));
-            assertFalse("StringValueProvider propagated to controller", 
-                    table.getStringValueRegistry().equals(getSortController(table).getStringValueProvider()));
+            assertFalse( 
+                    table.getStringValueRegistry().equals(getSortController(table).getStringValueProvider()),"StringValueProvider propagated to controller");
         }
-        assertEquals("sortsOnUpdates propagated to controller", 
-                !table.getSortsOnUpdates(), getSortController(table).getSortsOnUpdates());
-        assertEquals("sortable propagated to controller",
-                !table.isSortable(), getSortController(table).isSortable());
-        assertFalse("sortOrderCycle propagated to controller",
+        assertEquals( 
+                !table.getSortsOnUpdates(), getSortController(table).getSortsOnUpdates(),"sortsOnUpdates propagated to controller");
+        assertEquals(
+                !table.isSortable(), getSortController(table).isSortable(),"sortable propagated to controller");
+        assertFalse(
                 Arrays.equals(table.getSortOrderCycle(), 
-                        getSortController(table).getSortOrderCycle()));
+                        getSortController(table).getSortOrderCycle()),"sortOrderCycle propagated to controller");
     }
     /**
      * RowSorter properties updated on getControlsSorterProperties true.
@@ -431,15 +429,15 @@ public class JXTableUnitTest extends InteractiveTestCase {
         if (setSorter) {
             table.setRowSorter(new TableSortController<TableModel>(table.getModel()));
         }
-        assertEquals("sortsOnUpdates propagated to controller", 
-                table.getSortsOnUpdates(), getSortController(table).getSortsOnUpdates());
-        assertEquals("sortable propagated to controller",
-                table.isSortable(), getSortController(table).isSortable());
-        assertTrue("sortOrderCycle propagated to controller",
+        assertEquals( 
+                table.getSortsOnUpdates(), getSortController(table).getSortsOnUpdates(),"sortsOnUpdates propagated to controller");
+        assertEquals(
+                table.isSortable(), getSortController(table).isSortable(),"sortable propagated to controller");
+        assertTrue(
                 Arrays.equals(table.getSortOrderCycle(), 
-                        getSortController(table).getSortOrderCycle()));
-        assertEquals("StringValueProvider propagated to controller", 
-                table.getStringValueRegistry(), getSortController(table).getStringValueProvider());
+                        getSortController(table).getSortOrderCycle()),"sortOrderCycle propagated to controller");
+        assertEquals( 
+                table.getStringValueRegistry(), getSortController(table).getStringValueProvider(),"StringValueProvider propagated to controller");
     }
 
   //-------------- sort-related properties on table
@@ -453,7 +451,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testSortsOnUpdateChangeNotification() {
-        assertEquals("initial sortsOnUpdate", true, table.getSortsOnUpdates());
+        assertEquals( true, table.getSortsOnUpdates(),"initial sortsOnUpdate");
         PropertyChangeReport report = new PropertyChangeReport(table);
         table.setSortsOnUpdates(false);
         TestUtils.assertPropertyChangeEvent(report, "sortsOnUpdates", true, false);
@@ -574,9 +572,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setModel(createModelDefaultColumnClasses(4));
         StringValueRegistry provider = table.getStringValueRegistry();
         for (int i = 0; i < table.getColumnCount(); i++) {
-            assertEquals("stringValue must be same as renderer for class: " + table.getColumnClass(i),
+            assertEquals(
                     table.getDefaultRenderer(table.getColumnClass(i)),
-                    provider.getStringValue(0, i));
+                    provider.getStringValue(0, i),"stringValue must be same as renderer for class: " + table.getColumnClass(i));
         }
     }
     /**
@@ -588,9 +586,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXTable table = new JXTable(createModelDefaultColumnClasses(4));
         StringValueRegistry provider = table.getStringValueRegistry();
         for (int i = 0; i < table.getColumnCount(); i++) {
-            assertEquals("stringValue must be same as renderer for class: " + table.getColumnClass(i),
+            assertEquals(
                     table.getDefaultRenderer(table.getColumnClass(i)),
-                    provider.getStringValue(0, i));
+                    provider.getStringValue(0, i),"stringValue must be same as renderer for class: " + table.getColumnClass(i));
         }
     }
     
@@ -624,9 +622,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testStringValueRegistryInitial() {
         StringValueRegistry provider = table.getStringValueRegistry();
         for (int i = 0; i < DEFAULT_COLUMN_TYPES.length; i++) {
-            assertEquals("stringValue must be same as renderer for class: " + DEFAULT_COLUMN_NAMES[i],
+            assertEquals(
                     table.getDefaultRenderer(DEFAULT_COLUMN_TYPES[i]),
-                    provider.getStringValue(DEFAULT_COLUMN_TYPES[i]));
+                    provider.getStringValue(DEFAULT_COLUMN_TYPES[i]),"stringValue must be same as renderer for class: " + DEFAULT_COLUMN_NAMES[i]);
         }
     }
 
@@ -688,11 +686,11 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.toggleSortOrder(0);
         table.removeColumn(columnX);
         // this is trivially true, as only contained columns are found ....
-        assertNull("sorter must be removed when column removed", 
-                table.getSortedColumn());
+        assertNull( 
+                table.getSortedColumn(),"sorter must be removed when column removed");
         // check the sort keys instead
-        assertEquals("consistency with core: sortKeys untouched after remove column", 
-                1, table.getRowSorter().getSortKeys().size());
+        assertEquals( 
+                1, table.getRowSorter().getSortKeys().size(),"consistency with core: sortKeys untouched after remove column");
     }
     
     /**
@@ -704,8 +702,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         TableColumnExt columnX = table.getColumnExt(0);
         table.toggleSortOrder(0);
         columnX.setVisible(false);
-        assertEquals("interactive sorter must be same as sorter in column", 
-                columnX, table.getSortedColumn());
+        assertEquals( 
+                columnX, table.getSortedColumn(),"interactive sorter must be same as sorter in column");
     }
     
     
@@ -856,15 +854,15 @@ public class JXTableUnitTest extends InteractiveTestCase {
             List<TableColumn> columns = table.getColumns(true);
             for (TableColumn tableColumn : columns) {
                 int i = tableColumn.getModelIndex();
-                assertEquals("odd/even columns must be not/-sortable: " + i, i % 2 == 0, 
-                        getSortController(table).isSortable(i));
+                assertEquals( i % 2 == 0, 
+                        getSortController(table).isSortable(i),"odd/even columns must be not/-sortable: " + i);
                 if (tableColumn instanceof TableColumnExt) {
                     Comparator<?> comparator = ((TableColumnExt) tableColumn).getComparator();
                     // JW: need to check against null because sorter might have its own
                     // ideas about default comparators
                     if (comparator != null) {
-                        assertSame("comparator must be same: " + i, comparator, 
-                                getSortController(table).getComparator(i));
+                        assertSame( comparator, 
+                                getSortController(table).getComparator(i),"comparator must be same: " + i);
                     }
                 }
                 
@@ -898,10 +896,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXTable table = new JXTable(10, 2);
         TableColumnExt columnExt = table.getColumnExt(0);
         table.toggleSortOrder(0);
-        assertTrue("sanity: sorted", SortUtils.isSorted(table.getSortOrder(0)));
+        assertTrue( SortUtils.isSorted(table.getSortOrder(0)),"sanity: sorted");
         columnExt.setSortable(false);
-        assertTrue("changing sortability must not change sort state (with default controller)", 
-                SortUtils.isSorted(table.getSortOrder(0)));
+        assertTrue( 
+                SortUtils.isSorted(table.getSortOrder(0)),"changing sortability must not change sort state (with default controller)");
     }
 
 
@@ -919,7 +917,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         //  make column not sortable.
         columnX.setSortable(false);
         table.setSortOrder(identifier, SortOrder.ASCENDING);
-        assertEquals("unsortable column must be unsorted", SortOrder.UNSORTED, table.getSortOrder(identifier));
+        assertEquals( SortOrder.UNSORTED, table.getSortOrder(identifier),"unsortable column must be unsorted");
     }
 
     /**
@@ -935,7 +933,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // old way: make column not sortable.
         columnX.setSortable(false);
         table.toggleSortOrder(identifier);
-        assertEquals("unsortable column must be unsorted", SortOrder.UNSORTED, table.getSortOrder(identifier));
+        assertEquals( SortOrder.UNSORTED, table.getSortOrder(identifier),"unsortable column must be unsorted");
     }
 
 
@@ -951,7 +949,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // old way: make column not sortable.
         columnX.setSortable(false);
         table.setSortOrder(0, SortOrder.ASCENDING);
-        assertEquals("unsortable column must be unsorted", SortOrder.UNSORTED, table.getSortOrder(0));
+        assertEquals( SortOrder.UNSORTED, table.getSortOrder(0),"unsortable column must be unsorted");
        
     }
 
@@ -967,7 +965,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // old way: make column not sortable.
         columnX.setSortable(false);
         table.toggleSortOrder(0);
-        assertEquals("unsortable column must be unsorted", SortOrder.UNSORTED, table.getSortOrder(0));
+        assertEquals( SortOrder.UNSORTED, table.getSortOrder(0),"unsortable column must be unsorted");
     }
    
     
@@ -1032,10 +1030,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // prepare: two columns sorted
         table.setSortOrder(0, SortOrder.ASCENDING);
         table.setSortOrder(1, SortOrder.ASCENDING);
-        assertEquals("sanity: really multiple columns sorted", 2, table.getRowSorter().getSortKeys().size());
+        assertEquals( 2, table.getRowSorter().getSortKeys().size(),"sanity: really multiple columns sorted");
         // unsort primary sort column
         table.setSortOrder(1, SortOrder.UNSORTED);
-        assertEquals("secondary sort column must still be sorted", SortOrder.ASCENDING, table.getSortOrder(0));
+        assertEquals( SortOrder.ASCENDING, table.getSortOrder(0),"secondary sort column must still be sorted");
     }
     /**
      * Unsetting sortOrder of one column must not remove sorts in other columns.
@@ -1049,10 +1047,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // prepare: two columns sorted
         table.setSortOrder("First Name", SortOrder.ASCENDING);
         table.setSortOrder("Last Name", SortOrder.ASCENDING);
-        assertEquals("sanity: really multiple columns sorted", 2, table.getRowSorter().getSortKeys().size());
+        assertEquals( 2, table.getRowSorter().getSortKeys().size(),"sanity: really multiple columns sorted");
         // unsort primary sort column
         table.setSortOrder("Last Name",  SortOrder.UNSORTED);
-        assertEquals("secondary sort column must still be sorted", SortOrder.ASCENDING, table.getSortOrder("First Name"));
+        assertEquals( SortOrder.ASCENDING, table.getSortOrder("First Name"),"secondary sort column must still be sorted");
     }
     
     /**
@@ -1067,8 +1065,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         TableColumnExt columnExt = table.getColumnExt(identifier);
         columnExt.setVisible(false);
         table.setSortOrder(identifier, SortOrder.ASCENDING);
-        assertEquals("sorted column must be at " + identifier, columnExt, table.getSortedColumn());
-        assertEquals("column must be sorted after setting sortOrder on " + identifier, SortOrder.ASCENDING, table.getSortOrder(identifier));
+        assertEquals( columnExt, table.getSortedColumn(),"sorted column must be at " + identifier);
+        assertEquals( SortOrder.ASCENDING, table.getSortOrder(identifier),"column must be sorted after setting sortOrder on " + identifier);
     }
     
     
@@ -1083,8 +1081,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Object identifier = "Last Name";
         TableColumn columnExt = table.getColumn(identifier);
         table.setSortOrder(identifier, SortOrder.ASCENDING);
-        assertEquals("sorted column must be at " + identifier, columnExt, table.getSortedColumn());
-        assertEquals("column must be sorted after setting sortOrder on " + identifier, SortOrder.ASCENDING, table.getSortOrder(identifier));
+        assertEquals( columnExt, table.getSortedColumn(),"sorted column must be at " + identifier);
+        assertEquals( SortOrder.ASCENDING, table.getSortOrder(identifier),"column must be sorted after setting sortOrder on " + identifier);
     }
 
     /**
@@ -1139,8 +1137,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         int col = 0;
         TableColumn columnExt = table.getColumn(col);
         table.setSortOrder(col, SortOrder.ASCENDING);
-        assertEquals("sorted column must be at " + col, columnExt, table.getSortedColumn());
-        assertEquals("column must be sorted after setting sortOrder on " + col, SortOrder.ASCENDING, table.getSortOrder(col));
+        assertEquals( columnExt, table.getSortedColumn(),"sorted column must be at " + col);
+        assertEquals( SortOrder.ASCENDING, table.getSortOrder(col),"column must be sorted after setting sortOrder on " + col);
     }
 
     /**
@@ -1164,8 +1162,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testSortController() {
-        assertTrue("default sorter expected TableRowSorter, but was:" + table.getRowSorter(),
-                table.getRowSorter() instanceof TableSortController<?>);
+        assertTrue(
+                table.getRowSorter() instanceof TableSortController<?>,"default sorter expected TableRowSorter, but was:" + table.getRowSorter());
     }
     /**
      * core issue: rowSorter replaced on setAutoCreateRowSorter even without change to flag.
@@ -1174,7 +1172,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testSetAutoCreateRowSorter() {
         JXTable table = new JXTable(new AncientSwingTeam());
         RowSorter<?> sorter = table.getRowSorter();
-        assertNotNull("sanity: core rowSorter is created", sorter);
+        assertNotNull( sorter,"sanity: core rowSorter is created");
         table.setAutoCreateRowSorter(true);
         assertSame(sorter, table.getRowSorter());
     }
@@ -1228,10 +1226,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testSetModelCreateDefaultRowSorter() {
         JXTable table = new JXRTable();
         table.setModel(new AncientSwingTeam());
-        assertTrue("table must install default rowSorter, but was: " + table.getRowSorter().getClass(), 
-                table.getRowSorter() instanceof XTableRowSorter<?>);
-        assertSame("default RowSorter must be configured with table model", 
-                table.getModel(), table.getRowSorter().getModel() );
+        assertTrue( 
+                table.getRowSorter() instanceof XTableRowSorter<?>,"table must install default rowSorter, but was: " + table.getRowSorter().getClass());
+        assertSame( 
+                table.getModel(), table.getRowSorter().getModel() ,"default RowSorter must be configured with table model");
     }
     
     /**
@@ -1240,10 +1238,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testCreateDefaultRowSorterOverridden() {
         JXTable table = new JXRTable();
-        assertTrue("table must install default rowSorter, but was: " + table.getRowSorter().getClass(), 
-                table.getRowSorter() instanceof XTableRowSorter<?>);
-        assertSame("default RowSorter must be configured with table model", 
-                table.getModel(), table.getRowSorter().getModel() );
+        assertTrue( 
+                table.getRowSorter() instanceof XTableRowSorter<?>,"table must install default rowSorter, but was: " + table.getRowSorter().getClass());
+        assertSame( 
+                table.getModel(), table.getRowSorter().getModel() ,"default RowSorter must be configured with table model");
     }
     
     public static class JXRTable extends JXTable {
@@ -1267,14 +1265,14 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testAutoCreateRowSorterModelInstalled() {
-        assertSame("model must be same", table.getModel(), table.getRowSorter().getModel());
+        assertSame( table.getModel(), table.getRowSorter().getModel(),"model must be same");
     }
     /**
      * JXTable auto-create rowsorter is true by default.
      */
     @Test
     public void testAutoCreateRowSorter() {
-        assertEquals("table must have default auto-create rowsorter true", true, table.getAutoCreateRowSorter());
+        assertEquals( true, table.getAutoCreateRowSorter(),"table must have default auto-create rowsorter true");
     }
 //------------------- ComponentAdapter
     
@@ -1293,18 +1291,18 @@ public class JXTableUnitTest extends InteractiveTestCase {
         final JXTable table = new JXTable(createAscendingModel(0, 10));
         Object originalFirstRowValue = table.getValueAt(0,0);
         Object originalLastRowValue = table.getValueAt(table.getRowCount() - 1, 0);
-        assertEquals("view row coordinate equals model row coordinate", 
-                table.getModel().getValueAt(0, 0), originalFirstRowValue);
+        assertEquals( 
+                table.getModel().getValueAt(0, 0), originalFirstRowValue,"view row coordinate equals model row coordinate");
         // sort first column - actually does not change anything order 
         table.toggleSortOrder(0);
         // sanity assert
-        assertEquals("view order must be unchanged ", 
-                table.getValueAt(0, 0), originalFirstRowValue);
+        assertEquals( 
+                table.getValueAt(0, 0), originalFirstRowValue,"view order must be unchanged ");
         // invert sort
         table.toggleSortOrder(0);
         // sanity assert
-        assertEquals("view order must be reversed changed ", 
-                table.getValueAt(0, 0), originalLastRowValue);
+        assertEquals( 
+                table.getValueAt(0, 0), originalLastRowValue,"view order must be reversed changed ");
         ComponentAdapter adapter = new ComponentAdapter(table) {
 
             @Override
@@ -1362,13 +1360,13 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 return false;
             }
         };
-        assertEquals("adapter filteredValue expects row view coordinates", 
-                table.getValueAt(0, 0), adapter.getFilteredValueAt(0, 0));
+        assertEquals( 
+                table.getValueAt(0, 0), adapter.getFilteredValueAt(0, 0),"adapter filteredValue expects row view coordinates");
         // adapter coordinates are view coordinates
         adapter.row = 0;
         adapter.column = 0;
-        assertEquals("adapter.getValue must return value at adapter coordinates", 
-                table.getValueAt(0, 0), adapter.getValue());
+        assertEquals( 
+                table.getValueAt(0, 0), adapter.getValue(),"adapter.getValue must return value at adapter coordinates");
         
         assertEquals(adapter.getFilteredValueAt(0, adapter.getColumnCount() -1), 
                 adapter.getValue(adapter.getColumnCount()-1));
@@ -1386,28 +1384,28 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXTable table = new JXTable(createAscendingModel(0, 10));
         Object originalFirstRowValue = table.getValueAt(0,0);
         Object originalLastRowValue = table.getValueAt(table.getRowCount() - 1, 0);
-        assertEquals("view row coordinate equals model row coordinate", 
-                table.getModel().getValueAt(0, 0), originalFirstRowValue);
+        assertEquals( 
+                table.getModel().getValueAt(0, 0), originalFirstRowValue,"view row coordinate equals model row coordinate");
         // sort first column - actually does not change anything order 
         table.toggleSortOrder(0);
         // sanity asssert
-        assertEquals("view order must be unchanged ", 
-                table.getValueAt(0, 0), originalFirstRowValue);
+        assertEquals( 
+                table.getValueAt(0, 0), originalFirstRowValue,"view order must be unchanged ");
         // invert sort
         table.toggleSortOrder(0);
         // sanity assert
-        assertEquals("view order must be reversed changed ", 
-                table.getValueAt(0, 0), originalLastRowValue);
+        assertEquals( 
+                table.getValueAt(0, 0), originalLastRowValue,"view order must be reversed changed ");
         ComponentAdapter adapter = table.getComponentAdapter();
-        assertEquals("adapter filteredValue expects row view coordinates", 
-                table.getValueAt(0, 0), adapter.getFilteredValueAt(0, 0));
+        assertEquals( 
+                table.getValueAt(0, 0), adapter.getFilteredValueAt(0, 0),"adapter filteredValue expects row view coordinates");
         // adapter coordinates are view coordinates
         adapter.row = 0;
         adapter.column = 0;
-        assertEquals("adapter.getValue must return value at adapter coordinates", 
-                table.getValueAt(0, 0), adapter.getValue());
-        assertEquals("adapter.getValue must return value at adapter coordinates", 
-                table.getValueAt(0, 0), adapter.getValue(0));
+        assertEquals( 
+                table.getValueAt(0, 0), adapter.getValue(),"adapter.getValue must return value at adapter coordinates");
+        assertEquals( 
+                table.getValueAt(0, 0), adapter.getValue(0),"adapter.getValue must return value at adapter coordinates");
     }
 
 
@@ -1449,10 +1447,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setAutoCreateColumnsFromModel(false);
         int width = table.getColumn(0).getWidth() + 2;
         table.getColumn(0).setWidth(width);
-        assertEquals("sanity: ", width, table.getColumn(0).getWidth());
+        assertEquals( width, table.getColumn(0).getWidth(),"sanity: ");
         table.tableChanged(null);
-        assertEquals("structure changed must not resize column", 
-                width, table.getColumn(0).getWidth() );
+        assertEquals( 
+                width, table.getColumn(0).getWidth() ,"structure changed must not resize column");
     }
     
     /**
@@ -1468,10 +1466,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setAutoCreateColumnsFromModel(false);
         int width = table.getColumn(0).getPreferredWidth() + 2;
         table.getColumn(0).setPreferredWidth(width);
-        assertEquals("sanity: ", width, table.getColumn(0).getPreferredWidth());
+        assertEquals( width, table.getColumn(0).getPreferredWidth(),"sanity: ");
         table.tableChanged(null);
-        assertEquals("structure changed must not resize column", width, 
-                table.getColumn(0).getPreferredWidth() );
+        assertEquals( width, 
+                table.getColumn(0).getPreferredWidth() ,"structure changed must not resize column");
     }
     
     
@@ -1485,10 +1483,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXTable table = new JXTable(10, 2);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setColumnControlVisible(true);
-        assertSame("sanity: column control set", table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+        assertSame( table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity: column control set");
         table.setColumnControlVisible(false);
-        assertEquals("columnControl must be removed from corner if not visible", 
-                null, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+        assertEquals( 
+                null, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"columnControl must be removed from corner if not visible");
     }
     
     /**
@@ -1514,15 +1512,15 @@ public class JXTableUnitTest extends InteractiveTestCase {
             public void run() {
                 JPanel panel = new JPanel();
                 scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, panel);
-                assertEquals("sanity ...", panel, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+                assertEquals( panel, scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
                 frame.remove(scrollPane);
                 frame.add(scrollPane);
                 if (table.isColumnControlVisible()) {
                     assertEquals(table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
                 } else {
-                    assertEquals("xTable respects custom corner if columnControl invisible", 
+                    assertEquals( 
                             panel,
-                        scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+                        scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"xTable respects custom corner if columnControl invisible");
                 }
             }
         });
@@ -1550,7 +1548,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
             @Override
             public void run() {
                 scrollPane.setCorner(JScrollPane.UPPER_TRAILING_CORNER, new JPanel());
-                assertNotNull("sanity ...", scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+                assertNotNull( scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER),"sanity ...");
                 frame.remove(scrollPane);
                 frame.add(scrollPane);
             }
@@ -1714,8 +1712,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocusBackward();
-        assertTrue("table must be editing", table.isEditing());
-        assertEquals("", 0, report.getEventCount());
+        assertTrue( table.isEditing(),"table must be editing");
+        assertEquals( 0, report.getEventCount(),"");
     }
    
     /**
@@ -1736,8 +1734,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocus();
-        assertTrue("table must be editing", table.isEditing());
-        assertEquals("", 0, report.getEventCount());
+        assertTrue( table.isEditing(),"table must be editing");
+        assertEquals( 0, report.getEventCount(),"");
     }
 
     /**
@@ -1765,8 +1763,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocusBackward();
-        assertTrue("table must be editing", table.isEditing());
-        assertEquals("", 0, report.getEventCount());
+        assertTrue( table.isEditing(),"table must be editing");
+        assertEquals( 0, report.getEventCount(),"");
     }
     
     
@@ -1795,8 +1793,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocus();
-        assertTrue("table must be editing", table.isEditing());
-        assertEquals("", 0, report.getEventCount());
+        assertTrue( table.isEditing(),"table must be editing");
+        assertEquals( 0, report.getEventCount(),"");
     }
     
 
@@ -1817,9 +1815,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocusBackward();
-        assertFalse("table must not be editing", table.isEditing());
-        assertEquals("", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertFalse( table.isEditing(),"table must not be editing");
+        assertEquals( 1, report.getEventCount(),"");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
     
 
@@ -1840,9 +1838,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         table.getCellEditor().addCellEditorListener(report);
         table.transferFocus();
-        assertFalse("table must not be editing", table.isEditing());
-        assertEquals("", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertFalse( table.isEditing(),"table must not be editing");
+        assertEquals( 1, report.getEventCount(),"");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
     
     
@@ -1854,10 +1852,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testFocusTransferActions() {
-        assertNotNull("must have forward action",
-                table.getActionMap().get(JXTable.FOCUS_NEXT_COMPONENT));
-        assertNotNull("must have backward action",
-                table.getActionMap().get(JXTable.FOCUS_PREVIOUS_COMPONENT));
+        assertNotNull(
+                table.getActionMap().get(JXTable.FOCUS_NEXT_COMPONENT),"must have forward action");
+        assertNotNull(
+                table.getActionMap().get(JXTable.FOCUS_PREVIOUS_COMPONENT),"must have backward action");
     }
 
     /**
@@ -1872,13 +1870,13 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Set<?> backwardKeys = core.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS);
         for (Object key : forwardKeys) {
             InputMap map = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-            assertNotNull("must have binding for forward focus transfer " + key, 
-                    map.get((KeyStroke) key));
+            assertNotNull( 
+                    map.get((KeyStroke) key),"must have binding for forward focus transfer " + key);
         }
         for (Object key : backwardKeys) {
             InputMap map = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-            assertNotNull("must have binding for backward focus transfer " + key, 
-                    map.get((KeyStroke) key));
+            assertNotNull( 
+                    map.get((KeyStroke) key),"must have binding for backward focus transfer " + key);
         }
     }
     
@@ -1903,8 +1901,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Dimension compareDim = compare.getPreferredScrollableViewportSize();
         JXTable table = new JXTable(10, 6);
         Dimension initialDim = table.getPreferredScrollableViewportSize();
-        assertFalse("configured must be different from default width", 
-                compareDim.width == initialDim.width);
+        assertFalse( 
+                compareDim.width == initialDim.width,"configured must be different from default width");
         table.setModel(compare.getModel());
         assertEquals(compareDim.width, table.getPreferredScrollableViewportSize().width);
     }
@@ -2018,8 +2016,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testPrefScrollableWidthDefault() {
        JXTable table = new JXTable(10, 7);
        Dimension dim = table.getPreferredScrollableViewportSize();
-       assertEquals("default must use all visible columns", 
-               table.getColumnCount() * 75, dim.width);
+       assertEquals( 
+               table.getColumnCount() * 75, dim.width,"default must use all visible columns");
     }
     
     /**
@@ -2065,9 +2063,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // following should init the column width ...
         table.setModel(compare.getModel());
         for (int i = 0; i < table.getColumnCount(); i++) {
-            assertEquals("prefwidths must be same at index " + i, 
+            assertEquals( 
                     compare.getColumnExt(i).getPreferredWidth(),
-                    table.getColumnExt(i).getPreferredWidth());
+                    table.getColumnExt(i).getPreferredWidth(),"prefwidths must be same at index " + i);
         }
     }
 
@@ -2123,11 +2121,11 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testPrefScrollableSafeCalculatedDim() {
         JXTable table = new JXTable(10, 6);
         // sanity: compare the normal dim returns
-        assertNotSame("pref size must not be the same", 
-                table.getPreferredSize(), table.getPreferredSize());
-        assertNotSame("pref scrollable dim must not be the same", 
+        assertNotSame( 
+                table.getPreferredSize(), table.getPreferredSize(),"pref size must not be the same");
+        assertNotSame( 
                 table.getPreferredScrollableViewportSize(), 
-                table.getPreferredScrollableViewportSize());
+                table.getPreferredScrollableViewportSize(),"pref scrollable dim must not be the same");
     }
 
     /**
@@ -2143,8 +2141,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertEquals(dim, table.getPreferredSize());
         assertNotSame(dim, table.getPreferredSize());
         table.setPreferredScrollableViewportSize(dim);
-        assertNotSame("pref scrollable dim must not be the same", 
-                dim, table.getPreferredScrollableViewportSize());
+        assertNotSame( 
+                dim, table.getPreferredScrollableViewportSize(),"pref scrollable dim must not be the same");
     }
     
     /**
@@ -2155,9 +2153,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testPrefScrollableHeight() {
         JXTable table = new JXTable(10, 6);
         Dimension dim = table.getPreferredScrollableViewportSize();
-        assertNotNull("pref scrollable must not be null", dim);
-        assertEquals("scrollable height must no include header", 
-                table.getVisibleRowCount() * table.getRowHeight(), dim.height);
+        assertNotNull( dim,"pref scrollable must not be null");
+        assertEquals( 
+                table.getVisibleRowCount() * table.getRowHeight(), dim.height,"scrollable height must no include header");
     }     
     
     /**
@@ -2218,8 +2216,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         columnExt.setVisible(false);
         // make sure the column pref is initialized
         table.initializeColumnWidths();
-        assertEquals("hidden column's pref must be set", 
-                comp.getPreferredSize().width + table.getColumnMargin(), columnExt.getPreferredWidth());
+        assertEquals( 
+                comp.getPreferredSize().width + table.getColumnMargin(), columnExt.getPreferredWidth(),"hidden column's pref must be set");
     }
 
     /**
@@ -2238,8 +2236,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Dimension prefSize = comp.getPreferredSize();
         // make sure the column pref is initialized
         table.initializeColumnWidths();
-        assertEquals("header must be measured", 
-                prefSize.width + table.getColumnMargin(), columnExt.getPreferredWidth());
+        assertEquals( 
+                prefSize.width + table.getColumnMargin(), columnExt.getPreferredWidth(),"header must be measured");
     }
 
     /**
@@ -2255,8 +2253,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         int standardWidth = columnExt.getPreferredWidth();
         // make sure the column pref is initialized
         table.getPreferredScrollableViewportSize();
-        assertEquals("column pref width must be unchanged", 
-                standardWidth, columnExt.getPreferredWidth());
+        assertEquals( 
+                standardWidth, columnExt.getPreferredWidth(),"column pref width must be unchanged");
     }
     
     /**
@@ -2280,8 +2278,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Component comp = renderer.getTableCellRendererComponent(null, columnExt.getPrototypeValue(), false, false, -1, -1);
         // make sure the column pref is initialized
         table.initializeColumnWidths();
-        assertEquals("column margin must be added once", table.getColumnMargin(), 
-                columnExt.getPreferredWidth() - comp.getPreferredSize().width);
+        assertEquals( table.getColumnMargin(), 
+                columnExt.getPreferredWidth() - comp.getPreferredSize().width,"column margin must be added once");
     }
 
 
@@ -2407,8 +2405,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         columnExt.setEditable(false);
         // sanity
         assertFalse(table.isCellEditable(0, 0));
-        assertEquals("editor must have fired canceled", 1, report.getCanceledEventCount());
-        assertEquals("editor must not have fired stopped",0, report.getStoppedEventCount());
+        assertEquals( 1, report.getCanceledEventCount(),"editor must have fired canceled");
+        assertEquals(0, report.getStoppedEventCount(),"editor must not have fired stopped");
     }
     
     
@@ -2428,7 +2426,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertEquals(0, table.getEditingColumn());
         columnExt.setEditable(false);
         assertFalse(table.isCellEditable(0, 0));
-        assertFalse("table must have terminated edit",table.isEditing());
+        assertFalse(table.isEditing(),"table must have terminated edit");
     }
     
     /**
@@ -2449,7 +2447,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertEquals(0, table.getEditingColumn());
         columnExt.setEditable(false);
         assertFalse(table.isCellEditable(0, notEditingColumn));
-        assertTrue("table must still be editing", table.isEditing());
+        assertTrue( table.isEditing(),"table must still be editing");
     }
     
     /**
@@ -2472,7 +2470,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertTrue(table.isEditing());
         assertEquals(0, table.getEditingColumn());
         columnExt.setEditable(false);
-        assertTrue("table must still be editing", table.isEditing());
+        assertTrue( table.isEditing(),"table must still be editing");
     }
 
     /**
@@ -2612,14 +2610,14 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testRowHeightFromFont() {
         // sanity
-        assertNull("no ui rowheight", UIManager.get("JXTable.rowHeight"));
+        assertNull( UIManager.get("JXTable.rowHeight"),"no ui rowheight");
         JXTable table = new JXTable();
         // wrong assumption: there's a "magic" minimum of 18!           
         int fontDerivedHeight = table.getFontMetrics(table.getFont()).getHeight() + 2;
-        assertEquals("default rowHeight based on fontMetrics height " +
-                        "plus top plus bottom border (== 2)", 
+        assertEquals( 
                         Math.max(18, fontDerivedHeight), 
-                        table.getRowHeight());
+                        table.getRowHeight(),"default rowHeight based on fontMetrics height " +
+                        "plus top plus bottom border (== 2)");
     }
     
     
@@ -2635,7 +2633,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testRowHeightFromBigFont() {
         // sanity
-        assertNull("no ui rowheight", UIManager.get("JXTable.rowHeight"));
+        assertNull( UIManager.get("JXTable.rowHeight"),"no ui rowheight");
         JXTable table = new JXTable();
         table.setFont(table.getFont().deriveFont(table.getFont().getSize() * 2f));
         table.updateUI();
@@ -2644,10 +2642,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
             LOG.info("can't test - font not changed to big as expected but still " + bigRowHeight);
             return;
         }
-        assertEquals("default rowHeight based on fontMetrics height " +
-                        "plus top plus bottom border (== 2)", 
+        assertEquals( 
                         bigRowHeight, 
-                        table.getRowHeight());
+                        table.getRowHeight(),"default rowHeight based on fontMetrics height " +
+                        "plus top plus bottom border (== 2)");
     }
     
     
@@ -2662,7 +2660,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         int tinyRowHeight = 5;
         UIManager.put("JXTable.rowHeight", tinyRowHeight);
         JXTable table = new JXTable();
-        assertEquals("table must respect ui rowheight", tinyRowHeight, table.getRowHeight());
+        assertEquals( tinyRowHeight, table.getRowHeight(),"table must respect ui rowheight");
         
     }
 
@@ -2677,7 +2675,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         int monsterRowHeight = 50;
         UIManager.put("JXTable.rowHeight", monsterRowHeight);
         JXTable table = new JXTable();
-        assertEquals("table must respect ui rowheight", monsterRowHeight, table.getRowHeight());
+        assertEquals( monsterRowHeight, table.getRowHeight(),"table must respect ui rowheight");
         
     }
 
@@ -2806,7 +2804,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         PropertyChangeReport report = new PropertyChangeReport();
         table.addPropertyChangeListener(report);
         table.setAutoStartEditOnKeyStroke(false);
-        assertFalse("autoStart must be toggled to false", table.isAutoStartEditOnKeyStroke());
+        assertFalse( table.isAutoStartEditOnKeyStroke(),"autoStart must be toggled to false");
         // the following assumption is wrong because the old client property key is
         // different from the method name, leading to two events fired.
         // assertEquals(1, report.getEventCount());
@@ -2820,11 +2818,11 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testEditable() {
         JXTable table = new JXTable(10, 2);
-        assertTrue("default editable must be true", table.isEditable());
+        assertTrue( table.isEditable(),"default editable must be true");
         PropertyChangeReport report = new PropertyChangeReport();
         table.addPropertyChangeListener(report);
         table.setEditable(!table.isEditable());
-        assertFalse("editable must be toggled to false", table.isEditable());
+        assertFalse( table.isEditable(),"editable must be toggled to false");
         assertEquals(1, report.getEventCount());
         assertEquals(1, report.getEventCount("editable"));
     }
@@ -2836,11 +2834,11 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testCellEditable() {
         JXTable table = new JXTable(10, 2);
-        assertTrue("default table editable must be true", table.isEditable());
-        assertTrue("default cell editable must be true", table.isCellEditable(0, 0));
+        assertTrue( table.isEditable(),"default table editable must be true");
+        assertTrue( table.isCellEditable(0, 0),"default cell editable must be true");
         table.setEditable(!table.isEditable());
-        assertFalse("editable must be toggled to false", table.isEditable());
-        assertFalse("each cell must be not editable", table.isCellEditable(0, 0));
+        assertFalse( table.isEditable(),"editable must be toggled to false");
+        assertFalse( table.isCellEditable(0, 0),"each cell must be not editable");
     }
     
     /**
@@ -2852,9 +2850,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         Object value = table.getValueAt(0, 0);
         table.setEditable(false);
         // sanity...
-        assertFalse("each cell must be not editable", table.isCellEditable(0, 0));
+        assertFalse( table.isCellEditable(0, 0),"each cell must be not editable");
         table.setValueAt("wrong", 0, 0);
-        assertEquals("cell value must not be changed", value, table.getValueAt(0, 0));
+        assertEquals( value, table.getValueAt(0, 0),"cell value must not be changed");
         
     }
 
@@ -2884,7 +2882,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testInitialTerminateEditOnFocusLost() {
-       assertTrue("terminate edit must be on by default", table.isTerminateEditOnFocusLost());
+       assertTrue( table.isTerminateEditOnFocusLost(),"terminate edit must be on by default");
     }
 
     /**
@@ -2929,7 +2927,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testDefaultFillsViewport() {
         JXTable table = new JXTable(10, 1);
         boolean fill = table.getFillsViewportHeight();
-        assertTrue("fillsViewport is on by default", fill);
+        assertTrue( fill,"fillsViewport is on by default");
     }
     
     
@@ -2956,8 +2954,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         }
         scrollPane.setViewportView(table);
         table.configureEnclosingScrollPane();
-        assertEquals("viewport background must be unchanged", 
-                viewportColor, scrollPane.getViewport().getBackground());
+        assertEquals( 
+                viewportColor, scrollPane.getViewport().getBackground(),"viewport background must be unchanged");
         
         
     }
@@ -2981,8 +2979,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXFrame frame = wrapInFrame(scrollPane, "");
         frame.setSize(tablePrefSize.width * 2, tablePrefSize.height);
         frame.setVisible(true);
-        assertEquals("table width must be equal to viewport", 
-                table.getWidth(), scrollPane.getViewport().getWidth());
+        assertEquals( 
+                table.getWidth(), scrollPane.getViewport().getWidth(),"table width must be equal to viewport");
      }
 
     /**
@@ -2994,16 +2992,16 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testSetHorizontalEnabled() {
         JXTable table = new JXTable(10, 2);
         table.setHorizontalScrollEnabled(true);
-        assertTrue("enhanced resize property must be enabled", 
-                table.isHorizontalScrollEnabled());
+        assertTrue( 
+                table.isHorizontalScrollEnabled(),"enhanced resize property must be enabled");
         assertHorizontalActionSelected(table, true);
     }
 
     private void assertHorizontalActionSelected(JXTable table, boolean selected) {
         Action showHorizontal = table.getActionMap().get(
                 JXTable.HORIZONTALSCROLL_ACTION_COMMAND);
-        assertEquals("horizontAction must be selected"  , selected, 
-                ((BoundAction) showHorizontal).isSelected());
+        assertEquals( selected, 
+                ((BoundAction) showHorizontal).isSelected(),"horizontAction must be selected"  );
     }
  
     /**
@@ -3027,8 +3025,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         JXFrame frame = wrapInFrame(scrollPane, "");
         frame.setSize(tablePrefSize.width * 2, tablePrefSize.height);
         frame.setVisible(true);
-        assertEquals("table width must not be equal to viewport", 
-               table.getPreferredSize().width, table.getWidth());
+        assertEquals( 
+               table.getPreferredSize().width, table.getWidth(),"table width must not be equal to viewport");
      }
  
     /**
@@ -3042,8 +3040,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
         // sanity: horizontal action must be selected
         assertHorizontalActionSelected(table, false);
-        assertFalse("autoResizeOff must not enable enhanced resize", 
-                table.isHorizontalScrollEnabled());
+        assertFalse( 
+                table.isHorizontalScrollEnabled(),"autoResizeOff must not enable enhanced resize");
      }
  
     /**
@@ -3060,7 +3058,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         int oldAutoResize = table.getAutoResizeMode();
         table.setHorizontalScrollEnabled(true);
         table.setHorizontalScrollEnabled(false);
-        assertEquals("old on-mode must be restored", oldAutoResize, table.getAutoResizeMode());
+        assertEquals( oldAutoResize, table.getAutoResizeMode(),"old on-mode must be restored");
        }
     
     /**
@@ -3079,7 +3077,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
         table.setHorizontalScrollEnabled(true);
         table.setHorizontalScrollEnabled(false);
-        assertEquals("old on-mode must be restored", oldAutoResize, table.getAutoResizeMode());
+        assertEquals( oldAutoResize, table.getAutoResizeMode(),"old on-mode must be restored");
        }
 
     /**
@@ -3097,8 +3095,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // sanity: horizontal action must be selected
         assertHorizontalActionSelected(table, true);
         table.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
-        assertFalse("autoResizeOff must not enable enhanced resize", 
-                table.isHorizontalScrollEnabled());
+        assertFalse( 
+                table.isHorizontalScrollEnabled(),"autoResizeOff must not enable enhanced resize");
         // sanity: horizontal action must be selected
         assertHorizontalActionSelected(table, false);
      }
@@ -3117,7 +3115,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.setColumnModel(columnModel);
         // valid column index must not throw exception
         TableColumnExt tableColumnExt = table.getColumnExt(0);
-        assertNull("getColumnExt must return null on type mismatch", tableColumnExt);
+        assertNull( tableColumnExt,"getColumnExt must return null on type mismatch");
     }
 
 
@@ -3183,9 +3181,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // DefaultTableModel allows to edit its cells.
         for( int i = 0; i < model.getRowCount(); i++ ) {
             for( int j = 0; j < model.getRowCount(); j++ ) {
-                assertEquals(
-                    "cell (" + i + "," + j + ") must be editable", 
-                    true, table.isCellEditable( i, j ) );
+                assertEquals( 
+                    true, table.isCellEditable( i, j ) ,
+                    "cell (" + i + "," + j + ") must be editable");
             }
         }        
 
@@ -3194,10 +3192,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.getColumnExt( column ).setEditable( false );
         for( int i = 0; i < model.getRowCount(); i++ ) {
             for( int j = 0; j < model.getRowCount(); j++ ) {
-                assertEquals(
+                assertEquals( 
+                    !(j == column), table.isCellEditable( i, j ) ,
                     "cell (" + i + "," + j + ") must " +
-                    (j == column ? "not" : "") + " be editable", 
-                    !(j == column), table.isCellEditable( i, j ) );
+                    (j == column ? "not" : "") + " be editable");
             }
         }        
         table.getColumnExt( column ).setEditable( true );
@@ -3207,10 +3205,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.getColumnExt( column ).setEditable( false );
         for( int i = 0; i < model.getRowCount(); i++ ) {
             for( int j = 0; j < model.getRowCount(); j++ ) {
-                assertEquals(
+                assertEquals( 
+                    !(j == column), table.isCellEditable( i, j ) ,
                     "cell (" + i + "," + j + ") must " +
-                    (j == column ? "not" : "") + " be editable", 
-                    !(j == column), table.isCellEditable( i, j ) );
+                    (j == column ? "not" : "") + " be editable");
             }
         }        
         table.getColumnExt( column ).setEditable( true );
@@ -3227,13 +3225,13 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testLinkControllerListening() {
         JXTable table = new JXTable();
         table.setRolloverEnabled(true);
-        assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY));
-        assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY));
-        assertNotNull("execute button action must be registered", table.getActionMap().get(RolloverController.EXECUTE_BUTTON_ACTIONCOMMAND));
+        assertNotNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY),"LinkController must be listening");
+        assertNotNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY),"LinkController must be listening");
+        assertNotNull( table.getActionMap().get(RolloverController.EXECUTE_BUTTON_ACTIONCOMMAND),"execute button action must be registered");
         table.setRolloverEnabled(false);
-        assertNull("LinkController must not be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY ));
-        assertNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY));
-        assertNull("execute button action must be de-registered", table.getActionMap().get(RolloverController.EXECUTE_BUTTON_ACTIONCOMMAND));
+        assertNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY ),"LinkController must not be listening");
+        assertNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY),"LinkController must be listening");
+        assertNull( table.getActionMap().get(RolloverController.EXECUTE_BUTTON_ACTIONCOMMAND),"execute button action must be de-registered");
     }
     
     private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXTable table, String propertyName) {
@@ -3274,9 +3272,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         TableColumnExt columnX = table.getColumnExt(0);
         columnX.setVisible(false);
         table.setModel(new DefaultTableModel());
-        assertEquals("all columns must have been removed", 0, table.getColumnCount(true));
-        assertEquals("all columns must have been removed", 
-                table.getColumnCount(), table.getColumnCount(true));
+        assertEquals( 0, table.getColumnCount(true),"all columns must have been removed");
+        assertEquals( 
+                table.getColumnCount(), table.getColumnCount(true),"all columns must have been removed");
     }
     
 
@@ -3313,9 +3311,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         frame.add(scrollPane1);
         frame.setSize(500, 400);
         frame.setVisible(true);
-        assertEquals("vertical scrollbar policy must be always", 
+        assertEquals( 
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                scrollPane1.getVerticalScrollBarPolicy());
+                scrollPane1.getVerticalScrollBarPolicy(),"vertical scrollbar policy must be always");
     }
 
 
@@ -3331,9 +3329,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         String lastName = table.getValueAt(row, 0).toString();
         Pattern strict = Pattern.compile("^" + lastName + "$");
         int found = table.getSearchable().search(strict, -1, false);
-        assertEquals("found must be equal to row", row, found);
+        assertEquals( row, found,"found must be equal to row");
         found = table.getSearchable().search(strict, found, false);
-        assertEquals("search must fail", -1, found);
+        assertEquals( -1, found,"search must fail");
     }
 
     /**
@@ -3347,8 +3345,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         columnX.setVisible(false);
         // set empty model
         table.setModel(new DefaultTableModel(0, 0));
-        assertEquals("all columns must have been removed", 
-                table.getColumnCount(), table.getColumnCount(true));
+        assertEquals( 
+                table.getColumnCount(), table.getColumnCount(true),"all columns must have been removed");
     }
     
     
@@ -3379,7 +3377,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertNotNull(columnZero);
         int viewIndexZero = table.convertColumnIndexToView(columnZero
                 .getModelIndex());
-        assertTrue("viewIndex must be negative for invisible", viewIndexZero < 0);
+        assertTrue( viewIndexZero < 0,"viewIndex must be negative for invisible");
         // a different way to state the same
         assertEquals(columnZero.isVisible(), viewIndexZero >= 0);
         TableColumnExt columnOne = table.getColumnExt(oneName);
@@ -3387,7 +3385,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertNotNull(columnOne);
         int viewIndexOne = table.convertColumnIndexToView(columnOne
                 .getModelIndex());
-        assertTrue("viewIndex must be positive for visible", viewIndexOne >= 0);
+        assertTrue( viewIndexOne >= 0,"viewIndex must be positive for visible");
         assertEquals(columnOne.isVisible(), viewIndexOne >= 0);
     }
     /**
@@ -3431,9 +3429,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
         // sanity assert
         assertEquals("10", ten);
         int found = table.getSearchable().search("1", -1);
-        assertEquals("must have found first row", row, found);
+        assertEquals( row, found,"must have found first row");
         int second = table.getSearchable().search("10", found);
-        assertEquals("must have found incrementally at same position", found, second);
+        assertEquals( found, second,"must have found incrementally at same position");
     }
     
     /**
@@ -3475,10 +3473,10 @@ public class JXTableUnitTest extends InteractiveTestCase {
         table.addColumnSelectionInterval(0, 0);
         final int leadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
         int anchorColumn = table.getColumnModel().getSelectionModel().getAnchorSelectionIndex();
-        assertEquals("lead must be last row", table.getRowCount() - 1, leadRow);
-        assertEquals("anchor must be second last row", table.getRowCount() - 2, anchorRow);
-        assertEquals("lead must be first column", 0, leadColumn);
-        assertEquals("anchor must be first column", 0, anchorColumn);
+        assertEquals( table.getRowCount() - 1, leadRow,"lead must be last row");
+        assertEquals( table.getRowCount() - 2, anchorRow,"anchor must be second last row");
+        assertEquals( 0, leadColumn,"lead must be first column");
+        assertEquals( 0, anchorColumn,"anchor must be first column");
         // take a nap to make sure we are created before testing for focus on linux
         // w/o this the test will intermittently fail on systems using kernel 2.6 and sun java 6
         Thread.sleep(500);
@@ -3490,8 +3488,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 adapter.column = leadColumn;
                 // difficult to test - hasFocus() implies that the table isFocusOwner()
                 try {
-                    assertTrue("adapter must have focus for leadRow/Column: " + adapter.row + "/" + adapter.column, 
-                            adapter.hasFocus());
+                    assertTrue( 
+                            adapter.hasFocus(),"adapter must have focus for leadRow/Column: " + adapter.row + "/" + adapter.column);
                 } finally {
                     frame.dispose();
                 }
@@ -3508,9 +3506,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testLazyEditorsByClass() {
         JXTable table = new JXTable();
-        assertEquals("default Boolean editor", JXTable.BooleanEditor.class, table.getDefaultEditor(Boolean.class).getClass());
-        assertEquals("default Number editor", NumberEditorExt.class, table.getDefaultEditor(Number.class).getClass());
-        assertEquals("default Double editor", NumberEditorExt.class, table.getDefaultEditor(Double.class).getClass());
+        assertEquals( JXTable.BooleanEditor.class, table.getDefaultEditor(Boolean.class).getClass(),"default Boolean editor");
+        assertEquals( NumberEditorExt.class, table.getDefaultEditor(Number.class).getClass(),"default Number editor");
+        assertEquals( NumberEditorExt.class, table.getDefaultEditor(Double.class).getClass(),"default Double editor");
     }
 
     
@@ -3811,7 +3809,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         assertSame(events.get(0), tableHighlighter);
     }
     
-    @Before
+    @BeforeEach
     public void setUpJu4() throws Exception {
         // just a little conflict between ant and maven builds
         // junit4 @before methods needs to be public, while
@@ -3837,7 +3835,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
 
     
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         UIManager.put("JXTable.rowHeight", uiTableRowHeight);
         super.tearDown();

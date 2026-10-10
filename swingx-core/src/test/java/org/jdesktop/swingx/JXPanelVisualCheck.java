@@ -51,6 +51,7 @@ import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.util.PaintUtils;
 
 import com.sun.java.swing.Painter;
+import org.junit.jupiter.api.Test;
 
 /**
  * Contains methods to visually test JXPanel.
@@ -412,6 +413,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
      * to run.
      * 
      */
+    @Test
     public void testDummy() {
 
     }

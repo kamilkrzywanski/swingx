@@ -31,9 +31,8 @@ import javax.swing.UIManager;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.jdesktop.test.ChangeReport;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -41,7 +40,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class CompoundHighlighterTest extends InteractiveTestCase {
     
     @SuppressWarnings("unused")
@@ -107,13 +105,13 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
             LOG.info("cannot run test - no ui striping color");
             return;
         }
-        assertSame("sanity", uiColor, colorHighlighter.getBackground());
+        assertSame( uiColor, colorHighlighter.getBackground(),"sanity");
         support.addHighlighter(colorHighlighter);
         Color changedUIColor = Color.RED;
         UIManager.put("UIColorHighlighter.stripingBackground", changedUIColor);
         support.updateUI();
         try {
-            assertSame("support must update ui color", changedUIColor, colorHighlighter.getBackground());
+            assertSame( changedUIColor, colorHighlighter.getBackground(),"support must update ui color");
         } finally {
             UIManager.put("UIColorHighlighter.stripingBackground", uiColor);
         }
@@ -149,10 +147,10 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
         support.addChangeListener(report);
         support.setHighlighters();
         assertEquals(0, support.getHighlighters().length);
-        assertEquals("compound must fire on modification", 1, report.getEventCount());
+        assertEquals( 1, report.getEventCount(),"compound must fire on modification");
         report.clear();
         colorHighlighter.setBackground(Color.RED);
-        assertEquals("compound must have removed listener", 0, report.getEventCount());
+        assertEquals( 0, report.getEventCount(),"compound must have removed listener");
     }
 
     /**
@@ -169,7 +167,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
         support.addChangeListener(report);
         support.setHighlighters();
         assertEquals(0, support.getHighlighters().length);
-        assertEquals("compound must fire on modification", 1, report.getEventCount());
+        assertEquals( 1, report.getEventCount(),"compound must fire on modification");
     }
     
     /**
@@ -184,7 +182,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
         support.addChangeListener(report);
         support.setHighlighters(colorHighlighter, new ColorHighlighter());
         assertEquals(2, support.getHighlighters().length);
-        assertEquals("compound must fire on modification", 1, report.getEventCount());
+        assertEquals( 1, report.getEventCount(),"compound must fire on modification");
     }
     
     /**
@@ -198,7 +196,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
         support.addChangeListener(report);
         support.setHighlighters();
         assertEquals(0, support.getHighlighters().length);
-        assertEquals("compound must not fire without modification", 0, report.getEventCount());
+        assertEquals( 0, report.getEventCount(),"compound must not fire without modification");
     }
     /**
      * Sanity: handles empty array.
@@ -408,7 +406,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
         pipeline.addChangeListener(changeReport);
         int count = changeReport.getEventCount();
         pipeline.addHighlighter(highlighter);
-        assertEquals("event count must be increased", ++count,  changeReport.getEventCount() );
+        assertEquals( ++count,  changeReport.getEventCount() ,"event count must be increased");
         assertCompoundHighlighterChange(highlighter, pipeline, changeReport);
     }
     
@@ -424,14 +422,14 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
     private void assertCompoundHighlighterChange(ColorHighlighter highlighter, CompoundHighlighter pipeline, ChangeReport changeReport) {
         int count = changeReport.getEventCount();
         highlighter.setBackground(Color.red);
-        assertEquals("event count must be increased", ++count,  changeReport.getEventCount() );
-        assertEquals("event source must be pipeline", pipeline, changeReport.getLastEvent().getSource());
+        assertEquals( ++count,  changeReport.getEventCount() ,"event count must be increased");
+        assertEquals( pipeline, changeReport.getLastEvent().getSource(),"event source must be pipeline");
         pipeline.removeHighlighter(highlighter);
-        assertEquals("event count must be increased", ++count,  changeReport.getEventCount() );
+        assertEquals( ++count,  changeReport.getEventCount() ,"event count must be increased");
         pipeline.removeHighlighter(highlighter);
-        assertEquals("event count must not be increased", count,  changeReport.getEventCount() );
+        assertEquals( count,  changeReport.getEventCount() ,"event count must not be increased");
         highlighter.setBackground(Color.BLUE);
-        assertEquals("event count must not be increased", count,  changeReport.getEventCount() );
+        assertEquals( count,  changeReport.getEventCount() ,"event count must not be increased");
     }
 
     /**
@@ -442,7 +440,7 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
     private void assertSameContent(Highlighter[] highlighters, Highlighter[] highlighters2) {
         assertEquals(highlighters.length, highlighters2.length);
         for (int i = 0; i < highlighters.length; i++) {
-            assertSame("must contain same element", highlighters[i], highlighters2[i]);
+            assertSame( highlighters[i], highlighters2[i],"must contain same element");
         }
     }
     
@@ -453,8 +451,8 @@ public class CompoundHighlighterTest extends InteractiveTestCase {
      * @param highlighter
      */
     private void assertAsLast(Highlighter[] highlighters, Highlighter highlighter) {
-        assertTrue("pipeline must not be empty", highlighters.length > 0);
-        assertSame("highlighter must be added as last", highlighter, highlighters[highlighters.length - 1]);
+        assertTrue( highlighters.length > 0,"pipeline must not be empty");
+        assertSame( highlighter, highlighters[highlighters.length - 1],"highlighter must be added as last");
     }
 
 

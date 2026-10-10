@@ -16,11 +16,9 @@ import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(JUnit4.class)
 public class CompoundFocusListenerIssues extends CompoundFocusListenerTest {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
@@ -44,8 +42,8 @@ public class CompoundFocusListenerIssues extends CompoundFocusListenerTest {
         JXDatePicker picker = getRealizedDatePicker();
         final KeyboardFocusManager oldManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         Component focusOwner = oldManager.getPermanentFocusOwner();
-        assertFalse("sanity: initial focus must not be in picker", 
-                SwingXUtilities.isDescendingFrom(focusOwner, picker));
+        assertFalse( 
+                SwingXUtilities.isDescendingFrom(focusOwner, picker),"sanity: initial focus must not be in picker");
         CompoundFocusListener l = new CompoundFocusListener(picker);
         final PropertyChangeReport report = new PropertyChangeReport();
         l.addPropertyChangeListener(report);

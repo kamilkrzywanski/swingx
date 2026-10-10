@@ -22,7 +22,6 @@ package org.jdesktop.swingx.plaf;
 
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.plaf.linux.LinuxLookAndFeelAddons;
 import org.jdesktop.swingx.plaf.macosx.MacOSXLookAndFeelAddons;
@@ -31,9 +30,7 @@ import org.jdesktop.swingx.plaf.motif.MotifLookAndFeelAddons;
 import org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons;
 import org.jdesktop.swingx.plaf.windows.WindowsClassicLookAndFeelAddons;
 import org.jdesktop.swingx.plaf.windows.WindowsLookAndFeelAddons;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -41,8 +38,7 @@ import org.junit.runners.JUnit4;
  * 
  * @author Karl George Schaefer
  */
-@RunWith(JUnit4.class)
-public class UIResourcesTest extends TestCase {
+public class UIResourcesTest {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(UIResourcesTest.class
             .getName());
@@ -50,7 +46,6 @@ public class UIResourcesTest extends TestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     protected void setUp() {
         LookAndFeelAddons.contribute(new BusyLabelAddon());
         LookAndFeelAddons.contribute(new ColumnControlButtonAddon());

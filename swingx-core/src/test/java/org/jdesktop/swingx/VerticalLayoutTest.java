@@ -4,22 +4,22 @@
 package org.jdesktop.swingx;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import org.jdesktop.test.EDTRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
 
 /**
  *
  * @author Karl George Schaefer
  */
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class VerticalLayoutTest {
     /**
      * SwingX Issue #666: incorrect calculation of preferred size.

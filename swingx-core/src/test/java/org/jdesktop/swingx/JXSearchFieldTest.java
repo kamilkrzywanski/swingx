@@ -1,11 +1,11 @@
 package org.jdesktop.swingx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -33,9 +33,10 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.search.NativeSearchFieldSupport;
 import org.jdesktop.swingx.search.RecentSearches;
 import org.jdesktop.swingx.search.RecentSearches.RecentSearchesPopup;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JXSearchFieldTest {
     boolean focused;
@@ -44,7 +45,7 @@ public class JXSearchFieldTest {
 
     JXSearchField searchField;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         searchField = new JXSearchField() {
             @Override
@@ -179,7 +180,7 @@ public class JXSearchFieldTest {
         searchField.setInstantSearchDelay(0);
         searchField.setSearchMode(SearchMode.INSTANT);
         searchField.setText("search");
-        Assert.assertTrue(eventReceived);
+        Assertions.assertTrue(eventReceived);
 
         eventReceived = false;
         searchField.setSearchMode(SearchMode.REGULAR);
@@ -198,7 +199,7 @@ public class JXSearchFieldTest {
         eventReceived = false;
         searchField.setSearchMode(SearchMode.INSTANT);
         searchField.setText("search");
-        Assert.assertTrue(eventReceived);
+        Assertions.assertTrue(eventReceived);
 
         eventReceived = false;
         searchField.setInstantSearchDelay(100);
@@ -516,8 +517,8 @@ public class JXSearchFieldTest {
     public void testBorder() throws Exception {
         Border newBorder = BorderFactory.createEmptyBorder();
         searchField.setBorder(newBorder);
-        assertNotSame("Border should have been wrapped.", newBorder,
-                searchField.getBorder());
+        assertNotSame( newBorder,
+                searchField.getBorder(),"Border should have been wrapped.");
     }
 
     @Test

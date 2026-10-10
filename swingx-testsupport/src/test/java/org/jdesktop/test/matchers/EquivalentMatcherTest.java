@@ -5,15 +5,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.jdesktop.test.SerializableSupport.serialize;
 import static org.jdesktop.test.matchers.Matchers.equivalentTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import javax.swing.JButton;
 
-import org.jdesktop.test.EDTRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
 
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class EquivalentMatcherTest {
     @Test
     public void ensureEqualIsEquivalent() {

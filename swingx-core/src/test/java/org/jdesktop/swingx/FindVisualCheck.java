@@ -38,6 +38,8 @@ import org.jdesktop.swingx.search.FindTest.TestListModel;
 import org.jdesktop.swingx.search.FindTest.TestTableModel;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.test.AncientSwingTeam;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 public class FindVisualCheck extends InteractiveTestCase {
     @SuppressWarnings("unused")
@@ -57,6 +59,7 @@ public class FindVisualCheck extends InteractiveTestCase {
       }
   }
     @Override
+    @BeforeEach
     protected void setUp() {
         editorURL = FindVisualCheck.class.getResource("resources/test.txt");
     }
@@ -395,6 +398,7 @@ public class FindVisualCheck extends InteractiveTestCase {
     /**
      * Do nothing, keep testRunner happy.
      */
+    @Test
     public void testDummy() {
         
     }

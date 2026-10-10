@@ -34,17 +34,15 @@ import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.AncientSwingTeam.NamedColor;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Units tests for implemenations of StringValueProvider. 
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class StringValueProviderTest extends InteractiveTestCase {
     /**
      * A custom StringValue for Color. Maps to a string composed of the
@@ -136,7 +134,7 @@ public class StringValueProviderTest extends InteractiveTestCase {
     @Test
     public void testEmptyClass() {
         StringValue s = provider.getStringValue(0, column);
-        assertNotNull("converter must not be null", s);
+        assertNotNull( s,"converter must not be null");
     }
     
     /**
@@ -145,7 +143,7 @@ public class StringValueProviderTest extends InteractiveTestCase {
     @Test
     public void testEmptyPositive() {
         StringValue s = provider.getStringValue(0, column);
-        assertNotNull("converter must not be null", s);
+        assertNotNull( s,"converter must not be null");
     }
     /**
      * Test contract: must accept negative coordinates.
@@ -153,7 +151,7 @@ public class StringValueProviderTest extends InteractiveTestCase {
     @Test
     public void testNegative() {
         StringValue s = provider.getStringValue(-1, -1);
-        assertNotNull("converter must not be null", s);
+        assertNotNull( s,"converter must not be null");
     }
     
     /**
@@ -204,7 +202,7 @@ public class StringValueProviderTest extends InteractiveTestCase {
         registry.setColumnClasses(classPerColumn);
     }
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         teamModel = new AncientSwingTeam();

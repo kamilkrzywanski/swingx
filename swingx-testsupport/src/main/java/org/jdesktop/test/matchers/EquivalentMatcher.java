@@ -7,9 +7,10 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
-import org.mockito.ArgumentMatcher;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 
-class EquivalentMatcher<T> extends ArgumentMatcher<T> {
+class EquivalentMatcher<T> extends BaseMatcher<T> {
     private final T object;
     
     public EquivalentMatcher(T object) {
@@ -68,5 +69,10 @@ class EquivalentMatcher<T> extends ArgumentMatcher<T> {
         }
         
         return false;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+        description.appendText("equivalentTo ").appendValue(object);
     }
 }

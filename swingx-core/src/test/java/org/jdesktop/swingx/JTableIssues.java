@@ -74,20 +74,17 @@ import org.jdesktop.test.CellEditorReport;
 import org.jdesktop.test.ListSelectionReport;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.jdesktop.swingx.JXTableUnitTest.*;
 
 /**
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JTableIssues extends InteractiveTestCase {
     /**
@@ -344,13 +341,13 @@ public class JTableIssues extends InteractiveTestCase {
   //------------------- end testing #1535-swingx
     
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws Exception {
         setLookAndFeel("Nimbus");
     }
@@ -385,9 +382,9 @@ public class JTableIssues extends InteractiveTestCase {
         JTable table = new JTable(10, 2);
         table.setAutoCreateColumnsFromModel(false);
         table.editCellAt(0, 0);
-        assertTrue("sanity: editing", table.isEditing());
+        assertTrue( table.isEditing(),"sanity: editing");
         ((AbstractTableModel) table.getModel()).fireTableStructureChanged();
-        assertEquals("editing must be terminated on setModel", false, table.isEditing());
+        assertEquals( false, table.isEditing(),"editing must be terminated on setModel");
     }  
     
     /**
@@ -401,9 +398,9 @@ public class JTableIssues extends InteractiveTestCase {
         JTable table = new JTable(10, 2);
         table.setAutoCreateColumnsFromModel(false);
         table.editCellAt(0, 0);
-        assertTrue("sanity: editing", table.isEditing());
+        assertTrue( table.isEditing(),"sanity: editing");
         table.setModel(new DefaultTableModel(10, 2));
-        assertEquals("editing must be terminated on setModel", false, table.isEditing());
+        assertEquals( false, table.isEditing(),"editing must be terminated on setModel");
     }  
     
 
@@ -585,10 +582,10 @@ public class JTableIssues extends InteractiveTestCase {
       @Test
       public void testSetAutoCreateRowSorter() {
           JTable table = new JTable();
-          assertEquals("sanity: core table autoCreate off initially", false, table.getAutoCreateRowSorter());
-          assertNull("sanity: core rowSorter is not created", table.getRowSorter());
+          assertEquals( false, table.getAutoCreateRowSorter(),"sanity: core table autoCreate off initially");
+          assertNull( table.getRowSorter(),"sanity: core rowSorter is not created");
           table.setAutoCreateRowSorter(true);
-          assertNotNull("sanity: core rowSorter is created", table.getRowSorter());
+          assertNotNull( table.getRowSorter(),"sanity: core rowSorter is created");
           TableModel model = new AncientSwingTeam();
           table.setModel(model);
           RowSorter<?> sorter = table.getRowSorter();
@@ -609,8 +606,8 @@ public class JTableIssues extends InteractiveTestCase {
         table.setAutoCreateRowSorter(false);
         TableModel old = table.getModel();
         table.setModel(new DefaultTableModel());
-        assertSame("tend to not extpect: rowsorter still old? ", old, table.getRowSorter().getModel());
-        assertSame("expect rowSorter's model updated?", table.getModel(), table.getRowSorter().getModel());
+        assertSame( old, table.getRowSorter().getModel(),"tend to not extpect: rowsorter still old? ");
+        assertSame( table.getModel(), table.getRowSorter().getModel(),"expect rowSorter's model updated?");
     }
 
     /**
@@ -624,7 +621,7 @@ public class JTableIssues extends InteractiveTestCase {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
         table.setAutoCreateRowSorter(false);
-        assertNull("expect auto-created rowsorter nulled?", table.getRowSorter());
+        assertNull( table.getRowSorter(),"expect auto-created rowsorter nulled?");
     }
     
   //----------------------- interactive
@@ -1107,9 +1104,9 @@ public class JTableIssues extends InteractiveTestCase {
         // sanity
         assertFalse(report.hasEvents());
         table.getCellEditor().stopCellEditing();
-        assertFalse("table must not be editing", table.isEditing());
-        assertEquals("", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertFalse( table.isEditing(),"table must not be editing");
+        assertEquals( 1, report.getEventCount(),"");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
 
     /**
@@ -1135,8 +1132,8 @@ public class JTableIssues extends InteractiveTestCase {
         // sanity: prepare did not fire ..
         assertFalse(report.hasEvents());
         editor.stopCellEditing();
-        assertEquals("prepared - must have fired exactly one event", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertEquals( 1, report.getEventCount(),"prepared - must have fired exactly one event");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
 
     /**
@@ -1157,8 +1154,8 @@ public class JTableIssues extends InteractiveTestCase {
         editor.addCellEditorListener(report);
         editor.getTableCellEditorComponent(table, "something", false, 0, 0);
         editor.stopCellEditing();
-        assertEquals("", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertEquals( 1, report.getEventCount(),"");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
 
     /**
@@ -1173,7 +1170,7 @@ public class JTableIssues extends InteractiveTestCase {
         TableCellEditor editor = table.getCellEditor(0, 0);
         Component comp = editor.getTableCellEditorComponent(
                 null, "something", false, 0, 0);
-        assertNotNull("editor must not return null component", comp);
+        assertNotNull( comp,"editor must not return null component");
     }
     
     /**
@@ -1203,8 +1200,8 @@ public class JTableIssues extends InteractiveTestCase {
         CellEditorReport report = new CellEditorReport();
         editor.addCellEditorListener(report);
         editor.stopCellEditing();
-        assertEquals("", 1, report.getEventCount());
-        assertEquals("", 1, report.getStoppedEventCount());
+        assertEquals( 1, report.getEventCount(),"");
+        assertEquals( 1, report.getStoppedEventCount(),"");
     }
 
 
@@ -1501,7 +1498,7 @@ public class JTableIssues extends InteractiveTestCase {
         // sanity...
         assertFalse(table.isCellEditable(0, 0));
         table.setValueAt("wrong", 0, 0);
-        assertEquals("value must not be changed", value, table.getValueAt(0, 0));
+        assertEquals( value, table.getValueAt(0, 0),"value must not be changed");
     }
     
     /**
@@ -1564,14 +1561,14 @@ public class JTableIssues extends InteractiveTestCase {
         int negativeYRowHeightPlusOne = negativeYRowHeight + 1;
         int negativeYMinimal = -1;
         // just outside of negative row before first row
-        assertEquals("negative y location rowheight " + negativeYRowHeight + " must return row -1", 
-                -1,  treeTable.rowAtPoint(new Point(-1, negativeYRowHeight)));
+        assertEquals( 
+                -1,  treeTable.rowAtPoint(new Point(-1, negativeYRowHeight)),"negative y location rowheight " + negativeYRowHeight + " must return row -1");
         // just inside of negative row before first row
-        assertEquals("negative y location " + negativeYRowHeightPlusOne +" must return row -1", 
-                -1,  treeTable.rowAtPoint(new Point(-1, negativeYRowHeightPlusOne)));
+        assertEquals( 
+                -1,  treeTable.rowAtPoint(new Point(-1, negativeYRowHeightPlusOne)),"negative y location " + negativeYRowHeightPlusOne +" must return row -1");
         // just outside of first row
-        assertEquals("minimal negative y location must return row -1", 
-                -1,  treeTable.rowAtPoint(new Point(-1, negativeYMinimal)));
+        assertEquals( 
+                -1,  treeTable.rowAtPoint(new Point(-1, negativeYMinimal)),"minimal negative y location must return row -1");
         
     }
 
@@ -1594,7 +1591,7 @@ public class JTableIssues extends InteractiveTestCase {
         model.removeRow(rowIndex);
         // JW: this was pre-1.5u5 (?), changed (1.5u6?) to return - 1
 //        assertEquals("", rowIndex, table.getSelectionModel().getAnchorSelectionIndex());
-        assertEquals("", -1, table.getSelectionModel().getAnchorSelectionIndex());
+        assertEquals( -1, table.getSelectionModel().getAnchorSelectionIndex(),"");
         ListSelectionReport report = new ListSelectionReport();
         table.getSelectionModel().addListSelectionListener(report);
     }
@@ -1646,9 +1643,9 @@ public class JTableIssues extends InteractiveTestCase {
         table.requestFocus();
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                assertTrue("table is focused ", table.hasFocus());
-                assertEquals("anchor must be 0", 0, table.getSelectionModel().getAnchorSelectionIndex());
-                assertEquals("lead must be 0", 0, table.getSelectionModel().getLeadSelectionIndex());
+                assertTrue( table.hasFocus(),"table is focused ");
+                assertEquals( 0, table.getSelectionModel().getAnchorSelectionIndex(),"anchor must be 0");
+                assertEquals( 0, table.getSelectionModel().getLeadSelectionIndex(),"lead must be 0");
 
             }
         });
@@ -1675,12 +1672,12 @@ public class JTableIssues extends InteractiveTestCase {
         table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
         table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
         // sanity...
-        assertEquals("anchor must be 0", 0, table.getSelectionModel().getAnchorSelectionIndex());
-        assertEquals("lead must be 0", 0, table.getSelectionModel().getLeadSelectionIndex());
+        assertEquals( 0, table.getSelectionModel().getAnchorSelectionIndex(),"anchor must be 0");
+        assertEquals( 0, table.getSelectionModel().getLeadSelectionIndex(),"lead must be 0");
         table.setModel(new DefaultTableModel(20, 3));
         // regression: lead/anchor unconditionally reset to -1 
-        assertEquals("anchor must be 0", 0, table.getSelectionModel().getAnchorSelectionIndex());
-        assertEquals("lead must be 0", 0, table.getSelectionModel().getLeadSelectionIndex());
+        assertEquals( 0, table.getSelectionModel().getAnchorSelectionIndex(),"anchor must be 0");
+        assertEquals( 0, table.getSelectionModel().getLeadSelectionIndex(),"lead must be 0");
         
     }
 //------------- from incubator ... PENDING: cleanup/remove

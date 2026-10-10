@@ -38,29 +38,27 @@ import org.jdesktop.swingx.table.ColumnControlButtonVisualCheck.GroupKeyActionGr
 import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class ColumnControlButtonTest extends InteractiveTestCase {
     private static final Logger LOG = Logger
             .getLogger(ColumnControlButtonTest.class.getName());
     
     protected TableModel sortableTableModel;
     
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }
@@ -85,11 +83,11 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
         ColumnControlButton button = new ColumnControlButton(table);
         button.setActionGrouper(new GroupKeyActionGrouper());
         DefaultColumnControlPopup popup = (DefaultColumnControlPopup) button.getColumnControlPopup();
-        assertEquals("additional actions visible, component count expected ", 
+        assertEquals( 
                 table.getColumnCount() 
                     + 1 /* separator */ + 3 /*default actions with column. prefix*/
                     + 1 /* separator custom group */ + 1 /* custom action */, 
-                popup.getPopupMenu().getComponentCount());
+                popup.getPopupMenu().getComponentCount(),"additional actions visible, component count expected ");
     }
 
     /**
@@ -102,16 +100,16 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
         ColumnControlButton button = new ColumnControlButton(table);
         assertEquals(true, button.getAdditionalActionsVisible());
         DefaultColumnControlPopup popup = (DefaultColumnControlPopup) button.getColumnControlPopup();
-        assertEquals("additional actions visible, component count expected ", 
+        assertEquals( 
                 table.getColumnCount() + 1 /* separator */ + 3 /* actions with column. prefix*/, 
-                popup.getPopupMenu().getComponentCount());
+                popup.getPopupMenu().getComponentCount(),"additional actions visible, component count expected ");
         PropertyChangeReport report = new PropertyChangeReport(button);
         button.setAdditionalActionsVisible(false);
         TestUtils.assertPropertyChangeEvent(report, "additionalActionsVisible", true, false);
         assertEquals(false, button.getAdditionalActionsVisible());
-        assertEquals("additional actions hidden, component count expected ", 
+        assertEquals( 
                 table.getColumnCount(),
-                popup.getPopupMenu().getComponentCount());
+                popup.getPopupMenu().getComponentCount(),"additional actions hidden, component count expected ");
         
     }
     
@@ -126,10 +124,10 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
         // visible property is false
         columnExt.setVisible(false);
         columnExt.setHideable(false);
-        assertTrue("visibility action must be selected if not hideable", action.isSelected());
-        assertFalse("action must be disabled", action.isEnabled());
+        assertTrue( action.isSelected(),"visibility action must be selected if not hideable");
+        assertFalse( action.isEnabled(),"action must be disabled");
         columnExt.setHideable(true);
-        assertFalse("visibility action must be unselected if hideable", action.isSelected());
+        assertFalse( action.isSelected(),"visibility action must be unselected if hideable");
     }
 
     /**
@@ -141,9 +139,9 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
       ColumnControlButton control = new ColumnControlButton(new JXTable());
       // PENDING JW: why not same? insets can be shared - or not?
       // probably setMargin interferes - is doing some things ... 
-      assertEquals("columnControl must have margin from ui", 
+      assertEquals( 
                 UIManager.getInsets(ColumnControlButton.COLUMN_CONTROL_BUTTON_MARGIN_KEY),
-                control.getMargin());
+                control.getMargin(),"columnControl must have margin from ui");
     }
 
     /**
@@ -155,8 +153,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     public void testColumnControlLoadsMargin() {
         // force loading by instantiating a column control
       ColumnControlButton control = new ColumnControlButton(new JXTable());
-        assertNotNull("columnControl must load lf-specific icon", 
-                UIManager.getInsets(ColumnControlButton.COLUMN_CONTROL_BUTTON_MARGIN_KEY));
+        assertNotNull( 
+                UIManager.getInsets(ColumnControlButton.COLUMN_CONTROL_BUTTON_MARGIN_KEY),"columnControl must load lf-specific icon");
     }
 
     /**
@@ -167,8 +165,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     public void testColumnControlAddonLoadsMargin() {
         // direct loading of addon
         LookAndFeelAddons.contribute(new ColumnControlButtonAddon());
-        assertNotNull("addon must load lf-specific icon", 
-                UIManager.getInsets(ColumnControlButton.COLUMN_CONTROL_BUTTON_MARGIN_KEY));
+        assertNotNull( 
+                UIManager.getInsets(ColumnControlButton.COLUMN_CONTROL_BUTTON_MARGIN_KEY),"addon must load lf-specific icon");
     }
     
     
@@ -180,9 +178,9 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     public void testColumnControlInXTable() {
       JXTable table = new JXTable();
       ColumnControlButton control = (ColumnControlButton) table.getColumnControl();
-      assertSame("columnControl must have icon from ui", 
+      assertSame( 
                 UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY),
-                control.getIcon());
+                control.getIcon(),"columnControl must have icon from ui");
     }
     
     /**
@@ -200,8 +198,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
             return;
         }
         SwingUtilities.updateComponentTreeUI(control);
-        assertSame("icon must not be updated on LF change if not UIResource: ", 
-                icon, control.getIcon());
+        assertSame( 
+                icon, control.getIcon(),"icon must not be updated on LF change if not UIResource: ");
     }
 
     /**
@@ -219,10 +217,10 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
             return;
         }
         SwingUtilities.updateComponentTreeUI(control);
-        assertNotSame("sanity: ui did reload icon: ", icon, 
-                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY));
+        assertNotSame( icon, 
+                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY),"sanity: ui did reload icon: ");
 
-        assertNotSame("icon must be updated on LF change: ", icon, control.getIcon());
+        assertNotSame( icon, control.getIcon(),"icon must be updated on LF change: ");
 
     }
     /**
@@ -232,9 +230,9 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     @Test
     public void testColumnControlInitialUpdateActionUIResource() {
       ColumnControlButton control = new ColumnControlButton(new JXTable());
-      assertSame("columnControl must have icon from ui", 
+      assertSame( 
                 UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY),
-                control.getIcon());
+                control.getIcon(),"columnControl must have icon from ui");
     }
 
     /**
@@ -246,8 +244,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     public void testColumnControlLoadsIcon() {
         // force loading by instantiating a column control
       ColumnControlButton control = new ColumnControlButton(new JXTable());
-        assertNotNull("columnControl must load lf-specific icon", 
-                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY));
+        assertNotNull( 
+                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY),"columnControl must load lf-specific icon");
     }
 
     /**
@@ -258,8 +256,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     public void testColumnControlAddonLoadsIcon() {
         // direct loading of addon
         LookAndFeelAddons.contribute(new ColumnControlButtonAddon());
-        assertNotNull("addon must load lf-specific icon", 
-                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY));
+        assertNotNull( 
+                UIManager.getIcon(ColumnControlButton.COLUMN_CONTROL_BUTTON_ICON_KEY),"addon must load lf-specific icon");
     }
     
     /**
@@ -436,13 +434,13 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
         // JW: the columnControlButton is created lazily, so we
         // have to access to test if listeners are registered.
         table.getColumnControl();
-        assertEquals("numbers of listeners must be increased", listenerCount + 1, 
-                priorityColumn.getPropertyChangeListeners().length);
+        assertEquals( listenerCount + 1, 
+                priorityColumn.getPropertyChangeListeners().length,"numbers of listeners must be increased");
         int totalColumnCount = table.getColumnCount();
         table.removeColumn(priorityColumn);
-        assertEquals("number of columns reduced", totalColumnCount - 1, table.getColumnCount());
-        assertEquals("all listeners must be removed", 0, 
-                priorityColumn.getPropertyChangeListeners().length);
+        assertEquals( totalColumnCount - 1, table.getColumnCount(),"number of columns reduced");
+        assertEquals( 0, 
+                priorityColumn.getPropertyChangeListeners().length,"all listeners must be removed");
      }
 
     /**
@@ -521,7 +519,7 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
        final TableColumnExt priorityColumn = table.getColumnExt("First Name");
        priorityColumn.setVisible(false);
        ColumnControlButton columnControl = (ColumnControlButton) table.getColumnControl();
-       assertNotNull("popup menu not null", columnControl.popup);
+       assertNotNull( columnControl.popup,"popup menu not null");
        int columnMenuItems = 0;
        Component[] items = ((DefaultColumnControlPopup) columnControl.getColumnControlPopup()).getPopupMenu().getComponents();
        for (int i = 0; i < items.length; i++) {
@@ -531,14 +529,14 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
            columnMenuItems++;
        }
        // wrong assumption - has separator and actions!
-       assertEquals("menu items must be equal to columns", totalColumnCount, 
-               columnMenuItems);
+       assertEquals( totalColumnCount, 
+               columnMenuItems,"menu items must be equal to columns");
        JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) ((DefaultColumnControlPopup) columnControl.getColumnControlPopup()).getPopupMenu()
            .getComponent(0);
        // sanit assert
        assertEquals(priorityColumn.getHeaderValue(), menuItem.getText());
-       assertEquals("selection of menu must be equal to column visibility", 
-               priorityColumn.isVisible(), menuItem.isSelected());
+       assertEquals( 
+               priorityColumn.isVisible(), menuItem.isSelected(),"selection of menu must be equal to column visibility");
    }
 
     public ColumnControlButtonTest() {

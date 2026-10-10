@@ -32,16 +32,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.util.OS;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test related to WindowsLookAndFeelAddons.
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class WindowsLookAndFeelAddonIssues extends InteractiveTestCase {
 
     @SuppressWarnings("unused")

@@ -23,9 +23,8 @@ import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.hyperlink.LinkModelAction;
 import org.jdesktop.swingx.rollover.RolloverProducer;
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -36,7 +35,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class HyperlinkProviderTest extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(HyperlinkProviderTest.class
             .getName());
@@ -89,13 +87,13 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
                 .getTableCellRendererComponent(table, link, true, false, 1, 0);
         // JW: asking any background without knowing transparency state is
         // useless!
-        assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
-        assertEquals("background must be table selection background", table
-                .getSelectionBackground(), hyperlink.getBackground());
+        assertTrue( hyperlink.isOpaque(),"renderer comp must be opaque");
+        assertEquals( table
+                .getSelectionBackground(), hyperlink.getBackground(),"background must be table selection background");
         hyperlink = (JXHyperlink) linkRenderer.getTableCellRendererComponent(
                 table, link, false, false, 1, 0);
-        assertEquals("background must be table background", table
-                .getBackground(), hyperlink.getBackground());
+        assertEquals( table
+                .getBackground(), hyperlink.getBackground(),"background must be table background");
 
     }
 
@@ -120,8 +118,8 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         // selectionBackground, hyperlink.getBackground());
         // need to check the properties which are set differently in
         // LinkRenderer
-        assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
-        assertTrue("renderer must paint border", hyperlink.isBorderPainted());
+        assertTrue( hyperlink.isOpaque(),"renderer comp must be opaque");
+        assertTrue( hyperlink.isBorderPainted(),"renderer must paint border");
         String lf = UIManager.getLookAndFeel().getName();
         // switch LF
         setSystemLF(!defaultToSystemLF);
@@ -134,8 +132,8 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         assertSame(linkRenderer, table.getCellRenderer(1, 0));
         hyperlink = (JXHyperlink) table.prepareRenderer(linkRenderer, 1, 0);
         // assert that the changed properties survived the LF switch
-        assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
-        assertTrue("renderer must paint border", hyperlink.isBorderPainted());
+        assertTrue( hyperlink.isOpaque(),"renderer comp must be opaque");
+        assertTrue( hyperlink.isBorderPainted(),"renderer must paint border");
 
     }
 
@@ -146,13 +144,13 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         table.getColumnModel().getColumn(0).setCellRenderer(linkRenderer);
         JXHyperlink hyperlink = (JXHyperlink) linkRenderer
                 .getTableCellRendererComponent(table, link, false, false, 1, 0);
-        assertFalse("renderer must not be rollover", hyperlink.getModel()
-                .isRollover());
+        assertFalse( hyperlink.getModel()
+                .isRollover(),"renderer must not be rollover");
         table.putClientProperty(RolloverProducer.ROLLOVER_KEY, new Point(0, 1));
         hyperlink = (JXHyperlink) linkRenderer.getTableCellRendererComponent(
                 table, link, false, false, 1, 0);
-        assertTrue("renderer must be rollover", hyperlink.getModel()
-                .isRollover());
+        assertTrue( hyperlink.getModel()
+                .isRollover(),"renderer must be rollover");
     }
 
     /**

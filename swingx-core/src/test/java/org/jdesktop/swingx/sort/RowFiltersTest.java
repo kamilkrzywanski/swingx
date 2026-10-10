@@ -34,17 +34,15 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit and visual tests for RowFilters.
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class RowFiltersTest extends InteractiveTestCase {
     
     private AncientSwingTeam teamModel;
@@ -61,20 +59,26 @@ public class RowFiltersTest extends InteractiveTestCase {
         }
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIllegalArgumentOnNegative() {
+        assertThrows(IllegalArgumentException.class, () -> {
         RowFilters.regexFilter(0, "some", -1);
-    }
     
-    @Test(expected = NullPointerException.class)
+        });}
+    
+    @Test
     public void testNPEOnNullRegex() {
+        assertThrows(NullPointerException.class, () -> {
         RowFilters.regexFilter(0, null);
-    }
     
-    @Test(expected = NullPointerException.class)
+        });}
+    
+    @Test
     public void testNPEOnNullPattern() {
+        assertThrows(NullPointerException.class, () -> {
         RowFilters.regexFilter((Pattern) null);
-    }
+    
+        });}
     
     @Test
     public void testCaseFlagAndColumn() {
@@ -184,7 +188,7 @@ public class RowFiltersTest extends InteractiveTestCase {
         return sv;
     }
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         teamModel = new AncientSwingTeam();

@@ -18,9 +18,8 @@ import javax.swing.ActionMap;
 import javax.swing.JEditorPane;
 import javax.swing.text.html.HTMLDocument;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -28,7 +27,6 @@ import org.junit.runners.JUnit4;
  *
  * @author Mark Davidson
  */
-@RunWith(JUnit4.class)
 public class JXEditorPaneTest extends InteractiveTestCase {
     @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(JXEditorPaneTest.class
@@ -49,7 +47,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
         editor.setText(testText);
         assertEquals(testText, editor.getText());
         Action action = editor.getActionMap().get("undo");
-        assertFalse("undo must not be enabled", action.isEnabled());
+        assertFalse( action.isEnabled(),"undo must not be enabled");
     }
 
     /**
@@ -65,7 +63,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
         editor.setText("some");
         editor.setEditable(true);
         Action action = editor.getActionMap().get("cut");
-        assertFalse("cut of unselected must not be enabled", action.isEnabled());
+        assertFalse( action.isEnabled(),"cut of unselected must not be enabled");
         
     }
     
@@ -82,7 +80,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
         editor.selectAll();
         editor.setEditable(false);
         Action action = editor.getActionMap().get("cut");
-        assertFalse("cut of uneditable editor must not be enabled", action.isEnabled());
+        assertFalse( action.isEnabled(),"cut of uneditable editor must not be enabled");
         
     }
     /**
@@ -98,7 +96,7 @@ public class JXEditorPaneTest extends InteractiveTestCase {
         JXEditorPane editor = new JXEditorPane();
         editor.setEditable(false);
         Action action = editor.getActionMap().get("paste");
-        assertFalse("paste of uneditable editor must not be enabled", action.isEnabled());
+        assertFalse( action.isEnabled(),"paste of uneditable editor must not be enabled");
         
     }
     

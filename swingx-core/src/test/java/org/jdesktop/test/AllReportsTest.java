@@ -5,16 +5,16 @@
 package org.jdesktop.test;
 
 import org.jdesktop.beans.AbstractBean;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import junit.framework.TestCase;
 
 /**
  * Contains unit tests around the xxReport classes.
  * 
  * @author Jeanette Winzenburg, Berlin
  */
-public class AllReportsTest extends TestCase {
+public class AllReportsTest {
 
 
     /**

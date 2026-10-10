@@ -78,6 +78,9 @@ import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.test.VerticalLayoutPref;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Simple tests to ensure that the {@code JXDatePicker} can be instantiated and
@@ -1239,6 +1242,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
 
     
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         calendar = Calendar.getInstance();
     }
@@ -1312,6 +1316,7 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *
      */
+    @Test
     public void testDummy() {
         
     }

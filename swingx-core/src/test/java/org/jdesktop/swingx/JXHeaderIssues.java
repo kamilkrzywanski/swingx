@@ -26,6 +26,8 @@ import java.awt.GradientPaint;
 import java.util.logging.Logger;
 
 import org.jdesktop.swingx.painter.MattePainter;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 
 /**
@@ -97,6 +99,7 @@ public class JXHeaderIssues extends InteractiveTestCase {
     
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         setSystemLF(true);
         // forcing load of headerAddon
@@ -106,6 +109,7 @@ public class JXHeaderIssues extends InteractiveTestCase {
     /**
      * Dummy empty test just to keep it from whining.
      */
+    @Test
     public void testDummy() {
         // do nothing
     }

@@ -43,9 +43,8 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.icon.ColumnControlIcon;
 import org.jdesktop.swingx.plaf.SafeBorder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -53,7 +52,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class IconBorderTest extends InteractiveTestCase {
     
     
@@ -61,8 +59,8 @@ public class IconBorderTest extends InteractiveTestCase {
     public void testSafeBorderMisbehavingDelegate() {
         JComponent comp = new JButton();
         MisbehavingBorder delegate = new MisbehavingBorder();
-        assertNull("sanity", delegate.getBorderInsets(comp));
-        assertNull("sanity", delegate.getBorderInsets(comp, null));
+        assertNull( delegate.getBorderInsets(comp),"sanity");
+        assertNull( delegate.getBorderInsets(comp, null),"sanity");
         SafeBorder border = new SafeBorder(delegate);
         assertNotNull(border.getBorderInsets(comp));
         assertNotNull(border.getBorderInsets(comp, null));

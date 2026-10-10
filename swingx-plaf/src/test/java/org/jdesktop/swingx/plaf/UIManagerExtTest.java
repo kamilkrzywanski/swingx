@@ -6,9 +6,9 @@
  */
 package org.jdesktop.swingx.plaf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,8 +23,9 @@ import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the functionality of {@code UIManagerExt}.
@@ -38,7 +39,7 @@ public class UIManagerExtTest {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         UIManagerExt.addResourceBundle("org.jdesktop.swingx.plaf.UIManagerExtTest");
     }

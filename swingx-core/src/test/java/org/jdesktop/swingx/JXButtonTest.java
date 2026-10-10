@@ -25,18 +25,18 @@ package org.jdesktop.swingx;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.test.EDTRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
 
 /**
  * Unit test for <code>JXButton</code>.
@@ -48,13 +48,13 @@ import org.junit.runner.RunWith;
  * @author Karl Schaefer
  */
 @SuppressWarnings("nls")
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class JXButtonTest {
     private JXButton button;
     
-    @Before
+    @BeforeEach
     public void setUp() {
-        assumeThat(GraphicsEnvironment.isHeadless(), is(false));
+        assumeTrue((is(false)).matches(GraphicsEnvironment.isHeadless()));
         button = new JXButton();
     }
     
@@ -73,7 +73,7 @@ public class JXButtonTest {
     @Test
     public void ensureFontIsMaintainedAfterBackgroundSet() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
-        assumeThat(button.getFont(), is(not(font)));
+        assumeTrue((is(not(font))).matches(button.getFont()));
         
         button.setFont(font);
         button.setBackground(Color.RED);
@@ -87,7 +87,7 @@ public class JXButtonTest {
     @Test
     public void ensureFontIsMaintainedAfterBackgroundPainterSet() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
-        assumeThat(button.getFont(), is(not(font)));
+        assumeTrue((is(not(font))).matches(button.getFont()));
         
         button.setFont(font);
         button.setBackgroundPainter(new MattePainter(Color.RED));

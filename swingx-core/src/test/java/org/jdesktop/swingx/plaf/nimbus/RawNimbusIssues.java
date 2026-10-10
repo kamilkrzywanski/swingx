@@ -34,17 +34,15 @@ import javax.swing.UIManager;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class RawNimbusIssues extends InteractiveTestCase {
 
     /**
@@ -100,8 +98,8 @@ public class RawNimbusIssues extends InteractiveTestCase {
             setLookAndFeel("Nimbus");
             int rgbOrg = rgb.get(0);
             if (colors.get(0).getRGB() != rgbOrg) {
-                assertTrue("lookandFeelDefaults must have fired color change notification", 
-                        report.hasEvents());
+                assertTrue( 
+                        report.hasEvents(),"lookandFeelDefaults must have fired color change notification");
             }
         } finally {
             removeListeners(l, report);
@@ -141,12 +139,12 @@ public class RawNimbusIssues extends InteractiveTestCase {
             
             UIManager.addPropertyChangeListener(l);
             setLookAndFeel("Nimbus");
-            assertSame("Color installed when firing property change", 
-                    colors.get(0), UIManager.getColor(ALTERNATE_ROW_COLOR));
+            assertSame( 
+                    colors.get(0), UIManager.getColor(ALTERNATE_ROW_COLOR),"Color installed when firing property change");
             if (!report.hasEvents()) {
                 int rgbOrg = rgb.get(0);
-                assertEquals("Color must be unchanged compared to original", 
-                        rgbOrg, colors.get(0).getRGB());
+                assertEquals( 
+                        rgbOrg, colors.get(0).getRGB(),"Color must be unchanged compared to original");
             }
         } finally {
             removeListeners(l, report);
@@ -168,8 +166,8 @@ public class RawNimbusIssues extends InteractiveTestCase {
         assertEquals(1, report.getEventCount("somevalue"));
         report.clear();
         properties.remove("somevalue");
-        assertNull("sanity: value removed", properties.get("somevalue"));
-        assertEquals("uidefaults must fire (here: remove)", 1, report.getEventCount("somevalue"));
+        assertNull( properties.get("somevalue"),"sanity: value removed");
+        assertEquals( 1, report.getEventCount("somevalue"),"uidefaults must fire (here: remove)");
     }
     
     /**
@@ -187,7 +185,7 @@ public class RawNimbusIssues extends InteractiveTestCase {
         PropertyChangeReport report = new PropertyChangeReport();
         properties.addPropertyChangeListener(report);
         properties.put("somevalue", null);
-        assertEquals("uidefaults must fire (here: put(.. null))", 1, report.getEventCount("somevalue"));
+        assertEquals( 1, report.getEventCount("somevalue"),"uidefaults must fire (here: put(.. null))");
     }
     
     
@@ -205,13 +203,13 @@ public class RawNimbusIssues extends InteractiveTestCase {
         
     }
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
         // force a new instance for each round
         setLookAndFeel("Nimbus");
-        assertEquals("sanity: nothing loaded", null, UIManager.get("DatePickerUI"));
+        assertEquals( null, UIManager.get("DatePickerUI"),"sanity: nothing loaded");
     }
 
 }

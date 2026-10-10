@@ -41,6 +41,7 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.HyperlinkProvider;
 import org.jdesktop.swingx.treetable.FileSystemModel;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test of JXHyperlink visuals. Raw usage and as hyperlinkRenderer.
@@ -519,6 +520,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
      * make auto-run happy in the absence of real test methods.
      *
      */
+    @Test
     public void testDummy() {
         
     }

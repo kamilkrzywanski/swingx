@@ -26,6 +26,8 @@ import org.jdesktop.swingx.decorator.HighlighterFactory.UIColorHighlighter;
 import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.test.AncientSwingTeam;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
@@ -49,6 +51,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
      * PENDING: this is not entirely correct, might fail because
      *   both LFs fall back to GenericGray.
      */
+    @Test
     public void testLookupUIColor() {
         UIColorHighlighter hl = new UIColorHighlighter();
         Color color = hl.getBackground();
@@ -65,10 +68,10 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
         assertNotNull(uiColor2);
         // hmm ... how to force the reloading in the addon?
         LOG.info("color must be different " + uiColor + "/" + uiColor2);
-        assertFalse("color must be different " + uiColor + "/" + uiColor2 , uiColor2.equals(uiColor));
+        assertFalse( uiColor2.equals(uiColor),"color must be different " + uiColor + "/" + uiColor2 );
         hl.updateUI();
-        assertFalse("highlighter background must be changed", 
-                color.equals(hl.getBackground()));
+        assertFalse( 
+                color.equals(hl.getBackground()),"highlighter background must be changed");
     }
     /**
      * test if background changes with LF.
@@ -76,6 +79,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
      * PENDING: this is not entirely correct, might fail because
      *   both LFs fall back to GenericGray.
      */
+    @Test
     public void testLookupUIColorInCompound() {
         UIColorHighlighter hl = new UIColorHighlighter();
         Color color = hl.getBackground();
@@ -88,8 +92,8 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
             return;
         }
         compound.updateUI();
-        assertFalse("highlighter background must be changed", 
-                color.equals(hl.getBackground()));
+        assertFalse( 
+                color.equals(hl.getBackground()),"highlighter background must be changed");
     }
 
     /**
@@ -98,13 +102,14 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
      * this is testing the hack (reset the memory in ResetDTCR to null), not
      * any highlighter!
      */
+    @Test
     public void testTableUnSelectedDoNothingHighlighter() {
         JXTable table = new JXTable(10, 2);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setForeground(foreground);
         table.setHighlighters(new ColorHighlighter());
         Component comp = table.prepareRenderer(renderer, 0, 0);
-        assertEquals("do nothing highlighter must not change foreground", foreground, comp.getForeground());
+        assertEquals( foreground, comp.getForeground(),"do nothing highlighter must not change foreground");
         fail("testing the hack around DefaultTableCellRenderer memory - not the memory itself");
     }
 

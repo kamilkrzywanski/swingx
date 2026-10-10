@@ -46,6 +46,9 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.test.ComponentTreeTableModel;
 import org.jdesktop.swingx.test.XTestUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Known/open issues with tree renderer.
@@ -66,6 +69,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
     private boolean defaultToSystemLF;
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
 //        setSystemLF(true);
 //        LOG.info("LF: " + UIManager.getLookAndFeel());
@@ -139,14 +143,15 @@ public class TreeRendererIssues extends InteractiveTestCase {
     /**
      * Sanity: icons updated on LF change.
      */
+    @Test
     public void testTreeIconsUpdateUI() {
         JXTree tree = new JXTree();
         DefaultTreeRenderer renderer = new DefaultTreeRenderer();
         tree.setCellRenderer(renderer);
         WrappingIconPanel before = (WrappingIconPanel) renderer.getTreeCellRendererComponent(tree, "", false, false, true, -1, false);
         Icon leaf = before.getIcon();
-        assertNotNull("sanity", leaf);
-        assertEquals("sanity", UIManager.getIcon("Tree.leafIcon"), leaf);
+        assertNotNull( leaf,"sanity");
+        assertEquals( UIManager.getIcon("Tree.leafIcon"), leaf,"sanity");
         String lf = UIManager.getLookAndFeel().getName();
         setSystemLF(!defaultToSystemLF);
         if (lf.equals(UIManager.getLookAndFeel().getName())) {
@@ -156,9 +161,9 @@ public class TreeRendererIssues extends InteractiveTestCase {
         SwingUtilities.updateComponentTreeUI(tree);
         WrappingIconPanel after = (WrappingIconPanel) renderer.getTreeCellRendererComponent(tree, "", false, false, true, -1, false);
         Icon leafAfter = after.getIcon();
-        assertNotNull("sanity", leafAfter);
-        assertFalse("sanity", leaf.equals(leafAfter));
-        assertEquals("icon must be updated", UIManager.getIcon("Tree.leafIcon"), leafAfter);
+        assertNotNull( leafAfter,"sanity");
+        assertFalse( leaf.equals(leafAfter),"sanity");
+        assertEquals( UIManager.getIcon("Tree.leafIcon"), leafAfter,"icon must be updated");
     }
     
     /**
@@ -169,6 +174,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
      * 
      *
      */
+    @Test
     public void testTreeRendererExtColors() {
         // prepare standard
         Component coreComponent = coreTreeRenderer.getTreeCellRendererComponent(tree, null,
@@ -195,6 +201,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
      * renderer behaves slightly unexpected.
      * 
      */
+    @Test
     public void testTreeRendererExtTreeColors() {
         Color background = Color.MAGENTA;
         Color foreground = Color.YELLOW;

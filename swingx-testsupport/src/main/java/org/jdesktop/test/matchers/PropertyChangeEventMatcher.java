@@ -4,11 +4,11 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.beans.PropertyChangeEvent;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.mockito.ArgumentMatcher;
 
 @SuppressWarnings("nls")
-class PropertyChangeEventMatcher extends ArgumentMatcher<PropertyChangeEvent> {
+class PropertyChangeEventMatcher extends BaseMatcher<PropertyChangeEvent> {
     private final String propertyName;
     private final Object oldValue;
     private final Object newValue;
@@ -39,7 +39,7 @@ class PropertyChangeEventMatcher extends ArgumentMatcher<PropertyChangeEvent> {
      */
     @Override
     public void describeTo(Description description) {
-        super.describeTo(description);
+        description.appendText(getClass().getSimpleName());
         description.appendText(" " + propertyName);
     }
 }

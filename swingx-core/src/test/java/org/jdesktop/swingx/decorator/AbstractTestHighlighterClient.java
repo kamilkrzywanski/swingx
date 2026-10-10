@@ -23,7 +23,7 @@ package org.jdesktop.swingx.decorator;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.test.matchers.Matchers.property;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -33,11 +33,9 @@ import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import junit.framework.TestCase;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Contains tests around Highlighter client api for collection components.
@@ -57,8 +55,7 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
-public abstract class AbstractTestHighlighterClient extends TestCase {
+public abstract class AbstractTestHighlighterClient {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
@@ -87,13 +84,13 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
             LOG.info("cannot run test - no ui striping color");
             return;
         }
-        assertSame("sanity", uiColor, colorHighlighter.getBackground());
+        assertSame( uiColor, colorHighlighter.getBackground(),"sanity");
         client.addHighlighter(colorHighlighter);
         Color changedUIColor = Color.RED;
         UIManager.put("UIColorHighlighter.stripingBackground", changedUIColor);
         client.updateUI();
         try {
-            assertSame("support must update ui color", changedUIColor, colorHighlighter.getBackground());
+            assertSame( changedUIColor, colorHighlighter.getBackground(),"support must update ui color");
         } finally {
             UIManager.put("UIColorHighlighter.stripingBackground", uiColor);
         }
@@ -307,7 +304,7 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
     private void assertSameContent(Highlighter[] highlighters, Highlighter[] highlighters2) {
         assertEquals(highlighters.length, highlighters2.length);
         for (int i = 0; i < highlighters.length; i++) {
-            assertSame("must contain same element", highlighters[i], highlighters2[i]);
+            assertSame( highlighters[i], highlighters2[i],"must contain same element");
         }
     }
     
@@ -318,8 +315,8 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
      * @param highlighter
      */
     private void assertAsLast(Highlighter[] highlighters, Highlighter highlighter) {
-        assertTrue("pipeline must not be empty", highlighters.length > 0);
-        assertSame("highlighter must be added as last", highlighter, highlighters[highlighters.length - 1]);
+        assertTrue( highlighters.length > 0,"pipeline must not be empty");
+        assertSame( highlighter, highlighters[highlighters.length - 1],"highlighter must be added as last");
     }
 
     /**

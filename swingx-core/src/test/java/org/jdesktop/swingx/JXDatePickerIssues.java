@@ -61,7 +61,9 @@ import javax.swing.table.TableModel;
 import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DatePickerFormatter;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Known issues of <code>JXDatePicker</code> and picker related 
@@ -584,6 +586,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     /**
      * Issue #764-swingx: picker prefsize too narrow
      */
+    @Test
     public void testPrefSizeGerman() {
         // wednesday - has width problems
         calendar.set(2008, Calendar.FEBRUARY, 20);
@@ -596,6 +599,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     /**
      * Issue #764-swingx: picker prefsize too narrow
      */
+    @Test
     public void testPrefSizeUS() {
         // wednesday - has width problems
         calendar.set(2008, Calendar.FEBRUARY, 20);
@@ -607,6 +611,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     /**
      * Issue #764-swingx: picker prefsize too narrow
      */
+    @Test
     public void testPrefSizeUSEditor() {
         // wednesday - has width problems
         calendar.set(2008, Calendar.FEBRUARY, 20);
@@ -624,6 +629,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
      * PENDING: back out - say linkDate == today, not mutable by client code
      * but fixed to system?
      */
+    @Test
     public void testLinkDate() {
         JXDatePicker picker = new JXDatePicker();
         Date today = picker.getLinkDay();
@@ -673,6 +679,7 @@ public class JXDatePickerIssues extends InteractiveTestCase {
     
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         calendar = Calendar.getInstance();
     }

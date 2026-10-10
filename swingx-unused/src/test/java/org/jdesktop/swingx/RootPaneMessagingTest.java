@@ -26,20 +26,23 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.event.MessageListener;
 import org.jdesktop.swingx.event.MessageSource;
 import org.jdesktop.swingx.event.MessageSourceSupport;
 import org.jdesktop.swingx.event.ProgressListener;
 import org.jdesktop.swingx.event.ProgressSource;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * There are several commented out portions of this file. They should be moved
  * or changed once a "status bean" is implemented that provides the functionality
  * originally envisioned for the JXRootPane/JXStatusBar coupling
  */
-public class RootPaneMessagingTest extends TestCase {
+public class RootPaneMessagingTest {
 
     private Action[] actions;
     private TestComponent[] comps;
@@ -49,7 +52,7 @@ public class RootPaneMessagingTest extends TestCase {
     private static final int ARMS = 2;
     private static final int LEGS = 3;
 
-    @Override
+    @BeforeEach
     protected void setUp() {
 	actions =  new Action[4];
 	actions[0] = new TestAction("New", 'N', "Create a new item");
@@ -64,7 +67,7 @@ public class RootPaneMessagingTest extends TestCase {
 	comps[3] = new TestComponent("Legs");
     }
 
-    @Override
+    @AfterEach
     protected void tearDown() {
 	for (int i = 0; i < actions.length; i++) {
 	    actions[i] = null;
@@ -78,6 +81,7 @@ public class RootPaneMessagingTest extends TestCase {
      * Simple test to ensure that components are added/removed
      * and registered/unregistered correctly.
      */
+    @Test
     public void testComponentRegistration() {
 	JXRootPane rootPane = new JXRootPane();
 	JXStatusBar statusBar = new JXStatusBar();
@@ -119,6 +123,7 @@ public class RootPaneMessagingTest extends TestCase {
      * Test to ensure that all MessageSources in a containment hierarchy
      * are registered.
      */
+    @Test
     public void testAggregateContainerRegistration() {
 	// Create an aggregate.
 	comps[HEAD].add(comps[BODY]);
@@ -160,6 +165,7 @@ public class RootPaneMessagingTest extends TestCase {
      * A test to ensure that the status bar is correctly registered with
      * existing components and will be unregistered when removed.
      */
+    @Test
     public void testStatusBar() {
 	JXRootPane rootPane = new JXRootPane();
 	for (int i = 0; i < comps.length; i++) {
@@ -195,6 +201,7 @@ public class RootPaneMessagingTest extends TestCase {
      * Given a root pane with a status bar, a toolbar with components
      * should get mouse listeners added to the components when added.
      */
+    @Test
     public void testToolBar() {
 	JXRootPane rootPane = new JXRootPane();
 	rootPane.setStatusBar(new JXStatusBar());
@@ -231,6 +238,7 @@ public class RootPaneMessagingTest extends TestCase {
 	}
     }
 
+    @Test
     public void testMenuBar() {
 	JXRootPane rootPane = new JXRootPane();
 	rootPane.setStatusBar(new JXStatusBar());

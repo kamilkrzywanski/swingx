@@ -21,11 +21,11 @@
 package org.jdesktop.swingx.painter;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -37,9 +37,10 @@ import static org.mockito.Mockito.when;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImageOp;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for AbstractPainter
@@ -49,7 +50,7 @@ public class AbstractPainterTest {
     protected AbstractPainter p;
     protected Graphics2D g;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         p = spy(createTestingPainter());
         g = mock(Graphics2D.class);
@@ -75,10 +76,12 @@ public class AbstractPainterTest {
     /**
      * Ensure a {@link NullPointerException} is thrown with a {@code null} graphics object.
      */
-    @Test(expected=NullPointerException.class)
+    @Test
     public void testPaintWithNullGraphics() {
+        assertThrows(NullPointerException.class, () -> {
         p.paint(null, null, 10, 10);
-    }
+    
+        });}
 
     /**
      * {@link AbstractPainter} will pass {@code null} objects to

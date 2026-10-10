@@ -53,19 +53,16 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTable.NumberEditor;
 import org.jdesktop.test.CellEditorReport;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * TODO add type doc
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class NumberEditorExtTest extends InteractiveTestCase {
 
     private static final String TOO_BIG_INTEGER = "11111111111111111111111111";
@@ -106,7 +103,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     public void testFormattedTextFieldHasEscapeBinding() {
         JFormattedTextField field = new JFormattedTextField(new Date());
         KeyStroke keyStroke = KeyStroke.getKeyStroke("ESCAPE");
-        assertNotNull("text field must have ESCAPE binding", field.getInputMap().get(keyStroke ));
+        assertNotNull( field.getInputMap().get(keyStroke ),"text field must have ESCAPE binding");
     }
     
     
@@ -119,9 +116,9 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     @Test 
     public void testStrictIsDefault() {
         TableCellEditor editor = table.getDefaultEditor(Number.class);
-        assertTrue("sanity: expect NumberEditorExt but was " + editor, editor instanceof NumberEditorExt);
-        assertEquals("default formatter is strict", true, 
-                ((NumberEditorExt) editor).hasStrictFormatter());
+        assertTrue( editor instanceof NumberEditorExt,"sanity: expect NumberEditorExt but was " + editor);
+        assertEquals( true, 
+                ((NumberEditorExt) editor).hasStrictFormatter(),"default formatter is strict");
     }
     
     /**
@@ -140,10 +137,12 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      * Old default: non-strict editor throws IllegalState if column type
      * is not a subtype of Number.
      */
-    @Test (expected = IllegalStateException.class)
+    @Test
     public void testEditorObjectColumn() {
+        assertThrows(IllegalStateException.class, () -> {
         cellEditor.getTableCellEditorComponent(table, null, false, 0, OBJECT_COLUMN);
-    }
+    
+        });}
 
 //---------------- Sanity testing: StrictNumberFormatter - 
     
@@ -160,7 +159,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         formatter.setValueClass(Float.class);
         float value = 3.4f;
         String text = format.format(value);
-        assertEquals("string: " + text, value, formatter.stringToValue(text));
+        assertEquals( value, formatter.stringToValue(text),"string: " + text);
     }
     
     /**
@@ -177,7 +176,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         formatter.setValueClass(Float.class);
         float value = 0f;
         String text = format.format(value);
-        assertEquals("string: " + text, value, formatter.stringToValue(text));
+        assertEquals( value, formatter.stringToValue(text),"string: " + text);
     }
     
     /**
@@ -194,89 +193,107 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         formatter.setValueClass(Float.class);
         float value = -3.4f;
         String text = format.format(value);
-        assertEquals("string: " + text, value, formatter.stringToValue(text));
+        assertEquals( value, formatter.stringToValue(text),"string: " + text);
     }
     
-    @Test (expected = ParseException.class)
+    @Test
     public void testNumberFormatter() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setMaximum(Integer.MAX_VALUE - 1);
         formatter.setMinimum(Integer.MIN_VALUE + 1);
         formatter.stringToValue(TOO_BIG_INTEGER);
-    }
+    
+        });}
     
     
-    @Test (expected = ParseException.class)
+    @Test
     public void testStrictNumberFormatterMinMax() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setMaximum(Integer.MAX_VALUE);
         formatter.setMinimum(Integer.MIN_VALUE);
         formatter.stringToValue(TOO_BIG_INTEGER);
-    }
     
-    @Test (expected = ParseException.class)
+        });}
+    
+    @Test
     public void testStrictNumberFormatterAutoRangeInteger() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Integer.class);
         formatter.stringToValue(TOO_BIG_INTEGER);
-    }
     
-    @Test (expected = ParseException.class)
+        });}
+    
+    @Test
     public void testStrictNumberFormatterAutoRangeLong() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Long.class);
         String text = new Long(Long.MAX_VALUE).toString() + "9";
         formatter.stringToValue(text);
-    }
     
-    @Test (expected = ParseException.class)
+        });}
+    
+    @Test
     public void testStrictNumberFormatterAutoRangeFloat() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
         String text = "9" + new Float(Float.MAX_VALUE).toString();
         formatter.stringToValue(text);
-    }
+    
+        });}
     
     
-    @Test (expected = ParseException.class)
+    @Test
     public void testStrictNumberFormatterAutoRangeFloatMin() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
         String text = "-9" + new Float(Float.MAX_VALUE).toString();
         formatter.stringToValue(text);
-    }
+    
+        });}
     
    
-    @Test (expected = ParseException.class)
+    @Test
     public void testStrictNumberFormatterAutoRangeByte() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Byte.class);
         formatter.stringToValue(TOO_BIG_INTEGER);
-    }
     
-    @Test (expected = ParseException.class)
+        });}
+    
+    @Test
     public void testStrictNumberFormatterAutoRangeShort() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Short.class);
         formatter.stringToValue(TOO_BIG_INTEGER);
-    }
     
-    @Test (expected = ParseException.class)
+        });}
+    
+    @Test
     public void testStrictNumberFormatterSmallExceedInteger() throws ParseException {
+        assertThrows(ParseException.class, () -> {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Integer.class);
         String text = new Integer(Integer.MAX_VALUE).toString() + "1";
         formatter.stringToValue(text);
-    }
+    
+        });}
 
 //---------- end sanity testing: StrictNumberFormatter
     
@@ -292,10 +309,10 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         .getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
         // add valid digit
         field.setText(field.getText() + "9");
-        assertTrue("valid input " + field.getText(), cellEditor.stopCellEditing());
+        assertTrue( cellEditor.stopCellEditing(),"valid input " + field.getText());
         // add invalid character
         field.setText(field.getText() + "x");
-        assertFalse("invalid input " + field.getText(), cellEditor.stopCellEditing());
+        assertFalse( cellEditor.stopCellEditing(),"invalid input " + field.getText());
     }
     
     /**
@@ -310,10 +327,10 @@ public class NumberEditorExtTest extends InteractiveTestCase {
                 .getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
         // add valid digit
         field.setText(field.getText() + "9");
-        assertTrue("valid input " + field.getText(), cellEditorStrict.stopCellEditing());
+        assertTrue( cellEditorStrict.stopCellEditing(),"valid input " + field.getText());
         // add invalid character
         field.setText(field.getText() + "x");
-        assertFalse("invalid input " + field.getText(), cellEditorStrict.stopCellEditing());
+        assertFalse( cellEditorStrict.stopCellEditing(),"invalid input " + field.getText());
     }
     
     /**
@@ -328,7 +345,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
-        assertFalse("valid input but exceeds bounds " + field.getText(), cellEditor.stopCellEditing());
+        assertFalse( cellEditor.stopCellEditing(),"valid input but exceeds bounds " + field.getText());
     }
     
     /**
@@ -343,7 +360,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
             .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
-        assertFalse("valid input but exceeds bounds " + field.getText(), cellEditorStrict.stopCellEditing());
+        assertFalse( cellEditorStrict.stopCellEditing(),"valid input but exceeds bounds " + field.getText());
     }
     
     /**
@@ -352,14 +369,16 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      *   
      * Check IllegalStateException as doc'ed
      */
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testEditorValueIllegalState() {
+        assertThrows(IllegalStateException.class, () -> {
         JFormattedTextField field = (JFormattedTextField) cellEditor
         .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
         cellEditor.getCellEditorValue();
-    }
+    
+        });}
 
     /**
      * Issue ??-swingx: editor with strict number formatter throws on 
@@ -818,7 +837,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     }
 
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         DefaultTableModel model = new DefaultTableModel(5, COLUMN_COUNT) {

@@ -7,17 +7,14 @@ import java.util.Enumeration;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import junit.framework.TestCase;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  */
-@RunWith(JUnit4.class)
-public class DefaultMutableTreeTableNodeUnitTest extends TestCase {
+public class DefaultMutableTreeTableNodeUnitTest {
     @Test
      public void testAdd() {
          DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode("root");

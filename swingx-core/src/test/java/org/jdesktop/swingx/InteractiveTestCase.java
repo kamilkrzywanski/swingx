@@ -56,22 +56,32 @@ import org.jdesktop.swingx.search.SearchFactory;
  * @author Amy Fowler
  * @version 1.0
  */
-public abstract class InteractiveTestCase extends junit.framework.TestCase {
+public abstract class InteractiveTestCase {
     private static final Logger LOG = Logger
             .getLogger(InteractiveTestCase.class.getName());
     protected Point frameLocation = new Point(0,0);
     protected boolean systemLF;
     
     public InteractiveTestCase() {
-        super();
-        String className = getClass().getName();
-        int lastDot = className.lastIndexOf(".");
-        String lastElement = className.substring(lastDot + 1);
-        setName(lastElement);
     }
     
     public InteractiveTestCase(String testTitle) {
-        super(testTitle);
+        // The title used to be the JUnit 3 test name. JUnit 5 does not use it.
+        if (testTitle == null) {
+            throw new IllegalArgumentException("testTitle");
+        }
+    }
+
+    /**
+     * Former {@code TestCase} hook. JUnit 5 runs it only when a subclass annotates the override.
+     */
+    protected void setUp() throws Exception {
+    }
+
+    /**
+     * Former {@code TestCase} hook. JUnit 5 runs it only when a subclass annotates the override.
+     */
+    protected void tearDown() throws Exception {
     }
 
 //----------------- run

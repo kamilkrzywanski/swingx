@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
+import org.junit.jupiter.api.Test;
 
 public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) throws Exception {
@@ -72,6 +73,7 @@ public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
     /**
      * do nothing test - keep the testrunner happy.
      */
+    @Test
     public void testDummy() {
     }
 

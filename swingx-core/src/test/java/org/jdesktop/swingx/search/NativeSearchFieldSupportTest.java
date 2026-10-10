@@ -7,9 +7,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextField;
 
-import junit.framework.Assert;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 
 public class NativeSearchFieldSupportTest implements PropertyChangeListener {
@@ -20,10 +20,10 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	public void testSearchFieldPropertyChangeEvent() throws Exception {
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 		eventFired = false;
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 	}
 	
 	@Test
@@ -34,10 +34,10 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 				eventFired = true;
 			}
 		});
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 		eventFired = false;
 		NativeSearchFieldSupport.setFindAction(tf, null);
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 	}
 	
 	@Test
@@ -48,10 +48,10 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 				eventFired = true;
 			}
 		});
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 		eventFired = false;
 		NativeSearchFieldSupport.setCancelAction(tf, null);
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 	}
 	
 	@Test
@@ -59,21 +59,21 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 		NativeSearchFieldSupport.setSearchField(tf, true);
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		tf.updateUI();
-		Assert.assertTrue(eventFired);
+		Assertions.assertTrue(eventFired);
 		
 		NativeSearchFieldSupport.setSearchField(tf, false);
 		eventFired = false;
 		tf.updateUI();
-		Assert.assertFalse(eventFired);
+		Assertions.assertFalse(eventFired);
 	}
 	
 	@Test
 	public void testIsSearchField() throws Exception {
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(NativeSearchFieldSupport.isSearchField(tf));
+		Assertions.assertTrue(NativeSearchFieldSupport.isSearchField(tf));
 		
 		NativeSearchFieldSupport.setSearchField(tf, false);
-		Assert.assertFalse(NativeSearchFieldSupport.isSearchField(tf));
+		Assertions.assertFalse(NativeSearchFieldSupport.isSearchField(tf));
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

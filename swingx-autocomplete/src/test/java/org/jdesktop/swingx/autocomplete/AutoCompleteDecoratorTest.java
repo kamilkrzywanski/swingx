@@ -33,9 +33,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
@@ -59,22 +59,22 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
-import org.jdesktop.test.EDTRunner;
-import org.jdesktop.test.categories.Visual;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.Tag;
+import org.jdesktop.test.EDTExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  * @author Karl George Schaefer
  */
-@RunWith(EDTRunner.class)
-public class AutoCompleteDecoratorTest  {
+@ExtendWith(EDTExtension.class)
+public class AutoCompleteDecoratorTest {
     private JComboBox combo;
     
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         combo = new JComboBox(new String[]{"Alpha", "Bravo", "Charlie", "Delta"});
@@ -236,9 +236,9 @@ public class AutoCompleteDecoratorTest  {
      * SwingX Issue #1322.
      */
     @Test
-    @Category(Visual.class)
+    @Tag("visual")
     public void testNonStrictCompletionWithKeyMovement() {
-        assumeThat(GraphicsEnvironment.isHeadless(), is(false));
+        assumeTrue((is(false)).matches(GraphicsEnvironment.isHeadless()));
         
         combo.setEditable(true);
         AutoCompleteDecorator.decorate(combo);
@@ -257,7 +257,7 @@ public class AutoCompleteDecoratorTest  {
         frame.setVisible(true);
         
         assertThat((String) combo.getSelectedItem(), is("Alpha"));
-        assumeThat(combo.isPopupVisible(), is(false));
+        assumeTrue((is(false)).matches(combo.isPopupVisible()));
         
         combo.processKeyEvent(new KeyEvent(combo, KEY_PRESSED, currentTimeMillis(), 0, VK_DOWN, CHAR_UNDEFINED));
         assertThat(combo.isPopupVisible(), is(true));

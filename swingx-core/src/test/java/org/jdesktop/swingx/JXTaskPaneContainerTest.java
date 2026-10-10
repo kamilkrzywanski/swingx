@@ -6,18 +6,19 @@
  */
 package org.jdesktop.swingx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.swing.plaf.UIResource;
 
-import org.jdesktop.test.EDTRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class JXTaskPaneContainerTest {
 
     @Test

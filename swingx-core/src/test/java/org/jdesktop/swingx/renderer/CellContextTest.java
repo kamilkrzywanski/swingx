@@ -31,10 +31,9 @@ import javax.swing.UIManager;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXTable;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * CellContext related tests.<p>
@@ -44,7 +43,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class CellContextTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
@@ -64,7 +62,7 @@ public class CellContextTest extends InteractiveTestCase {
         CellContext context = new TableCellContext();
         JLabel label = new JLabel();
         new DefaultVisuals<JLabel>().configureVisuals(label, context);
-        assertEquals("DefaultVisuals must set name", "Table.cellRenderer", label.getName());
+        assertEquals( "Table.cellRenderer", label.getName(),"DefaultVisuals must set name");
     }
     
     @Test
@@ -102,7 +100,7 @@ public class CellContextTest extends InteractiveTestCase {
             }
             
         };
-        assertNotNull("sanity", label.getFont());
+        assertNotNull( label.getFont(),"sanity");
         assertEquals(label.getFont(), context.getFont());
     }
     
@@ -143,7 +141,7 @@ public class CellContextTest extends InteractiveTestCase {
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
     }
     

@@ -47,8 +47,8 @@ import org.jdesktop.swingx.renderer.HyperlinkProvider;
 import org.jdesktop.swingx.renderer.HighlighterClientVisualCheck.FontHighlighter;
 import org.jdesktop.swingx.sort.RowFilters;
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import sun.font.CreatedFontTracker;
 
@@ -432,12 +432,12 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     protected DefaultListModel ascendingListModel;
 
     
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }

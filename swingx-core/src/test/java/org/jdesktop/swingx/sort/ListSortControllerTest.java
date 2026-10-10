@@ -27,16 +27,14 @@ import javax.swing.ListModel;
 import javax.swing.RowFilter;
 
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * TODO add type doc
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class ListSortControllerTest extends AbstractTestSortController<ListSortController<ListModel>, ListModel> {
 
     @SuppressWarnings("unused")
@@ -50,7 +48,7 @@ public class ListSortControllerTest extends AbstractTestSortController<ListSortC
         controller.setStringValueProvider(registry);
         RowFilter<Object, Object> filter = RowFilter.regexFilter("R/G/B: -2", 0);
         controller.setRowFilter(filter);
-        assertTrue("view row count: " + controller.getViewRowCount(), controller.getViewRowCount() > 0);
+        assertTrue( controller.getViewRowCount() > 0,"view row count: " + controller.getViewRowCount());
     }
 
     @Override

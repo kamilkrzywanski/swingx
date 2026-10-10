@@ -9,7 +9,8 @@ import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JXListIssues extends JXListTest {
 
@@ -50,9 +51,9 @@ public class JXListIssues extends JXListTest {
     @Test
     public void testLAFRendererList() {
         JList list = new JList();
-        assertNotNull("default renderer installed", list.getCellRenderer());
-        assertTrue("expected UIResource, but was: " + list.getCellRenderer().getClass(), 
-                list.getCellRenderer() instanceof UIResource);
+        assertNotNull( list.getCellRenderer(),"default renderer installed");
+        assertTrue( 
+                list.getCellRenderer() instanceof UIResource,"expected UIResource, but was: " + list.getCellRenderer().getClass());
     }
 
     /**
@@ -63,11 +64,12 @@ public class JXListIssues extends JXListTest {
     @Test
     public void testLAFRendererXList() {
         JXList list = new JXList();
-        assertNotNull("default renderer installed", list.getCellRenderer());
-        assertTrue("expected UIResource, but was: " + list.getCellRenderer().getClass(), 
-                list.getCellRenderer() instanceof UIResource);
+        assertNotNull( list.getCellRenderer(),"default renderer installed");
+        assertTrue( 
+                list.getCellRenderer() instanceof UIResource,"expected UIResource, but was: " + list.getCellRenderer().getClass());
     }
 
+    @Test
     public void testDummy() {
         
     }

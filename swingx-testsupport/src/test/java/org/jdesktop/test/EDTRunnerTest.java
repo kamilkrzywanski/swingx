@@ -1,14 +1,15 @@
 package org.jdesktop.test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import javax.swing.SwingUtilities;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
 
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class EDTRunnerTest {
     /**
      * Ensure that the EDTRunner is using the EventDispatchThread.

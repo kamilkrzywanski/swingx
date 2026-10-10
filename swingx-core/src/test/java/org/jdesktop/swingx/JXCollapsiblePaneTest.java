@@ -24,7 +24,7 @@ package org.jdesktop.swingx;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.test.matchers.Matchers.property;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -32,9 +32,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
-import org.jdesktop.test.EDTRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
 
 /**
  * Unit test for <code>JXCollapsiblePane</code>.
@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
  * 
  * @author Karl Schaefer
  */
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class JXCollapsiblePaneTest {
     /**
      * SWINGX-1412: Ensure that we do not animate when not showing.

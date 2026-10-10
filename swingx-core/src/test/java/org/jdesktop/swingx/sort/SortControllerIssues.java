@@ -30,7 +30,8 @@ import javax.swing.SortOrder;
 import javax.swing.RowSorter.SortKey;
 
 import org.jdesktop.swingx.InteractiveTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Issues with SortController implementations.

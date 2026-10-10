@@ -26,16 +26,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(JUnit4.class)
-public class AbstractTreeTableModelUnitTest extends TestCase {
+public class AbstractTreeTableModelUnitTest {
     private static class DummyTreeTableModel extends AbstractTreeTableModel {
         public DummyTreeTableModel(Object root) {
             super(root);
@@ -100,14 +97,13 @@ public class AbstractTreeTableModelUnitTest extends TestCase {
     private DefaultMutableTreeNode grandchild5;
     private DefaultMutableTreeNode grandchild6;
     
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
-        tearDown();
     }
     
     private TreeNode createTree() {
@@ -137,10 +133,7 @@ public class AbstractTreeTableModelUnitTest extends TestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     protected void setUp() throws Exception {
-        super.setUp();
-        
         dummyModel = new DummyTreeTableModel(createTree());
         nullModel = new DummyTreeTableModel(null);
     }

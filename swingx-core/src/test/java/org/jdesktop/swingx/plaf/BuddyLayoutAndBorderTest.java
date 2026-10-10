@@ -1,9 +1,9 @@
 package org.jdesktop.swingx.plaf;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Insets;
 
@@ -13,17 +13,18 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.jdesktop.swingx.prompt.BuddySupport;
-import org.jdesktop.test.EDTRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class BuddyLayoutAndBorderTest {
 	private BuddyLayoutAndBorder blab;
 	private JTextField textField;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		textField = new JTextField();
 		blab = new BuddyLayoutAndBorder();
@@ -34,7 +35,7 @@ public class BuddyLayoutAndBorderTest {
 	public void testBorder() throws Exception {
 		Border newBorder = BorderFactory.createEmptyBorder();
 		textField.setBorder(newBorder);
-		assertNotSame("Border should have been wrapped.", newBorder, textField.getBorder());
+		assertNotSame( newBorder, textField.getBorder(),"Border should have been wrapped.");
 	}
 
 	@Test
@@ -42,7 +43,7 @@ public class BuddyLayoutAndBorderTest {
 		blab.uninstall();
 		Border newBorder = BorderFactory.createEmptyBorder();
 		textField.setBorder(newBorder);
-		assertSame("Border should NOT have been wrapped.", newBorder, textField.getBorder());
+		assertSame( newBorder, textField.getBorder(),"Border should NOT have been wrapped.");
 	}
 
 	@Test
@@ -55,8 +56,8 @@ public class BuddyLayoutAndBorderTest {
 
 		BuddySupport.addLeft(btn, textField);
 
-		assertSame(String.format("preferred layout size should be %d", txtWidth),
-				txtWidth, blab.preferredLayoutSize(textField).width);
+		assertSame(
+				txtWidth, blab.preferredLayoutSize(textField).width,String.format("preferred layout size should be %d", txtWidth));
 
 		btn.setVisible(false);
 		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);

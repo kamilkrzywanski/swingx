@@ -44,6 +44,8 @@ import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXCollapsiblePane.Direction;
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Karl George Schaefer
@@ -355,6 +357,7 @@ public class JXCollapsiblePaneVisualCheck extends InteractiveTestCase {
     /**
      * do nothing test - keep the testrunner happy.
      */
+    @Test
     public void testDummy() {
     }
 }

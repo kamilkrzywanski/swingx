@@ -14,17 +14,15 @@ import javax.swing.border.Border;
 
 import org.jdesktop.swingx.plaf.SafeBorder;
 import org.jdesktop.test.AncientSwingTeam;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * GTK specific tests. Will be blind on non-linux OS.
  * 
  * @author Jeanette Winzenburg, Berlin
  */
-@RunWith(JUnit4.class)
 public class GTKTest extends InteractiveTestCase {
     
     String[] borderKeys = {"focusCellHighlightBorder", "focusSelectedCellHighlightBorder", 
@@ -73,8 +71,8 @@ public class GTKTest extends InteractiveTestCase {
     private void assertSafeBorder(String string, String borderKey) {
         Border border = UIManager.getBorder(string + borderKey);
         if (border != null) 
-            assertTrue("expected border of type SafeBorder but was: " + border.getClass().getName(),
-                border instanceof SafeBorder);
+            assertTrue(
+                border instanceof SafeBorder,"expected border of type SafeBorder but was: " + border.getClass().getName());
     }
 
     @SuppressWarnings("unused")
@@ -98,7 +96,7 @@ public class GTKTest extends InteractiveTestCase {
 
     
     
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         // This test will not work in a headless configuration.
         // need to check before trying to install GTK (any LAF?)

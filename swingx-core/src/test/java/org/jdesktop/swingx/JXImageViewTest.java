@@ -11,15 +11,16 @@ import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.util.GraphicsUtilities;
-import org.jdesktop.test.EDTRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit and visual tests for JXImageView
  * @author Jeanette Winzenburg, Berlin
  */
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class JXImageViewTest extends InteractiveTestCase {
 
     /**
@@ -30,9 +31,9 @@ public class JXImageViewTest extends InteractiveTestCase {
     public void testBackgroundPainterDefault() {
         JXImageView panel = new JXImageView();
         Painter<?> background = panel.getBackgroundPainter();
-        assertTrue("default background painter should be MattePainter "
+        assertTrue( background instanceof MattePainter,"default background painter should be MattePainter "
                 + " but was: " + background
-                , background instanceof MattePainter);
+                );
     }
     
 //------------------ interactive

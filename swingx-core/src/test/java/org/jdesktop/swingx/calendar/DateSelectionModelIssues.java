@@ -29,10 +29,9 @@ import java.util.TreeSet;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.test.DateSelectionReport;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test to expose known Issues with <code>DateSelectionModel</code>
@@ -42,7 +41,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class DateSelectionModelIssues extends InteractiveTestCase {
 
     protected DateSelectionModel model;
@@ -109,11 +107,11 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
         DateSelectionReport report = new DateSelectionReport(model);
         model.setSelectionInterval(tomorrow, tomorrow);
         if (model.isSelectionEmpty()) {
-            assertEquals("implementation clears old selection, must fire clear event", 
-                    1, report.getEventCount(DateSelectionEvent.EventType.SELECTION_CLEARED));
+            assertEquals( 
+                    1, report.getEventCount(DateSelectionEvent.EventType.SELECTION_CLEARED),"implementation clears old selection, must fire clear event");
         } else {
-            assertEquals("implementation does not clear old selection, old must be unchanged", 
-                    today, model.getSelection().first());
+            assertEquals( 
+                    today, model.getSelection().first(),"implementation does not clear old selection, old must be unchanged");
         }
     }
 
@@ -188,7 +186,7 @@ public class DateSelectionModelIssues extends InteractiveTestCase {
     }
     
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         setUpCalendar();
         model = new DaySelectionModel();

@@ -45,6 +45,8 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.tree.DefaultXTreeCellEditor;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) {
@@ -240,12 +242,13 @@ public class DatePickerCellEditorVisualCheck extends InteractiveTestCase {
      *  failing on server due to parseException (format issue?)
      *
      */
+    @Test
     public void testDateEditorValueAsDate() throws ParseException  {
         DatePickerCellEditor editor = new DatePickerCellEditor();
         Date input = new Date();
         String dateString = editor.getFormats()[0].format(input);
         Date fullCycle = editor.getFormats()[0].parse(dateString);
-        assertEquals("the formatted input date string must be same", fullCycle, editor.getValueAsDate(dateString));
+        assertEquals( fullCycle, editor.getValueAsDate(dateString),"the formatted input date string must be same");
     }
 
 

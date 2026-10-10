@@ -2,18 +2,21 @@ package org.jdesktop.swingx.graphics;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.awt.Composite;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FilterCompositeTest {
-    @Test(expected=NullPointerException.class)
+    @Test
     public void checkThrowOnNullComposite() {
+        assertThrows(NullPointerException.class, () -> {
         new FilterComposite(null);
-    }
+    
+        });}
     
     @Test
     public void checkUnaryConstructorHasNoFilter() {

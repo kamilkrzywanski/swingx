@@ -6,11 +6,9 @@ package org.jdesktop.swingx;
 
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * "hand test" sandbox restrictions 
@@ -22,8 +20,7 @@ import org.junit.runners.JUnit4;
  *  
  * 
  */
-@RunWith(JUnit4.class)
-public class SandboxTest extends TestCase {
+public class SandboxTest {
     private static final Logger LOG = Logger.getLogger(SandboxTest.class
             .getName());
     /**
@@ -66,9 +63,7 @@ public class SandboxTest extends TestCase {
         }
     }
     
-    @Override
     protected void setUp() throws Exception {
-        super.setUp();
         // A - install the default SecurityManager. 
         // Doing so we are not allowed to reverse the install -
         // which makes this testCase to a manual-run-only affair
@@ -95,9 +90,7 @@ public class SandboxTest extends TestCase {
 //            }        
               
     }
-    @Override
     protected void tearDown() throws Exception {
-        super.tearDown();
         // be sure to uninstall the manager
 //        System.setSecurityManager(null);
     }

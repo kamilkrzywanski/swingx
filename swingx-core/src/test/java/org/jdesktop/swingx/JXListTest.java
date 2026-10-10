@@ -49,11 +49,10 @@ import org.jdesktop.swingx.sort.TableSortController;
 import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -64,7 +63,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class JXListTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
@@ -178,7 +176,7 @@ public class JXListTest extends InteractiveTestCase {
     @Test
     public void testRendererNotification() {
         JXList list = new JXList();
-        assertNotNull("sanity: ", list.getCellRenderer());
+        assertNotNull( list.getCellRenderer(),"sanity: ");
         // very first setting: fires twice ... a bit annoying but ... waiting for complaints ;-)
         list.setCellRenderer(new DefaultListRenderer());
         PropertyChangeReport report = new PropertyChangeReport(list);
@@ -204,8 +202,8 @@ public class JXListTest extends InteractiveTestCase {
     public void testNextMatchUseString() {
         JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
         list.setCellRenderer(new DefaultListRenderer(sv));
-        assertEquals("must not find a match for 'b', all start with 'r'", 
-                -1, list.getNextMatch("b", 0, Bias.Forward));
+        assertEquals( 
+                -1, list.getNextMatch("b", 0, Bias.Forward),"must not find a match for 'b', all start with 'r'");
     }
     /**
      * Issue 1161-swingx: JXList not completely updated on setRowFilter
@@ -230,9 +228,9 @@ public class JXListTest extends InteractiveTestCase {
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
                 // subtraction arbitrary number, don't want to depend on single pixels
-                assertTrue("height must be adjusted to reduced number of rows, " +
-                		"but was (old/current): " + size.height + "/" + list.getSize().height, 
-                		size.height - 50 > list.getSize().height);
+                assertTrue( 
+                		size.height - 50 > list.getSize().height,"height must be adjusted to reduced number of rows, " +
+                		"but was (old/current): " + size.height + "/" + list.getSize().height);
 
             }
         });
@@ -335,7 +333,7 @@ public class JXListTest extends InteractiveTestCase {
     public void testSetSortOrder() {
         JXList list = new JXList(ascendingListModel, true);
         list.setSortOrder(SortOrder.ASCENDING);
-        assertSame("column must be sorted after setting sortOrder on ", SortOrder.ASCENDING, list.getSortOrder());
+        assertSame( SortOrder.ASCENDING, list.getSortOrder(),"column must be sorted after setting sortOrder on ");
         assertSame(SortOrder.ASCENDING, getSortController(list).getSortOrder(0));
     }
     
@@ -364,7 +362,7 @@ public class JXListTest extends InteractiveTestCase {
     @Test
     public void testSortController() {
         JXList list = new JXList(ascendingListModel, true);
-        assertNotNull("sortController must be initialized", list.getRowSorter());
+        assertNotNull( list.getRowSorter(),"sortController must be initialized");
     }
     
 
@@ -382,32 +380,37 @@ public class JXListTest extends InteractiveTestCase {
 
 
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testConvertToModelPreconditions() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         final JXList list = new JXList(ascendingListModel, true);
         assertEquals(20, list.getElementCount());
         RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.convertIndexToModel(list.getElementCount());
-    }
+    
+        });}
  
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testElementAtPreconditions() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         final JXList list = new JXList(ascendingListModel, true);
         assertEquals(20, list.getElementCount());
         RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.getElementAt(list.getElementCount());
-    }
+    
+        });}
 
     /**
      * 
      */
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testConvertToViewPreconditions() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         final JXList list = new JXList(ascendingListModel);
         list.setAutoCreateRowSorter(true);
         assertEquals(20, list.getElementCount());
@@ -415,7 +418,8 @@ public class JXListTest extends InteractiveTestCase {
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.convertIndexToView(ascendingListModel.getSize());
-    }
+    
+        });}
 
     @Test
     public void testNoSorter() {
@@ -451,9 +455,9 @@ public class JXListTest extends InteractiveTestCase {
         list.setComparator(comparator);
         ListSortController<?> controller = new ListSortController<ListModel>(list.getModel());
         list.setRowSorter(controller);
-        assertEquals("sortable propagated", false, controller.isSortable(0));
-        assertSame("comparator propagated", comparator, controller.getComparator(0));
-        assertEquals("sortsOnUpdates propagated", false, controller.getSortsOnUpdates());
+        assertEquals( false, controller.isSortable(0),"sortable propagated");
+        assertSame( comparator, controller.getComparator(0),"comparator propagated");
+        assertEquals( false, controller.getSortsOnUpdates(),"sortsOnUpdates propagated");
     }
     
     @Test
@@ -567,28 +571,28 @@ public class JXListTest extends InteractiveTestCase {
         list.setComparator(TableSortController.COMPARABLE_COMPARATOR);
         Object originalFirstRowValue = list.getElementAt(0);
         Object originalLastRowValue = list.getElementAt(list.getElementCount() - 1);
-        assertEquals("view row coordinate equals model row coordinate", 
-                list.getModel().getElementAt(0), originalFirstRowValue);
+        assertEquals( 
+                list.getModel().getElementAt(0), originalFirstRowValue,"view row coordinate equals model row coordinate");
         // sort first column - actually does not change anything order 
         list.toggleSortOrder();
         // sanity asssert
-        assertEquals("view order must be unchanged ", 
-                list.getElementAt(0), originalFirstRowValue);
+        assertEquals( 
+                list.getElementAt(0), originalFirstRowValue,"view order must be unchanged ");
         // invert sort
         list.toggleSortOrder();
         // sanity assert
-        assertEquals("view order must be reversed changed ", 
-                list.getElementAt(0), originalLastRowValue);
+        assertEquals( 
+                list.getElementAt(0), originalLastRowValue,"view order must be reversed changed ");
         ComponentAdapter adapter = list.getComponentAdapter();
-        assertEquals("adapter filteredValue expects row view coordinates", 
-                list.getElementAt(0), adapter.getFilteredValueAt(0, 0));
+        assertEquals( 
+                list.getElementAt(0), adapter.getFilteredValueAt(0, 0),"adapter filteredValue expects row view coordinates");
         // adapter coordinates are view coordinates
         adapter.row = 0;
         adapter.column = 0;
-        assertEquals("adapter.getValue must return value at adapter coordinates", 
-                list.getElementAt(0), adapter.getValue());
-        assertEquals("adapter.getValue must return value at adapter coordinates", 
-                list.getElementAt(0), adapter.getValue(0));
+        assertEquals( 
+                list.getElementAt(0), adapter.getValue(),"adapter.getValue must return value at adapter coordinates");
+        assertEquals( 
+                list.getElementAt(0), adapter.getValue(0),"adapter.getValue must return value at adapter coordinates");
     }
     
 
@@ -601,8 +605,8 @@ public class JXListTest extends InteractiveTestCase {
     public void testWrappedRendererDefault() {
         JXList list = new JXList();
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
-        assertSame("wrapping renderer must use list's default on null", 
-                 renderer.getDelegateRenderer(), list.getWrappedCellRenderer());
+        assertSame( 
+                 renderer.getDelegateRenderer(), list.getWrappedCellRenderer(),"wrapping renderer must use list's default on null");
     }
 
     /**
@@ -615,8 +619,8 @@ public class JXListTest extends InteractiveTestCase {
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         ListCellRenderer custom = new DefaultListRenderer();
         list.setCellRenderer(custom);
-        assertSame("wrapping renderer must use list's default on null", 
-                 renderer.getDelegateRenderer(), list.getWrappedCellRenderer());
+        assertSame( 
+                 renderer.getDelegateRenderer(), list.getWrappedCellRenderer(),"wrapping renderer must use list's default on null");
     }
     
     /**
@@ -629,8 +633,8 @@ public class JXListTest extends InteractiveTestCase {
         ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         list.setCellRenderer(null);
-        assertEquals("wrapping renderer must use list's default on null", 
-                defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass());
+        assertEquals( 
+                defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass(),"wrapping renderer must use list's default on null");
     }
 
     /**
@@ -641,8 +645,8 @@ public class JXListTest extends InteractiveTestCase {
     public void testDelegatingRendererUseDefault() {
         JXList list = new JXList();
         ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
-        assertEquals("sanity: creates default", DefaultListRenderer.class, 
-                defaultRenderer.getClass());
+        assertEquals( DefaultListRenderer.class, 
+                defaultRenderer.getClass(),"sanity: creates default");
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         assertEquals(defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass());
     }
@@ -664,8 +668,8 @@ public class JXListTest extends InteractiveTestCase {
         ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         list.setCellRenderer(null);
-        assertEquals("wrapping renderer must use list's default on null",
-                defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass());
+        assertEquals(
+                defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass(),"wrapping renderer must use list's default on null");
     }
     
     /**
@@ -683,8 +687,8 @@ public class JXListTest extends InteractiveTestCase {
             
         };
         ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
-        assertEquals("sanity: creates custom", CustomDefaultRenderer.class, 
-                defaultRenderer.getClass());
+        assertEquals( CustomDefaultRenderer.class, 
+                defaultRenderer.getClass(),"sanity: creates custom");
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         assertEquals(defaultRenderer.getClass(), renderer.getDelegateRenderer().getClass());
     }
@@ -727,9 +731,9 @@ public class JXListTest extends InteractiveTestCase {
     public void testDefaultListRenderer() {
         JXList list = new JXList();
         ListCellRenderer renderer = ((DelegatingRenderer) list.getCellRenderer()).getDelegateRenderer();
-        assertTrue("default renderer expected to be DefaultListRenderer " +
-                        "\n but is " + renderer.getClass(),
-                renderer instanceof DefaultListRenderer);
+        assertTrue(
+                renderer instanceof DefaultListRenderer,"default renderer expected to be DefaultListRenderer " +
+                        "\n but is " + renderer.getClass());
     }
     
     /**
@@ -853,13 +857,13 @@ public class JXListTest extends InteractiveTestCase {
     public void testLinkControllerListening() {
         JXList table = new JXList();
         table.setRolloverEnabled(true);
-        assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY));
-        assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY));
-        assertNotNull("execute button action must be registered", table.getActionMap().get(JXList.EXECUTE_BUTTON_ACTIONCOMMAND));
+        assertNotNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY),"LinkController must be listening");
+        assertNotNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY),"LinkController must be listening");
+        assertNotNull( table.getActionMap().get(JXList.EXECUTE_BUTTON_ACTIONCOMMAND),"execute button action must be registered");
         table.setRolloverEnabled(false);
-        assertNull("LinkController must not be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY ));
-        assertNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY));
-        assertNull("execute button action must be de-registered", table.getActionMap().get(JXList.EXECUTE_BUTTON_ACTIONCOMMAND));
+        assertNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY ),"LinkController must not be listening");
+        assertNull( getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY),"LinkController must be listening");
+        assertNull( table.getActionMap().get(JXList.EXECUTE_BUTTON_ACTIONCOMMAND),"execute button action must be de-registered");
     }
 
     private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXList table, String propertyName) {
@@ -966,12 +970,12 @@ public class JXListTest extends InteractiveTestCase {
     }
 
     
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }

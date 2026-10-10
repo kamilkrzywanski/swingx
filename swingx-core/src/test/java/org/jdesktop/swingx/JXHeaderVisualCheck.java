@@ -44,6 +44,9 @@ import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXHeader.IconPosition;
 import org.jdesktop.swingx.test.XTestUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests previously created to expose known issues of <code>JXHeader</code>, now fixed.
@@ -72,6 +75,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
     }
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         setSystemLF(true);
     }
@@ -214,7 +218,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
      */
     public void interactiveCustomProperties() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         JPanel p = new JPanel(new BorderLayout());
         JXHeader header = new JXHeader("MyTitle", "MyDescription", icon);
         header.setIconPosition(IconPosition.LEFT);
@@ -236,7 +240,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
      */
     public void interactiveWordWrapping() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         JPanel p = new JPanel(new BorderLayout());
         JXHeader header = new JXHeader("MyTitle", "this is a long test with veeeeeeeeeeeeeery looooooong wooooooooooooords", icon);
         p.add(header);
@@ -251,7 +255,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
      */
     public void interactiveCustomTitleFont() {
         Icon icon = XTestUtils.loadDefaultIcon();
-        assertNotNull("sanity: default icon loaded", icon);
+        assertNotNull( icon,"sanity: default icon loaded");
         JPanel p = new JPanel(new BorderLayout());
         final JXHeader header = new JXHeader("MyBigUglyTitle", "this is a long test with veeeeeeeeeeeeeery looooooong wooooooooooooords", icon);
         header.setTitleFont(new Font("serif", Font.BOLD, 36));
@@ -281,6 +285,7 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
     /**
      * Empty test method to keep the testrunner happy.
      */
+    @Test
     public void testDummy() {
 
     }

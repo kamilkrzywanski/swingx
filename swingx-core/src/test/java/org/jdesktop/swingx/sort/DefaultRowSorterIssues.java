@@ -31,10 +31,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.InteractiveTestCase;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test the DefaultRowSorter, to expose facets of core 
@@ -44,7 +43,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class DefaultRowSorterIssues extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
@@ -122,11 +120,11 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
         int last = table.getRowCount() - 1;
         // select that last row
         table.setRowSelectionInterval(last, last);
-        assertTrue("sanity: really selected", table.getSelectionModel().isSelectedIndex(last));
+        assertTrue( table.getSelectionModel().isSelectedIndex(last),"sanity: really selected");
         // remove the second last
         model.removeRow(last - 1);
-        assertEquals("last row must be still selected", 
-                table.getRowCount() - 1, table.getSelectedRow());
+        assertEquals( 
+                table.getRowCount() - 1, table.getSelectedRow(),"last row must be still selected");
     }
 
     //------------------------ model changes with notification    
@@ -138,14 +136,16 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      * 
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToModelAfterRemoveSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         sorter.toggleSortOrder(0);
         sorter.toggleSortOrder(0);
         model.removeRow(rows - 1);
         sorter.rowsDeleted(rows - 1, rows - 1);
         sorter.convertRowIndexToModel(rows - 1);
-    }
+    
+        });}
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
      * 
@@ -153,12 +153,14 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      * 
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToModelAfterRemoveNotSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         model.removeRow(rows - 1);
         sorter.rowsDeleted(rows - 1, rows - 1);
         sorter.convertRowIndexToModel(rows - 1);
-    }
+    
+        });}
     
 
 //------------------ conversion methods: toView
@@ -170,14 +172,16 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      * 
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterRemoveSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         sorter.toggleSortOrder(0);
         sorter.toggleSortOrder(0);
         model.removeRow(rows - 1);
         sorter.rowsDeleted(rows - 1, rows - 1);
         sorter.convertRowIndexToView(rows - 1);
-    }
+    
+        });}
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
@@ -186,12 +190,14 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      * 
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterRemoveNotSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         model.removeRow(rows - 1);
         sorter.rowsDeleted(rows - 1, rows - 1);
         sorter.convertRowIndexToView(rows - 1);
-    }
+    
+        });}
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
@@ -200,14 +206,16 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      * 
      * Here: after being notified, DefaultRowSorter must throw on invalid index 
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterRemoveAllPassFilter() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         RowFilter<Object, Object> filter = RowFilter.regexFilter(".*");
         sorter.setRowFilter(filter);
         model.removeRow(rows - 1);
         sorter.rowsDeleted(rows - 1, rows - 1);
         sorter.convertRowIndexToView(rows - 1);
-    }
+    
+        });}
     
 
 //----------------------- row counts: model
@@ -285,13 +293,15 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      *    if sorted - that's expected behaviour because it was not notified about
      *    a model change.
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToModelAfterSilentInsertSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         sorter.toggleSortOrder(0);
         sorter.toggleSortOrder(0);
         model.addRow(new Object[] {rows});
         sorter.convertRowIndexToModel(rows);
-    }
+    
+        });}
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
@@ -302,11 +312,13 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      *    if not sorted - that's not expected behaviour because it's invalid with
      *    sorted state.
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToModelAfterSilentInsertNotSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         model.addRow(new Object[] {rows});
         sorter.convertRowIndexToModel(rows);
-    }
+    
+        });}
 
 
 //------------------ conversion methods: toView
@@ -369,13 +381,15 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      *    if has filter - that's (my) expected behaviour but inconsistent with 
      *    unsorted.
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterSilentInsertAllPassFilter() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         RowFilter<Object, Object> filter = RowFilter.regexFilter(".*");
         sorter.setRowFilter(filter);
         model.addRow(new Object[] {rows});
         assertEquals(rows, sorter.convertRowIndexToView(rows));
-    }
+    
+        });}
 
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
@@ -386,13 +400,15 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      *    if sorted - that's expected behaviour because it was not notified about
      *    a model change.
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterSilentInsertSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         sorter.toggleSortOrder(0);
         sorter.toggleSortOrder(0);
         model.addRow(new Object[] {rows});
         sorter.convertRowIndexToView(rows);
-    }
+    
+        });}
     
     /**
      * Core Issue http://forums.sun.com/thread.jspa?messageID=10939199#10939199
@@ -403,11 +419,13 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
      *    if not sorted - that's not expected behaviour because it's invalid with
      *    sorted state.
      */
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test
     public void testToViewAfterSilentInsertNotSorted() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
         model.addRow(new Object[] {rows});
         sorter.convertRowIndexToView(rows);
-    }
+    
+        });}
 
 //----------------------- row counts: model
     
@@ -493,7 +511,7 @@ public class DefaultRowSorterIssues extends InteractiveTestCase {
     }
     
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();

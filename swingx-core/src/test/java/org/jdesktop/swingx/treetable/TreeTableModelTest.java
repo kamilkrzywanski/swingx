@@ -31,14 +31,12 @@ import javax.swing.tree.TreeModel;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests around TreeTableModel and related classes.
  */
-@RunWith(JUnit4.class)
 public class TreeTableModelTest extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(TreeTableModelTest.class
             .getName());
@@ -53,7 +51,7 @@ public class TreeTableModelTest extends InteractiveTestCase {
         for (int i = 0; i < model.getChildCount(root); i++) {
             Object child = model.getChild(root, i);
             // sanity
-            assertNotNull("child must not be null at " + i, child);
+            assertNotNull( child,"child must not be null at " + i);
             model.getChildCount(child);
         }     
     }
@@ -69,7 +67,7 @@ public class TreeTableModelTest extends InteractiveTestCase {
         for (int i = 0; i < model.getChildCount(root); i++) {
             Object child = model.getChild(root, i);
             // sanity
-            assertNotNull("child must not be null at " + i, child);
+            assertNotNull( child,"child must not be null at " + i);
             model.getChildCount(child);
         }     
     }
@@ -108,10 +106,10 @@ public class TreeTableModelTest extends InteractiveTestCase {
             Class<?> clazz = model.getColumnClass(i);
             Object value = model.getValueAt(model.getRoot(), i);
             if (value != null) {
-                assertTrue("column class must be assignable to value class at column " + i + "\n" +
+                assertTrue( clazz.isAssignableFrom(value.getClass()),"column class must be assignable to value class at column " + i + "\n" +
                                 "columnClass = " + model.getColumnClass(i) + "\n" +
                                 "valueClass = " + value.getClass()
-                        , clazz.isAssignableFrom(value.getClass()));
+                        );
             } else {
                 LOG.info("column " + i + " not testable - value == null");
             }

@@ -13,22 +13,19 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import junit.framework.TestCase;
 
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * 
  * @author Jeanette Winzenburg, Berlin
  */
-@RunWith(JUnit4.class)
-public class HyperlinkActionTest extends TestCase {
+public class HyperlinkActionTest {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger
@@ -36,14 +33,13 @@ public class HyperlinkActionTest extends TestCase {
     
     private PropertyChangeReport report;
 
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
-        tearDown();
     }
     
     /**
@@ -136,15 +132,17 @@ public class HyperlinkActionTest extends TestCase {
         assertEquals(Desktop.Action.BROWSE, action.getDesktopAction());
     }
     
-    @Test (expected=IllegalArgumentException.class)
+    @Test
     public void testUriActionIllegalType() {
+        assertThrows(IllegalArgumentException.class, () -> {
         // This test will not work in a headless configuration.
         if (GraphicsEnvironment.isHeadless()) {
             LOG.fine("cannot run ui test - headless environment");
             throw new IllegalArgumentException("dummy");
         }
         new HyperlinkAction(Desktop.Action.EDIT);
-    }
+    
+        });}
 
     /**
      * test if auto-installed visited property is respected.
@@ -232,9 +230,7 @@ public class HyperlinkActionTest extends TestCase {
        assertEquals(3, report.getEventCount());
     }
 
-    @Override
     protected void setUp() throws Exception {
-        super.setUp();
         report = new PropertyChangeReport();
     }
 

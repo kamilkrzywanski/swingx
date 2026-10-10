@@ -5,9 +5,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.swingx.util.GraphicsUtilities.createCompatibleImage;
 import static org.jdesktop.swingx.util.GraphicsUtilities.getPixels;
 import static org.jdesktop.swingx.util.GraphicsUtilities.loadCompatibleImage;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -17,9 +17,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 
 import org.jdesktop.swingx.util.GraphicsUtilities;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This unit test performs blend operations on known image inputs and compares the results to
@@ -33,7 +34,7 @@ public class BlendCompositeTest {
     private static BufferedImage VERTICAL_IMAGE;
     private static BufferedImage HORIZONTAL_IMAGE;
     
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         VERTICAL_IMAGE = loadCompatibleImage(BlendCompositeTest.class.getResourceAsStream("vertical.gif"));
         HORIZONTAL_IMAGE = loadCompatibleImage(BlendCompositeTest.class.getResourceAsStream("horizontal.gif"));
@@ -41,14 +42,14 @@ public class BlendCompositeTest {
         assertThat(VERTICAL_IMAGE.getWidth(), is(HORIZONTAL_IMAGE.getWidth()));
         assertThat(VERTICAL_IMAGE.getHeight(), is(HORIZONTAL_IMAGE.getHeight()));
         
-        assumeThat(VERTICAL_IMAGE.getColorModel(), is(instanceOf(DirectColorModel.class)));
-        assumeThat(HORIZONTAL_IMAGE.getColorModel(), is(instanceOf(DirectColorModel.class)));
+        assumeTrue((is(instanceOf(DirectColorModel.class))).matches(VERTICAL_IMAGE.getColorModel()));
+        assumeTrue((is(instanceOf(DirectColorModel.class))).matches(HORIZONTAL_IMAGE.getColorModel()));
     }
     
     private BufferedImage actual;
     private BufferedImage expected;
     
-    @Before
+    @BeforeEach
     public void setUp() {
         actual = createCompatibleImage(VERTICAL_IMAGE);
     }

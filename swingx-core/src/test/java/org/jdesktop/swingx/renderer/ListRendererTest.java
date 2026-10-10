@@ -39,11 +39,10 @@ import javax.swing.border.Border;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.test.SerializableSupport;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests behaviour of SwingX renderers. Currently: mostly characterization to
@@ -51,7 +50,6 @@ import org.junit.runners.JUnit4;
  * 
  * @author Jeanette Winzenburg
  */
-@RunWith(JUnit4.class)
 public class ListRendererTest extends InteractiveTestCase {
 
     private static final Logger LOG = Logger.getLogger(ListRendererTest.class
@@ -64,12 +62,12 @@ public class ListRendererTest extends InteractiveTestCase {
 
     private JList list;
     
-    @Before
+    @BeforeEach
     public void setUpJ4() throws Exception {
         setUp();
     }
     
-    @After
+    @AfterEach
     public void tearDownJ4() throws Exception {
         tearDown();
     }
@@ -106,16 +104,16 @@ public class ListRendererTest extends InteractiveTestCase {
         JList list = new JList(new Object[] {icon, text});
         coreListRenderer.getListCellRendererComponent(list, icon, 0, false, false);
         JLabel label = (JLabel) xListRenderer.getListCellRendererComponent(null, icon, 0, false, false);
-        assertEquals("sanity: core shows icon", icon, coreListRenderer.getIcon());
-        assertEquals("sanity: core shows empty string", "", coreListRenderer.getText());
-        assertEquals("swingx renderer same icon as core", coreListRenderer.getIcon(), label.getIcon());
-        assertEquals("swingx renderer same text as core", coreListRenderer.getText(), label.getText());
+        assertEquals( icon, coreListRenderer.getIcon(),"sanity: core shows icon");
+        assertEquals( "", coreListRenderer.getText(),"sanity: core shows empty string");
+        assertEquals( coreListRenderer.getIcon(), label.getIcon(),"swingx renderer same icon as core");
+        assertEquals( coreListRenderer.getText(), label.getText(),"swingx renderer same text as core");
         coreListRenderer.getListCellRendererComponent(list, text, 1, false, false);
         label = (JLabel) xListRenderer.getListCellRendererComponent(null, text, 1, false, false);
-        assertNull("sanity: core has null icon", coreListRenderer.getIcon());
-        assertEquals("sanity: core shows text", text, coreListRenderer.getText());
-        assertEquals("swingx renderer same same icon as core", coreListRenderer.getIcon(), label.getIcon());
-        assertEquals("swingx renderer same text as core", coreListRenderer.getText(), label.getText());
+        assertNull( coreListRenderer.getIcon(),"sanity: core has null icon");
+        assertEquals( text, coreListRenderer.getText(),"sanity: core shows text");
+        assertEquals( coreListRenderer.getIcon(), label.getIcon(),"swingx renderer same same icon as core");
+        assertEquals( coreListRenderer.getText(), label.getText(),"swingx renderer same text as core");
     }
  
     /**

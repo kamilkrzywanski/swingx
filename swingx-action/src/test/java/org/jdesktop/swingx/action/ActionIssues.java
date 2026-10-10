@@ -4,8 +4,8 @@
  */
 package org.jdesktop.swingx.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -20,12 +20,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
-import org.jdesktop.test.EDTRunner;
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.jdesktop.test.EDTExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(EDTRunner.class)
+@ExtendWith(EDTExtension.class)
 public class ActionIssues {
 
     /**
@@ -78,7 +79,7 @@ public class ActionIssues {
         button.setSelected(!selected);
         // sanity...
         assertEquals(selected, !button.isSelected());
-        assertEquals("must have one event for selected", 1, report.getEventCount("selected"));
+        assertEquals( 1, report.getEventCount("selected"),"must have one event for selected");
     }
     
     @Test
@@ -90,7 +91,7 @@ public class ActionIssues {
         button.setSelected(!selected);
         // sanity...
         assertEquals(selected, !button.isSelected());
-        assertEquals("must have one event for selected", 1, report.getEventCount("selected"));
+        assertEquals( 1, report.getEventCount("selected"),"must have one event for selected");
     }
     
     @Test
@@ -102,7 +103,7 @@ public class ActionIssues {
         button.setSelected(!selected);
         // sanity...
         assertEquals(selected, !button.isSelected());
-        assertEquals("must have one event for selected", 1, report.getEventCount("selected"));
+        assertEquals( 1, report.getEventCount("selected"),"must have one event for selected");
     }
     
     @Test
@@ -114,7 +115,7 @@ public class ActionIssues {
         button.setSelected(!selected);
         // sanity...
         assertEquals(selected, !button.isSelected());
-        assertEquals("must have one event for selected", 1, report.getEventCount("selected"));
+        assertEquals( 1, report.getEventCount("selected"),"must have one event for selected");
     }
     
     /**

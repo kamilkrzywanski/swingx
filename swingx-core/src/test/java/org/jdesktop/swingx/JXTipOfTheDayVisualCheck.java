@@ -33,6 +33,7 @@ import org.jdesktop.swingx.plaf.basic.BasicTipOfTheDayUI;
 import org.jdesktop.swingx.tips.DefaultTip;
 import org.jdesktop.swingx.tips.DefaultTipOfTheDayModel;
 import org.jdesktop.swingx.tips.TipOfTheDayModel;
+import org.junit.jupiter.api.Test;
 
 /**
  * Simple tests to ensure that the {@code JXDatePicker} can be instantiated and
@@ -130,6 +131,7 @@ public class JXTipOfTheDayVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *
      */
+    @Test
     public void testDummy() {
         
     }

@@ -82,6 +82,8 @@ import org.jdesktop.swingx.search.PatternMatcher;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.test.AncientSwingTeam;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * visual checks of highlighter clients. Mostly by example of JXTable.
@@ -953,6 +955,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
 
     
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         super.setUp();
          tableModel = new AncientSwingTeam();
@@ -963,6 +966,7 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *
      */
+    @Test
     public void testDummy() {
         
     }
