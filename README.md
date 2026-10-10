@@ -58,7 +58,7 @@ mvn package
 
 The default reactor builds `swingx-common`, `swingx-autocomplete`, `swingx-action`, `swingx-painters`, `swingx-graphics`, `swingx-plaf`, `swingx-core`, `swingx-all`, and `swingx-beaninfo`. Each module jar lands in that module's `target/` directory.
 
-The test suite uses current libraries: JUnit 5.14.4, Hamcrest 2.2, Mockito 4.11.0, and Commons Lang 3.21.0. The Maven plugins are current 3.x releases (compiler 3.16, Surefire 3.6, JAR 3.5, Javadoc 3.12). The exact set is in the root `pom.xml`.
+The test suite uses current libraries: JUnit 5.14.4, Hamcrest 3.0, Mockito 4.11.0, and Commons Lang 3.21.0. The Maven plugins are current 3.x releases (compiler 3.16, Surefire 3.6, JAR 3.5, Javadoc 3.12). The exact set is in the root `pom.xml`.
 
 ## Issues
 
