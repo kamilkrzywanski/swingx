@@ -66,21 +66,17 @@ public class TreeModelSupportTest extends TestCase {
     }
     
     /**
-     * test modelSupport pathChanged: 
-     * not null path  must not be empty, (checked by TreePath)
-     * path elements must not be null (core issue - should be checked
-     *   by TreePath but isn't)
+     * Null path elements never reach {@code firePathChanged}. Since JDK 7
+     * {@link TreePath} rejects them itself.
      */
     @Test
     public void testPathChangedNotNullPathElements() {
-        TreePath path = new TreePath(new Object[] {null});
         try {
-            support.firePathChanged(path);
+            new TreePath(new Object[] {null});
             fail("must not allow null path elements");
-        } catch (NullPointerException e) {
-            // expected
-        } 
-        // unexpected exception
+        } catch (IllegalArgumentException e) {
+            // expected: "Last path component must be non-null"
+        }
     }
     
     /**
@@ -115,24 +111,17 @@ public class TreeModelSupportTest extends TestCase {
     }
 
     /**
-     * test modelSupport treeStructureChanged: 
-     * not null path  must not be empty, (checked by TreePath)
-     * path elements must not be null (core issue - should be checked
-     *   by TreePath but isn't)
-     * first element must be root (? not sure so don't enforce).
-     *
-     *
+     * Null path elements never reach {@code fireTreeStructureChanged}.
+     * Since JDK 7 {@link TreePath} rejects them itself.
      */
     @Test
     public void testTreeStructureChangedNotNullPathElements() {
-        TreePath path = new TreePath(new Object[] {null});
         try {
-            support.fireTreeStructureChanged(path);
+            new TreePath(new Object[] {null});
             fail("must not allow null path elements");
-        } catch (NullPointerException e) {
-            // expected
-        } 
-        // unexpected exception
+        } catch (IllegalArgumentException e) {
+            // expected: "Last path component must be non-null"
+        }
     }
     
 

@@ -38,6 +38,7 @@ public class JVM {
   public final static int JDK1_6 = 1600;
   public final static int JDK1_6N = 1610;
   public final static int JDK1_7 = 1700;
+  public final static int JDK1_8 = 1800;
 
   private static JVM current;
   static {
@@ -66,7 +67,9 @@ public class JVM {
    * Constructor for the OS object
    */
   public JVM(String p_JavaVersion) {
-    if (p_JavaVersion.startsWith("1.7.")) {
+    if (p_JavaVersion.startsWith("1.8.")) {
+      jdkVersion = JDK1_8;
+    } else if (p_JavaVersion.startsWith("1.7.")) {
       jdkVersion = JDK1_7;
     } else if (p_JavaVersion.startsWith("1.6.")) {
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -89,9 +92,31 @@ public class JVM {
       jdkVersion = JDK1_1;
     } else if (p_JavaVersion.startsWith("1.0.")) {
       jdkVersion = JDK1_0;
+    } else if (isJava9OrLater(p_JavaVersion)) {
+      // Java 9+ dropped the "1." prefix ("9", "11", "17", ...).
+      // Callers only ask isOrLater(JDK1_6) or isOrLater(JDK1_7).
+      jdkVersion = JDK1_8;
     } else {
       // unknown version, assume 1.3
       jdkVersion = JDK1_3;
+    }
+  }
+
+  /**
+   * @return {@code true} when {@code version} starts with a major number of 9 or more
+   */
+  private static boolean isJava9OrLater(String version) {
+    int end = 0;
+    while (end < version.length() && Character.isDigit(version.charAt(end))) {
+      end++;
+    }
+    if (end == 0) {
+      return false;
+    }
+    try {
+      return Integer.parseInt(version.substring(0, end)) >= 9;
+    } catch (NumberFormatException ex) {
+      return false;
     }
   }
 
@@ -135,6 +160,15 @@ public class JVM {
   
   public boolean isOneDotSeven() {
       return jdkVersion == JDK1_7;
+  }
+
+  /**
+   * @return {@code true} when running on Java 8. Java 9 and later also
+   *         report as Java 8 here, because this class has no finer buckets
+   *         and {@link #isOrLater(int)} is the check callers use.
+   */
+  public boolean isOneDotEight() {
+      return jdkVersion == JDK1_8;
   }
 
 }

@@ -38,6 +38,7 @@ import javax.swing.plaf.IconUIResource;
 import junit.framework.TestCase;
 
 import org.jdesktop.swingx.test.XTestUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -563,8 +564,14 @@ public class JXHeaderTest extends TestCase {
     }
 
     
+    /**
+     * JUnit 4 does not call {@link TestCase#setUp()}. The header addon is
+     * contributed from {@code JXHeader}'s static initializer, so it has to
+     * run before tests read {@code JXHeader.*} defaults from {@code UIManager}.
+     */
+    @Before
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         // forcing load of headerAddon
         new JXHeader();
     }

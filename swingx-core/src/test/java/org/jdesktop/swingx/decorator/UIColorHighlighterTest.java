@@ -49,10 +49,13 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
 
     
     /**
-     * Sanity: testing assumption that raw core Nimbus has intalled the alternate 
-     * color property, raw core Metal has not and a previous Nimbus install is
-     * removed.
-     *  
+     * Nimbus installs {@code Table.alternateRowColor}, Metal does not, and
+     * switching back to Metal drops the Nimbus value.
+     * <p>
+     * {@code TableAddon} then removes that color (core issue 6882917) and
+     * cannot be uncontributed. Both checks share this test so the raw
+     * LookAndFeel assertions run before the first {@code JXTable}.
+     *
      * @throws Exception
      */
     @Test
@@ -67,42 +70,11 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
         assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
         setLookAndFeel("Metal");
         assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
-    }
 
-    /**
-     * Test that UIColorHighlighter removes the alternate color installed 
-     * by Nimbus.
-     * 
-     * @throws Exception
-     */
-//    @Test
-//    public void testAlternateUIColorHighlighter() throws Exception {
-//        if (!hasLookAndFeel("Nimbus")) {
-//            LOG.fine("cant run - no Nimbus");
-//            return;
-//        }
-//        setLookAndFeel("Nimbus");
-//        assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
-//        new UIColorHighlighter();
-//        assertNull("Nimbus with addon has alternate removed but was: \n " 
-//                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
-//    }
-    /**
-     * Test that TableAddon removes the alternate color installed 
-     * by Nimbus.
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testAlternateXTable() throws Exception {
-        if (!hasLookAndFeel("Nimbus")) {
-            LOG.fine("cant run - no Nimbus");
-            return;
-        }
         setLookAndFeel("Nimbus");
         assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
         new JXTable();
-        assertNull("Nimbus with addon has alternate removed but was: \n " 
+        assertNull("Nimbus with addon has alternate removed but was: \n "
                 + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
     }
 

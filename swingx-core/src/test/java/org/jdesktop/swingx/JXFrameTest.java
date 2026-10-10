@@ -7,10 +7,6 @@ package org.jdesktop.swingx;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -30,56 +26,43 @@ public class JXFrameTest extends InteractiveTestCase {
             LOG.fine("cannot run ui test - headless environment");
             return;
         }
+        // A wrapper GraphicsConfiguration is not usable here. Window.init asks
+        // the toolkit for screen insets, and XToolkit casts the configuration
+        // to sun.awt.X11GraphicsConfig.
         JXFrame compare = new JXFrame();
-        GraphicsConfiguration gc = new DummyGraphicsConfiguration(compare.getGraphicsConfiguration());
-        JXFrame frame = new JXFrame(gc);
-        assertEquals(gc, frame.getGraphicsConfiguration());
-        assertEquals(compare.getDefaultCloseOperation(), frame.getDefaultCloseOperation());
-        assertEquals(compare.getTitle(), frame.getTitle());
+        JXFrame frame = null;
+        try {
+            GraphicsConfiguration gc = screenConfiguration();
+            frame = new JXFrame(gc);
+            assertEquals(gc, frame.getGraphicsConfiguration());
+            assertEquals(compare.getDefaultCloseOperation(), frame.getDefaultCloseOperation());
+            assertEquals(compare.getTitle(), frame.getTitle());
+        } finally {
+            if (frame != null) {
+                frame.dispose();
+            }
+            compare.dispose();
+        }
     }
-    
-    public static class DummyGraphicsConfiguration extends GraphicsConfiguration {
-        
-        GraphicsConfiguration delegate;
-        
-        public DummyGraphicsConfiguration(GraphicsConfiguration delegate) {
-            this.delegate = delegate;
-        }
 
-        @Override
-        public BufferedImage createCompatibleImage(int width, int height) {
-            return delegate.createCompatibleImage(width, height);
+    /**
+     * Prefer a non-default screen configuration so the constructor has to
+     * keep the instance it was given. Fall back to the default when the
+     * device exposes only one.
+     */
+    private static GraphicsConfiguration screenConfiguration() {
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsConfiguration fallback = environment.getDefaultScreenDevice().getDefaultConfiguration();
+        for (GraphicsDevice device : environment.getScreenDevices()) {
+            if (device.getType() != GraphicsDevice.TYPE_RASTER_SCREEN) {
+                continue;
+            }
+            for (GraphicsConfiguration candidate : device.getConfigurations()) {
+                if (candidate != null && candidate != fallback) {
+                    return candidate;
+                }
+            }
         }
-
-        @Override
-        public Rectangle getBounds() {
-            return delegate.getBounds();
-        }
-
-        @Override
-        public ColorModel getColorModel() {
-            return delegate.getColorModel();
-        }
-
-        @Override
-        public ColorModel getColorModel(int transparency) {
-            return delegate.getColorModel(transparency);
-        }
-
-        @Override
-        public AffineTransform getDefaultTransform() {
-            return delegate.getDefaultTransform();
-        }
-
-        @Override
-        public GraphicsDevice getDevice() {
-            return delegate.getDevice();
-        }
-
-        @Override
-        public AffineTransform getNormalizingTransform() {
-            return delegate.getNormalizingTransform();
-        }
-        
+        return fallback;
     }
 }
