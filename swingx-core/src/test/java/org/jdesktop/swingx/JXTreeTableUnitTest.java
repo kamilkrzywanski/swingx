@@ -1008,6 +1008,23 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      * <p>
      * starting from unselected, the event count is 1 as expected 
      */
+    /**
+     * Mouse drags report adjusting selection events. The tree selection has to
+     * follow them, otherwise the hierarchical column paints the old row.
+     */
+    @Test
+    public void testSelectionFollowsAdjustingRowSelection() {
+        JXTreeTable treeTable = prepareTreeTable(true);
+        TreePath initiallySelected = treeTable.getPathForRow(0);
+        assertTrue(treeTable.getTreeSelectionModel().isPathSelected(initiallySelected));
+        treeTable.getSelectionModel().setValueIsAdjusting(true);
+        treeTable.setRowSelectionInterval(1, 1);
+        assertTrue(treeTable.getSelectionModel().getValueIsAdjusting());
+        assertTrue(treeTable.getTreeSelectionModel().isPathSelected(treeTable.getPathForRow(1)),
+                "tree selection must follow the table selection while adjusting");
+        assertFalse(treeTable.getTreeSelectionModel().isPathSelected(initiallySelected));
+    }
+
     @Test
     public void testSelectionEvents() {
         JXTreeTable treeTable = prepareTreeTable(false);

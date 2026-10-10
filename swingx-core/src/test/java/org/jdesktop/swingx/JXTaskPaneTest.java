@@ -8,12 +8,14 @@ package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 
@@ -99,6 +101,36 @@ public class JXTaskPaneTest {
 //    		.getPropertyName());
     assertTrue((Boolean) event.getNewValue());
     assertFalse((Boolean) event.getOldValue());
+  }
+
+    /**
+     * Issue #1572-swingx: setScrollOnExpand(true) must scroll when the pane
+     * expands, including when animation is enabled. Collapsing must not scroll.
+     */
+    @Test
+  public void testScrollOnExpandScrollsWhenExpanding() throws Exception {
+    assertScrollsOnExpandOnly(false);
+    assertScrollsOnExpandOnly(true);
+  }
+
+  private static void assertScrollsOnExpandOnly(boolean animated) throws Exception {
+    final boolean[] scrolled = { false };
+    JXTaskPane pane = new JXTaskPane() {
+      @Override
+      public void scrollRectToVisible(Rectangle aRect) {
+        scrolled[0] = true;
+      }
+    };
+    pane.setAnimated(animated);
+    pane.setScrollOnExpand(true);
+    scrolled[0] = false;
+    pane.setCollapsed(true);
+    SwingUtilities.invokeAndWait(() -> { });
+    assertFalse(scrolled[0], "expand-scroll must not run when the pane collapses");
+    scrolled[0] = false;
+    pane.setCollapsed(false);
+    SwingUtilities.invokeAndWait(() -> { });
+    assertTrue(scrolled[0], "expand-scroll must run when the pane expands");
   }
 
     @Test

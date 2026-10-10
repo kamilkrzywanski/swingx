@@ -114,6 +114,20 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     }
     
     
+    /**
+     * Issue #1573-swingx: a column that is not hideable must start with a
+     * disabled visibility action. Toggling hideable later is a different path.
+     */
+    @Test
+    public void testColumnVisibilityActionOnHideableInitial() {
+        JXTable table = new JXTable(10, 3);
+        table.getColumnExt(0).setHideable(false);
+        table.setColumnControlVisible(true);
+        ColumnControlButton columnControl = (ColumnControlButton) table.getColumnControl();
+        ColumnVisibilityAction action = columnControl.getColumnVisibilityActions().get(0);
+        assertFalse(action.isEnabled(), "action must be disabled initially");
+    }
+
     @Test
     public void testColumnVisibilityActionOnHideable() {
         JXTable table = new JXTable(10, 3);

@@ -343,12 +343,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
     class ChangeListener implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            // if group is expanded but not animated
-            // or if animated has reached expanded state
-            // scroll to visible if scrollOnExpand is enabled
+            // Issue #1572-swingx: scroll into view when the pane expands.
+            // 1.6.5-1 scrolled on collapse and skipped animated panes, so
+            // setScrollOnExpand(true) had no effect.
             if (("collapsed".equals(evt.getPropertyName())
-                    && Boolean.TRUE.equals(evt.getNewValue()) && !group
-                    .isAnimated())) {
+                    && Boolean.FALSE.equals(evt.getNewValue()))) {
                 if (group.isScrollOnExpand()) {
                     ensureVisible();
                 }
