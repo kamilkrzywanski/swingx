@@ -1988,7 +1988,11 @@ public class JXMonthViewTest extends InteractiveTestCase {
         // config with a known timezone and date
         TimeZone tz = TimeZone.getTimeZone("GMT+4");
         monthView.setTimeZone(tz);
+        // 22:00 on the 30th is the next month in GMT+7. Using "now" made this
+        // fail only on the last day of a month (Issue #618-swingx).
         Calendar calendar = Calendar.getInstance(tz);
+        calendar.set(2008, Calendar.SEPTEMBER, 30, 22, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date today = calendar.getTime();
         monthView.setFirstDisplayedDay(today);
         Date anchor = monthView.getAnchorDate();
@@ -2074,7 +2078,11 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         // config with a known timezone and date
         TimeZone tz = TimeZone.getTimeZone("GMT+4");
         monthView.setTimeZone(tz);
+        // 22:00 on the 30th is the next month in GMT+7. Using "now" made this
+        // fail only on the last day of a month (Issue #618-swingx).
         Calendar calendar = Calendar.getInstance(tz);
+        calendar.set(2008, Calendar.SEPTEMBER, 30, 22, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date today = calendar.getTime();
         monthView.setFirstDisplayedDay(today);
         Date anchor = monthView.getAnchorDate();

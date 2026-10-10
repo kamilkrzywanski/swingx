@@ -528,9 +528,21 @@ public class JXMonthView extends JComponent {
     private void updateTimeZone() {
         TimeZone old = getTimeZone();
         TimeZone tz = model.getTimeZone();
+        // Issue #618-swingx: keep the displayed month. Deriving it again from
+        // the anchor instant rolls the month when that instant falls on a
+        // different local date in the new zone, for example the last evening
+        // of a month.
+        cal.setTime(firstDisplayedDay);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
         cal.setTimeZone(tz);
         anchor.setTimeZone(tz);
-        setFirstDisplayedDay(anchor.getTime());
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        CalendarUtils.startOfMonth(cal);
+        Date oldFirstDisplayed = firstDisplayedDay;
+        firstDisplayedDay = cal.getTime();
+        firePropertyChange("firstDisplayedDay", oldFirstDisplayed, getFirstDisplayedDay());
         updateTodayFromCurrentTime();
         updateDatesAfterTimeZoneChange(old);
         firePropertyChange("timeZone", old, getTimeZone());
