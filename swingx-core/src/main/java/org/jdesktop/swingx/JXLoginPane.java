@@ -180,8 +180,10 @@ public class JXLoginPane extends JXPanel {
      */
     private Status status = Status.NOT_STARTED;
     /**
-     * An optional banner at the top of the panel
+     * An optional banner at the top of the panel. Kept as a JXImagePanel so the
+     * centered, unscaled banner painting stays the same.
      */
+    @SuppressWarnings("deprecation")
     private JXImagePanel banner;
     /**
      * Text that should appear on the banner
@@ -488,6 +490,7 @@ public class JXLoginPane extends JXPanel {
      * @param ui the LoginPaneUI L&F object
      * @see javax.swing.UIDefaults#getUI
      */
+    @SuppressWarnings("deprecation")
     public void setUI(LoginPaneUI ui) {
         // initialized here due to implicit updateUI call from JPanel
         if (banner == null) {

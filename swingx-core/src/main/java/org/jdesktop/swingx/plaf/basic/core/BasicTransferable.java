@@ -144,7 +144,7 @@ public class BasicTransferable implements Transferable, UIResource {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                return lowByteStream(data);
             }
             // fall through to unsupported
         } else if (isPlainFlavor(flavor)) {
@@ -155,7 +155,7 @@ public class BasicTransferable implements Transferable, UIResource {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                return lowByteStream(data);
             }
             // fall through to unsupported
 
@@ -165,6 +165,18 @@ public class BasicTransferable implements Transferable, UIResource {
             return data;
         }
         throw new UnsupportedFlavorException(flavor);
+    }
+
+    /**
+     * Returns a stream of the low eight bits of each character. That is the
+     * encoding {@code StringBufferInputStream} used for these clipboard flavors.
+     */
+    private static InputStream lowByteStream(String data) {
+        byte[] bytes = new byte[data.length()];
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) data.charAt(i);
+        }
+        return new ByteArrayInputStream(bytes);
     }
 
     // --- richer subclass flavors ----------------------------------------------

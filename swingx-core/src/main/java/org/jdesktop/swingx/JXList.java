@@ -24,8 +24,10 @@ package org.jdesktop.swingx;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -940,22 +942,38 @@ public class JXList extends JList {
     }
 
     /**
-     * Returns an array of all the selected values, in increasing order based
-     * on their indices in the list and taking into account sourting and filtering.
+     * Returns a list of all the selected values, in increasing order based
+     * on their indices in the list and taking into account sorting and filtering.
      *
-     * @return the selected values, or an empty array if nothing is selected
+     * @return the selected values, or an empty list if nothing is selected
      * @see #isSelectedIndex
      * @see #getModel
      * @see #addListSelectionListener
      */
     @Override
-    public Object[] getSelectedValues() {
+    public List<Object> getSelectedValuesList() {
         int[] selectedIndexes = getSelectedIndices();
-        Object[] selectedValues = new Object[selectedIndexes.length];
+        List<Object> selectedValues = new ArrayList<Object>(selectedIndexes.length);
         for (int i = 0; i < selectedIndexes.length; i++) {
-            selectedValues[i] = getElementAt(selectedIndexes[i]);
+            selectedValues.add(getElementAt(selectedIndexes[i]));
         }
         return selectedValues;
+    }
+
+    /**
+     * Returns an array of all the selected values, in increasing order based
+     * on their indices in the list and taking into account sourting and filtering.
+     *
+     * @return the selected values, or an empty array if nothing is selected
+     * @see #getSelectedValuesList()
+     * @see #isSelectedIndex
+     * @see #getModel
+     * @see #addListSelectionListener
+     */
+    @Override
+    @SuppressWarnings("deprecation")
+    public Object[] getSelectedValues() {
+        return getSelectedValuesList().toArray();
     }
 
     /**     * Returns the number of elements in this list in view 

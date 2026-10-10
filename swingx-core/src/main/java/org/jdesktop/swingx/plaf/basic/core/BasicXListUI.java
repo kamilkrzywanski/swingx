@@ -40,6 +40,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.CellRendererPane;
@@ -3116,9 +3117,9 @@ public class BasicXListUI  extends BasicListUI
         protected Transferable createTransferable(JComponent c) {
             if (c instanceof JList) {
                 JList list = (JList) c;
-                Object[] values = list.getSelectedValues();
+                List values = list.getSelectedValuesList();
 
-                if (values == null || values.length == 0) {
+                if (values == null || values.isEmpty()) {
                     return null;
                 }
                 
@@ -3127,8 +3128,8 @@ public class BasicXListUI  extends BasicListUI
                 
                 htmlBuf.append("<html>\n<body>\n<ul>\n");
 
-                for (int i = 0; i < values.length; i++) {
-                    Object obj = values[i];
+                for (int i = 0; i < values.size(); i++) {
+                    Object obj = values.get(i);
                     String val = ((obj == null) ? "" : obj.toString());
                     plainBuf.append(val + "\n");
                     htmlBuf.append("  <li>" + val + "\n");

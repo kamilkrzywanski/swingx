@@ -50,8 +50,6 @@ import org.jdesktop.test.AncientSwingTeam;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import sun.font.CreatedFontTracker;
-
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     @SuppressWarnings("all")

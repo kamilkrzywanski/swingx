@@ -123,6 +123,7 @@ public class JXListTest extends InteractiveTestCase {
         list.setSelectedIndex(2);
         list.addSelectionInterval(0, 2);
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Two", "Three"}, list.getSelectedValues()));
+        assertEquals(Arrays.asList("One", "Two", "Three"), list.getSelectedValuesList());
         list.setRowFilter(new RowFilter<ListModel, Integer>() {
 
             @Override
@@ -132,9 +133,11 @@ public class JXListTest extends InteractiveTestCase {
 
         });
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Three"}, list.getSelectedValues()));
+        assertEquals(Arrays.asList("One", "Three"), list.getSelectedValuesList());
         list.clearSelection();
         list.addSelectionInterval(0, 2);
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Three", "Five"}, list.getSelectedValues()));
+        assertEquals(Arrays.asList("One", "Three", "Five"), list.getSelectedValuesList());
     }
 
     /**
