@@ -12,12 +12,6 @@
   <name>SwingX Core</name>
   <dependencies>
   	<dependency>
-  		<groupId>com.jhlabs</groupId>
-  		<artifactId>filters</artifactId>
-  		<type>jar</type>
-  		<scope>test</scope>
-  	</dependency>
-  	<dependency>
   		<groupId>org.apache.commons</groupId>
   		<artifactId>commons-lang3</artifactId>
   		<type>jar</type>

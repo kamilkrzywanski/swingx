@@ -35,13 +35,12 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.image.GaussianBlurFilter;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.AlphaPainter;
 import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.ShapePainter;
-
-import com.jhlabs.image.BlurFilter;
 
 /**
  * Base test class for JXLabel related code and issues.
@@ -70,7 +69,7 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
         JXLabel label = new JXLabel("that's the real text");
         label.setFont(new Font("SansSerif", Font.BOLD, 80));
         AbstractPainter<?> fg = new MattePainter(Color.RED);
-        fg.setFilters(new BlurFilter());
+        fg.setFilters(new GaussianBlurFilter());
         label.setForegroundPainter(fg);
         JXFrame frame = wrapInFrame(label, "fancy filter");
         show(frame,400, 400);
