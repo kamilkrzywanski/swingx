@@ -10,27 +10,31 @@
   <packaging>pom</packaging>
   <name>SwingX</name>
   <version>1.6.6-SNAPSHOT</version>
-  <url>http://www.swinglabs.org/</url>
-  <ciManagement>
-    <system>Hudson</system>
-    <url>http://swinglabs.org/hudson</url>
-  </ciManagement>
+  <url>https://github.com/kamilkrzywanski/swingx</url>
+  <description>Contains extensions to the Swing GUI toolkit, including new and enhanced components that provide functionality commonly required by rich client applications.</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.html</url>
+      <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</url>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <id>kamilkrzywanski</id>
+      <name>Kamil Krzywanski</name>
+      <email>kamilkrzywanski01@gmail.com</email>
+    </developer>
+  </developers>
   <issueManagement>
-    <system>JIRA</system>
-    <url>http://java.net/jira/browse/SWINGX</url>
+    <system>GitHub</system>
+    <url>https://github.com/kamilkrzywanski/swingx/issues</url>
   </issueManagement>
   <scm>
-    <connection>scm:svn:https://svn.java.net/svn/swingx~svn/tags/swingx-project-1.6.5-1</connection>
-    <developerConnection>scm:svn:https://svn.java.net/svn/swingx~svn/tags/swingx-project-1.6.5-1</developerConnection>
-    <url>https://svn.java.net/svn/swingx~svn/tags/swingx-project-1.6.5-1</url>
+    <connection>scm:git:https://github.com/kamilkrzywanski/swingx.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kamilkrzywanski/swingx.git</developerConnection>
+    <url>https://github.com/kamilkrzywanski/swingx</url>
+    <tag>HEAD</tag>
   </scm>
-  <description>Contains extensions to the Swing GUI toolkit, including new and enhanced components that provide functionality commonly required by rich client applications.</description>
   <build>
     <pluginManagement>
       <plugins>
@@ -171,6 +175,9 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+          <mavenExecutorId>invoker</mavenExecutorId>
+          <arguments>-Prelease</arguments>
         </configuration>
       </plugin>
     </plugins>
@@ -243,4 +250,112 @@
     <!-- module>swingx-experimental</module -->
     <!-- module>swingx-demos</module -->
   </modules>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>flatten-maven-plugin</artifactId>
+            <version>1.8.0</version>
+            <configuration>
+              <updatePomFile>true</updatePomFile>
+              <flattenMode>ossrh</flattenMode>
+              <!-- jvnet-parent still points distributionManagement and repositories at maven.java.net. -->
+              <pomElements>
+                <distributionManagement>remove</distributionManagement>
+                <repositories>remove</repositories>
+                <pluginRepositories>remove</pluginRepositories>
+              </pomElements>
+            </configuration>
+            <executions>
+              <execution>
+                <id>flatten</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>flatten</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>flatten.clean</id>
+                <phase>clean</phase>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <!-- The existing comments are not doclint-clean. -->
+              <doclint>none</doclint>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.11.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>false</autoPublish>
+              <deploymentName>SwingX ${project.version}</deploymentName>
+            </configuration>
+            <executions>
+              <execution>
+                <id>publish</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>publish</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

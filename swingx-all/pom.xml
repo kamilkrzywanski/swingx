@@ -42,7 +42,7 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>jvnet-release</id>
+      <id>release</id>
       <build>
         <plugins>
           <plugin>
