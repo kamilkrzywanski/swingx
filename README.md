@@ -4,7 +4,7 @@ Desktop components that pick up where the JDK Swing toolkit stops.
 
 `JXTable` shows and hides columns, packs them to their content, and stripes rows. `JXTreeTable` puts a tree in the hierarchical column. `JXDatePicker` and `JXMonthView` pick dates. `JXTaskPane` groups actions the way a desktop window expects. Painters, highlighters, and autocomplete sit beside those components. The packages are still `org.jdesktop.swingx`, so an application written against SwingLabs SwingX keeps the same imports.
 
-This repository continues that library. This tag is release 1.6.6. The Maven group is `io.github.kamilkrzywanski`, the code compiles as Java 8, and it runs on Java 8 and newer. The license is LGPL-2.1-or-later.
+This repository continues that library. Release 1.6.6 is the current release. This branch is `1.6.7-SNAPSHOT`. The Maven group is `io.github.kamilkrzywanski`, the code compiles as Java 8, and it runs on Java 8 and newer. The license is LGPL-2.1-or-later.
 
 ## Add it to a project
 
@@ -18,14 +18,15 @@ This repository continues that library. This tag is release 1.6.6. The Maven gro
 
 `swingx-core` pulls in autocomplete, the action framework, painters, graphics helpers, and look-and-feel support. The library runs on the JDK. An application does not take an extra third-party runtime library with it.
 
-To build this tag from source, JDK 8 or newer and Maven 3 are enough.
+To build the snapshot on this branch, JDK 8 or newer and Maven 3 are enough.
 
 ```bash
 git clone https://github.com/kamilkrzywanski/swingx.git
 cd swingx
-git checkout swingx-project-1.6.6
 mvn install
 ```
+
+That install produces `1.6.7-SNAPSHOT`. The 1.6.6 sources are the tag `swingx-project-1.6.6`.
 
 ```java
 import org.jdesktop.swingx.JXDatePicker;
